@@ -6,6 +6,7 @@
 
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_launcher_timer"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginRight="15dp"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.emall_core.activities.ProxyActivity
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment
 
 /**
@@ -25,6 +26,10 @@ abstract class BaseDelegate : SwipeBackFragment(){
             else -> println("the fuck")
         }
          return rootView
+    }
+
+    fun getProxyActivity() : ProxyActivity?{
+        return _mActivity as ProxyActivity
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
