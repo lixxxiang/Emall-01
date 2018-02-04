@@ -29,6 +29,13 @@ final class Emall{
         return Configurator().getInstance().getConfiguration(ConfigKeys.APPLICATION_CONTEXT)
     }
 
+    /**
+     * name???
+     */
+    fun getApplicationContextName(): Context? {
+        return Configurator().getInstance().getConfiguration(ConfigKeys.APPLICATION_CONTEXT.name)
+    }
+
     fun getApplication():Context{
         return getConfigurations()[ConfigKeys.APPLICATION_CONTEXT.name] as Context
     }

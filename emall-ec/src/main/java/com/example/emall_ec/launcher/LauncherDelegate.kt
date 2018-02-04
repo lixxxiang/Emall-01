@@ -7,6 +7,10 @@ import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_launcher.*
 import java.text.MessageFormat
 import java.util.*
+import com.example.emall_core.net.ui.ScrollLauncherTag
+import com.example.emall_core.util.storage.EmallPreference
+import me.yokeyword.fragmentation.ISupportFragment
+
 
 /**
  * Created by lixiang on 2018/2/2.
@@ -20,13 +24,32 @@ class LauncherDelegate : EmallDelegate(), ITimerListener {
         return R.layout.delegate_launcher
     }
 
-    private fun initTimer(){
+    private fun checkIsShowScroll() {
+        if (!EmallPreference().getAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.toString())) {
+            start(LauncherScrollDelegate(), ISupportFragment.SINGLETASK)
+        } else {
+            //检查用户是否登录了APP
+        }
+    }
+
+    private fun initTimer() {
         mTimer = Timer()
         val task: BaseTimerTask? = BaseTimerTask(this)
-        mTimer!!.schedule(task, 0, 1000 )
+        mTimer!!.schedule(task, 0, 1000)
     }
+
     override fun initial() {
-       initTimer()
+        initTimer()
+
+
+        tv_launcher_timer.setOnClickListener {
+            if (mTimer != null) {
+                mTimer!!.cancel()
+                mTimer = null
+                checkIsShowScroll()
+            }
+        }
+
     }
 
     override fun onTimer() {
@@ -37,6 +60,7 @@ class LauncherDelegate : EmallDelegate(), ITimerListener {
                 if (mTimer != null) {
                     mTimer!!.cancel()
                     mTimer = null
+                    checkIsShowScroll()
                 }
             }
         }

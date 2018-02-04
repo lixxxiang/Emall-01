@@ -8,7 +8,9 @@ import com.example.emall_core.delegates.BaseDelegate
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.ui.LauncherHolderCreator
 import com.example.emall_ec.R
-
+import android.accounts.AccountManager
+import com.example.emall_core.net.ui.ScrollLauncherTag
+import com.example.emall_core.util.storage.EmallPreference
 
 
 /**
@@ -20,7 +22,10 @@ class LauncherScrollDelegate(): EmallDelegate(), AdapterView.OnItemClickListener
     }
 
     override fun onItemClick(position: Int) {
-
+        if (position == INTEGERS.size - 1) {
+            EmallPreference().setAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name, true)
+            println("last click")
+        }
     }
 
     private var mConvenientBanner : ConvenientBanner<Int>? = null

@@ -9,7 +9,7 @@ import com.example.emall_core.app.Emall
  * Created by lixiang on 2018/2/2.
  */
 class EmallPreference  {
-    private val PREFERENCES = PreferenceManager.getDefaultSharedPreferences(Emall().getApplicationContext())
+    private val PREFERENCES = PreferenceManager.getDefaultSharedPreferences(Emall().getApplicationContextName())
     private val APP_PREFERENCES_KEY = "profile"
 
     private fun getAppPreference(): SharedPreferences {
