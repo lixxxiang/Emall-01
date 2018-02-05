@@ -6,6 +6,7 @@ import com.example.emall_core.activities.ProxyActivity
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.launcher.LauncherDelegate
 import com.example.emall_ec.launcher.LauncherScrollDelegate
+import com.example.emall_ec.sign.SignUpDelegate
 
 class MainActivity : ProxyActivity() {
 
@@ -17,6 +18,6 @@ class MainActivity : ProxyActivity() {
         }
     }
     override fun setRootDelegate(): EmallDelegate {
-        return LauncherDelegate()
+        return SignUpDelegate()
     }
 }

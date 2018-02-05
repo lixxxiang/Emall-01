@@ -5,10 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Emall-01.iml" filepath="$PROJECT_DIR$/Emall-01.iml" />
       <module fileurl="file://$PROJECT_DIR$/Emall_01.iml" filepath="$PROJECT_DIR$/Emall_01.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/emall-core/emall-core.iml" filepath="$PROJECT_DIR$/emall-core/emall-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/emall-core/emall-core.iml" filepath="$PROJECT_DIR$/emall-core/emall-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/emall-ec/emall-ec.iml" filepath="$PROJECT_DIR$/emall-ec/emall-ec.iml" />
       <module fileurl="file://$PROJECT_DIR$/emall-ec/emall-ec.iml" filepath="$PROJECT_DIR$/emall-ec/emall-ec.iml" />
     </modules>
   </component>
