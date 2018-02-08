@@ -77,7 +77,7 @@ class RestClient() {
             REQUEST!!.onRequestStart()
         }
 
-        EmallProgressbar().showProgressbar(CONTEXT!!)
+//        EmallProgressbar().showProgressbar(CONTEXT!!)
 
         when (method) {
             GET -> call = service.get(URL!!, PARAMS!!)
@@ -117,7 +117,17 @@ class RestClient() {
     }
 
     fun post() {
-        request(HttpMethod.POST)
+//        request(HttpMethod.POST)
+        if (BODY == null) {
+            println("1")
+            request(HttpMethod.POST)
+        } else {
+            println("2")
+            if (!PARAMS!!.isEmpty()) {
+                throw RuntimeException("params must be null!")
+            }
+            request(HttpMethod.POST_RAW)
+        }
     }
 
     fun put() {

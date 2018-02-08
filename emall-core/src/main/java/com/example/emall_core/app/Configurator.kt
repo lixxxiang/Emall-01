@@ -5,6 +5,11 @@ import com.joanzapata.iconify.Iconify
 import okhttp3.Interceptor
 import java.util.*
 import kotlin.collections.ArrayList
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
+import com.orhanobut.logger.Logger.addLogAdapter
+
+
 
 
 /**
@@ -25,6 +30,7 @@ class Configurator {
     }
 
     fun configure() {
+        Logger.addLogAdapter(AndroidLogAdapter())
         initIcons()
         EMALL_CONFIGS.put(ConfigKeys.CONFIG_READY.toString(), true)
     }

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 26
 
@@ -57,6 +57,11 @@ dependencies {
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 
+    //Log
+    compile 'com.orhanobut:logger:2.1.1'
+
+    //greendao
+    compile 'org.greenrobot:greendao:3.2.2'
 }
 
 repositories {
