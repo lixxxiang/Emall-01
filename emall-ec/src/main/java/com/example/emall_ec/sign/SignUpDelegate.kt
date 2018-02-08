@@ -23,8 +23,12 @@ class SignUpDelegate : EmallDelegate() {
     override fun initial() {
 
         var params : WeakHashMap<String, Any> ?= RestClient().PARAMS
+
         params!!["name"] = "n"
-        params["pwd"] = "p"
+        params["userId"] = 123
+        params["avatar"] = "avatar"
+        params["address"] = "address"
+        params["gender"] = "gender"
 //        val params  = mapOf("password" to 24,"name" to "zhangsan","age" to 25)
 
         btn_sign_up_submit.setOnClickListener {
@@ -36,6 +40,7 @@ class SignUpDelegate : EmallDelegate() {
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
                             EmallLogger.json("USER_PROFILE", response)
+                            SignHandler().onSignUp(response)
                         }
                     })
                     .failure(object : IFailure{

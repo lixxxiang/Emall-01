@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
+apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 26
 
@@ -62,6 +62,8 @@ dependencies {
 
     //greendao
     compile 'org.greenrobot:greendao:3.2.2'
+    compile 'org.greenrobot:greendao-generator:3.2.2'
+
 }
 
 repositories {
