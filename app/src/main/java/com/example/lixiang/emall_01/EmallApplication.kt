@@ -5,6 +5,7 @@ import com.example.emall.ec.icon.FontEcModule
 import com.example.emall_core.app.Emall
 import com.example.emall_core.net.interceptors.DebugInterceptor
 import com.example.emall_ec.database.DatabaseManager
+import com.facebook.stetho.Stetho
 import com.joanzapata.iconify.fonts.FontAwesomeModule
 
 /**
@@ -19,8 +20,17 @@ class EmallApplication : Application() {
                 .withApiHost("http://127.0.0.1:8080/")
                 .withInterceptor(DebugInterceptor("index", R.raw.test))
                 .configure()
+        initStetho()
 
         DatabaseManager().getInstance()!!.init(this)
 
+    }
+
+    private fun initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build())
     }
 }

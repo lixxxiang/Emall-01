@@ -35,8 +35,7 @@ object EmallLogger {
 
     fun d(message: Any) {
         if (LEVEL <= DEBUG) {
-            println("logger dddddd" + message)
-
+//            println("logger dddddd" + message)
             Logger.d(message)
 
         }
@@ -56,6 +55,8 @@ object EmallLogger {
 
     fun json(tag: String, message: String) {
         if (LEVEL <= WARN) {
+//            println("injson")
+
             Logger.t(tag).json(message)
         }
     }

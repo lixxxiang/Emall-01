@@ -2,12 +2,11 @@ package com.example.emall_core.app
 
 import com.joanzapata.iconify.IconFontDescriptor
 import com.joanzapata.iconify.Iconify
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import okhttp3.Interceptor
 import java.util.*
 import kotlin.collections.ArrayList
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
-import com.orhanobut.logger.Logger.addLogAdapter
 
 
 
@@ -44,8 +43,6 @@ class Configurator {
     }
 
     fun withApiHost(host: String): Configurator {
-        println("host ++ " +host)
-//        EMALL_CONFIGS[ConfigKeys.API_HOST.toString()] = host
         EMALL_CONFIGS.put(ConfigKeys.API_HOST.toString(), host)
         return this
     }
