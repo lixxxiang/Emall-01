@@ -29,4 +29,21 @@ class SignHandler  {
         signListener.onSignUpSuccess()
     }
 
+    fun onSignIn(response : String, signListener : ISignListener) {
+//        val profileJson : JSONObject = JSON.parseObject(response).getJSONObject("data")
+        val profileJson : JSONObject = JSON.parseObject(response)
+        val userId = profileJson.getLong("userId")!!
+        val name = profileJson.getString("name")
+        val avatar = profileJson.getString("avatar")
+        val gender = profileJson.getString("gender")
+        val address = profileJson.getString("address")
+
+        val profile = UserProfile(userId, name, avatar, gender, address)
+        DatabaseManager().getInstance()!!.getDao()!!.insert(profile)
+
+
+        AccountManager().setSignState(true)
+        signListener.onSignInSuccess()
+    }
+
 }

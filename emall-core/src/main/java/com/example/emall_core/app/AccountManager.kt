@@ -18,7 +18,7 @@ class AccountManager {
         return EmallPreference().getAppFlag(SignTag.SIGN_TAG.name)
     }
 
-    fun CheckAccount(checker: IUserChecker){
+    fun checkAccount(checker: IUserChecker){
         if (isSignIn()){
             checker.onSignIn()
         }else{

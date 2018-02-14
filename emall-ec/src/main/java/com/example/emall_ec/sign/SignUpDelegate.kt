@@ -13,6 +13,7 @@ import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.util.log.EmallLogger
 import java.util.*
+import java.util.logging.LogManager
 
 
 /**
@@ -20,17 +21,10 @@ import java.util.*
  */
 class SignUpDelegate : EmallDelegate() {
 
-    private var mISignListener : ISignListener ?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_sign_up
     }
 
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
-        if (activity is ISignListener) {
-            mISignListener = activity
-        }
-    }
 
     override fun initial() {
         val params : WeakHashMap<String, Any> ?= RestClient().PARAMS
@@ -40,31 +34,15 @@ class SignUpDelegate : EmallDelegate() {
         params["address"] = "address"
         params["gender"] = "gender"
 
+        btn_sign_up_getVCode.setOnClickListener{
+            /**
+             * 获取验证码
+             */
+             EmallLogger.d("get verify code")
+        }
+
         btn_sign_up_submit.setOnClickListener {
-            RestClient().builder()
-                    .url("http://10.0.2.2:3003/news")
-//                    .params("password", edit_sign_up_pwd.text.toString())
-//                    .params("email", edit_sign_up_name.text.toString())
-                    .params(params)
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-                            EmallLogger.json("USER_PROFILE", response)
-                            SignHandler().onSignUp(response, mISignListener!!)
-                        }
-                    })
-                    .failure(object : IFailure{
-                        override fun onFailure() {
-
-                        }
-                    })
-                    .error(object : IError{
-                        override fun onError(code: Int, msg: String) {
-
-                        }
-                    })
-                    .build()
-//                    .get()
-                    .post()
+            startWithPop(SetPasswordDelegate())
         }
     }
 }
