@@ -13,6 +13,7 @@ import com.example.emall_ec.sign.ISignListener
 import com.example.emall_ec.sign.SignUpDelegate
 import com.example.emall_ec.sign.SignInDelegate
 import android.R.attr.tag
+import com.example.emall_ec.main.EcBottomDelegate
 
 
 class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
@@ -20,11 +21,11 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
         when (tag) {
             OnLauncherFinishTag.SIGNED -> {
                 Toast.makeText(this, "启动结束，用户登录了", Toast.LENGTH_LONG).show()
+                startWithPop(EcBottomDelegate())
             }
 
             OnLauncherFinishTag.NOT_SIGNED -> {
                 Toast.makeText(this, "启动结束，用户没登录", Toast.LENGTH_LONG).show()
-//                supportDelegate.startWithPop(SignInDelegate())
                 supportDelegate.startWithPop(SignUpDelegate())
 
             }
