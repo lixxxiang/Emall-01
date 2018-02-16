@@ -8,11 +8,14 @@ import android.os.Bundle
 import android.support.v7.widget.AppCompatImageView
 import me.yokeyword.fragmentation.ISupportFragment
 import android.support.v7.widget.AppCompatTextView
+import android.support.v7.widget.LinearLayoutCompat
 import com.joanzapata.iconify.widget.IconTextView
 import android.widget.RelativeLayout
 import android.view.LayoutInflater
 import android.view.View
 import kotlinx.android.synthetic.main.delegate_bottom.*
+import android.view.ViewGroup.LayoutParams.FILL_PARENT
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 
 
 /**
@@ -71,22 +74,23 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
                 itemIcon.setImageResource(bean.icon)
                 itemTitle.text = bean.title
                 if (i == mIndexDelegate) {
-//                    itemIcon.setTextColor(mClickedColor)
                     itemTitle.setTextColor(mClickedColor)
                 }
             }else{
                 val item:RelativeLayout = bottom_bar.getChildAt(i) as RelativeLayout
                 //设置每个item的点击事件
                 item.tag = i
-                item.setOnClickListener(this)
+                item.setOnClickListener{
+                    val tag = item.tag as Int
+                    supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
+                    //注意先后顺序
+                    mCurrentDelegate = tag
+                }
                 val itemIcon : AppCompatImageView = item.getChildAt(0) as AppCompatImageView
-//                val itemTitle : AppCompatTextView = item.getChildAt(1) as AppCompatTextView
                 val bean : BottomTabBean= TAB_BEANS[i]
-                //初始化数据
-//                itemIcon.text = bean.icon
                 itemIcon.setImageResource(bean.icon)
-
-//                itemTitle.text = bean.title
+                itemIcon.layoutParams = RelativeLayout.LayoutParams(MATCH_PARENT,
+                        MATCH_PARENT)
                 if (i == mIndexDelegate) {
 //                    itemIcon.setTextColor(mClickedColor)
 //                    itemTitle.setTextColor(mClickedColor)
@@ -101,11 +105,13 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
     private fun resetColor() {
         val count = bottom_bar.childCount
         for (i in 0 until count) {
-            val item = bottom_bar.getChildAt(i) as RelativeLayout
-            val itemIcon = item.getChildAt(0) as AppCompatImageView
-//            itemIcon.setTextColor(Color.GRAY)
-            val itemTitle = item.getChildAt(1) as AppCompatTextView
-            itemTitle.setTextColor(Color.GRAY)
+            if(i != 2){
+                val item = bottom_bar.getChildAt(i) as RelativeLayout
+                val itemIcon = item.getChildAt(0) as AppCompatImageView
+                itemIcon.setImageResource(R.drawable.test_icon_small)
+                val itemTitle = item.getChildAt(1) as AppCompatTextView
+                itemTitle.setTextColor(Color.GRAY)
+            }
         }
     }
 
@@ -115,6 +121,7 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
         val item = v as RelativeLayout
         val itemIcon = item.getChildAt(0) as AppCompatImageView
 //        itemIcon.setTextColor(mClickedColor)
+        itemIcon.setImageResource(R.drawable.test_icon_small_highlight)
         val itemTitle = item.getChildAt(1) as AppCompatTextView
         itemTitle.setTextColor(mClickedColor)
         supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
