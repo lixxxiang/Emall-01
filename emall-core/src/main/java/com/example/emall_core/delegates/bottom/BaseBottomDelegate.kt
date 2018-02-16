@@ -5,6 +5,7 @@ import com.example.emall_core.delegates.EmallDelegate
 import android.support.annotation.ColorInt
 import com.example.emall_core.R
 import android.os.Bundle
+import android.support.v7.widget.AppCompatImageView
 import me.yokeyword.fragmentation.ISupportFragment
 import android.support.v7.widget.AppCompatTextView
 import com.joanzapata.iconify.widget.IconTextView
@@ -58,19 +59,38 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
         val size = ITEMS.size
         for (i in 0 until size) {
             LayoutInflater.from(context).inflate(R.layout.bottom_item_icon_text_layout, bottom_bar)
-            val item:RelativeLayout = bottom_bar.getChildAt(i) as RelativeLayout
-            //设置每个item的点击事件
-            item.tag = i
-            item.setOnClickListener(this)
-            val itemIcon : IconTextView = item.getChildAt(0) as IconTextView
-            val itemTitle : AppCompatTextView = item.getChildAt(1) as AppCompatTextView
-            val bean : BottomTabBean= TAB_BEANS[i]
-            //初始化数据
-            itemIcon.text = bean.icon
-            itemTitle.text = bean.title
-            if (i == mIndexDelegate) {
-                itemIcon.setTextColor(mClickedColor)
-                itemTitle.setTextColor(mClickedColor)
+            if (i != 2){
+                val item:RelativeLayout = bottom_bar.getChildAt(i) as RelativeLayout
+                //设置每个item的点击事件
+                item.tag = i
+                item.setOnClickListener(this)
+                val itemIcon : AppCompatImageView = item.getChildAt(0) as AppCompatImageView
+                val itemTitle : AppCompatTextView = item.getChildAt(1) as AppCompatTextView
+                val bean : BottomTabBean= TAB_BEANS[i]
+                //初始化数据
+                itemIcon.setImageResource(bean.icon)
+                itemTitle.text = bean.title
+                if (i == mIndexDelegate) {
+//                    itemIcon.setTextColor(mClickedColor)
+                    itemTitle.setTextColor(mClickedColor)
+                }
+            }else{
+                val item:RelativeLayout = bottom_bar.getChildAt(i) as RelativeLayout
+                //设置每个item的点击事件
+                item.tag = i
+                item.setOnClickListener(this)
+                val itemIcon : AppCompatImageView = item.getChildAt(0) as AppCompatImageView
+//                val itemTitle : AppCompatTextView = item.getChildAt(1) as AppCompatTextView
+                val bean : BottomTabBean= TAB_BEANS[i]
+                //初始化数据
+//                itemIcon.text = bean.icon
+                itemIcon.setImageResource(bean.icon)
+
+//                itemTitle.text = bean.title
+                if (i == mIndexDelegate) {
+//                    itemIcon.setTextColor(mClickedColor)
+//                    itemTitle.setTextColor(mClickedColor)
+                }
             }
         }
 
@@ -82,8 +102,8 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
         val count = bottom_bar.childCount
         for (i in 0 until count) {
             val item = bottom_bar.getChildAt(i) as RelativeLayout
-            val itemIcon = item.getChildAt(0) as IconTextView
-            itemIcon.setTextColor(Color.GRAY)
+            val itemIcon = item.getChildAt(0) as AppCompatImageView
+//            itemIcon.setTextColor(Color.GRAY)
             val itemTitle = item.getChildAt(1) as AppCompatTextView
             itemTitle.setTextColor(Color.GRAY)
         }
@@ -93,8 +113,8 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
         val tag = v.tag as Int
         resetColor()
         val item = v as RelativeLayout
-        val itemIcon = item.getChildAt(0) as IconTextView
-        itemIcon.setTextColor(mClickedColor)
+        val itemIcon = item.getChildAt(0) as AppCompatImageView
+//        itemIcon.setTextColor(mClickedColor)
         val itemTitle = item.getChildAt(1) as AppCompatTextView
         itemTitle.setTextColor(mClickedColor)
         supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])

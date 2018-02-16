@@ -14,6 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal" />
+        android:orientation="horizontal" >
+        <!--<com.joanzapata.iconify.widget.IconTextView-->
+            <!--android:id="@+id/icon_bottom_center_item"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="25sp" />-->
+    </android.support.v7.widget.LinearLayoutCompat>
 
 </RelativeLayout>
