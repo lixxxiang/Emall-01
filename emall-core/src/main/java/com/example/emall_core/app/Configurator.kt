@@ -1,5 +1,6 @@
 package com.example.emall_core.app
 
+import android.os.Handler
 import com.joanzapata.iconify.IconFontDescriptor
 import com.joanzapata.iconify.Iconify
 import com.orhanobut.logger.AndroidLogAdapter
@@ -18,10 +19,13 @@ class Configurator {
     val EMALL_CONFIGS: HashMap<String, Any> = HashMap()
     val ICONS:ArrayList<IconFontDescriptor> = ArrayList()
     val INTERCEPTORS:ArrayList<Interceptor> = ArrayList()
+    private val HANDLER = Handler()
 
 
     init {
         EMALL_CONFIGS.put(ConfigKeys.CONFIG_READY.toString(), false)
+        EMALL_CONFIGS.put(ConfigKeys.HANDLER.toString(), HANDLER)
+
     }
 
     private object Holder {

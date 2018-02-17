@@ -4,6 +4,7 @@ package com.example.emall_core.app
  * Created by lixiang on 2018/1/29.
  */
 import android.content.Context
+import android.os.Handler
 import java.util.*
 
 
@@ -40,4 +41,7 @@ final class Emall{
         return getConfigurations()[ConfigKeys.APPLICATION_CONTEXT.name] as Context
     }
 
+    fun getHandler(): Handler? {
+        return Configurator().getInstance().getConfiguration(ConfigKeys.HANDLER.name)
+    }
 }
