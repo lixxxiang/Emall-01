@@ -58,10 +58,12 @@ public class MultipleRecyclerAdapter extends
 
     private void init() {
         //设置不同的item布局
-        addItemType(ItemType.TEXT, R.layout.item_multiple_text);
-        addItemType(ItemType.IMAGE, R.layout.item_multiple_image);
-        addItemType(ItemType.TEXT_IMAGE, R.layout.item_multiple_image_text);
-//        addItemType(ItemType.BANNER, R.layout.item_multiple_banner);
+        addItemType(ItemType.BANNER, R.layout.item_multiple_banner);
+        addItemType(ItemType.EVERYDAY_PIC, R.layout.item_multiple_everyday_pic);
+        addItemType(ItemType.SCROLL_HORIZIONTAL, R.layout.item_multiple_scroll_horiziontal);
+        addItemType(ItemType.THE_THREE, R.layout.item_multiple_the_three);
+        addItemType(ItemType.GUESS_LIKE_TITLE, R.layout.item_multiple_guess_like_title);
+        addItemType(ItemType.GUESS_LIKE, R.layout.item_multiple_image_guess_like);
         //设置宽度监听
         setSpanSizeLookup(this);
         openLoadAnimation();
