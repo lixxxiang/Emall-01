@@ -27,37 +27,18 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
-        EmallLogger.d("on lazy")
         super.onLazyInitView(savedInstanceState)
         initRefreshLayout()
         initRecyclerView()
-        refreshHandler!!.firstPage("http://10.0.2.2:3003/data")
-
+//        refreshHandler!!.firstPage("http://10.0.2.2:3003/data")
+        refreshHandler!!.firstPage("http://192.168.2.162:3003/data")
     }
 
     private fun initRecyclerView() {
         val manager = GridLayoutManager(context, 4)
         recycler_view_index.layoutManager = manager
-//        recycler_view_index.addItemDecoration(BaseDecoration.create(ContextCompat.getColor(context, R.color.app_background), 5))
-//        val ecBottomDelegate = getParentDelegate()
-//        recycler_view_index.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate))
     }
     override fun initial() {
-        EmallLogger.d("initial")
         refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter())
-//        RestClient().builder()
-//                .url("http://10.0.2.2:3003/data")
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        val converter : IndexDataConverter = IndexDataConverter()
-//                        converter.setJsonData(response)
-//                        val list : ArrayList<MultipleItemEntity> = converter.convert()
-//                        val image : String = list[1].getField(MultipleFields.IMAGE_URL)
-//                        EmallLogger.d("INDEX_DELEGATE",image)
-////                        EmallLogger.d(response)
-//                    }
-//                })
-//                .build()
-//                .get()
     }
 }

@@ -70,7 +70,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 
     fun firstPage(url: String) {
         BEAN.setDelayed(1000)
-        var data : List<MultipleItemEntity> ?= null
         RestClient().builder()
                 .url(url)
                 .success(object : ISuccess {
