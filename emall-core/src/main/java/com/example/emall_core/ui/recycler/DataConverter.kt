@@ -12,6 +12,8 @@ abstract class DataConverter {
     private var mJsonData: String? = null
 
     abstract fun convert(): ArrayList<MultipleItemEntity>
+    abstract fun bannerConvert(): ArrayList<MultipleItemEntity>
+
 
     fun setJsonData(json: String): DataConverter {
         this.mJsonData = json

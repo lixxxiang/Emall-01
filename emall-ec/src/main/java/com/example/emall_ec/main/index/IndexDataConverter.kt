@@ -11,7 +11,7 @@ import com.example.emall_core.util.log.EmallLogger
 /**
  * Created by lixiang on 17/02/2018.
  */
-class IndexDataConverter : DataConverter(){
+class IndexDataConverter : DataConverter() {
     override fun convert(): ArrayList<MultipleItemEntity> {
         val dataArray = JSON.parseObject(getJsonData()).getJSONArray("data")
         val size = dataArray.size
@@ -26,7 +26,7 @@ class IndexDataConverter : DataConverter(){
 
             val banners = data.getJSONArray("banners")
 
-            val bannerImages : MutableList<String> ?= null
+            val bannerImages: MutableList<String>? = null
             var type = 0
 //            if (imageUrl == null && text != null) {
 //                type = ItemType.BANNER
@@ -65,4 +65,25 @@ class IndexDataConverter : DataConverter(){
     /**
      * 在这重写一个convert方法！！！！
      */
+    override fun bannerConvert(): ArrayList<MultipleItemEntity> {
+        val dataArray = JSON.parseObject(getJsonData()).getJSONArray("data")
+        val size = dataArray.size
+        for (i in 0 until (size - 1)) {
+            val data = dataArray.getJSONObject(i)
+
+            val bannerImageUrl = data.getString("imageUrl")
+//            EmallLogger.d(bannerImageUrl)
+            val bannerImages: MutableList<String>? = mutableListOf()
+            bannerImages!!.add(bannerImageUrl)
+            val entity = MultipleItemEntity.builder()
+                    .setField(MultipleFields.IMAGE_URL, bannerImageUrl)
+                    .build()
+
+            ENTITIES.add(entity)
+
+        }
+        EmallLogger.d(ENTITIES[0].getField(MultipleFields.IMAGE_URL))
+
+        return ENTITIES
+    }
 }

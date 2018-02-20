@@ -9,6 +9,7 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.ui.recycler.DataConverter
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 
@@ -23,6 +24,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     private var mAdapter: MultipleRecyclerAdapter ?= null
     private var bannerResponse = String()
 //    private var converter = DataConverter()
+    private var data : MutableList<MultipleItemEntity> ?= mutableListOf()
     init {
         REFRESH_LAYOUT.setOnRefreshListener(this)
     }
@@ -44,7 +46,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d("FIRSTPAGE")
 
 //                        BEAN.setTotal(100).setPageSize(6)
                         //设置Adapter
@@ -53,7 +54,9 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 //                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
 //                        RECYCLERVIEW.adapter = mAdapter
 //                        BEAN.addIndex()
-                        EmallLogger.d(CONVERTER.setJsonData(response).convert())
+                        EmallLogger.d(CONVERTER.setJsonData(response).bannerConvert())
+                        data!!.add( CONVERTER.setJsonData(response).bannerConvert()[0])
+                        EmallLogger.d(data!!)
 
                     }
                 })
@@ -64,11 +67,13 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .url(url)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        val `object` = JSON.parseObject(response)
+//                        val `object` = JSON.parseObject(response)
 //                        BEAN.setTotal(`object`.getInteger("total"))
 //                                .setPageSize(`object`.getInteger("page_size"))
                         BEAN.setTotal(100).setPageSize(6)
                         //设置Adapter
+                        data!!.add(CONVERTER.setJsonData(response).convert()[0])
+                        EmallLogger.d(data!!)
                         mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response))
                         EmallLogger.d(CONVERTER.setJsonData(response).ENTITIES[0])
                         mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
