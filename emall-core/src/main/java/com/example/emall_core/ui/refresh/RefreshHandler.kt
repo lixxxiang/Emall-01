@@ -16,46 +16,13 @@ import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 /**
  * Created by lixiang on 17/02/2018.
  */
-//class RefreshHandler (private val REFRESH_LAYOUT: SwipeRefreshLayout) : SwipeRefreshLayout.OnRefreshListener {
-//
-//    var BODY: RequestBody? = null
-//    private val BEAN: PagingBean? = null
-//    private val RECYCLERVIEW: RecyclerView? = null
-//    private val mAdapter: `MultipleRecyclerAdapter.bak`? = null
-//    private val CONVERTER: DataConverter? = null
-//    init {
-//        REFRESH_LAYOUT.setOnRefreshListener(this)
-//    }
-//
-//    private fun refresh() {
-//        REFRESH_LAYOUT.isRefreshing = true
-//        Emall().getHandler()!!.postDelayed({
-//            //进行一些网络请求
-//            REFRESH_LAYOUT.isRefreshing = false
-//        }, 1000)
-//    }
-//
-//    fun firstPage(url: String) {
-//        RestClient().builder()
-//                .url(url)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        EmallLogger.d(response)
-//                    }
-//                })
-//                .build()
-//                .get()
-//    }
-//
-//    override fun onRefresh() {
-//        refresh()
-//    }
-//}
 class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefreshLayout,
                                          private val RECYCLERVIEW: RecyclerView,
-                                         private val CONVERTER: DataConverter, private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+                                         private val CONVERTER: DataConverter,
+                                         private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private var mAdapter: MultipleRecyclerAdapter ?= null
-
+    private var bannerResponse = String()
+//    private var converter = DataConverter()
     init {
         REFRESH_LAYOUT.setOnRefreshListener(this)
     }
@@ -68,8 +35,31 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun firstPage(url: String) {
+    fun firstPage(bannerUrl: String,url: String) {
         BEAN.setDelayed(1000)
+        /**
+         * get banner
+         */
+        RestClient().builder()
+                .url(bannerUrl)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d("FIRSTPAGE")
+
+//                        BEAN.setTotal(100).setPageSize(6)
+                        //设置Adapter
+//                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response))
+//                        EmallLogger.d(CONVERTER.setJsonData(response))
+//                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
+//                        RECYCLERVIEW.adapter = mAdapter
+//                        BEAN.addIndex()
+                        EmallLogger.d(CONVERTER.setJsonData(response).convert())
+
+                    }
+                })
+                .build()
+                .get()
+
         RestClient().builder()
                 .url(url)
                 .success(object : ISuccess {
@@ -80,6 +70,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                         BEAN.setTotal(100).setPageSize(6)
                         //设置Adapter
                         mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response))
+                        EmallLogger.d(CONVERTER.setJsonData(response).ENTITIES[0])
                         mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
                         RECYCLERVIEW.adapter = mAdapter
                         BEAN.addIndex()

@@ -82,34 +82,38 @@ public class MultipleRecyclerAdapter extends
         final String imageUrl;
         final ArrayList<String> bannerImages;
         switch (holder.getItemViewType()) {
-            case ItemType.TEXT:
-                text = entity.getField(MultipleFields.TEXT);
-                holder.setText(R.id.text_single, text);
+            case ItemType.BANNER:
+                if (!mIsInitBanner) {
+                    bannerImages = entity.getField(MultipleFields.BANNERS);
+                    final ConvenientBanner<String> convenientBanner = holder.getView(R.id.banner_recycler_item);
+                    BannerCreator.setDefault(convenientBanner, bannerImages, this);
+                    mIsInitBanner = true;
+                }
                 break;
-            case ItemType.IMAGE:
-                imageUrl = entity.getField(MultipleFields.IMAGE_URL);
-                Glide.with(mContext)
-                        .load(imageUrl)
-                        .apply(RECYCLER_OPTIONS)
-                        .into((ImageView) holder.getView(R.id.img_single));
+            case ItemType.EVERYDAY_PIC:
+//                text = entity.getField(MultipleFields.TEXT);
+//                holder.setText(R.id.text_single, text);
                 break;
-            case ItemType.TEXT_IMAGE:
-                text = entity.getField(MultipleFields.TEXT);
-                imageUrl = entity.getField(MultipleFields.IMAGE_URL);
-                Glide.with(mContext)
-                        .load(imageUrl)
-                        .apply(RECYCLER_OPTIONS)
-                        .into((ImageView) holder.getView(R.id.img_multiple));
-                holder.setText(R.id.tv_multiple, text);
+            case ItemType.SCROLL_HORIZIONTAL:
+//                imageUrl = entity.getField(MultipleFields.IMAGE_URL);
+//                Glide.with(mContext)
+//                        .load(imageUrl)
+//                        .apply(RECYCLER_OPTIONS)
+//                        .into((ImageView) holder.getView(R.id.img_single));
                 break;
-//            case ItemType.BANNER:
-//                if (!mIsInitBanner) {
-//                    bannerImages = entity.getField(MultipleFields.BANNERS);
-//                    final ConvenientBanner<String> convenientBanner = holder.getView(R.id.banner_recycler_item);
-//                    BannerCreator.setDefault(convenientBanner, bannerImages, this);
-//                    mIsInitBanner = true;
-//                }
-//                break;
+            case ItemType.THE_THREE:
+//                text = entity.getField(MultipleFields.TEXT);
+//                imageUrl = entity.getField(MultipleFields.IMAGE_URL);
+//                Glide.with(mContext)
+//                        .load(imageUrl)
+//                        .apply(RECYCLER_OPTIONS)
+//                        .into((ImageView) holder.getView(R.id.img_multiple));
+//                holder.setText(R.id.tv_multiple, text);
+                break;
+            case ItemType.GUESS_LIKE_TITLE:
+                break;
+            case ItemType.GUESS_LIKE:
+                break;
             default:
                 break;
         }

@@ -30,8 +30,8 @@ class IndexDelegate : BottomItemDelegate() {
         super.onLazyInitView(savedInstanceState)
         initRefreshLayout()
         initRecyclerView()
-//        refreshHandler!!.firstPage("http://10.0.2.2:3003/data")
-        refreshHandler!!.firstPage("http://192.168.2.162:3003/data")
+        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide","http://10.0.2.2:3003/data")
+//        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide","http://192.168.2.162:3003/data")
     }
 
     private fun initRecyclerView() {

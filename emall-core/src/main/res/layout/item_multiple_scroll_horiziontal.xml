@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="275dp">
     <android.support.v7.widget.RecyclerView
-        android:layout_width=""
-        android:layout_height=""></android.support.v7.widget.RecyclerView>
+        android:id="@+id/scroll_horiziontal_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

@@ -13,7 +13,7 @@ import com.example.emall_core.util.log.EmallLogger
  */
 class IndexDataConverter : DataConverter(){
     override fun convert(): ArrayList<MultipleItemEntity> {
-        val dataArray = JSON.parseObject(getJsonData()).getJSONArray("MixedContentList")
+        val dataArray = JSON.parseObject(getJsonData()).getJSONArray("data")
         val size = dataArray.size
         for (i in 0 until size) {
             val data = dataArray.getJSONObject(i)
@@ -22,17 +22,19 @@ class IndexDataConverter : DataConverter(){
             val text = data.getString("contentName")
             val spanSize = data.getString("type")
             val id = data.getString("contentId")
-//            val banners = data.getJSONArray("banners")
+
+
+            val banners = data.getJSONArray("banners")
 
             val bannerImages : MutableList<String> ?= null
             var type = 0
-            if (imageUrl == null && text != null) {
-                type = ItemType.TEXT
-            } else if (imageUrl != null && text == null) {
-                type = ItemType.IMAGE
-            } else if (imageUrl != null) {
-                type = ItemType.TEXT_IMAGE
-            }
+//            if (imageUrl == null && text != null) {
+//                type = ItemType.BANNER
+//            } else if (imageUrl != null && text == null) {
+//                type = ItemType.IMAGE
+//            } else if (imageUrl != null) {
+//                type = ItemType.TEXT_IMAGE
+//            }
 //            else if (banners != null) {
 //                type = ItemType.BANNER
 //                //Banner的初始化
@@ -59,4 +61,8 @@ class IndexDataConverter : DataConverter(){
 
         return ENTITIES
     }
+
+    /**
+     * 在这重写一个convert方法！！！！
+     */
 }
