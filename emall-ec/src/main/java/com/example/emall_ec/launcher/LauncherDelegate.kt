@@ -23,7 +23,7 @@ import me.yokeyword.fragmentation.ISupportFragment
 class LauncherDelegate : EmallDelegate(), ITimerListener {
 
     private var mTimer: Timer? = null
-    private var mCount = 5
+    private var mCount = 1
     private var mIlauncherListener : ILauncherListener ?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_launcher

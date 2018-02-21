@@ -5,12 +5,17 @@ package com.example.emall_core.ui.recycler
  */
 enum class MultipleFields {
     ITEM_TYPE,
-    TITLE,
-    TEXT,
-    IMAGE_URL,
+//    TITLE,
+//    TEXT,
+//    IMAGE_URL,
     BANNERS,
-    SPAN_SIZE,
-    ID,
-    NAME,
-    TAG
+    BANNERS_COUNT,
+    BANNERS_LINK,
+//    SPAN_SIZE,
+//    ID,
+//    NAME,
+//    TAG,
+    THE_THREE_IMAGE_URL1,
+    CONTENT_DATE
+
 }

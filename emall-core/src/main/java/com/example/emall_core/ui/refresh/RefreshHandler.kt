@@ -15,10 +15,11 @@ import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 
 
 /**
- * Created by lixiang on 17/02/2018.
+ * Created by lixiang on 17/02/2018. 刷新助手
  */
 class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefreshLayout,
                                          private val RECYCLERVIEW: RecyclerView,
+                                         private val BANNER_CONVERTER: DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private var mAdapter: MultipleRecyclerAdapter ?= null
@@ -38,7 +39,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     }
 
     fun firstPage(bannerUrl: String,url: String) {
-        BEAN.setDelayed(1000)
+//        BEAN.setDelayed(1000)
         /**
          * get banner
          */
@@ -46,43 +47,44 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
+                        for(i in 0 until bannerSize){
+                            data!!.add( BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
+//                            EmallLogger.d( BANNER_CONVERTER.setJsonData(response).bannerConvert()[i].getField(MultipleFields.BANNERS_LINK))
 
+                        }
+//                        EmallLogger.d("BANNERDATA", data!!)
+                        RestClient().builder()
+                                .url(url)
+                                .success(object : ISuccess {
+                                    override fun onSuccess(response: String) {
 //                        BEAN.setTotal(100).setPageSize(6)
-                        //设置Adapter
-//                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response))
-//                        EmallLogger.d(CONVERTER.setJsonData(response))
-//                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
-//                        RECYCLERVIEW.adapter = mAdapter
-//                        BEAN.addIndex()
-                        EmallLogger.d(CONVERTER.setJsonData(response).bannerConvert())
-                        data!!.add( CONVERTER.setJsonData(response).bannerConvert()[0])
-                        EmallLogger.d(data!!)
+                                        //设置Adapter
+                                        val content = CONVERTER.setJsonData(response).convert()
+                                        EmallLogger.d("CONTENT",content[0].getField(MultipleFields.CONTENT_DATE))
+
+                                        val size = content.size
+                                        EmallLogger.d(size)
+                                        for(i in 0 until size){
+                                            data!!.add( content[i])
+                                        }
+                                        EmallLogger.d(data!!.size)
+
+                                        mAdapter = MultipleRecyclerAdapter.create(data)
+                                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
+                                        RECYCLERVIEW.adapter = mAdapter
+                                        BEAN.addIndex()
+                                    }
+                                })
+                                .build()
+                                .get()
 
                     }
                 })
                 .build()
                 .get()
 
-        RestClient().builder()
-                .url(url)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-//                        val `object` = JSON.parseObject(response)
-//                        BEAN.setTotal(`object`.getInteger("total"))
-//                                .setPageSize(`object`.getInteger("page_size"))
-                        BEAN.setTotal(100).setPageSize(6)
-                        //设置Adapter
-                        data!!.add(CONVERTER.setJsonData(response).convert()[0])
-                        EmallLogger.d(data!!)
-                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response))
-                        EmallLogger.d(CONVERTER.setJsonData(response).ENTITIES[0])
-                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
-                        RECYCLERVIEW.adapter = mAdapter
-                        BEAN.addIndex()
-                    }
-                })
-                .build()
-                .get()
+
     }
 
     private fun paging(url: String) {
@@ -126,8 +128,8 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     companion object {
 
         fun create(swipeRefreshLayout: SwipeRefreshLayout,
-                   recyclerView: RecyclerView, converter: DataConverter): RefreshHandler {
-            return RefreshHandler(swipeRefreshLayout, recyclerView, converter, PagingBean())
+                   recyclerView: RecyclerView, banner_converter: DataConverter, converter: DataConverter): RefreshHandler {
+            return RefreshHandler(swipeRefreshLayout, recyclerView, banner_converter, converter, PagingBean())
         }
     }
 }
