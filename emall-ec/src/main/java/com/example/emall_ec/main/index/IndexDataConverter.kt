@@ -14,28 +14,41 @@ import com.example.emall_core.util.log.EmallLogger
  * Created by lixiang on 17/02/2018.
  */
 class IndexDataConverter : DataConverter() {
+    override fun everyDayPicConvert(): ArrayList<MultipleItemEntity> {
+        val entity = MultipleItemEntity.builder()
+                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, "title")
+                .setField(MultipleFields.SPAN_SIZE, 2)
+                .setField(MultipleFields.ITEM_TYPE, 1)
+                .build()
+        ENTITIES.add(entity)
+        return ENTITIES
+    }
 
     override fun bannerConvert(): ArrayList<MultipleItemEntity> {
         val dataArray = JSON.parseObject(getJsonData()).getJSONArray("data")
         val size = dataArray.size
-//        val bannerImages: MutableList<String>? = mutableListOf()
+        var entity = MultipleItemEntity.builder().build()
+        val bannerImages: MutableList<String>? = mutableListOf()
         for (i in 0 until size) {
             val data = dataArray.getJSONObject(i)
             val bannerImageUrl = data.getString("imageUrl")
             val bannerLink = data.getString("link")
-//            bannerImages!!.add(bannerImageUrl)
-            val entity = MultipleItemEntity.builder()
+            bannerImages!!.add(bannerImageUrl)
+            entity = MultipleItemEntity.builder()
                     .setField(MultipleFields.BANNERS_COUNT, size)
-                    .setField(MultipleFields.BANNERS, bannerImageUrl)
+                    .setField(MultipleFields.BANNERS, bannerImages)
                     .setField(MultipleFields.BANNERS_LINK, bannerLink)
-                    .setField(MultipleFields.ITEM_TYPE,1)
+                    .setField(MultipleFields.SPAN_SIZE, 2)
+                    .setField(MultipleFields.ITEM_TYPE, 0)
                     .build()
 
-            ENTITIES.add(entity)
 
         }
+        ENTITIES.add(entity)
+
         return ENTITIES
     }
+
 
 
     override fun convert(): ArrayList<MultipleItemEntity> {
@@ -71,9 +84,10 @@ class IndexDataConverter : DataConverter() {
 //            }
 
             val entity = MultipleItemEntity.builder()
-                    .setField(MultipleFields.THE_THREE_IMAGE_URL1, imageUrl1)
+                    .setField(MultipleFields.HORIZONTAL_SCROLL, imageUrl1)
                     .setField(MultipleFields.CONTENT_DATE, contentDate)
-                    .setField(MultipleFields.ITEM_TYPE,2)
+                    .setField(MultipleFields.SPAN_SIZE, 1)
+                    .setField(MultipleFields.ITEM_TYPE, 2)
                     .build()
 
             ENTITIES.add(entity)

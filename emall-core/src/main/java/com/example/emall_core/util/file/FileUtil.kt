@@ -357,4 +357,25 @@ object FileUtil {
         }
         return data
     }
+
+    @Throws(Exception::class)
+    private fun getSystemProperty(name: String): String {
+        val systemPropertyClazz = Class.forName("android.os.SystemProperties")
+        return systemPropertyClazz.getMethod("get", *arrayOf<Class<*>>(String::class.java))
+                .invoke(systemPropertyClazz, *arrayOf<Any>(name)) as String
+    }
+
+    fun checkEmulator(): Boolean {
+        try {
+            val goldfish = getSystemProperty("ro.hardware").contains("goldfish")
+            val emu = getSystemProperty("ro.kernel.qemu").length > 0
+            val sdk = getSystemProperty("ro.product.model") == "sdk"
+            if (emu || goldfish || sdk) {
+                return true
+            }
+        } catch (e: Exception) {
+        }
+
+        return false
+    }
 }

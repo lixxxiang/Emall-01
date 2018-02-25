@@ -4,6 +4,7 @@ import android.os.Handler
 import com.joanzapata.iconify.IconFontDescriptor
 import com.joanzapata.iconify.Iconify
 import com.orhanobut.logger.AndroidLogAdapter
+//import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import okhttp3.Interceptor
 import java.util.*

@@ -20,6 +20,7 @@ import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefreshLayout,
                                          private val RECYCLERVIEW: RecyclerView,
                                          private val BANNER_CONVERTER: DataConverter,
+                                         private val EVERY_DAY_PIC_CONVERTER: DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private var mAdapter: MultipleRecyclerAdapter ?= null
@@ -54,6 +55,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 
                         }
 //                        EmallLogger.d("BANNERDATA", data!!)
+                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
                         RestClient().builder()
                                 .url(url)
                                 .success(object : ISuccess {
@@ -122,14 +124,14 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 
 
     override fun onLoadMoreRequested() {
-        paging("refresh.php?index=")
+//        paging("refresh.php?index=")
     }
 
     companion object {
 
         fun create(swipeRefreshLayout: SwipeRefreshLayout,
-                   recyclerView: RecyclerView, banner_converter: DataConverter, converter: DataConverter): RefreshHandler {
-            return RefreshHandler(swipeRefreshLayout, recyclerView, banner_converter, converter, PagingBean())
+                   recyclerView: RecyclerView, banner_converter: DataConverter, every_day_pic_converter: DataConverter, converter: DataConverter): RefreshHandler {
+            return RefreshHandler(swipeRefreshLayout, recyclerView, banner_converter, every_day_pic_converter, converter, PagingBean())
         }
     }
 }

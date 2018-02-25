@@ -6,7 +6,8 @@ import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
 import com.example.emall_core.ui.refresh.RefreshHandler
- import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.GridLayoutManager
+import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 
 
@@ -29,15 +30,18 @@ class IndexDelegate : BottomItemDelegate() {
         super.onLazyInitView(savedInstanceState)
         initRefreshLayout()
         initRecyclerView()
-        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide","http://10.0.2.2:3030/data")
-//        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide","http://192.168.2.162:3003/data")
+        if (FileUtil.checkEmulator()) {
+            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data")
+        } else {
+            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.2.162:3030/data")}
     }
 
     private fun initRecyclerView() {
-        val manager = GridLayoutManager(context, 4)
+        val manager = GridLayoutManager(context, 2)
         recycler_view_index.layoutManager = manager
     }
+
     override fun initial() {
-        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter())
+        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(),IndexDataConverter())
     }
 }

@@ -57,12 +57,15 @@ dependencies {
 
     //JSON依赖Android版
     compile 'com.alibaba:fastjson:1.1.57.android'
+
     //banner
+    compile 'com.youth.banner:banner:1.4.10'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 
     //Log
     compile 'com.orhanobut:logger:2.1.1'
+    compile 'com.apkfuns.logutils:library:1.5.1.1'
 
     //greendao
     compile 'org.greenrobot:greendao:3.2.2'

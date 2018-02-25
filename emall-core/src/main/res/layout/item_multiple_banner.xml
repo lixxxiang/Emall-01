@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bigkoo.convenientbanner.ConvenientBanner xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/banner_recycler_item"
+<!--<com.bigkoo.convenientbanner.ConvenientBanner xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/banner_recycler_item"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="260dp" />-->
+<com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner"
     android:layout_width="match_parent"
     android:layout_height="260dp" />
