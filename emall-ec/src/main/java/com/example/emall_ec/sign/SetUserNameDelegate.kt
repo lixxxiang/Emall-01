@@ -7,6 +7,7 @@ import com.example.emall_core.net.RestCreator.params
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_set_user_name.*
@@ -32,8 +33,13 @@ class SetUserNameDelegate : EmallDelegate(){
     override fun initial() {
         btn_set_user_name_delegate_submit.setOnClickListener{
             EmallLogger.d(params)
+            val url: String = if (FileUtil.checkEmulator()) {
+                "http://10.0.2.2:3003/news"
+            } else {
+                "http://10.10.90.38:3003/news"
+            }
             RestClient().builder()
-                    .url("http://10.0.2.2:3003/news")//EMULATOR
+                    .url(url)//EMULATOR
 //                    .url("http://192.168.2.162:3003/news")//HOME
 
 //                    .params("password", edit_sign_up_pwd.text.toString())

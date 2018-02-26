@@ -6,5 +6,8 @@ package com.example.emall_core.delegates
  */
 abstract class EmallDelegate : PermissionCheckDelegate(){
 
+    fun <T : EmallDelegate> getParentDelegate(): T {
+        return parentFragment as T
+    }
 
 }
