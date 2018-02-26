@@ -33,7 +33,7 @@ class SetUserNameDelegate : EmallDelegate(){
         btn_set_user_name_delegate_submit.setOnClickListener{
             EmallLogger.d(params)
             RestClient().builder()
-                    .url("http://10.0.2.2:3003/data")//EMULATOR
+                    .url("http://10.0.2.2:3003/news")//EMULATOR
 //                    .url("http://192.168.2.162:3003/news")//HOME
 
 //                    .params("password", edit_sign_up_pwd.text.toString())

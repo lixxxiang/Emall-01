@@ -1,8 +1,13 @@
 package com.example.emall_core.ui.recycler;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
@@ -14,7 +19,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.emall_core.R;
 import com.example.emall_core.app.Emall;
 import com.example.emall_core.ui.banner.BannerCreator;
+import com.example.emall_core.ui.recycler.test.Adapter;
+import com.example.emall_core.ui.recycler.test.App;
 import com.example.emall_core.util.log.EmallLogger;
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.youth.banner.Banner;
 
 import java.lang.reflect.Array;
@@ -40,7 +48,6 @@ public class MultipleRecyclerAdapter extends
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .dontAnimate();
 
-    private static ArrayList<MultipleItemEntity> content = null;
     protected MultipleRecyclerAdapter(List<MultipleItemEntity> data) {
         super(data);
         init();
@@ -48,8 +55,6 @@ public class MultipleRecyclerAdapter extends
 
     public static MultipleRecyclerAdapter create(List<MultipleItemEntity> data) {
         EmallLogger.INSTANCE.d(data);
-        content = new ArrayList<>(data);
-        EmallLogger.INSTANCE.d(content.size());
         return new MultipleRecyclerAdapter(data);
     }
 
@@ -68,7 +73,7 @@ public class MultipleRecyclerAdapter extends
         addItemType(ItemType.BANNER, R.layout.item_multiple_banner);
         addItemType(ItemType.EVERYDAY_PIC, R.layout.item_multiple_everyday_pic);
         addItemType(ItemType.SCROLL_HORIZIONTAL, R.layout.item_multiple_scroll_horiziontal);
-//        addItemType(ItemType.THE_THREE, R.layout.item_multiple_the_three);
+        addItemType(ItemType.THE_THREE, R.layout.item_multiple_the_three);
 //        addItemType(ItemType.GUESS_LIKE_TITLE, R.layout.item_multiple_guess_like_title);
 //        addItemType(ItemType.GUESS_LIKE, R.layout.item_multiple_image_guess_like);
         //设置宽度监听
@@ -93,7 +98,7 @@ public class MultipleRecyclerAdapter extends
 //            bannerImages.add((String) content.get(i).getField(MultipleFields.BANNERS));
 //        }
         Banner banner = holder.getView(R.id.banner);
-
+        RecyclerView horiziontalRecyclerView = holder.getView(R.id.scroll_horiziontal_recyclerview);
 //        EmallLogger.INSTANCE.d(entity.getField(MultipleFields.BANNERS));
         switch (holder.getItemViewType()) {
             case ItemType.BANNER:
@@ -119,18 +124,19 @@ public class MultipleRecyclerAdapter extends
                 holder.setText(R.id.text,"ddadfs");
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
-
+                horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
+                SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
+                snapHelperStart.attachToRecyclerView(horiziontalRecyclerView);
+                horiziontalRecyclerView.setAdapter(new Adapter((List<App>) entity.getField(MultipleFields.HORIZONTAL_SCROLL)));
                 break;
             case ItemType.THE_THREE:
 //                text = entity.getField(MultipleFields.TEXT);
-                imageUrl1 = entity.getField(MultipleFields.THE_THREE_IMAGE_URL1);
-                imageUrl2 = entity.getField(MultipleFields.CONTENT_DATE);
+                imageUrl1 = entity.getField(MultipleFields.THE_THREE_IMAGE_URL);
 
                 Glide.with(mContext)
                         .load(imageUrl1)
                         .apply(RECYCLER_OPTIONS)
                         .into((ImageView) holder.getView(R.id.the_three_1));
-//                holder.setText(R.id.tv_multiple, text);
                 break;
 //            case ItemType.GUESS_LIKE_TITLE:
 //                break;
@@ -151,5 +157,33 @@ public class MultipleRecyclerAdapter extends
     public void onItemClick(int position) {
         System.out.println(position);
     }
+
+    private List<App> getApps() {
+        List<App> apps = new ArrayList<>();
+        apps.add(new App("Google+", R.drawable.ic_google_48dp, 4.6f));
+        apps.add(new App("Gmail", R.drawable.ic_gmail_48dp, 4.8f));
+        apps.add(new App("Inbox", R.drawable.ic_inbox_48dp, 4.5f));
+        apps.add(new App("Google Keep", R.drawable.ic_keep_48dp, 4.2f));
+        apps.add(new App("Google Drive", R.drawable.ic_drive_48dp, 4.6f));
+        apps.add(new App("Hangouts", R.drawable.ic_hangouts_48dp, 3.9f));
+        apps.add(new App("Google Photos", R.drawable.ic_photos_48dp, 4.6f));
+        apps.add(new App("Messenger", R.drawable.ic_messenger_48dp, 4.2f));
+        apps.add(new App("Sheets", R.drawable.ic_sheets_48dp, 4.2f));
+        apps.add(new App("Slides", R.drawable.ic_slides_48dp, 4.2f));
+        apps.add(new App("Docs", R.drawable.ic_docs_48dp, 4.2f));
+        apps.add(new App("Google+", R.drawable.ic_google_48dp, 4.6f));
+        apps.add(new App("Gmail", R.drawable.ic_gmail_48dp, 4.8f));
+        apps.add(new App("Inbox", R.drawable.ic_inbox_48dp, 4.5f));
+        apps.add(new App("Google Keep", R.drawable.ic_keep_48dp, 4.2f));
+        apps.add(new App("Google Drive", R.drawable.ic_drive_48dp, 4.6f));
+        apps.add(new App("Hangouts", R.drawable.ic_hangouts_48dp, 3.9f));
+        apps.add(new App("Google Photos", R.drawable.ic_photos_48dp, 4.6f));
+        apps.add(new App("Messenger", R.drawable.ic_messenger_48dp, 4.2f));
+        apps.add(new App("Sheets", R.drawable.ic_sheets_48dp, 4.2f));
+        apps.add(new App("Slides", R.drawable.ic_slides_48dp, 4.2f));
+        apps.add(new App("Docs", R.drawable.ic_docs_48dp, 4.2f));
+        return apps;
+    }
+
 }
 

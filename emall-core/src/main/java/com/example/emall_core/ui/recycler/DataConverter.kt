@@ -14,6 +14,10 @@ abstract class DataConverter {
     abstract fun convert(): ArrayList<MultipleItemEntity>
     abstract fun bannerConvert(): ArrayList<MultipleItemEntity>
     abstract fun everyDayPicConvert(): ArrayList<MultipleItemEntity>
+    abstract fun horizontalScrollConvert(): ArrayList<MultipleItemEntity>
+    abstract fun theThreeConvert(): ArrayList<MultipleItemEntity>
+
+
 
 
     fun setJsonData(json: String): DataConverter {

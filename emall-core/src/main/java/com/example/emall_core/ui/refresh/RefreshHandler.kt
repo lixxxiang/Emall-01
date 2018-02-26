@@ -21,12 +21,15 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                                          private val RECYCLERVIEW: RecyclerView,
                                          private val BANNER_CONVERTER: DataConverter,
                                          private val EVERY_DAY_PIC_CONVERTER: DataConverter,
+                                         private val HORIZONTAL_SCROLL_CONVERTER: DataConverter,
+                                         private val THE_THREE_CONVERTER: DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
-    private var mAdapter: MultipleRecyclerAdapter ?= null
+    private var mAdapter: MultipleRecyclerAdapter? = null
     private var bannerResponse = String()
-//    private var converter = DataConverter()
-    private var data : MutableList<MultipleItemEntity> ?= mutableListOf()
+    //    private var converter = DataConverter()
+    private var data: MutableList<MultipleItemEntity>? = mutableListOf()
+
     init {
         REFRESH_LAYOUT.setOnRefreshListener(this)
     }
@@ -39,7 +42,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun firstPage(bannerUrl: String,url: String) {
+    fun firstPage(bannerUrl: String, url: String) {
 //        BEAN.setDelayed(1000)
         /**
          * get banner
@@ -49,37 +52,40 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
-                        for(i in 0 until bannerSize){
-                            data!!.add( BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
+                        for (i in 0 until bannerSize) {
+                            data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
 //                            EmallLogger.d( BANNER_CONVERTER.setJsonData(response).bannerConvert()[i].getField(MultipleFields.BANNERS_LINK))
 
                         }
 //                        EmallLogger.d("BANNERDATA", data!!)
                         data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
-                        RestClient().builder()
-                                .url(url)
-                                .success(object : ISuccess {
-                                    override fun onSuccess(response: String) {
-//                        BEAN.setTotal(100).setPageSize(6)
-                                        //设置Adapter
-                                        val content = CONVERTER.setJsonData(response).convert()
-                                        EmallLogger.d("CONTENT",content[0].getField(MultipleFields.CONTENT_DATE))
-
-                                        val size = content.size
-                                        EmallLogger.d(size)
-                                        for(i in 0 until size){
-                                            data!!.add( content[i])
-                                        }
-                                        EmallLogger.d(data!!.size)
+                        EmallLogger.d(HORIZONTAL_SCROLL_CONVERTER.horizontalScrollConvert()[0].getField(MultipleFields.HORIZONTAL_SCROLL))
+                        data!!.add(HORIZONTAL_SCROLL_CONVERTER.horizontalScrollConvert()[0])
+                        data!!.add(THE_THREE_CONVERTER.theThreeConvert()[0])
+//                        RestClient().builder()
+//                                .url(url)
+//                                .success(object : ISuccess {
+//                                    override fun onSuccess(response: String) {
+////                        BEAN.setTotal(100).setPageSize(6)
+//                                        //设置Adapter
+//                                        val content = CONVERTER.setJsonData(response).convert()
+//                                        EmallLogger.d("CONTENT", content[0].getField(MultipleFields.CONTENT_DATE))
+//
+//                                        val size = content.size
+//                                        EmallLogger.d(size)
+//                                        for (i in 0 until size) {
+//                                            data!!.add(content[i])
+//                                        }
+//                                        EmallLogger.d(data!!.size)
 
                                         mAdapter = MultipleRecyclerAdapter.create(data)
                                         mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
                                         RECYCLERVIEW.adapter = mAdapter
                                         BEAN.addIndex()
-                                    }
-                                })
-                                .build()
-                                .get()
+//                                    }
+//                                })
+//                                .build()
+//                                .get()
 
                     }
                 })
@@ -130,8 +136,8 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     companion object {
 
         fun create(swipeRefreshLayout: SwipeRefreshLayout,
-                   recyclerView: RecyclerView, banner_converter: DataConverter, every_day_pic_converter: DataConverter, converter: DataConverter): RefreshHandler {
-            return RefreshHandler(swipeRefreshLayout, recyclerView, banner_converter, every_day_pic_converter, converter, PagingBean())
+                   recyclerView: RecyclerView, banner_converter: DataConverter, every_day_pic_converter: DataConverter, horizontal_scroll_converter: DataConverter, the_three_converter: DataConverter, converter: DataConverter): RefreshHandler {
+            return RefreshHandler(swipeRefreshLayout, recyclerView, banner_converter, every_day_pic_converter, converter,horizontal_scroll_converter, the_three_converter, PagingBean())
         }
     }
 }

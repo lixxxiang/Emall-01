@@ -14,10 +14,11 @@ enum class MultipleFields {
     SPAN_SIZE,
     EVERY_DAY_PIC_TITLE,
     HORIZONTAL_SCROLL,
+
 //    ID,
 //    NAME,
 //    TAG,
-    THE_THREE_IMAGE_URL1,
+    THE_THREE_IMAGE_URL,
     CONTENT_DATE
 
 }

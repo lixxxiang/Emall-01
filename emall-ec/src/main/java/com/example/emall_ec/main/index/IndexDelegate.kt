@@ -33,7 +33,8 @@ class IndexDelegate : BottomItemDelegate() {
         if (FileUtil.checkEmulator()) {
             refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data")
         } else {
-            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.2.162:3030/data")}
+            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.10.90.38:3030/data")
+        }
     }
 
     private fun initRecyclerView() {
@@ -42,6 +43,6 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(),IndexDataConverter())
+        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter())
     }
 }
