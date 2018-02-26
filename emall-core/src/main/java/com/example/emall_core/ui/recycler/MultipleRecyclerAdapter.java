@@ -4,6 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.example.emall_core.ui.recycler.test.App;
 import com.example.emall_core.util.log.EmallLogger;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,7 +39,8 @@ public class MultipleRecyclerAdapter extends
         BaseMultiItemQuickAdapter<MultipleItemEntity, MultipleViewHolder>
         implements
         BaseQuickAdapter.SpanSizeLookup,
-        OnItemClickListener {
+        OnItemClickListener,
+        OnBannerListener {
 
     //确保初始化一次Banner，防止重复Item加载
     private boolean mIsInitBanner = false;
@@ -89,7 +92,7 @@ public class MultipleRecyclerAdapter extends
     }
 
     @Override
-    protected void convert(MultipleViewHolder holder, MultipleItemEntity entity) {
+    protected void convert(final MultipleViewHolder holder, MultipleItemEntity entity) {
         final String text;
         final String imageUrl1;
         final String imageUrl2;
@@ -115,13 +118,34 @@ public class MultipleRecyclerAdapter extends
                     //banner设置方法全部调用完毕时最后调用
                     banner.start();
                     mIsInitBanner = true;
+                    holder.addOnClickListener(R.id.banner);
+                    banner.setOnBannerListener(this);
+//
+//                    holder.setOnItemClickListener(new OnItemChildClickListener() {
+//
+//                        @Override
+//                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+//                            System.out.println(holder.getLayoutPosition());
+//                            Log.e("dfdd","dfdfd");
+//
+//                        }
+//                    });
+
+
+//                    holder.addOnClickListener(R.id.banner);
+//                    banner.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            System.out.println(holder.getLayoutPosition());
+//                        }
+//                    });
                 }
 //                else{
 //                    banner.setVisibility(View.GONE);
 //                }
                 break;
             case ItemType.EVERYDAY_PIC:
-                holder.setText(R.id.text,"ddadfs");
+                holder.setText(R.id.text, "ddadfs");
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
@@ -133,10 +157,16 @@ public class MultipleRecyclerAdapter extends
 //                text = entity.getField(MultipleFields.TEXT);
                 imageUrl1 = entity.getField(MultipleFields.THE_THREE_IMAGE_URL);
 
+
                 Glide.with(mContext)
                         .load(imageUrl1)
                         .apply(RECYCLER_OPTIONS)
                         .into((ImageView) holder.getView(R.id.the_three_1));
+                holder.addOnClickListener(R.id.the_three_1);
+
+//                holder.addOnClickListener(R.id.the_three_2);
+
+
                 break;
 //            case ItemType.GUESS_LIKE_TITLE:
 //                break;
@@ -158,32 +188,9 @@ public class MultipleRecyclerAdapter extends
         System.out.println(position);
     }
 
-    private List<App> getApps() {
-        List<App> apps = new ArrayList<>();
-        apps.add(new App("Google+", R.drawable.ic_google_48dp, 4.6f));
-        apps.add(new App("Gmail", R.drawable.ic_gmail_48dp, 4.8f));
-        apps.add(new App("Inbox", R.drawable.ic_inbox_48dp, 4.5f));
-        apps.add(new App("Google Keep", R.drawable.ic_keep_48dp, 4.2f));
-        apps.add(new App("Google Drive", R.drawable.ic_drive_48dp, 4.6f));
-        apps.add(new App("Hangouts", R.drawable.ic_hangouts_48dp, 3.9f));
-        apps.add(new App("Google Photos", R.drawable.ic_photos_48dp, 4.6f));
-        apps.add(new App("Messenger", R.drawable.ic_messenger_48dp, 4.2f));
-        apps.add(new App("Sheets", R.drawable.ic_sheets_48dp, 4.2f));
-        apps.add(new App("Slides", R.drawable.ic_slides_48dp, 4.2f));
-        apps.add(new App("Docs", R.drawable.ic_docs_48dp, 4.2f));
-        apps.add(new App("Google+", R.drawable.ic_google_48dp, 4.6f));
-        apps.add(new App("Gmail", R.drawable.ic_gmail_48dp, 4.8f));
-        apps.add(new App("Inbox", R.drawable.ic_inbox_48dp, 4.5f));
-        apps.add(new App("Google Keep", R.drawable.ic_keep_48dp, 4.2f));
-        apps.add(new App("Google Drive", R.drawable.ic_drive_48dp, 4.6f));
-        apps.add(new App("Hangouts", R.drawable.ic_hangouts_48dp, 3.9f));
-        apps.add(new App("Google Photos", R.drawable.ic_photos_48dp, 4.6f));
-        apps.add(new App("Messenger", R.drawable.ic_messenger_48dp, 4.2f));
-        apps.add(new App("Sheets", R.drawable.ic_sheets_48dp, 4.2f));
-        apps.add(new App("Slides", R.drawable.ic_slides_48dp, 4.2f));
-        apps.add(new App("Docs", R.drawable.ic_docs_48dp, 4.2f));
-        return apps;
+    @Override
+    public void OnBannerClick(int position) {
+        System.out.println(position);
     }
-
 }
 
