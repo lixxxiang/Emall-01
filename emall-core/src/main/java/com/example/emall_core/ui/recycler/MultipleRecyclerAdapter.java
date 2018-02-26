@@ -164,7 +164,7 @@ public class MultipleRecyclerAdapter extends
                         .into((ImageView) holder.getView(R.id.the_three_1));
                 holder.addOnClickListener(R.id.the_three_1);
 
-//                holder.addOnClickListener(R.id.the_three_2);
+                holder.addOnClickListener(R.id.the_three_2);
 
 
                 break;

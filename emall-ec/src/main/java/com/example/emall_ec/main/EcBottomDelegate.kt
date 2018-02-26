@@ -7,6 +7,7 @@ import com.example.emall_core.delegates.bottom.BottomTabBean
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.delegates.bottom.ItemBuilder
 import com.example.emall_ec.R
+import com.example.emall_ec.main.discover.DiscoverDelegate
 import com.example.emall_ec.main.index.IndexDelegate
 import com.example.emall_ec.main.sort.SortDelegate
 
@@ -19,7 +20,7 @@ class EcBottomDelegate : BaseBottomDelegate(){
         val items : LinkedHashMap<BottomTabBean, BottomItemDelegate> ?= LinkedHashMap()
         items!!.put(BottomTabBean(R.drawable.test_icon_small, "主页"), IndexDelegate())
         items.put(BottomTabBean(R.drawable.test_icon_small, "分类"), SortDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon, "发现"), IndexDelegate())
+        items.put(BottomTabBean(R.drawable.test_icon, "发现"), DiscoverDelegate())
         items.put(BottomTabBean(R.drawable.test_icon_small, "购物车"), SortDelegate())
         items.put(BottomTabBean(R.drawable.test_icon_small, "我的"), IndexDelegate())
         return builder.addItems(items)!!.build()!!
