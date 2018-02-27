@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.ProgressBar
 import com.example.emall_core.net.HttpMethod.*
 import com.example.emall_core.net.callback.*
-import com.example.emall_core.ui.progressbar.EmallProgressbar
 import com.example.emall_core.ui.progressbar.ProgressbarCreator
 import okhttp3.MediaType
 import okhttp3.MultipartBody

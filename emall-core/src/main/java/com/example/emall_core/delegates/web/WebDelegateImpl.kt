@@ -1,11 +1,13 @@
 package com.example.emall_core.delegates.web
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Build
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import android.webkit.WebView
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.webkit.WebIconDatabase
 import com.example.emall_core.delegates.web.chromeclient.WebChromeClientImpl
 import com.example.emall_core.delegates.web.client.WebViewClientImpl
 import com.example.emall_core.delegates.web.route.RouteKeys
@@ -20,21 +22,22 @@ class WebDelegateImpl : WebDelegate() {
 
     override fun initial() {
         EmallLogger.d(url!!)
+        WebIconDatabase.getInstance().open(activity.getDir("icons", MODE_PRIVATE).getPath())
         if (url != null) {
             //用原生的方式模拟Web跳转并进行页面加载
             Router.instance.loadPage(this, url!!)
         }
     }
 
-//    private var mIPageLoadListener: IPageLoadListener? = null
+    private var mIPageLoadListener: IPageLoadListener? = null
 
     override fun setLayout(): Any? {
         return webView
     }
 
-//    fun setPageLoadListener(listener: IPageLoadListener) {
-//        this.mIPageLoadListener = listener
-//    }
+    fun setPageLoadListener(listener: IPageLoadListener) {
+        this.mIPageLoadListener = listener
+    }
 
 //    fun onBindView(@Nullable savedInstanceState: Bundle, rootView: View) {
 //        if (getUrl() != null) {
@@ -54,7 +57,7 @@ class WebDelegateImpl : WebDelegate() {
 
     override fun initWebViewClient(): WebViewClient {
         val client = WebViewClientImpl(this)
-//        client.setPageLoadListener(mIPageLoadListener)
+        client.setPageLoadListener(mIPageLoadListener)
         return client
     }
 

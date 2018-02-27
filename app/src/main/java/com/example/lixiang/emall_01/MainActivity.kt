@@ -13,6 +13,7 @@ import com.example.emall_ec.sign.ISignListener
 import com.example.emall_ec.sign.SignUpDelegate
 import com.example.emall_ec.sign.SignInDelegate
 import android.R.attr.tag
+import android.webkit.WebIconDatabase
 import com.example.emall_ec.main.EcBottomDelegate
 
 
@@ -48,6 +49,8 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
         if (actionBar != null) {
             actionBar.hide()
         }
+
+//        WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).path)
     }
 
     override fun setRootDelegate(): EmallDelegate {
