@@ -17,9 +17,9 @@ import com.example.emall_core.delegates.web.WebDelegateImpl
 /**
  * Created by lixiang on 2018/2/27.
  */
-class Router private constructor() {
+class Router constructor() {
 
-    private object Holder {
+    object Holder {
         val INSTANCE = Router()
     }
 

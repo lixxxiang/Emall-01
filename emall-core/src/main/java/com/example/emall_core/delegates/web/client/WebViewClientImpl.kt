@@ -28,7 +28,9 @@ class WebViewClientImpl(private val DELEGATE: WebDelegate) : WebViewClient() {
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap) {
         super.onPageStarted(view, url, favicon)
+        mIPageLoadListener = IPageLoadListener
         if (mIPageLoadListener != null) {
+            println("ininininini")
             mIPageLoadListener!!.onLoadStart()
         }
         EmallProgressbar().showProgressbar(view.context)
