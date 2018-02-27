@@ -59,6 +59,7 @@ class WebDelegateImpl : WebDelegate() {
         val client = WebViewClientImpl(this)
         client.setPageLoadListener(mIPageLoadListener)
         return client
+
     }
 
     override fun initWebChromeClient(): WebChromeClient {
