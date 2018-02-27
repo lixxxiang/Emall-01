@@ -9,8 +9,11 @@ import com.orhanobut.logger.Logger
 import okhttp3.Interceptor
 import java.util.*
 import kotlin.collections.ArrayList
-
-
+import android.support.annotation.NonNull
+import android.app.Activity
+import com.example.emall_core.delegates.web.event.Event
+import com.example.emall_core.delegates.web.event.EventManager
+import com.example.emall_core.util.log.EmallLogger
 
 
 /**
@@ -78,6 +81,22 @@ class Configurator {
         return this
     }
 
+    fun withActivity(activity: Activity): Configurator {
+        EMALL_CONFIGS.put(ConfigKeys.ACTIVITY.toString(), activity)
+        return this
+    }
+
+    fun withJavascriptInterface(name: String): Configurator {
+        EMALL_CONFIGS.put(ConfigKeys.JAVASCRIPT_INTERFACE.toString(), name)
+//        EmallLogger.d()
+        return this
+    }
+
+    fun withWebEvent(name: String, event: Event): Configurator {
+        val manager = EventManager.instance
+        manager.addEvent(name, event)
+        return this
+    }
 
     fun checkConfiguration() {
         val isReady = EMALL_CONFIGS[ConfigKeys.CONFIG_READY.toString()] as Boolean

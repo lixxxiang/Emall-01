@@ -5,6 +5,7 @@ import com.example.emall.ec.icon.FontEcModule
 import com.example.emall_core.app.Emall
 import com.example.emall_core.net.interceptors.DebugInterceptor
 import com.example.emall_ec.database.DatabaseManager
+import com.example.lixiang.emall_01.event.TestEvent
 import com.facebook.stetho.Stetho
 import com.joanzapata.iconify.fonts.FontAwesomeModule
 
@@ -19,6 +20,8 @@ class EmallApplication : Application() {
                 .withIcon(FontEcModule())
                 .withApiHost("http://127.0.0.1:8080/")
                 .withInterceptor(DebugInterceptor("index", R.raw.test))
+                .withJavascriptInterface("emall")
+                .withWebEvent("test", TestEvent())
                 .configure()
         initStetho()
 

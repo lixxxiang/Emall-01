@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.NonNull
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_core.delegates.web.WebDelegateImpl
 import com.example.emall_ec.R
 
 
@@ -23,9 +24,9 @@ class DiscoverDelegate : BottomItemDelegate() {
 
     override fun onLazyInitView( savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
-//        val delegate = WebDelegateImpl.create("index.html")
-//        delegate.setTopDelegate(this.getParentDelegate<EmallDelegate>())
-//        supportDelegate.loadRootFragment(R.id.web_discovery_container, delegate)
+        val delegate = WebDelegateImpl.create("index.html")
+        delegate.setTopDelegate(this.getParentDelegate())
+        supportDelegate.loadRootFragment(R.id.web_discovery_container, delegate)
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

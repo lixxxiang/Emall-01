@@ -32,4 +32,10 @@ class EmallProgressbar {
         LOADERS.add(dialog)
         dialog.show()
     }
+
+    fun hideProgressbar(context: Context){
+        LOADERS
+                .filter { it.isShowing }
+                .forEach { it.cancel() }
+    }
 }

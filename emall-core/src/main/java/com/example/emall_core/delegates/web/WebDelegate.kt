@@ -23,30 +23,7 @@ abstract class WebDelegate : EmallDelegate(), IWebViewInitializer {
     private val WEB_VIEW_QUEUE = ReferenceQueue<WebView>()
     private var mUrl: String? = null
     private var mIsWebViewAvailable = false
-//    var topDelegate: EmallDelegate? = null
-//        get() {
-//            if (field == null) {
-//                topDelegate = this
-//            }
-//            return field
-//        }
-//
-    val webView: WebView?
-        get() {
-            if (mWebView == null) {
-                throw NullPointerException("WebView IS NULL!")
-            }
-            return if (mIsWebViewAvailable) mWebView else null
-        }
-
-    val url: String?
-        get() {
-            if (mUrl == null) {
-                throw NullPointerException("WebView IS NULL!")
-            }
-            return mUrl
-        }
-
+    private var mTopDelegate: EmallDelegate? = null
     abstract fun setInitializer(): IWebViewInitializer?
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +46,40 @@ abstract class WebDelegate : EmallDelegate(), IWebViewInitializer {
                 mWebView = initializer.initWebView(mWebView!!)
                 mWebView!!.webViewClient = initializer.initWebViewClient()
                 mWebView!!.webChromeClient = initializer.initWebChromeClient()
-//                val name = Emall.getConfiguration(ConfigKeys.JAVASCRIPT_INTERFACE)
-                mWebView!!.addJavascriptInterface(LatteWebInterface.create(this), "Emall")
+                val name = Emall().getConfiguration<String>(ConfigKeys.JAVASCRIPT_INTERFACE.name)
+                mWebView!!.addJavascriptInterface(EmallWebInterface.create(this), name)
                 mIsWebViewAvailable = true
             } else {
                 throw NullPointerException("Initializer is null!")
             }
         }
+    }
+
+    val webView: WebView?
+        get() {
+            if (mWebView == null) {
+                throw NullPointerException("WebView IS NULL!")
+            }
+            return if (mIsWebViewAvailable) mWebView else null
+        }
+
+    val url: String?
+        get() {
+            if (mUrl == null) {
+                throw NullPointerException("WebView IS NULL!")
+            }
+            return mUrl
+        }
+
+    fun getTopDelegate(): EmallDelegate?{
+        if (mTopDelegate == null) {
+            mTopDelegate = this
+        }
+        return mTopDelegate
+    }
+
+    fun setTopDelegate(delegate: EmallDelegate) {
+        mTopDelegate = delegate
     }
 
     override fun onPause() {
