@@ -68,6 +68,7 @@ dependencies {
     compile 'com.apkfuns.logutils:library:1.5.1.1'
 
     //greendao
+
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:greendao-generator:3.2.2'
 
