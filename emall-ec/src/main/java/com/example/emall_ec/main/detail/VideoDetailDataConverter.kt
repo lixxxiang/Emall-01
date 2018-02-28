@@ -11,13 +11,13 @@ import com.example.emall_ec.main.index.VideoDetailFields
  */
 class VideoDetailDataConverter : DetailDataConverter(){
     override fun convert(): ArrayList<MultipleItemEntity> {
-        val dataArray = JSON.parseObject(getJsonData()).getJSONArray("data")
-        EmallLogger.d(dataArray)
-//        val entity = MultipleItemEntity.builder()
-//                        .setField(VideoDetailFields.CLOUD, )
-//                        .setField(VideoDetailFields.SPAN_SIZE, 2)
-//                        .setField(VideoDetailFields.ITEM_TYPE, 2)
-//                        .build()
+        val dataArray = JSON.parseObject(getJsonData()).getJSONObject("data")
+        val duration = dataArray.getString("duration")
+        val entity = MultipleItemEntity.builder()
+                        .setField(VideoDetailFields.DURATION, duration)
+                        .build()
+        ENTITIES.add(entity)
+        return ENTITIES
     }
 
 

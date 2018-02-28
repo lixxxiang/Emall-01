@@ -5,5 +5,7 @@ package com.example.emall_ec.main.index
  */
 enum class VideoDetailFields {
     CLOUD,
-    DURATION
+    DURATION,
+    GEO,
+
 }

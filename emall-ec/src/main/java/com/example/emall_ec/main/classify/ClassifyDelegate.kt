@@ -11,7 +11,10 @@ import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.detail.DetailDataConverter
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.detail.VideoDetailDataConverter
+import com.example.emall_ec.main.index.VideoDetailFields
 import kotlinx.android.synthetic.main.delegate_classify.*
 
 /**
@@ -38,7 +41,8 @@ class ClassifyDelegate : BottomItemDelegate() {
                     .params(RestCreator.params)
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
-                            EmallLogger.json("USER_PROFILE", response)
+                            val bannerSize = VideoDetailDataConverter().setJsonData(response).convert()
+                            EmallLogger.d(bannerSize[0].getField(VideoDetailFields.DURATION))
                         }
                     })
                     .failure(object : IFailure {
