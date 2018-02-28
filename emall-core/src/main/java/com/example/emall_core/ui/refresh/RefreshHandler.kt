@@ -7,11 +7,8 @@ import com.example.emall_core.util.log.EmallLogger
 import android.support.v7.widget.RecyclerView
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.net.RestClient
-import com.example.emall_core.ui.recycler.DataConverter
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.example.emall_core.ui.recycler.MultipleFields
-import com.example.emall_core.ui.recycler.MultipleItemEntity
-import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
+import com.example.emall_core.ui.recycler.*
 
 
 /**
@@ -136,8 +133,20 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     companion object {
 
         fun create(swipeRefreshLayout: SwipeRefreshLayout,
-                   recyclerView: RecyclerView, banner_converter: DataConverter, every_day_pic_converter: DataConverter, horizontal_scroll_converter: DataConverter, the_three_converter: DataConverter, converter: DataConverter): RefreshHandler {
-            return RefreshHandler(swipeRefreshLayout, recyclerView, banner_converter, every_day_pic_converter, converter,horizontal_scroll_converter, the_three_converter, PagingBean())
+                   recyclerView: RecyclerView,
+                   banner_converter: DataConverter,
+                   every_day_pic_converter: DataConverter,
+                   horizontal_scroll_converter: DataConverter,
+                   the_three_converter: DataConverter,
+                   converter: DataConverter): RefreshHandler {
+            return RefreshHandler(swipeRefreshLayout,
+                    recyclerView,
+                    banner_converter,
+                    every_day_pic_converter,
+                    horizontal_scroll_converter,
+                    the_three_converter,
+                    converter,
+                    PagingBean())
         }
     }
 }

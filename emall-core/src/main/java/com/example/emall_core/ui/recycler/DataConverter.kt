@@ -17,15 +17,12 @@ abstract class DataConverter {
     abstract fun horizontalScrollConvert(): ArrayList<MultipleItemEntity>
     abstract fun theThreeConvert(): ArrayList<MultipleItemEntity>
 
-
-
-
     fun setJsonData(json: String): DataConverter {
         this.mJsonData = json
         return this
     }
 
-    protected fun getJsonData(): String {
+    fun getJsonData(): String {
         if (mJsonData == null || mJsonData!!.isEmpty()) {
             throw NullPointerException("DATA IS NULL!")
         }

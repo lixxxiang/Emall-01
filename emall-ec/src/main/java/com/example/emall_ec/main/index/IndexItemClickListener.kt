@@ -18,8 +18,8 @@ class IndexItemClickListener(private val DELEGATE: EmallDelegate) : SimpleClickL
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         println(position)
 
-//        val delegate : GoodsDetailDelegate = GoodsDetailDelegate().create()!!
-//        DELEGATE.start(delegate)
+        val delegate : GoodsDetailDelegate = GoodsDetailDelegate().create()!!
+        DELEGATE.start(delegate)
     }
 
     override fun onItemLongClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {}

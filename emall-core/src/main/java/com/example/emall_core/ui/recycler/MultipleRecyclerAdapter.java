@@ -145,7 +145,7 @@ public class MultipleRecyclerAdapter extends
 //                }
                 break;
             case ItemType.EVERYDAY_PIC:
-                holder.setText(R.id.text, "ddadfs");
+                holder.setText(R.id.text, "meiriyitu area");
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
