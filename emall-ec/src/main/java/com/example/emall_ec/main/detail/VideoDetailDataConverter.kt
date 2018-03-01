@@ -9,16 +9,33 @@ import com.example.emall_ec.main.index.VideoDetailFields
 /**
  * Created by lixiang on 2018/2/28.
  */
-class VideoDetailDataConverter : DetailDataConverter(){
+class VideoDetailDataConverter : DetailDataConverter() {
     override fun convert(): ArrayList<MultipleItemEntity> {
         val dataArray = JSON.parseObject(getJsonData()).getJSONObject("data")
         val duration = dataArray.getString("duration")
         val entity = MultipleItemEntity.builder()
-                        .setField(VideoDetailFields.DURATION, duration)
-                        .build()
+                .setField(VideoDetailFields.DURATION, duration)
+                .setField(VideoDetailFields.IMAGEDETAILURL, dataArray.getString("imageDetailUrl"))
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+//                .setField(VideoDetailFields.DURATION, duration)
+                .build()
         ENTITIES.add(entity)
         return ENTITIES
     }
-
-
 }

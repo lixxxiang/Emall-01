@@ -25,70 +25,63 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
     //iconify
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
-
     //Fragmentation
     compile 'me.yokeyword:fragmentation-swipeback:1.2.5'
     compile 'me.yokeyword:fragmentation:1.2.5'
-
     //internet
     compile 'com.squareup.okio:okio:1.13.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
-
     //loader
     compile 'com.wang.avi:library:2.1.3'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     //JSON依赖Android版
     compile 'com.alibaba:fastjson:1.1.57.android'
-
     //banner
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
-
     //Log
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.apkfuns.logutils:library:1.5.1.1'
-
     //greendao
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:greendao-generator:3.2.2'
-
     //database in safari
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-
     //recyclerView
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
-
     //glide
     compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
     compile 'com.github.bumptech.glide:okhttp3-integration:4.0.0-RC0@aar'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
-
     //horizontial recyclerview
     compile 'com.github.rubensousa:gravitysnaphelper:1.5'
     compile 'com.android.support:cardview-v7:26.1.0'
-
     //tablayout
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    compile files('libs/BaiduLBS_Android.jar')
 }
 
 repositories {
