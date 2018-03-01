@@ -2,7 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/sign_up_login_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="#5F5F5F"
+        android:textSize="14dp"
+        android:text="@string/sign_up"
+        android:layout_marginLeft="17dp" />
 
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/sign_up_signup_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:textColor="#5F5F5F"
+        android:textSize="18dp"
+        android:text="@string/sign_up"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/sign_up_title_tv"
+        android:layout_width="144dp"
+        android:layout_height="56dp"
+        android:textColor="#B4A078"
+        android:textSize="36dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="135dp"
+        android:text="@string/app_title"/>
     <EditText
         android:id="@+id/edit_sign_up_name"
         android:layout_width="match_parent"

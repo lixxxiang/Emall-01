@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager
 import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.sign.SignUpDelegate
 
 
 /**
@@ -50,5 +51,12 @@ class IndexDelegate : BottomItemDelegate() {
 
     override fun initial() {
         refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter())
+        icon_index_scan.setOnClickListener {
+            val delegate: SignUpDelegate = SignUpDelegate().create()!!
+            val bundle : Bundle ?= Bundle()
+            bundle!!.putString("KEY", "ID")
+            delegate.arguments = bundle
+            start(delegate)
+        }
     }
 }

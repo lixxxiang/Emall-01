@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">emall-ec</string>
+    <string name="app_title">遥感易购</string>
+    <string name="sign_up">注册</string>
 </resources>

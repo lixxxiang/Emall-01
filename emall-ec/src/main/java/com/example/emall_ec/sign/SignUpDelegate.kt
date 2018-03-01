@@ -14,6 +14,11 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.util.log.EmallLogger
 import java.util.*
 import java.util.logging.LogManager
+import android.graphics.Typeface
+import android.content.res.AssetManager
+import android.widget.TextView
+
+
 
 
 /**
@@ -21,6 +26,9 @@ import java.util.logging.LogManager
  */
 class SignUpDelegate : EmallDelegate() {
 
+    fun create(): SignUpDelegate?{
+        return SignUpDelegate()
+    }
     override fun setLayout(): Any? {
         return R.layout.delegate_sign_up
     }
@@ -44,5 +52,9 @@ class SignUpDelegate : EmallDelegate() {
         btn_sign_up_submit.setOnClickListener {
             startWithPop(SetPasswordDelegate())
         }
+
+        val mgr = activity.assets
+        val tf = Typeface.createFromAsset(mgr, "fonts/pingfang.ttf")
+        sign_up_title_tv.typeface = tf
     }
 }
