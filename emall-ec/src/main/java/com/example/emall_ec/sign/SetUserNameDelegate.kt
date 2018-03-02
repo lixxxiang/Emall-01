@@ -1,6 +1,7 @@
 package com.example.emall_ec.sign
 
 import android.app.Activity
+import android.graphics.Typeface
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.RestCreator.params
@@ -11,6 +12,7 @@ import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_set_user_name.*
+import kotlinx.android.synthetic.main.delegate_sign_up.*
 
 /**
  * Created by lixiang on 14/02/2018.
@@ -31,7 +33,9 @@ class SetUserNameDelegate : EmallDelegate(){
     }
 
     override fun initial() {
-        btn_set_user_name_delegate_submit.setOnClickListener{
+        set_nickname_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
+        set_nickname_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
+        btn_set_nickname_submit.setOnClickListener{
             EmallLogger.d(params)
             val url: String = if (FileUtil.checkEmulator()) {
                 "http://10.0.2.2:3003/news"

@@ -1,77 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/sign_up_login_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="#5F5F5F"
-        android:textSize="14dp"
-        android:text="@string/sign_up"
-        android:layout_marginLeft="17dp" />
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/sign_up_signup_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:textColor="#5F5F5F"
-        android:textSize="18dp"
-        android:text="@string/sign_up"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_height="20dp">
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sign_up_login_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:layout_centerVertical="true"
+            android:text="@string/sign_in"
+            android:textColor="#5F5F5F"
+            android:textSize="14dp"
+            android:layout_marginStart="17dp" />
+
+        <TextView
+            android:id="@+id/sign_up_close"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="17dp"
+            android:layout_centerVertical="true"
+            android:text="@string/close"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="17dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sign_up_signup_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/sign_up"
+            android:textColor="#5F5F5F"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/sign_up_title_tv"
         android:layout_width="144dp"
         android:layout_height="56dp"
-        android:textColor="#B4A078"
-        android:textSize="36dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="135dp"
-        android:text="@string/app_title"/>
-    <EditText
-        android:id="@+id/edit_sign_up_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="132dp"
-        android:ems="10"
-        android:hint="手机"
-        android:inputType="textPersonName" />
+        android:text="@string/app_title"
+        android:textColor="#B4A078"
+        android:textSize="36dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/sign_up_tel_rl"
+        android:layout_width="300dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/edit_sign_up_name"
-        android:id="@+id/linearLayout">
+        android:layout_below="@+id/sign_up_title_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp">
 
-        <EditText
-            android:id="@+id/edit_sign_up_pwd"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sign_up_pfx_tv"
+            android:layout_width="26dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="0dp"
+            android:text="+86"
+            android:textColor="#9B9B9B"
+            android:textSize="14dp"
+            android:layout_marginStart="0dp" />
+
+        <RelativeLayout
+            android:id="@+id/sign_up_cut_off_rl"
+            android:layout_width="1dp"
+            android:layout_height="21dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/sign_up_pfx_tv"
+            android:background="#DDDDDD"
+            android:layout_marginStart="14dp"
+            android:layout_toEndOf="@+id/sign_up_pfx_tv" />
+
+        <com.example.emall_core.util.EditTextWithDeleteButton
+            android:id="@+id/sign_up_tel_et"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="验证码" />
-        <Button
-            android:layout_width="wrap_content"
+            android:ems="11"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sign_up_cut_off_rl"
+            android:layout_marginLeft="13dp"
+            android:background="@null"
+            android:textSize="14dp"
+            android:textCursorDrawable="@null"
+            android:hint="@string/sign_up_tel"
+            android:textColor="#9B9B9B"
+            android:inputType="phone"
+            android:layout_toEndOf="@+id/sign_up_cut_off_rl"
+            android:layout_marginStart="13dp" />
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#F4F4F4"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sign_up_vcode_rl"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/sign_up_tel_rl"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp">
+        <com.example.emall_core.util.EditTextWithDeleteButton
+            android:id="@+id/sign_up_vcode_et"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_sign_up_getVCode"
+            android:ems="4"
+            android:layout_marginLeft="0dp"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:textSize="14dp"
+            android:textCursorDrawable="@null"
+            android:hint="@string/sign_up_vcode"
+            android:textColor="#9B9B9B"
+            android:inputType="number"
+            android:layout_marginStart="0dp" />
+        <RelativeLayout
+            android:id="@+id/sign_up_cut_off_2_rl"
+            android:layout_width="1dp"
+            android:layout_height="21dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="75dp"
+            android:layout_toRightOf="@+id/sign_up_vcode_et"
+            android:background="#DDDDDD"
+            android:layout_marginStart="75dp"
+            android:layout_toEndOf="@+id/sign_up_vcode_et" />
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sign_up_cut_off_2_rl"
+            android:text="@string/sign_up_get_vcode"
+            android:textSize="14dp"
+            android:background="#00000000"
+            android:textColor="#5F5F5F"
+            android:layout_toEndOf="@+id/sign_up_cut_off_2_rl" />
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#F4F4F4"/>
+    </RelativeLayout>
 
-            android:text="获取验证码"/>
-    </LinearLayout>
-
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_sign_up_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginTop="62dp"
-        android:text="下一步" />
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/sign_up_vcode_rl"
+        android:layout_marginTop="11dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/sign_up_btn_shape"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="@string/sign_up_next_step" />
+    
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_sign_up_submit"
+        android:textSize="14dp"
+        android:textColor="#9B9B9B"
+        android:layout_marginTop="12dp"
+        android:text="已向手机012****890发送验证码"/>
 </RelativeLayout>

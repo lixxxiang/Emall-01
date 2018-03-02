@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">emall-core</string>
+    <string name="close">&#xe66e;</string>
 </resources>

@@ -1,30 +1,21 @@
 package com.example.emall_ec.sign
 
-import android.app.Activity
-import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_sign_up.*
-import com.orhanobut.logger.Logger.json
-import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.RestCreator.params
-import com.example.emall_core.net.callback.IError
-import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.util.log.EmallLogger
 import java.util.*
-import java.util.logging.LogManager
 import android.graphics.Typeface
-import android.content.res.AssetManager
-import android.widget.TextView
-
-
+import android.graphics.Color
+import com.githang.statusbar.StatusBarCompat
 
 
 /**
  * Created by lixiang on 2018/2/5.
  */
 class SignUpDelegate : EmallDelegate() {
+
 
     fun create(): SignUpDelegate?{
         return SignUpDelegate()
@@ -35,6 +26,9 @@ class SignUpDelegate : EmallDelegate() {
 
 
     override fun initial() {
+        StatusBarCompat.setStatusBarColor(activity, Color.WHITE)
+        sign_up_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
+        sign_up_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         val params : WeakHashMap<String, Any> ?= RestClient().PARAMS
         params!!["name"] = "n"
         params["userId"] = 123
@@ -42,7 +36,7 @@ class SignUpDelegate : EmallDelegate() {
         params["address"] = "address"
         params["gender"] = "gender"
 
-        btn_sign_up_getVCode.setOnClickListener{
+        btn_sign_up_submit.setOnClickListener{
             /**
              * 获取验证码
              */
@@ -53,8 +47,6 @@ class SignUpDelegate : EmallDelegate() {
             startWithPop(SetPasswordDelegate())
         }
 
-        val mgr = activity.assets
-        val tf = Typeface.createFromAsset(mgr, "fonts/pingfang.ttf")
-        sign_up_title_tv.typeface = tf
+
     }
 }

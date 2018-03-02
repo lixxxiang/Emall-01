@@ -2,4 +2,17 @@
     <string name="app_name">emall-ec</string>
     <string name="app_title">遥感易购</string>
     <string name="sign_up">注册</string>
+    <string name="sign_up_tel">请输入手机号码</string>
+    <string name="sign_up_vcode">请输入验证码</string>
+    <string name="sign_up_get_vcode">获取验证码</string>
+    <string name="sign_up_next_step">下一步</string>
+    <string name="sign_in">登录</string>
+    <string name="password">密码</string>
+    <string name="set_password_hint">8-20位密码，必须包含字母和数字</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="confirm_password_hint">再次输入密码</string>
+    <string name="nickname">用户名</string>
+    <string name="set_nickname_hint">1-16位用户名，必须包含字母或数字</string>
+    <string name="confirm">确认</string>
+
 </resources>
