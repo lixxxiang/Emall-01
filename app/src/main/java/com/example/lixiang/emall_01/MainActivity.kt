@@ -1,6 +1,5 @@
 package com.example.lixiang.emall_01
 
-import android.app.ActionBar
 import android.os.Bundle
 import android.widget.Toast
 import com.example.emall_core.activities.ProxyActivity
@@ -8,12 +7,8 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.launcher.ILauncherListener
 import com.example.emall_core.ui.launcher.OnLauncherFinishTag
 import com.example.emall_ec.launcher.LauncherDelegate
-import com.example.emall_ec.launcher.LauncherScrollDelegate
 import com.example.emall_ec.sign.ISignListener
 import com.example.emall_ec.sign.SignUpDelegate
-import com.example.emall_ec.sign.SignInDelegate
-import android.R.attr.tag
-import android.webkit.WebIconDatabase
 import com.example.emall_ec.main.EcBottomDelegate
 
 

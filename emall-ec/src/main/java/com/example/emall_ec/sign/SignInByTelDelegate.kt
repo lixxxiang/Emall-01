@@ -5,7 +5,7 @@ import com.example.emall_core.delegates.EmallDelegate
 /**
  * Created by lixiang on 2018/2/5.
  */
-class SignInDelegate : EmallDelegate(){
+class SignInByTelDelegate : EmallDelegate(){
     override fun setLayout(): Any? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
