@@ -45,7 +45,6 @@ class SetUserNameDelegate : EmallDelegate(){
             RestClient().builder()
                     .url(url)//EMULATOR
 //                    .url("http://192.168.2.162:3003/news")//HOME
-
 //                    .params("password", edit_sign_up_pwd.text.toString())
 //                    .params("email", edit_sign_up_name.text.toString())
                     .params(params)
@@ -54,6 +53,7 @@ class SetUserNameDelegate : EmallDelegate(){
                             EmallLogger.json("USER_PROFILE", response)
                             SignHandler().onSignUp(response, mISignListener!!)
 //                            startWithPop(SetPasswordDelegate())
+                            startWithPop(SignInByTelDelegate())
                         }
                     })
                     .failure(object : IFailure {

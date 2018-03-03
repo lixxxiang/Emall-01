@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,7 +14,7 @@
             android:layout_marginTop="16dp"
             android:layout_height="20dp">
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/sign_in_by_tel_login_tv"
+                android:id="@+id/sign_in_by_account_login_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
@@ -24,7 +25,7 @@
                 android:layout_marginStart="17dp" />
 
             <TextView
-                android:id="@+id/sign_in_by_tel_close"
+                android:id="@+id/sign_in_by_account_close"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_alignParentRight="true"
@@ -35,12 +36,12 @@
                 android:layout_marginEnd="17dp" />
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/sign_in_by_tel_signup_tv"
+                android:id="@+id/sign_in_by_account_signup_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:text="@string/sign_in_by_tel"
+                android:text="@string/sign_in_by_account"
                 android:textColor="#5F5F5F"
                 android:textSize="18dp" />
         </RelativeLayout>
@@ -52,7 +53,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/sign_in_by_tel_title_tv"
+            android:id="@+id/sign_in_by_account_title_tv"
             android:layout_width="144dp"
             android:layout_height="56dp"
             android:layout_centerHorizontal="true"
@@ -67,13 +68,13 @@
         android:layout_height="0dp"
         android:layout_weight="3">
         <RelativeLayout
-            android:id="@+id/sign_in_by_tel_tel_rl"
+            android:id="@+id/sign_in_by_account_tel_rl"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/sign_in_by_tel_pfx_tv"
+                android:id="@+id/sign_in_by_account_pfx_tv"
                 android:layout_width="26dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
@@ -84,23 +85,23 @@
                 android:layout_marginStart="0dp" />
 
             <RelativeLayout
-                android:id="@+id/sign_in_by_tel_cut_off_rl"
+                android:id="@+id/sign_in_by_account_cut_off_rl"
                 android:layout_width="1dp"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/sign_in_by_tel_pfx_tv"
+                android:layout_toRightOf="@+id/sign_in_by_account_pfx_tv"
                 android:background="#DDDDDD"
                 android:layout_marginStart="14dp"
-                android:layout_toEndOf="@+id/sign_in_by_tel_pfx_tv" />
+                android:layout_toEndOf="@+id/sign_in_by_account_pfx_tv" />
 
             <com.example.emall_core.util.EditTextWithDeleteButton
-                android:id="@+id/sign_in_by_tel_tel_et"
+                android:id="@+id/sign_in_by_account_tel_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="11"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/sign_in_by_tel_cut_off_rl"
+                android:layout_toRightOf="@+id/sign_in_by_account_cut_off_rl"
                 android:layout_marginLeft="13dp"
                 android:background="@null"
                 android:textSize="14dp"
@@ -108,9 +109,10 @@
                 android:hint="@string/sign_up_tel"
                 android:textColor="#9B9B9B"
                 android:inputType="phone"
-                android:layout_toEndOf="@+id/sign_in_by_tel_cut_off_rl"
+                android:layout_toEndOf="@+id/sign_in_by_account_cut_off_rl"
                 android:layout_marginStart="13dp" />
             <RelativeLayout
+                android:id="@+id/sign_in_by_account_sep_rl"
                 android:layout_width="300dp"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
@@ -118,49 +120,54 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/sign_in_by_tel_vcode_rl"
+            android:id="@+id/sign_in_by_account_vcode_rl"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/sign_in_by_tel_tel_rl"
+            android:layout_below="@+id/sign_in_by_account_tel_rl"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="1dp">
             <com.example.emall_core.util.EditTextWithDeleteButton
-                android:id="@+id/sign_in_by_tel_vcode_et"
-                android:layout_width="100dp"
+                android:id="@+id/sign_in_by_account_vcode_et"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="4"
+                android:ems="16"
                 android:layout_marginLeft="0dp"
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
-                android:hint="@string/sign_up_vcode"
+                android:hint="@string/sign_in_by_account_pwd"
                 android:textColor="#9B9B9B"
                 android:inputType="number"
-                android:layout_marginStart="0dp" />
+                android:layout_toLeftOf="@+id/sign_in_by_account_cut_off_2_rl"
+                android:layout_marginEnd="14dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginRight="14dp" />
             <RelativeLayout
-                android:id="@+id/sign_in_by_tel_cut_off_2_rl"
+                android:id="@+id/sign_in_by_account_cut_off_2_rl"
                 android:layout_width="1dp"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="75dp"
-                android:layout_toRightOf="@+id/sign_in_by_tel_vcode_et"
+                android:layout_toLeftOf="@+id/sign_in_by_account_hide_tv"
+                android:layout_marginEnd="14dp"
                 android:background="#DDDDDD"
-                android:layout_marginStart="75dp"
-                android:layout_toEndOf="@+id/sign_in_by_tel_vcode_et" />
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/sign_in_by_tel_get_vcode_btn"
-                android:layout_width="120dp"
-                android:layout_height="48dp"
+                android:layout_marginRight="14dp" />
+            <TextView
+                android:id="@+id/sign_in_by_account_hide_tv"
+                android:layout_width="21dp"
+                android:layout_height="14dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/sign_in_by_tel_cut_off_2_rl"
-                android:text="@string/sign_up_get_vcode"
+                android:layout_alignEnd="@+id/sign_in_by_account_sep_rl_2"
+                android:layout_marginEnd="14dp"
+                android:text="@string/hide"
                 android:textSize="14dp"
                 android:background="#00000000"
                 android:textColor="#5F5F5F"
-                android:layout_toEndOf="@+id/sign_in_by_tel_cut_off_2_rl" />
+                tools:ignore="NotSibling"
+                android:layout_alignRight="@+id/sign_in_by_account_sep_rl_2"
+                android:layout_marginRight="14dp" />
             <RelativeLayout
-                android:id="@+id/sign_in_by_tel_sep_rl"
+                android:id="@+id/sign_in_by_account_sep_rl_2"
                 android:layout_width="300dp"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
@@ -168,24 +175,23 @@
         </RelativeLayout>
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/sign_in_by_tel_vcode_tv"
+            android:id="@+id/sign_in_by_account_vcode_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#9B9B9B"
+            android:textColor="#B4A078"
             android:textSize="14dp"
-            android:visibility="gone"
-            android:layout_below="@+id/sign_in_by_tel_vcode_rl"
+            android:layout_below="@+id/sign_in_by_account_vcode_rl"
             android:layout_marginTop="11dp"
-            android:text="已向手机012****890发送验证码"
-            android:layout_alignLeft="@+id/sign_in_by_tel_vcode_rl"/>
+            android:text="@string/forget_password"
+            android:layout_alignLeft="@+id/sign_in_by_account_vcode_rl"/>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/sign_in_by_tel_submit_btn"
+            android:id="@+id/sign_in_by_account_submit_btn"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="11dp"
             android:textColor="#FFFFFF"
-            android:layout_below="@+id/sign_in_by_tel_vcode_tv"
+            android:layout_below="@+id/sign_in_by_account_vcode_tv"
             android:textSize="14dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/sign_up_btn_shape"
@@ -193,28 +199,28 @@
             android:text="@string/sign_in" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/sign_in_by_tel_or_tv"
+            android:id="@+id/sign_in_by_account_or_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/or"
             android:textSize="14dp"
             android:textColor="#9B9B9B"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/sign_in_by_tel_submit_btn"
+            android:layout_below="@+id/sign_in_by_account_submit_btn"
             android:layout_marginTop="12dp" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_sign_in_by_tel_submit"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/sign_in_by_tel_or_tv"
+            android:layout_below="@+id/sign_in_by_account_or_tv"
             android:layout_marginTop="12dp"
             android:textColor="#B4A078"
             android:textSize="14dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/sign_in_by_tel_btn_border_shape"
             style="?android:attr/borderlessButtonStyle"
-            android:text="@string/sign_in_by_account" />
+            android:text="@string/sign_in_by_tel" />
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -224,6 +230,6 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="14dp"
             android:text="@string/design_by"/>
-    </RelativeLayout>
 
+    </RelativeLayout>
 </LinearLayout>

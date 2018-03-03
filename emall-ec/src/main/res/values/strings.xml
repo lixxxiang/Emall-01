@@ -7,6 +7,8 @@
     <string name="sign_up_get_vcode">获取验证码</string>
     <string name="sign_up_next_step">下一步</string>
     <string name="sign_in">登录</string>
+    <string name="sign_in_by_account">账号登录</string>
+
     <string name="sign_in_by_tel">手机快捷登录</string>
     <string name="password">密码</string>
     <string name="set_password_hint">8-20位密码，必须包含字母和数字</string>
@@ -15,5 +17,9 @@
     <string name="nickname">用户名</string>
     <string name="set_nickname_hint">1-16位用户名，必须包含字母或数字</string>
     <string name="confirm">确认</string>
+    <string name="or">或</string>
+    <string name="design_by">长光卫星出品</string>
+    <string name="sign_in_by_account_pwd">请输入密码</string>
+    <string name="forget_password">忘记密码？</string>
 
 </resources>

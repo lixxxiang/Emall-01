@@ -47,6 +47,11 @@ class SignUpDelegate : EmallDelegate() {
             startWithPop(SetPasswordDelegate())
         }
 
+        sign_up_login_tv.setOnClickListener {
+            println("dd")
+            startWithPop(SignInByTelDelegate())
+        }
+
 
     }
 }
