@@ -1,4 +1,4 @@
-package com.example.emall_core.util;
+package com.example.emall_core.util.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -94,7 +94,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_toEndOf="@+id/sign_up_pfx_tv" />
 
-            <com.example.emall_core.util.EditTextWithDeleteButton
+            <com.example.emall_core.util.view.EditTextWithDeleteButton
                 android:id="@+id/sign_up_tel_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
             android:layout_below="@+id/sign_up_tel_rl"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="1dp">
-            <com.example.emall_core.util.EditTextWithDeleteButton
+            <com.example.emall_core.util.view.EditTextWithDeleteButton
                 android:id="@+id/sign_up_vcode_et"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"

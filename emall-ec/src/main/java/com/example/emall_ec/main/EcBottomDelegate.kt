@@ -9,6 +9,7 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.discover.DiscoverDelegate
 import com.example.emall_ec.main.index.IndexDelegate
 import com.example.emall_ec.main.classify.ClassifyDelegate
+import com.example.emall_ec.main.me.MeDelegate
 
 
 /**
@@ -21,7 +22,7 @@ class EcBottomDelegate : BaseBottomDelegate(){
         items.put(BottomTabBean(R.drawable.test_icon_small, "分类"), ClassifyDelegate())
         items.put(BottomTabBean(R.drawable.test_icon, "发现"), DiscoverDelegate())
         items.put(BottomTabBean(R.drawable.test_icon_small, "购物车"), ClassifyDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon_small, "我的"), IndexDelegate())
+        items.put(BottomTabBean(R.drawable.test_icon_small, "我的"), MeDelegate())
         return builder.addItems(items)!!.build()!!
     }
 

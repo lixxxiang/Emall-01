@@ -21,5 +21,6 @@
     <string name="design_by">长光卫星出品</string>
     <string name="sign_in_by_account_pwd">请输入密码</string>
     <string name="forget_password">忘记密码？</string>
+    <string name="my_order">我的订单</string>
 
 </resources>

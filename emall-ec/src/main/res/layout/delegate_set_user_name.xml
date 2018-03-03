@@ -93,7 +93,7 @@
                 android:layout_marginStart="11dp"
                 android:layout_toEndOf="@+id/set_nickname_pfx_tv" />
 
-            <com.example.emall_core.util.EditTextWithDeleteButton
+            <com.example.emall_core.util.view.EditTextWithDeleteButton
                 android:id="@+id/set_nickname_tel_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
