@@ -1,5 +1,6 @@
 {
-    "data": [
+    "data":{
+        "data": [
         {
             "commitTime": "2017-11-24 11:48:51",
             "details": {
@@ -105,7 +106,6 @@
             "url": "http://202.111.178.10:10083/webhdfs/v1/product_entity/videoProduct/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.zip?op=OPEN&user.name=hadoop",
             "userId": "92209410004772"
         }
-    ],
-    "message": "success",
-    "status": 200
+    ]
+    }
 }

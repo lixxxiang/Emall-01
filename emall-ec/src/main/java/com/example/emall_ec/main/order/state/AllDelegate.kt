@@ -10,6 +10,7 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
+import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
@@ -31,7 +32,13 @@ class AllDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        data("http://10.10.90.11:8086/global/order/findOrderListByUserId")
+//        data("http://10.10.90.11:8086/global/order/findOrderListByUserId")
+        val url: String = if (FileUtil.checkEmulator()) {
+            "http://10.0.2.2:3035/data"
+        } else {
+            "http://192.168.1.36:3035/data"
+        }
+        data(url)
         initRefreshLayout()
         initRecyclerView()
     }
@@ -58,7 +65,8 @@ class AllDelegate : EmallDelegate() {
 //                        BEAN.addIndex()
 
 
-//                        val bannerSize = OrderDataConverter().setJsonData(response).convert()
+                        val data = OrderDataConverter().setJsonData(response).convert()
+                        println(data)
 //                        EmallLogger.d(bannerSize[0].getField(VideoDetailFields.DURATION))
 //                        DATA = bannerSize
 
@@ -79,7 +87,7 @@ class AllDelegate : EmallDelegate() {
     private fun initRecyclerView() {
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
-        recycler_view_index.layoutManager = manager
+        all_rv.layoutManager = manager
 
 //        adapter = OrderAdapter(R.layout.item_order, datas)
 //        recycler_view_index.adapter = adapter

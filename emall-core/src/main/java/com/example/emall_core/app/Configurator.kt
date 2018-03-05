@@ -3,7 +3,6 @@ package com.example.emall_core.app
 import android.os.Handler
 import com.joanzapata.iconify.IconFontDescriptor
 import com.joanzapata.iconify.Iconify
-import com.orhanobut.logger.AndroidLogAdapter
 //import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import okhttp3.Interceptor
@@ -37,7 +36,8 @@ class Configurator {
     }
 
     fun configure() {
-        Logger.addLogAdapter(AndroidLogAdapter())
+//        Logger.addLogAdapter(AndroidLogAdapter())
+        Logger.init()
         initIcons()
         EMALL_CONFIGS.put(ConfigKeys.CONFIG_READY.toString(), true)
     }
