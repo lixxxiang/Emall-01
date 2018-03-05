@@ -80,6 +80,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/me_order_and_the_four_rl"
                 android:layout_width="match_parent"
                 android:layout_height="123dp"
                 android:background="#FFFFFF">
@@ -113,11 +114,17 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginLeft="13dp"
                         android:background="#DADADA" />
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/me_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"/>
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/me_four_icon_ll"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="40dp"
                     android:layout_below="@+id/me_my_order_rl"
                     android:orientation="horizontal">
 
@@ -127,11 +134,13 @@
                         android:layout_weight="1">
 
                         <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/me_obligation_iv"
                             android:layout_width="28dp"
                             android:layout_height="25dp"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="14dp"
                             android:background="@drawable/obligation" />
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -173,12 +182,89 @@
                             android:background="@drawable/delivered" />
                     </RelativeLayout>
                 </LinearLayout>
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_below="@+id/me_four_icon_ll">
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/obligation"
+                            android:textColor="#666666"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/check_pending"
+                            android:textColor="#666666"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/in_production"
+                            android:textColor="#666666"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/delivered"
+                            android:textColor="#666666"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/me_sep_rl"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#F0F0F0"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="303dp"
-                android:background="#45aaff"></RelativeLayout>
+                android:background="#FFFFFF">
+                <ListView
+                    android:id="@+id/me_function_lv"
+                    android:divider="@drawable/list_item_divider"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/me_bottom_sep_rl"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#F0F0F0"/>
         </LinearLayout>
     </com.example.emall_core.util.view.BounceScrollView>
 </RelativeLayout>
