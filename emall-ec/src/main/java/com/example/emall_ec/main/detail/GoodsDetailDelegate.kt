@@ -119,7 +119,7 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         return R.layout.delegate_video_goods_detail
     }
 
-    internal inner class TabEntity(var title: String, var selectedIcon: Int, var unSelectedIcon: Int) : CustomTabEntity {
+    class TabEntity(var title: String, var selectedIcon: Int, var unSelectedIcon: Int) : CustomTabEntity {
 
         override fun getTabTitle(): String {
             return title

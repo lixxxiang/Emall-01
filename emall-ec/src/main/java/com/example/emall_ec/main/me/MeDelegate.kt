@@ -8,6 +8,7 @@ import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.order.OrderListDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 
 /**
@@ -36,11 +37,13 @@ class MeDelegate : BottomItemDelegate() {
         titleList!!.add(R.string.contact_us)
         titleList!!.add(R.string.suggestion)
 
+        DELEGATE = getParentDelegate()
+
         me_foward.typeface = Typeface.createFromAsset(activity.assets, "iconfont/foward.ttf")
         me_function_lv.adapter = MeFunctionAdapter(iconList, titleList, context)
 
         me_order.setOnClickListener{
-            val delegate: GoodsDetailDelegate = GoodsDetailDelegate().create()!!
+            val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle : Bundle?= Bundle()
             bundle!!.putString("KEY", "ID")
             delegate.arguments = bundle

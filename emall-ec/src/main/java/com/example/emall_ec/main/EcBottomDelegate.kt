@@ -15,7 +15,7 @@ import com.example.emall_ec.main.me.MeDelegate
 /**
  * Created by lixiang on 15/02/2018.
  */
-class EcBottomDelegate : BaseBottomDelegate(){
+open class EcBottomDelegate : BaseBottomDelegate(){
     override fun setItems(builder: ItemBuilder): LinkedHashMap<BottomTabBean, BottomItemDelegate> {
         val items : LinkedHashMap<BottomTabBean, BottomItemDelegate> ?= LinkedHashMap()
         items!!.put(BottomTabBean(R.drawable.test_icon_small, "主页"), IndexDelegate())

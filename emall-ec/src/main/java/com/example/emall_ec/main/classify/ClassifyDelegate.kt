@@ -20,9 +20,6 @@ import com.example.emall_ec.main.index.VideoDetailFields
 import kotlinx.android.synthetic.main.delegate_classify.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
-
-
-
 /**
  * Created by lixiang on 15/02/2018.
  */
