@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    >
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="#5C5C5C"
+        android:text="订单号：20170101090013123001"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="13dp"/>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/item_order_btn"
+        android:layout_width="80dp"
+        android:layout_height="28dp"
+        android:background="#b80017"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="9dp"
+        android:text="前往下载"/>
+
+    <RelativeLayout
+        android:id="@+id/item_order_sep_rl"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="13dp"
+        android:background="#e0e0e0"
+        android:layout_below="@+id/item_order_btn"
+        android:layout_marginTop="8dp"/>
+    
+    <LinearLayout
+        android:id="@+id/item_order_ll"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:layout_below="@+id/item_order_sep_rl">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="17dp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/item_order_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="#5C5C5C"
+                android:text="光学一级（剪裁）"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="16dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_order_title_tv"
+                android:textSize="12dp"
+                android:textColor="#9B9B9B"
+                android:text="拍摄于 2017.01.21，13:13:27（北京时间）"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="6dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="#5C5C5C"
+                android:text="¥3442"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginBottom="17dp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_order_sep_2_rl"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="13dp"
+        android:background="#e0e0e0"
+        android:layout_below="@+id/item_order_ll" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_below="@+id/item_order_sep_2_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="#b80017"
+        android:text="订单状态（待付款/生产中：预计 2017.12.12 交付/已交付）"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginBottom="11dp"/>
+
+</RelativeLayout>
