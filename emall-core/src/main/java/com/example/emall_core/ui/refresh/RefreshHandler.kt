@@ -20,6 +20,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                                          private val EVERY_DAY_PIC_CONVERTER: DataConverter,
                                          private val HORIZONTAL_SCROLL_CONVERTER: DataConverter,
                                          private val THE_THREE_CONVERTER: DataConverter,
+                                         private val GUESS_LIKE_CONVERTER: DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private var mAdapter: MultipleRecyclerAdapter? = null
@@ -59,6 +60,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                         EmallLogger.d(HORIZONTAL_SCROLL_CONVERTER.horizontalScrollConvert()[0].getField(MultipleFields.HORIZONTAL_SCROLL))
                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.horizontalScrollConvert()[0])
                         data!!.add(THE_THREE_CONVERTER.theThreeConvert()[0])
+                        data!!.add(GUESS_LIKE_CONVERTER.guessLikeConvert()[0])
 //                        RestClient().builder()
 //                                .url(url)
 //                                .success(object : ISuccess {
@@ -138,6 +140,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                    every_day_pic_converter: DataConverter,
                    horizontal_scroll_converter: DataConverter,
                    the_three_converter: DataConverter,
+                   guess_like_converter: DataConverter,
                    converter: DataConverter): RefreshHandler {
             return RefreshHandler(swipeRefreshLayout,
                     recyclerView,
@@ -145,6 +148,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                     every_day_pic_converter,
                     horizontal_scroll_converter,
                     the_three_converter,
+                    guess_like_converter,
                     converter,
                     PagingBean())
         }

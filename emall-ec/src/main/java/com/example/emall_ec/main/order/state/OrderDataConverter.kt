@@ -13,18 +13,21 @@ import com.example.emall_ec.main.index.VideoDetailFields
 class OrderDataConverter {
     val ENTITIES: ArrayList<MultipleItemEntity> = ArrayList()
     private var mJsonData: String? = null
-
-    fun convert(): ArrayList<MultipleItemEntity>{
-//        val dataArray = JSON.parseObject(getJsonData()).getJSONObject("data")
+    var imageDetailUrl : MutableList<String> ?= mutableListOf()
+    fun convert(): ArrayList<MultipleItemEntity> {
         val dataArray = JSON.parseObject(getJsonData()).getJSONArray("data")
+        val size = dataArray.size
+        (0 until size)
+                .map { dataArray.getJSONObject(it).getJSONObject("details") }
+                .forEach { imageDetailUrl!!.add(it.getString("imageDetailUrl")) }
 
-        val duration = dataArray.getJSONObject(0).getString("commitTime")
-        EmallLogger.d(duration)
-        var details = dataArray.getJSONObject(0).getJSONObject("details")
-        EmallLogger.d(details)
-        EmallLogger.d(details.getString("imageDetailUrl"))
+//        for (i in 0 until size) {
+//            val details = dataArray.getJSONObject(i).getJSONObject("details")
+//            imageDetailUrl!!.add(details.getString("imageDetailUrl"))
+//        }
+
         val entity = MultipleItemEntity.builder()
-                .setField(OrderFeilds.IMAGEDETAILURL, details.getString("imageDetailUrl"))
+                .setField(OrderFeilds.IMAGEDETAILURL, imageDetailUrl!!)
 //                .setField(VideoDetailFields.DURATION, duration)
 //                .setField(VideoDetailFields.DURATION, duration)
 //                .setField(VideoDetailFields.DURATION, duration)

@@ -78,7 +78,7 @@ public class MultipleRecyclerAdapter extends
         addItemType(ItemType.SCROLL_HORIZIONTAL, R.layout.item_multiple_scroll_horiziontal);
         addItemType(ItemType.THE_THREE, R.layout.item_multiple_the_three);
 //        addItemType(ItemType.GUESS_LIKE_TITLE, R.layout.item_multiple_guess_like_title);
-//        addItemType(ItemType.GUESS_LIKE, R.layout.item_multiple_image_guess_like);
+        addItemType(ItemType.GUESS_LIKE, R.layout.item_multiple_image_guess_like);
         //设置宽度监听
         setSpanSizeLookup(this);
         openLoadAnimation();
@@ -171,6 +171,10 @@ public class MultipleRecyclerAdapter extends
 //            case ItemType.GUESS_LIKE_TITLE:
 //                break;
 //            case ItemType.GUESS_LIKE:
+//                Glide.with(mContext)
+//                        .load(imageUrl1)
+//                        .apply(RECYCLER_OPTIONS)
+//                        .into((ImageView) holder.getView(R.id.the_three_1));
 //                break;
             default:
                 break;

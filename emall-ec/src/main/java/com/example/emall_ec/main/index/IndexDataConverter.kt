@@ -13,6 +13,20 @@ import com.example.emall_core.ui.recycler.test.App
  * Created by lixiang on 17/02/2018.
  */
 class IndexDataConverter : DataConverter() {
+    override fun guessLikeConvert(): ArrayList<MultipleItemEntity> {
+        var imageUrls : MutableList<String> = mutableListOf()
+        imageUrls.add("http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg")
+        imageUrls.add("http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161221215447_000017023_105_0011_001_L1_MSS.jpg")
+        imageUrls.add("http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.jpg")
+        val entity = MultipleItemEntity.builder()
+                .setField(MultipleFields.GUESS_LIKE_IMAGE_URL,imageUrls)
+                .setField(MultipleFields.SPAN_SIZE, 2)
+                .setField(MultipleFields.ITEM_TYPE, 3)
+                .build()
+        ENTITIES.add(entity)
+        return ENTITIES
+    }
+
     override fun theThreeConvert(): ArrayList<MultipleItemEntity> {
         val entity = MultipleItemEntity.builder()
                 .setField(MultipleFields.THE_THREE_IMAGE_URL, "http://202.111.178.10:28085/upload/image/201711151645000412863_thumb.jpg")

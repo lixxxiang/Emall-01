@@ -22,8 +22,7 @@ import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.order.OrderDelegate
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
-
-
+import java.util.*
 
 
 /**
@@ -62,6 +61,8 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         } else {
             "http://10.10.90.38:3033/data"
         }
+
+
 
         RestClient().builder()
                 .url(url)//EMULATOR

@@ -57,6 +57,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //JSON依赖Android版
     compile 'com.alibaba:fastjson:1.1.57.android'
+    compile 'com.google.code.gson:gson:2.8.2'
     //banner
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.bigkoo:convenientbanner:2.0.5'

@@ -16,6 +16,8 @@ abstract class DataConverter {
     abstract fun everyDayPicConvert(): ArrayList<MultipleItemEntity>
     abstract fun horizontalScrollConvert(): ArrayList<MultipleItemEntity>
     abstract fun theThreeConvert(): ArrayList<MultipleItemEntity>
+    abstract fun guessLikeConvert(): ArrayList<MultipleItemEntity>
+
 
     fun setJsonData(json: String): DataConverter {
         this.mJsonData = json

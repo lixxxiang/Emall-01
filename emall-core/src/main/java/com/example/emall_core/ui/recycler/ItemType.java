@@ -16,6 +16,6 @@ public class ItemType {
     public static final int SCROLL_HORIZIONTAL = 2;
     public static final int THE_THREE = 3;
 //    public static final int GUESS_LIKE_TITLE = 5;
-//    public static final int GUESS_LIKE = 6;
+    public static final int GUESS_LIKE = 4;
 }
 
