@@ -1,14 +1,11 @@
 package com.example.emall_ec.main.order
 
-import android.support.design.R.id.container
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_order_list.*
 import android.support.v7.app.AppCompatActivity
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
-import android.view.View
 import com.example.emall_ec.main.order.state.*
 import android.support.v4.app.FragmentPagerAdapter
 
