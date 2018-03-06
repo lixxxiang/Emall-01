@@ -22,6 +22,8 @@ public class Find_tab_Adapter extends FragmentPagerAdapter{
         this.list_Title = list_Title;
     }
 
+
+
     @Override
     public Fragment getItem(int position) {
         return list_fragment.get(position);

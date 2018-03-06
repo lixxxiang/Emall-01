@@ -9,6 +9,7 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
+import com.example.emall_ec.main.order.state.OrderDetailDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 
 /**
@@ -44,6 +45,14 @@ class MeDelegate : BottomItemDelegate() {
 
         me_order.setOnClickListener{
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
+            val bundle : Bundle?= Bundle()
+            bundle!!.putString("KEY", "ID")
+            delegate.arguments = bundle
+            (DELEGATE as EcBottomDelegate).start(delegate)
+        }
+
+        me_avatar_iv.setOnClickListener {
+            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
             val bundle : Bundle?= Bundle()
             bundle!!.putString("KEY", "ID")
             delegate.arguments = bundle

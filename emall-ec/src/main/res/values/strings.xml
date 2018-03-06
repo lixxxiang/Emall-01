@@ -33,4 +33,18 @@
     <string name="suggestion">意见反馈</string>
     <string name="all">全部</string>
     <string name="orderId">订单号：%s</string>
+    <string name="order_detail">订单详情</string>
+    <string name="order_id">订单编号</string>
+    <string name="order_time">下单时间</string>
+    <string name="pay_method">支付方式</string>
+    <string name="original_price">原价</string>
+    <string name="current_price">现价</string>
+    <string name="discount">优惠</string>
+    <string name="out_of_pocket">实付</string>
+    <string name="service_time">服务时间</string>
+    <string name="service_time_detail">工作日 8:30 - 5:30</string>
+    <string name="to_download">前往下载</string>
+    <string name="delete_order">删除订单</string>
+    <string name="tel_service">电话客服</string>
+    <string name="qq_service">QQ客服</string>
 </resources>

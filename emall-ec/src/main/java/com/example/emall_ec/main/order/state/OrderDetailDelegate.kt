@@ -1,12 +1,13 @@
 package com.example.emall_ec.main.order.state
 
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 
 /**
  * Created by lixiang on 2018/3/6.
  */
-class OrderDetailDelegate : EmallDelegate() {
+class OrderDetailDelegate :  BottomItemDelegate() {
 
     fun create(): OrderDetailDelegate? {
         return OrderDetailDelegate()
@@ -19,4 +20,5 @@ class OrderDetailDelegate : EmallDelegate() {
     override fun setLayout(): Any? {
         return R.layout.delegate_order_detail
     }
+
 }

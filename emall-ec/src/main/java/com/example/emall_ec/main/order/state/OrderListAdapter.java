@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by lixiang on 2018/3/6.
  */
 
-public class OrderListAdapter extends BaseAdapter {
+public class OrderListAdapter extends BaseAdapter{
 
     private Context context;
     private List<OrderDetail> dataList;
@@ -62,7 +62,7 @@ public class OrderListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
         Util util = null;
         if (view == null) {
@@ -71,6 +71,14 @@ public class OrderListAdapter extends BaseAdapter {
             view = inflater.inflate(resource, null);
             util.orderId = view.findViewById(R.id.item_order_orderid_tv);
             util.imageView = view.findViewById(R.id.item_order_image_iv);
+            util.btn = view.findViewById(R.id.item_order_btn);
+            util.btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EmallLogger.INSTANCE.d(i + "clicked");
+                }
+            });
+            util.btn.setTag(i);
             view.setTag(util);
         } else {
             util = (Util) view.getTag();
@@ -85,6 +93,7 @@ public class OrderListAdapter extends BaseAdapter {
     class Util {
         ImageView imageView;
         TextView orderId;
+        Button btn;
         TextView title;
         TextView time;
         TextView price;
