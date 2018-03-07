@@ -5,7 +5,13 @@ import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_classify.*
 import android.support.design.widget.AppBarLayout
+import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.AppBarStateChangeListener
+import java.util.*
 
 
 /**
@@ -13,6 +19,7 @@ import com.example.emall_core.util.view.AppBarStateChangeListener
  */
 class ClassifyDelegate : BottomItemDelegate() {
 
+    var sceneSearchParams: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE : EmallDelegate ?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
@@ -52,5 +59,41 @@ class ClassifyDelegate : BottomItemDelegate() {
                 }
             }
         })
+
+//        getData()
+    }
+
+    private fun getData() {
+        sceneSearchParams!!["scopeGeo"] = "{\"type\":\"Polygon\",\"coordinates\":[[[2.288164,48.871997],[2.466378,48.894223],[2.487259,48.848535],[2.309833,48.826008],[2.288164,48.871997]]]}"
+        sceneSearchParams!!["productType"] = ""
+        sceneSearchParams!!["resolution"] = ""
+        sceneSearchParams!!["satelliteId"] = ""
+        sceneSearchParams!!["startTime"] = "2015-04-30"
+        sceneSearchParams!!["endTime"] = "2017-12-01"
+        sceneSearchParams!!["cloud"] = ""
+        sceneSearchParams!!["type"] = "0"
+        sceneSearchParams!!["pageSize"] = "10"
+        sceneSearchParams!!["pageNum"] = "1"
+
+        RestClient().builder()
+                .url("http://10.10.90.11:8086/global/mobile/sceneSearch")//EMULATOR
+                .params(sceneSearchParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
     }
 }

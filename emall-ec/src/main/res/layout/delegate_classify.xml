@@ -40,14 +40,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="123dp"
-        android:background="#FFFF11">
-    </RelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/classify_rv"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+                android:background="#FFFF11">
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/classify_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+
 </android.support.design.widget.CoordinatorLayout>
