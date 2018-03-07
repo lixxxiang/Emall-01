@@ -33,31 +33,49 @@
                 android:id="@+id/classify_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                app:layout_collapseMode="pin">
-            </android.support.v7.widget.Toolbar>
+                app:layout_collapseMode="pin"></android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--<LinearLayout-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="123dp"-->
+    <!--android:background="#FFFF11">-->
+    <!--</RelativeLayout>-->
+    <android.support.v4.widget.NestedScrollView
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="123dp"
-                android:background="#FFFF11">
-            </RelativeLayout>
+                android:background="#FFFF11"></RelativeLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/classify_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
-    </ScrollView>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 </android.support.design.widget.CoordinatorLayout>

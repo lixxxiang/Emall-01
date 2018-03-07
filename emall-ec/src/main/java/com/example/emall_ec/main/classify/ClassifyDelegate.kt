@@ -5,12 +5,22 @@ import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_classify.*
 import android.support.design.widget.AppBarLayout
+import android.support.v7.widget.GridLayoutManager
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.AppBarStateChangeListener
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.classify.data.ClassifyAdapter
+import com.example.emall_ec.main.classify.data.Model
+import com.example.emall_ec.main.classify.data.SceneSearch
+import com.example.emall_ec.main.index.IndexItemClickListener
+import com.example.emall_ec.main.order.state.data.OrderDetail
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_index.*
 import java.util.*
 
 
@@ -21,6 +31,10 @@ class ClassifyDelegate : BottomItemDelegate() {
 
     var sceneSearchParams: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE : EmallDelegate ?= null
+    var sceneSearch = SceneSearch()
+    private var data: MutableList<Model>? = mutableListOf()
+    private var mAdapter: ClassifyAdapter? = null
+
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
     }
@@ -61,6 +75,49 @@ class ClassifyDelegate : BottomItemDelegate() {
         })
 
 //        getData()
+        getFakeData()
+    }
+
+    private fun getFakeData(){
+        RestClient().builder()
+                .url("http://192.168.1.36:3036/data")//EMULATOR
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        sceneSearch = Gson().fromJson(response,SceneSearch::class.java)
+                        val size = sceneSearch.data.searchReturnDtoList.size
+                        for (i in 0 until size){
+                            val model = Model()
+                            model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
+                            data!!.add(model)
+                        }
+//                        data!!.add(sceneSearch)
+                        initRecyclerView()
+
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .get()
+    }
+
+    private fun initRecyclerView() {
+        val manager = GridLayoutManager(context, 2)
+        classify_rv.layoutManager = manager
+//        val ecBottomDelegate : EcBottomDelegate = getParentDelegate()
+//        recycler_view_index.addOnItemTouchListener(IndexItemClickListener(ecBottomDelegate))
+        mAdapter = ClassifyAdapter(R.layout.item_classify, data)
+//        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
+        classify_rv.adapter = mAdapter
     }
 
     private fun getData() {
