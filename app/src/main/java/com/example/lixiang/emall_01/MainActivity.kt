@@ -1,11 +1,13 @@
 package com.example.lixiang.emall_01
 
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Toast
 import com.example.emall_core.activities.ProxyActivity
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.launcher.ILauncherListener
 import com.example.emall_core.ui.launcher.OnLauncherFinishTag
+import com.example.emall_ec.R
 import com.example.emall_ec.launcher.LauncherDelegate
 import com.example.emall_ec.sign.ISignListener
 import com.example.emall_ec.sign.SignUpDelegate
@@ -50,5 +52,10 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
 
     override fun setRootDelegate(): EmallDelegate {
         return LauncherDelegate()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar, menu)
+        return true
     }
 }

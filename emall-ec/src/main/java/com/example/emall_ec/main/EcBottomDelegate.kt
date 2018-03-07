@@ -21,7 +21,7 @@ open class EcBottomDelegate : BaseBottomDelegate(){
         items!!.put(BottomTabBean(R.drawable.test_icon_small, "主页"), IndexDelegate())
         items.put(BottomTabBean(R.drawable.test_icon_small, "分类"), ClassifyDelegate())
         items.put(BottomTabBean(R.drawable.test_icon, "发现"), DiscoverDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon_small, "购物车"), ClassifyDelegate())
+        items.put(BottomTabBean(R.drawable.test_icon_small, "购物车"), DiscoverDelegate())
         items.put(BottomTabBean(R.drawable.test_icon_small, "我的"), MeDelegate())
         return builder.addItems(items)!!.build()!!
     }
