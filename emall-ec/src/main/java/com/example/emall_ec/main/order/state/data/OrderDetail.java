@@ -1,12 +1,15 @@
 package com.example.emall_ec.main.order.state.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by lixiang on 2018/3/6.
  */
 
-public class OrderDetail {
+public class OrderDetail implements Parcelable {
 
     /**
      * data : [{"commitTime":"2017-11-24 11:48:51","details":{"centerTime":"2016-11-13 09:27:54","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[139.820421,35.786176],[139.964701,35.762829],[139.935792,35.647949],[139.791757,35.671273],[139.820421,35.786176]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg","latitude":"35.717030","longitude":"139.878406","originalPrice":"10380.00","productId":"JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.81m+3.25m","salePrice":"10380.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20161113092742_000015634_101_0009","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"173005950.24796021","swingSatelliteAngle":"-18.758638"},"fresh":0,"invoiceState":0,"orderId":"1711241148000515657","parentOrderId":"1711241148000202865","payment":1,"planCommitTime":"2017-11-26 11:48:51","productId":"JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN","state":2,"type":1,"userId":"92209410004772"},{"commitTime":"2017-11-24 11:26:18","details":{"centerTime":"2016-12-21 21:55:01","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[-56.326051,-34.757938],[-56.200412,-34.782163],[-56.230985,-34.890162],[-56.356782,-34.8659],[-56.326051,-34.757938]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161221215447_000017023_105_0011_001_L1_MSS.jpg","latitude":"-34.824071","longitude":"-56.278507","originalPrice":"8718.00","productId":"JL101A_PMS_20161221215447_000017023_105_0011_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.72m+2.90m","salePrice":"8718.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20161221215447_000017023_105_0011","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"145296598.265571266","swingSatelliteAngle":"-4.331561"},"fresh":0,"invoiceState":0,"orderId":"1711241126000181195","parentOrderId":"1711241125000296053","payment":3076,"planCommitTime":"2017-11-26 11:26:18","productId":"JL101A_PMS_20161221215447_000017023_105_0011_001_L1_PAN","state":4,"type":1,"userId":"92209410004772"},{"commitTime":"2017-11-21 17:18:39","details":{"cloud":"0","duration":"32s","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[20.020223,32.126537],[20.152459,32.101888],[20.145221,32.055796],[20.01283,32.080842],[20.020223,32.126537]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.jpg","latitude":"32.091364","longitude":"20.082430","originalPrice":"50000.00","productId":"JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS","promotionDescription":"遥感数据全类型开放购买","promotionType":"遥感易购","resolution":"1.01","rollSatelliteAngleMajor":"18.297349929810","salePrice":"50000.00","satelliteId":"JL103B","sensor":"MSS","serviceDescription":"若今日24:00前下单，可交付","size":"65470509.7704740614","startTime":"2017-08-23 17:32:05","title":"班加西","videoPath":"http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.mp4"},"fresh":0,"invoiceState":0,"orderId":"1711211718000396547","parentOrderId":"1711211718000332658","payMethod":2,"payment":1,"planCommitTime":"2017-11-23 17:18:39","productId":"JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS","state":4,"type":3,"url":"http://202.111.178.10:10083/webhdfs/v1/product_entity/videoProduct/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.zip?op=OPEN&user.name=hadoop","userId":"92209410004772"}]
@@ -40,6 +43,16 @@ public class OrderDetail {
 
     public void setData(List<DataBean> data) {
         this.data = data;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 
     public static class DataBean {

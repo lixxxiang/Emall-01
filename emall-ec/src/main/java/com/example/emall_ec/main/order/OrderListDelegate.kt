@@ -68,7 +68,7 @@ class OrderListDelegate : BottomItemDelegate() {
         tab_FindFragment_title.addTab(tab_FindFragment_title.newTab().setText(listTitle!![4]))
 
 
-        fAdapter = Find_tab_Adapter(this.childFragmentManager, listFragment, listTitle)
+        fAdapter = Find_tab_Adapter(childFragmentManager, listFragment, listTitle)
 
         //viewpager加载adapter
         vp_FindFragment_pager.adapter = fAdapter

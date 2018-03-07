@@ -4,12 +4,10 @@ import android.graphics.Typeface
 import android.os.Bundle
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
-import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
-import com.example.emall_ec.main.order.state.OrderDetailDelegate
+import com.example.emall_ec.main.order.OrderDetailDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 
 /**

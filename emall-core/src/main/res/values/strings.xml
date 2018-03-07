@@ -5,4 +5,6 @@
     <string name="show">&#xe6bb;</string>
     <string name="foward">&#xe623;</string>
     <string name="back">&#xe682;</string>
+    <string name="tel">&#xe61b;</string>
+    <string name="qq">&#xe63c;</string>
 </resources>

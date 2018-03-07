@@ -4,23 +4,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import com.example.emall_core.app.Emall
-import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.delegates.bottom.BaseBottomDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.file.FileUtil
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.detail.GoodsDetailDelegate
-import com.example.emall_ec.main.order.OrderDelegate
-import com.example.emall_ec.main.order.OrderListDelegate
+import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.state.data.OrderDetail
-import com.example.emall_ec.sign.SignUpDelegate
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
-import kotlinx.android.synthetic.main.delegate_classify.*
+import me.yokeyword.fragmentation.SupportFragment
 import java.util.*
 
 /**
@@ -42,8 +36,8 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     override fun initial() {
 //        data("http://10.10.90.11:8086/global/order/findOrderListByUserId")
         val url: String = if (FileUtil.checkEmulator()) {
-            "http://10.0.2.2:3035/data"
-//            "http://10.10.90.11:8086/global/order/findOrderListByUserId"
+//            "http://10.0.2.2:3035/data"
+            "http://10.10.90.11:8086/global/order/findOrderListByUserId"
         } else {
 //            "http://192.168.1.36:3035/data"
             "http://10.10.90.11:8086/global/order/findOrderListByUserId"
@@ -55,8 +49,13 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
             val bundle : Bundle ?= Bundle()
             bundle!!.putString("KEY", "ID")
+            bundle!!.putParcelable("KEy", orderDetail)
             delegate.arguments = bundle
-            start(delegate)
+//            start(delegate)
+//            showHideFragment(OrderDetailDelegate(), getParentDelegate())
+//            getParentDelegate.start(OrderDetailDelegate())
+            (parentFragment as BottomItemDelegate).start(delegate)
+
         }
     }
 
