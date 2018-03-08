@@ -1,4 +1,5 @@
 package com.example.emall_ec.main.classify
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.emall_core.delegates.EmallDelegate
@@ -19,6 +20,16 @@ import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.google.gson.Gson
 import java.util.*
+import android.opengl.ETC1.getWidth
+import android.opengl.ETC1.getHeight
+import android.util.Log
+import android.view.View
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.ViewTreeObserver
+import android.view.View.MeasureSpec
+import android.view.View.MeasureSpec.UNSPECIFIED
+import android.view.View.MeasureSpec.makeMeasureSpec
+import com.example.emall_core.app.Emall
 
 
 /**
@@ -42,7 +53,13 @@ class ClassifyDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         classify_ctl.isTitleEnabled = false
-
+        classify_down_btn.typeface = Typeface.createFromAsset(activity.assets, "iconfont/down.ttf")
+        EmallLogger.d(getViewHeight(classify_introduction_rl, true))
+        EmallLogger.d(getTextViewHeight()!!)
+        classify_down_btn.setOnClickListener {
+            classify_appbar.setExpanded(false)
+            classify_sv.scrollTo(0, 440)
+        }
 //        test_classify_btn.setOnClickListener {
 //
 //            val delegate: GoodsDetailDelegate = GoodsDetailDelegate().create()!!
@@ -72,12 +89,69 @@ class ClassifyDelegate : BottomItemDelegate() {
         })
 
 
-//        getFakeData()
+
+
     }
+
+    private fun getIntroductionHeight() {
+//        val vto2 = classify_introduction_ll.viewTreeObserver
+//        vto2.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                classify_introduction_tv.viewTreeObserver.removeGlobalOnLayoutListener(this)
+//                EmallLogger.d(classify_introduction_tv.height)
+//            }
+//        })
+        classify_introduction_ll.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+
+            override fun onGlobalLayout() {
+                // TODO Auto-generated method stub
+                classify_introduction_ll.viewTreeObserver.removeGlobalOnLayoutListener(this)
+
+                EmallLogger.d("测试：", classify_introduction_ll.measuredHeight.toString())
+            }
+        })
+    }
+
+    fun getViewHeight(view: View?, isHeight: Boolean): Int {
+        val result: Int
+        if (view == null) return 0
+        if (isHeight) {
+            val h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(h, 0)
+            result = view.measuredHeight
+        } else {
+            val w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(0, w)
+            result = view.measuredWidth
+        }
+        return result
+    }
+
+     fun getTextViewHeight(): Int? {
+         var height : Int ?= 0
+         val observer = classify_introduction_tv.getViewTreeObserver()
+         observer.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+             override fun onGlobalLayout() {
+                 //避免重复监听
+                 classify_introduction_tv.getViewTreeObserver().removeGlobalOnLayoutListener(this)
+
+                 height = classify_introduction_tv.getMeasuredHeight()//获文本高度
+                 EmallLogger.d(height!!)
+                 //获取高度后要进行的操作就在这里执行，
+                 //在外面可能onGlobalLayout还没有执行而获取不到height
+
+                 //设置点击监听（其中用到了height值）
+//                 des_layout.setOnClickListener(MyClickListner())
+             }
+         })
+         return height
+     }
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
-        getData()
+//        getData()
+                getFakeData()
+
     }
 
     private fun getFakeData(){
@@ -91,6 +165,8 @@ class ClassifyDelegate : BottomItemDelegate() {
                         for (i in 0 until size){
                             val model = Model()
                             model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
+                            model.price = sceneSearch.data.searchReturnDtoList[i].price
+                            model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
                             data!!.add(model)
                         }
 //                        data!!.add(sceneSearch)

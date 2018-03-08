@@ -60,7 +60,6 @@ class IndexDelegate : BottomItemDelegate() {
         initRefreshLayout()
         initRecyclerView()
         if (FileUtil.checkEmulator()) {
-            EmallLogger.d("init initial")
             refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data")
         } else {
 //            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.10.90.38:3030/data")

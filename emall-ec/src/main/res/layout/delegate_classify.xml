@@ -34,63 +34,279 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                app:layout_scrollFlags="scroll|enterAlways" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/classify_sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <LinearLayout
+            android:id="@+id/classify_introduction_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/classify_introduction_rl"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="123dp"
                 android:background="#FFFFFF">
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/classify_compasses_iv"
                     android:layout_width="13dp"
                     android:layout_height="16dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
-                    android:background="@drawable/compasses"
-                    />
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/compasses" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@+id/classify_compasses_iv"
                     android:text="@string/optics_1"
                     android:textColor="#B4A078"
                     android:textSize="14dp"
-                    android:layout_toRightOf="@+id/classify_compasses_iv"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="20dp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/classify_introduction_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="虎扑3月7日讯 2017-2018赛季CBA季后赛十进八第二场今晚继续开战，上海坐镇主场迎战北京，首场比赛，上海客场力克北京占得先机，北京也换回此前受伤的小外援阿隆-杰克逊，京沪大战一触即发。首节比赛，朱彦西补篮命中，吹响北京的进攻号角，罗汉琛突破造成犯规两罚全中，上海毫不示弱，双方防守强度都很高，比赛十分激烈，北京连续飙中三分，贾斯汀-汉密尔顿内线接连得分，北京取得领先优势，吉默-弗雷戴特里突外投，上海紧追比分，蔡亮飙中三分，上海反超比分，王骁辉命中三分，还以颜色，首节战罢，双方20-20打平。次节较量，常林起飞放篮命中，罗汉琛突破上篮得手，弗雷戴特跳投命中，汉密尔顿两罚全中，双方对飙三分，比赛十分精彩，刘晓宇、阿隆杰克逊接连命中高难度三分，半场战罢，北京49-42领先。易边再战，汉密尔顿勾手命中，弗雷戴特突破命中，尼克-明纳拉斯里突外投，上海努力追分，北京外线手感火热，扩大领先优势，蔡亮连得7分，上海努力追赶，汉密尔顿单节独得18分帮助北京再度取得两位数的领先优势，三节战罢，北京79-69领先。末节比赛，蔡亮左手上篮命中，上海依然没有想到限制汉密尔顿太好的方法，让汉密尔顿在内线予取予求，弗雷戴特连续突破得分，蔡亮打成二加一又反击暴扣得手，上海不断缩小分差，杰克逊飙中三分，常林篮下强打命中，北京稳住局势，朱彦西膝盖受伤下场，杰克逊、弗雷戴特对飙三分，比赛进入白热化阶段，弗雷戴特突破造成犯规两罚全中，上海仅落后1分，关键时刻，曾文鼎两罚不中，方硕跳投命中，弗雷戴特高难度跳投命中，王骁辉横移命中高难度三分，弗雷戴特三分不中，方硕两罚稳稳命中，最终北京客场101-95力克上海，双方将回到北京迎来决战。"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/classify_compasses_iv"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
+                    android:text="@string/long_text"
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
-                    />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#F0F0F0" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <HorizontalScrollView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="40dp"
+                    android:background="#FFFFFF"
+                    android:scrollbars="none">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BeiJing"
+                                android:textSize="12dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerVertical="true"
+                                android:textColor="#5C5C5C" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/classify_down_btn"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:textSize="15dp"
+                        android:text="@string/down" />
+                </RelativeLayout>
+            </LinearLayout>
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DADADA" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/classify_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
