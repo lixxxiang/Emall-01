@@ -65,7 +65,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="123dp"
-                android:background="#FFFF11"></RelativeLayout>
+                android:background="#FFFFFF">
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"/>
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/classify_rv"

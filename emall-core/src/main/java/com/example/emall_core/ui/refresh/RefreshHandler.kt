@@ -5,6 +5,7 @@ import com.example.emall_core.app.Emall
 import com.alibaba.fastjson.JSON
 import com.example.emall_core.util.log.EmallLogger
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.net.RestClient
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -45,10 +46,14 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         /**
          * get banner
          */
+        EmallLogger.d("init first page")
+//        val thread = GetIndexDataThread(bannerUrl, url)
+//        thread.start()
         RestClient().builder()
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d("index run run")
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
@@ -77,10 +82,10 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 //                                        }
 //                                        EmallLogger.d(data!!.size)
 
-                                        mAdapter = MultipleRecyclerAdapter.create(data)
-                                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
-                                        RECYCLERVIEW.adapter = mAdapter
-                                        BEAN.addIndex()
+                        mAdapter = MultipleRecyclerAdapter.create(data)
+                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
+                        RECYCLERVIEW.adapter = mAdapter
+                        BEAN.addIndex()
 //                                    }
 //                                })
 //                                .build()
@@ -151,6 +156,13 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                     guess_like_converter,
                     converter,
                     PagingBean())
+        }
+    }
+
+    inner class GetIndexDataThread(bannerUrl: String, url: String) : Thread(bannerUrl) {
+            var bUrl = bannerUrl
+        override fun run() {
+
         }
     }
 }

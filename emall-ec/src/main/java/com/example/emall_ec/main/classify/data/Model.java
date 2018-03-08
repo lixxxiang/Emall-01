@@ -5,7 +5,10 @@ package com.example.emall_ec.main.classify.data;
  */
 
 public class Model {
-    String imageUrl;
+    private String imageUrl;
+    private String price;
+    private String time;
+
 
     public String getImageUrl() {
         return imageUrl;
@@ -13,5 +16,21 @@ public class Model {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

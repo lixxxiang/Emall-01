@@ -2,6 +2,8 @@ package com.example.emall_ec.main.classify.data;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -11,6 +13,7 @@ import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -19,23 +22,19 @@ import java.util.List;
 
 public class ClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder> {
 
-    private List<String> imageData = new ArrayList<>();
-
-    public ClassifyAdapter(@LayoutRes int layoutResId, @Nullable List<Model> data) {
+    private GridLayoutManager glm = null;
+    public ClassifyAdapter(@LayoutRes int layoutResId, @Nullable List<Model> data, GridLayoutManager glm) {
         super(layoutResId, data);
-//        int size = data.get(0).getData().getSearchReturnDtoList().size();
-//        EmallLogger.INSTANCE.d(size);
-//        for (int i = 0; i < size; i++) {
-//            imageData.add(data.get(0).getData().getSearchReturnDtoList().get(i).getThumbnailUrl());
-//        }
-//        imageData.add(data.get())
+        this.glm = glm;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, Model item) {
-//        helper.setText(R.id.item_classify_iv, item.getTitle())
-//                .setText(R.id.tv_content, item.getContent())
-//                .setImageResource(R.id.iv_img, R.mipmap.ic_launcher);
+        ViewGroup.LayoutParams parm = helper.getView(R.id.item_classify_iv).getLayoutParams();
+        parm.height = glm.getWidth() / 2 - helper.getView(R.id.item_classify_iv).getPaddingLeft();
+        helper.setText(R.id.item_classify_price_tv, item.getPrice());
+        helper.setText(R.id.item_classify_time_tv, item.getTime());
+
         Glide.with(this.mContext)
                 .load(item.getImageUrl())
                 .into((ImageView) helper.getView(R.id.item_classify_iv));

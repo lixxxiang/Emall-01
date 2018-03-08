@@ -1,4 +1,5 @@
 package com.example.emall_ec.main.classify
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -13,14 +14,10 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.AppBarStateChangeListener
-import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.classify.data.ClassifyAdapter
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneSearch
-import com.example.emall_ec.main.index.IndexItemClickListener
-import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_index.*
 import java.util.*
 
 
@@ -74,8 +71,13 @@ class ClassifyDelegate : BottomItemDelegate() {
             }
         })
 
-//        getData()
-        getFakeData()
+
+//        getFakeData()
+    }
+
+    override fun onLazyInitView(savedInstanceState: Bundle?) {
+        super.onLazyInitView(savedInstanceState)
+        getData()
     }
 
     private fun getFakeData(){
@@ -83,7 +85,7 @@ class ClassifyDelegate : BottomItemDelegate() {
                 .url("http://192.168.1.36:3036/data")//EMULATOR
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
+//                        EmallLogger.d(response)
                         sceneSearch = Gson().fromJson(response,SceneSearch::class.java)
                         val size = sceneSearch.data.searchReturnDtoList.size
                         for (i in 0 until size){
@@ -111,12 +113,10 @@ class ClassifyDelegate : BottomItemDelegate() {
     }
 
     private fun initRecyclerView() {
-        val manager = GridLayoutManager(context, 2)
+        val glm = GridLayoutManager(context, 2)
+        val manager = glm
         classify_rv.layoutManager = manager
-//        val ecBottomDelegate : EcBottomDelegate = getParentDelegate()
-//        recycler_view_index.addOnItemTouchListener(IndexItemClickListener(ecBottomDelegate))
-        mAdapter = ClassifyAdapter(R.layout.item_classify, data)
-//        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
+        mAdapter = ClassifyAdapter(R.layout.item_classify, data, glm)
         classify_rv.adapter = mAdapter
     }
 
@@ -138,6 +138,17 @@ class ClassifyDelegate : BottomItemDelegate() {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
+                        sceneSearch = Gson().fromJson(response,SceneSearch::class.java)
+                        val size = sceneSearch.data.searchReturnDtoList.size
+                        for (i in 0 until size){
+                            val model = Model()
+                            model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
+                            model.price = sceneSearch.data.searchReturnDtoList[i].price
+                            model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
+                            data!!.add(model)
+                        }
+//                        data!!.add(sceneSearch)
+                        initRecyclerView()
                     }
                 })
                 .failure(object : IFailure {
