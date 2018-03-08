@@ -47,4 +47,5 @@
     <string name="delete_order">删除订单</string>
     <string name="tel_service">电话客服</string>
     <string name="qq_service">QQ客服</string>
+    <string name="optics_1">光学1级</string>
 </resources>
