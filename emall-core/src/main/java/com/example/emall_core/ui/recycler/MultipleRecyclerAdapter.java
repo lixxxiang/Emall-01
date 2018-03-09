@@ -131,8 +131,9 @@ public class MultipleRecyclerAdapter extends
 
 
                 break;
-//            case ItemType.GUESS_LIKE_TITLE:
-//                break;
+            case ItemType.GUESS_LIKE_TITLE:
+
+                break;
 //            case ItemType.GUESS_LIKE:
 //                Glide.with(mContext)
 //                        .load(imageUrl1)
