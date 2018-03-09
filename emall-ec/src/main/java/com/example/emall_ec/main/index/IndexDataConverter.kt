@@ -4,15 +4,19 @@ import com.example.emall_core.ui.recycler.DataConverter
 import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.alibaba.fastjson.JSON
-import com.example.emall_core.R
-import com.example.emall_core.ui.recycler.HomeRecyclerViewDataConverter
-import com.example.emall_core.ui.recycler.test.App
+import com.example.emall_core.ui.recycler.data.TheThreeBean
+import com.example.emall_core.ui.recycler.data.UnitBean
+import com.example.emall_core.util.log.EmallLogger
 
 
 /**
  * Created by lixiang on 17/02/2018.
  */
 class IndexDataConverter : DataConverter() {
+
+    var unit : MutableList<UnitBean> ?= mutableListOf()
+    var theThree : MutableList<TheThreeBean> ?= mutableListOf()
+
     override fun guessLikeConvert(): ArrayList<MultipleItemEntity> {
         var imageUrls : MutableList<String> = mutableListOf()
         imageUrls.add("http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg")
@@ -28,8 +32,19 @@ class IndexDataConverter : DataConverter() {
     }
 
     override fun theThreeConvert(): ArrayList<MultipleItemEntity> {
+        var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(1).getJSONArray("pieces")
+        var size = jsonObject.size
+        var imageUrl : String ?
+        var link : String ?
+        var type : String ?
+        for (i in 0 until size){
+            imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
+            link = jsonObject.getJSONObject(i).getString("link")
+            type = jsonObject.getJSONObject(i).getString("dataType")
+            theThree!!.add(TheThreeBean(imageUrl, type, link))
+        }
         val entity = MultipleItemEntity.builder()
-                .setField(MultipleFields.THE_THREE_IMAGE_URL, "http://202.111.178.10:28085/upload/image/201711151645000412863_thumb.jpg")
+                .setField(MultipleFields.THE_THREE, theThree!!)
                 .setField(MultipleFields.SPAN_SIZE, 2)
                 .setField(MultipleFields.ITEM_TYPE, 3)
                 .build()
@@ -37,12 +52,29 @@ class IndexDataConverter : DataConverter() {
         return ENTITIES
     }
 
+
     override fun horizontalScrollConvert(): ArrayList<MultipleItemEntity> {
+        var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(0).getJSONArray("pieces")
+        var size = jsonObject.size
+        var title: String?
+        var detail : String ?
+        var imageUrl : String ?
+        var link : String ?
+        var type : String ?
+        for (i in 0 until size){
+            title = jsonObject.getJSONObject(i).getString("posTitle")
+            detail = jsonObject.getJSONObject(i).getString("posDescription")
+            imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
+            link = jsonObject.getJSONObject(i).getString("link")
+            type = jsonObject.getJSONObject(i).getString("dataType")
+            unit!!.add(UnitBean(title, detail, imageUrl, type, link))
+        }
         val entity = MultipleItemEntity.builder()
-                .setField(MultipleFields.HORIZONTAL_SCROLL, getApps())
+                .setField(MultipleFields.HORIZONTAL_SCROLL, unit!!)
                 .setField(MultipleFields.SPAN_SIZE, 2)
                 .setField(MultipleFields.ITEM_TYPE, 2)
                 .build()
+
         ENTITIES.add(entity)
         return ENTITIES
     }
@@ -92,7 +124,7 @@ class IndexDataConverter : DataConverter() {
             val imageUrl1 = data.getString("thumbnail1Path")
             val contentDate = data.getString("contentDate")
             val entity = MultipleItemEntity.builder()
-                    .setField(MultipleFields.HORIZONTAL_SCROLL, imageUrl1)
+//                    .setField(MultipleFields.HORIZONTAL_SCROLL_TITLE, imageUrl1)
                     .setField(MultipleFields.CONTENT_DATE, contentDate)
                     .setField(MultipleFields.SPAN_SIZE, 1)
                     .setField(MultipleFields.ITEM_TYPE, 2)
@@ -102,35 +134,4 @@ class IndexDataConverter : DataConverter() {
         }
         return ENTITIES
     }
-
-
-    private fun getApps(): List<App> {
-        val apps = java.util.ArrayList<App>()
-        apps.add(App("Google+", R.drawable.ic_google_48dp, 4.6f))
-        apps.add(App("Gmail", R.drawable.ic_gmail_48dp, 4.8f))
-        apps.add(App("Inbox", R.drawable.ic_inbox_48dp, 4.5f))
-        apps.add(App("Google Keep", R.drawable.ic_keep_48dp, 4.2f))
-        apps.add(App("Google Drive", R.drawable.ic_drive_48dp, 4.6f))
-        apps.add(App("Hangouts", R.drawable.ic_hangouts_48dp, 3.9f))
-        apps.add(App("Google Photos", R.drawable.ic_photos_48dp, 4.6f))
-        apps.add(App("Messenger", R.drawable.ic_messenger_48dp, 4.2f))
-        apps.add(App("Sheets", R.drawable.ic_sheets_48dp, 4.2f))
-        apps.add(App("Slides", R.drawable.ic_slides_48dp, 4.2f))
-        apps.add(App("Docs", R.drawable.ic_docs_48dp, 4.2f))
-        apps.add(App("Google+", R.drawable.ic_google_48dp, 4.6f))
-        apps.add(App("Gmail", R.drawable.ic_gmail_48dp, 4.8f))
-        apps.add(App("Inbox", R.drawable.ic_inbox_48dp, 4.5f))
-        apps.add(App("Google Keep", R.drawable.ic_keep_48dp, 4.2f))
-        apps.add(App("Google Drive", R.drawable.ic_drive_48dp, 4.6f))
-        apps.add(App("Hangouts", R.drawable.ic_hangouts_48dp, 3.9f))
-        apps.add(App("Google Photos", R.drawable.ic_photos_48dp, 4.6f))
-        apps.add(App("Messenger", R.drawable.ic_messenger_48dp, 4.2f))
-        apps.add(App("Sheets", R.drawable.ic_sheets_48dp, 4.2f))
-        apps.add(App("Slides", R.drawable.ic_slides_48dp, 4.2f))
-        apps.add(App("Docs", R.drawable.ic_docs_48dp, 4.2f))
-        return apps
-    }
-
-
-
 }

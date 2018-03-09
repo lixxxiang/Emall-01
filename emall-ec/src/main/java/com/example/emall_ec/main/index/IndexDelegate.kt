@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.index
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
@@ -25,7 +26,7 @@ class IndexDelegate : BottomItemDelegate() {
 
     fun initRefreshLayout() {
         swipe_refresh_layout_index.setColorSchemeColors(Color.parseColor("#b4a078"))
-        swipe_refresh_layout_index.setProgressViewOffset(true, 120, 300)
+//        swipe_refresh_layout_index.setProgressViewOffset(true, 120, 300)
     }
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
@@ -49,8 +50,11 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
+        index_noti_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
+
         refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(),IndexDataConverter(), IndexDataConverter())
-        icon_index_scan.setOnClickListener {
+        index_scan_tv.setOnClickListener {
             val delegate: SignUpDelegate = SignUpDelegate().create()!!
             val bundle : Bundle ?= Bundle()
             bundle!!.putString("KEY", "ID")
@@ -60,10 +64,10 @@ class IndexDelegate : BottomItemDelegate() {
         initRefreshLayout()
         initRecyclerView()
         if (FileUtil.checkEmulator()) {
-            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data")
+            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data", "http://10.10.90.11:8086/global/homePageUnits")
         } else {
 //            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.10.90.38:3030/data")
-            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data")
+            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://10.10.90.11:8086/global/homePageUnits")
 
         }
 

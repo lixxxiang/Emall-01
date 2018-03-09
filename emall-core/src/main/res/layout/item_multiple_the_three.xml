@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:background="#125634"
-    android:layout_height="310dp">
+    android:layout_height="316dp"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/the_three_1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#234654"
-        android:layout_weight="1"
-        />
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/the_three_2"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#231254"
-        android:layout_weight="1"
+        android:layout_height="310dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal">
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/the_three_1"
+            android:layout_width="0dp"
+            android:layout_height="310dp"
+            android:layout_weight="0.87" />
 
-        />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/the_three_2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/the_three_3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="#F0F0F0" />
 </LinearLayout>

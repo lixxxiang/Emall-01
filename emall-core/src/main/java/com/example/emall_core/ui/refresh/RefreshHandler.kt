@@ -41,56 +41,37 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun firstPage(bannerUrl: String, url: String) {
+    fun firstPage(bannerUrl: String, url: String, unitUrl: String) {
 //        BEAN.setDelayed(1000)
-        /**
-         * get banner
-         */
-        EmallLogger.d("init first page")
-//        val thread = GetIndexDataThread(bannerUrl, url)
-//        thread.start()
+
+
         RestClient().builder()
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d("index run run")
+                        RestClient().builder()
+                                .url(unitUrl)
+                                .success(object : ISuccess {
+                                    override fun onSuccess(response: String) {
+                                        data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
+
+                                        data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
+//                                        EmallLogger.d(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0].getField(MultipleFields.THE_THREE))
+//                                        EmallLogger.d(data!!.get(3).getField(MultipleFields.THE_THREE))
+                                    }
+                                })
+                                .build()
+                                .get()
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
-//                            EmallLogger.d( BANNER_CONVERTER.setJsonData(response).bannerConvert()[i].getField(MultipleFields.BANNERS_LINK))
-
                         }
-//                        EmallLogger.d("BANNERDATA", data!!)
                         data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
-                        EmallLogger.d(HORIZONTAL_SCROLL_CONVERTER.horizontalScrollConvert()[0].getField(MultipleFields.HORIZONTAL_SCROLL))
-                        data!!.add(HORIZONTAL_SCROLL_CONVERTER.horizontalScrollConvert()[0])
-                        data!!.add(THE_THREE_CONVERTER.theThreeConvert()[0])
-                        data!!.add(GUESS_LIKE_CONVERTER.guessLikeConvert()[0])
-//                        RestClient().builder()
-//                                .url(url)
-//                                .success(object : ISuccess {
-//                                    override fun onSuccess(response: String) {
-////                        BEAN.setTotal(100).setPageSize(6)
-//                                        //设置Adapter
-//                                        val content = CONVERTER.setJsonData(response).convert()
-//                                        EmallLogger.d("CONTENT", content[0].getField(MultipleFields.CONTENT_DATE))
-//
-//                                        val size = content.size
-//                                        EmallLogger.d(size)
-//                                        for (i in 0 until size) {
-//                                            data!!.add(content[i])
-//                                        }
-//                                        EmallLogger.d(data!!.size)
-
+//                        data!!.add(GUESS_LIKE_CONVERTER.guessLikeConvert()[0])
                         mAdapter = MultipleRecyclerAdapter.create(data)
                         mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
                         RECYCLERVIEW.adapter = mAdapter
                         BEAN.addIndex()
-//                                    }
-//                                })
-//                                .build()
-//                                .get()
-
                     }
                 })
                 .build()

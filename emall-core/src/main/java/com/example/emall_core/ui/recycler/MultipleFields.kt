@@ -12,13 +12,15 @@ enum class MultipleFields {
     BANNERS_COUNT,
     BANNERS_LINK,
     SPAN_SIZE,
-    EVERY_DAY_PIC_TITLE,
-    HORIZONTAL_SCROLL,
 
+    EVERY_DAY_PIC_TITLE,
+
+
+    HORIZONTAL_SCROLL,
 //    ID,
 //    NAME,
 //    TAG,
-    THE_THREE_IMAGE_URL,
+    THE_THREE,
     GUESS_LIKE_IMAGE_URL,
     CONTENT_DATE
 

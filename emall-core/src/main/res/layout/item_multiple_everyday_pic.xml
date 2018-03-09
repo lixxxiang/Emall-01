@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="#654321">
+    android:layout_height="56dp"
+    android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:id="@+id/mep_rl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/mep_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="@string/every_day_pic"
+            android:textColor="#B4A078"
+            android:layout_marginLeft="17dp"
+            android:layout_centerVertical="true"/>
+
+        <RelativeLayout
+            android:layout_width="1dp"
+            android:layout_height="27dp"
+            android:background="#d0d0d0"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/mep_title_tv"
+            android:layout_marginLeft="17dp"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文章标题"
+            android:lines="1"
+            android:textColor="#5C5C5C"
+            android:textSize="14dp"
+            android:layout_toRightOf="@+id/mep_title_tv"
+            android:layout_marginLeft="35dp"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="#F0F0F0"
+        android:layout_below="@+id/mep_rl"/>
 </RelativeLayout>

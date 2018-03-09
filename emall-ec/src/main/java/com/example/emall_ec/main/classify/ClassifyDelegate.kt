@@ -1,4 +1,5 @@
 package com.example.emall_ec.main.classify
+
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -38,7 +39,7 @@ import com.example.emall_core.app.Emall
 class ClassifyDelegate : BottomItemDelegate() {
 
     var sceneSearchParams: WeakHashMap<String, Any>? = WeakHashMap()
-    var DELEGATE : EmallDelegate ?= null
+    var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
     private var data: MutableList<Model>? = mutableListOf()
     private var mAdapter: ClassifyAdapter? = null
@@ -54,8 +55,6 @@ class ClassifyDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         classify_ctl.isTitleEnabled = false
         classify_down_btn.typeface = Typeface.createFromAsset(activity.assets, "iconfont/down.ttf")
-        EmallLogger.d(getViewHeight(classify_introduction_rl, true))
-        EmallLogger.d(getTextViewHeight()!!)
         classify_down_btn.setOnClickListener {
             classify_appbar.setExpanded(false)
             classify_sv.scrollTo(0, 440)
@@ -87,8 +86,6 @@ class ClassifyDelegate : BottomItemDelegate() {
                 }
             }
         })
-
-
 
 
     }
@@ -127,42 +124,41 @@ class ClassifyDelegate : BottomItemDelegate() {
         return result
     }
 
-     fun getTextViewHeight(): Int? {
-         var height : Int ?= 0
-         val observer = classify_introduction_tv.getViewTreeObserver()
-         observer.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-             override fun onGlobalLayout() {
-                 //避免重复监听
-                 classify_introduction_tv.getViewTreeObserver().removeGlobalOnLayoutListener(this)
+    fun getTextViewHeight(): Int? {
+        var height: Int? = 0
+        val observer = classify_introduction_tv.getViewTreeObserver()
+        observer.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                //避免重复监听
+                classify_introduction_tv.getViewTreeObserver().removeGlobalOnLayoutListener(this)
 
-                 height = classify_introduction_tv.getMeasuredHeight()//获文本高度
-                 EmallLogger.d(height!!)
-                 //获取高度后要进行的操作就在这里执行，
-                 //在外面可能onGlobalLayout还没有执行而获取不到height
+                height = classify_introduction_tv.getMeasuredHeight()//获文本高度
+                //获取高度后要进行的操作就在这里执行，
+                //在外面可能onGlobalLayout还没有执行而获取不到height
 
-                 //设置点击监听（其中用到了height值）
+                //设置点击监听（其中用到了height值）
 //                 des_layout.setOnClickListener(MyClickListner())
-             }
-         })
-         return height
-     }
+            }
+        })
+        return height
+    }
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
-//        getData()
-                getFakeData()
+        getData()
+//                getFakeData()
 
     }
 
-    private fun getFakeData(){
+    private fun getFakeData() {
         RestClient().builder()
                 .url("http://192.168.1.36:3036/data")//EMULATOR
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
 //                        EmallLogger.d(response)
-                        sceneSearch = Gson().fromJson(response,SceneSearch::class.java)
+                        sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         val size = sceneSearch.data.searchReturnDtoList.size
-                        for (i in 0 until size){
+                        for (i in 0 until size) {
                             val model = Model()
                             model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
                             model.price = sceneSearch.data.searchReturnDtoList[i].price
@@ -214,9 +210,9 @@ class ClassifyDelegate : BottomItemDelegate() {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
-                        sceneSearch = Gson().fromJson(response,SceneSearch::class.java)
+                        sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         val size = sceneSearch.data.searchReturnDtoList.size
-                        for (i in 0 until size){
+                        for (i in 0 until size) {
                             val model = Model()
                             model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
                             model.price = sceneSearch.data.searchReturnDtoList[i].price

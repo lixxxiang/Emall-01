@@ -9,4 +9,6 @@
     <string name="qq">&#xe63c;</string>
     <string name="search">&#xe7b7;</string>
     <string name="down">&#xe627;</string>
+    <string name="scan">&#xe61a;</string>
+    <string name="every_day_pic">每日一图</string>
 </resources>
