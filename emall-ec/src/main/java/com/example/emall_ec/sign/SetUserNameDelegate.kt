@@ -40,35 +40,50 @@ class SetUserNameDelegate : EmallDelegate(){
             val url: String = if (FileUtil.checkEmulator()) {
                 "http://10.0.2.2:3003/news"
             } else {
-                "http://10.10.90.38:3003/news"
+//                "http://10.10.90.38:3003/news"
+                "http://192.168.1.36:3003/news"
+
             }
-            RestClient().builder()
-                    .url(url)//EMULATOR
-//                    .url("http://192.168.2.162:3003/news")//HOME
-//                    .params("password", edit_sign_up_pwd.text.toString())
-//                    .params("email", edit_sign_up_name.text.toString())
-                    .params(params)
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-                            EmallLogger.json("USER_PROFILE", response)
-                            SignHandler().onSignUp(response, mISignListener!!)
+
+            var fakeResponce = "{\n" +
+                    "avatar: \"avatar\",\n" +
+                    "gender: \"gender\",\n" +
+                    "userId: \"123\",\n" +
+                    "name: \"n\",\n" +
+                    "address: \"address\",\n" +
+                    "id: 44\n" +
+                    "}"
+            SignHandler().onSignUp(fakeResponce, mISignListener!!)
 //                            startWithPop(SetPasswordDelegate())
-                            startWithPop(SignInByTelDelegate())
-                        }
-                    })
-                    .failure(object : IFailure {
-                        override fun onFailure() {
+            startWithPop(SignInByTelDelegate())
 
-                        }
-                    })
-                    .error(object : IError {
-                        override fun onError(code: Int, msg: String) {
-
-                        }
-                    })
-                    .build()
-//                    .get()
-                    .post()
+//            RestClient().builder()
+//                    .url(url)//EMULATOR
+////                    .url("http://192.168.2.162:3003/news")//HOME
+////                    .params("password", edit_sign_up_pwd.text.toString())
+////                    .params("email", edit_sign_up_name.text.toString())
+//                    .params(params)
+//                    .success(object : ISuccess {
+//                        override fun onSuccess(response: String) {
+//                            EmallLogger.json("USER_PROFILE", response)
+//                            SignHandler().onSignUp(response, mISignListener!!)
+////                            startWithPop(SetPasswordDelegate())
+//                            startWithPop(SignInByTelDelegate())
+//                        }
+//                    })
+//                    .failure(object : IFailure {
+//                        override fun onFailure() {
+//                            EmallLogger.d("failure")
+//                        }
+//                    })
+//                    .error(object : IError {
+//                        override fun onError(code: Int, msg: String) {
+//                            EmallLogger.d("error")
+//                        }
+//                    })
+//                    .build()
+////                    .get()
+//                    .post()
         }
     }
 }

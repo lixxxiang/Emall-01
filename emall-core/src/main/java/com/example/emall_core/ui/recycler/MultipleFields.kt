@@ -21,7 +21,7 @@ enum class MultipleFields {
 //    NAME,
 //    TAG,
     THE_THREE,
-    GUESS_LIKE_IMAGE_URL,
+    GUESS_LIKE,
     CONTENT_DATE
 
 }

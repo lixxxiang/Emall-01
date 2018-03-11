@@ -54,10 +54,8 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                                 .success(object : ISuccess {
                                     override fun onSuccess(response: String) {
                                         data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
-
                                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
-//                                        EmallLogger.d(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0].getField(MultipleFields.THE_THREE))
-//                                        EmallLogger.d(data!!.get(3).getField(MultipleFields.THE_THREE))
+                                        data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
                                     }
                                 })
                                 .build()
@@ -67,7 +65,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
                         }
                         data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
-//                        data!!.add(GUESS_LIKE_CONVERTER.guessLikeConvert()[0])
                         mAdapter = MultipleRecyclerAdapter.create(data)
                         mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
                         RECYCLERVIEW.adapter = mAdapter

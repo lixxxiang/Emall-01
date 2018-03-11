@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:id="@+id/item_guess_like_iv"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/item_guess_like_type_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_guess_like_iv"
+        android:layout_alignLeft="@+id/item_guess_like_iv"
+        android:layout_marginTop="8dp"
+        android:textSize="10dp"
+        android:text="字段字段字段字段字段"
+        android:textColor="#FFFFFF"
+        android:background="#EF6677"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/item_guess_like_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_guess_like_type_tv"
+        android:text="字段字段字段字段字段"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/item_guess_like_iv"
+        android:textSize="12dp"
+        android:textColor="#5C5C5C"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/item_guess_like_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_guess_like_title_tv"
+        android:text="字段字段字段字段字段"
+        android:layout_marginTop="8dp"
+        android:layout_alignLeft="@+id/item_guess_like_iv"
+        android:textSize="12dp"
+        android:textColor="#B80017"/>
+</RelativeLayout>

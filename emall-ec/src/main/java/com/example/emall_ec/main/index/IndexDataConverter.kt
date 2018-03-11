@@ -4,6 +4,7 @@ import com.example.emall_core.ui.recycler.DataConverter
 import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.alibaba.fastjson.JSON
+import com.example.emall_core.ui.recycler.data.GuessLikeBean
 import com.example.emall_core.ui.recycler.data.TheThreeBean
 import com.example.emall_core.ui.recycler.data.UnitBean
 import com.example.emall_core.util.log.EmallLogger
@@ -14,18 +15,30 @@ import com.example.emall_core.util.log.EmallLogger
  */
 class IndexDataConverter : DataConverter() {
 
-    var unit : MutableList<UnitBean> ?= mutableListOf()
-    var theThree : MutableList<TheThreeBean> ?= mutableListOf()
+    var unit: MutableList<UnitBean>? = mutableListOf()
+    var theThree: MutableList<TheThreeBean>? = mutableListOf()
+    var guessLike: MutableList<GuessLikeBean>? = mutableListOf()
 
     override fun guessLikeConvert(): ArrayList<MultipleItemEntity> {
-        var imageUrls : MutableList<String> = mutableListOf()
-        imageUrls.add("http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg")
-        imageUrls.add("http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161221215447_000017023_105_0011_001_L1_MSS.jpg")
-        imageUrls.add("http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.jpg")
+        var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(2).getJSONArray("pieces")
+        var size = jsonObject.size
+        var dataType: String?
+        var imageUrl: String?
+        var posTitle: String?
+        var posDescription: String?
+        var price: String?
+        for (i in 0 until size) {
+            dataType = jsonObject.getJSONObject(i).getString("dataType")
+            imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
+            posTitle = jsonObject.getJSONObject(i).getString("posTitle")
+            posDescription = jsonObject.getJSONObject(i).getString("posDescription")
+            price = jsonObject.getJSONObject(i).getString("price")
+            guessLike!!.add(GuessLikeBean(dataType, imageUrl, posTitle, posDescription, price))
+        }
         val entity = MultipleItemEntity.builder()
-                .setField(MultipleFields.GUESS_LIKE_IMAGE_URL,imageUrls)
+                .setField(MultipleFields.GUESS_LIKE, guessLike!!)
                 .setField(MultipleFields.SPAN_SIZE, 2)
-                .setField(MultipleFields.ITEM_TYPE, 3)
+                .setField(MultipleFields.ITEM_TYPE, 4)
                 .build()
         ENTITIES.add(entity)
         return ENTITIES
@@ -34,10 +47,10 @@ class IndexDataConverter : DataConverter() {
     override fun theThreeConvert(): ArrayList<MultipleItemEntity> {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(1).getJSONArray("pieces")
         var size = jsonObject.size
-        var imageUrl : String ?
-        var link : String ?
-        var type : String ?
-        for (i in 0 until size){
+        var imageUrl: String?
+        var link: String?
+        var type: String?
+        for (i in 0 until size) {
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
             link = jsonObject.getJSONObject(i).getString("link")
             type = jsonObject.getJSONObject(i).getString("dataType")
@@ -57,11 +70,11 @@ class IndexDataConverter : DataConverter() {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(0).getJSONArray("pieces")
         var size = jsonObject.size
         var title: String?
-        var detail : String ?
-        var imageUrl : String ?
-        var link : String ?
-        var type : String ?
-        for (i in 0 until size){
+        var detail: String?
+        var imageUrl: String?
+        var link: String?
+        var type: String?
+        for (i in 0 until size) {
             title = jsonObject.getJSONObject(i).getString("posTitle")
             detail = jsonObject.getJSONObject(i).getString("posDescription")
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
@@ -113,7 +126,6 @@ class IndexDataConverter : DataConverter() {
 
         return ENTITIES
     }
-
 
 
     override fun convert(): ArrayList<MultipleItemEntity> {

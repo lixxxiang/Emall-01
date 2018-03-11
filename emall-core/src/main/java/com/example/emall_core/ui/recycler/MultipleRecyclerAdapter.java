@@ -16,6 +16,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.emall_core.R;
+import com.example.emall_core.app.Emall;
+import com.example.emall_core.ui.recycler.data.GuessLikeBean;
 import com.example.emall_core.ui.recycler.data.TheThreeBean;
 import com.example.emall_core.ui.recycler.data.UnitBean;
 import com.example.emall_core.util.log.EmallLogger;
@@ -91,6 +93,7 @@ public class MultipleRecyclerAdapter extends
         final String imageUrl1;
         Banner banner = holder.getView(R.id.banner);
         RecyclerView horiziontalRecyclerView = holder.getView(R.id.scroll_horiziontal_recyclerview);
+        RecyclerView guessLikeRecyclerView = holder.getView(R.id.guess_like_rv);
         switch (holder.getItemViewType()) {
             case ItemType.BANNER:
                 if (!mIsInitBanner) {
@@ -128,18 +131,13 @@ public class MultipleRecyclerAdapter extends
 //                holder.addOnClickListener(R.id.the_three_1);
 //
 //                holder.addOnClickListener(R.id.the_three_2);
-
-
                 break;
-            case ItemType.GUESS_LIKE_TITLE:
-
+            case ItemType.GUESS_LIKE:
+                EmallLogger.INSTANCE.d("hahahaha");
+                RecyclerView.LayoutManager manager = new GridLayoutManager(mContext, 2);
+                guessLikeRecyclerView.setLayoutManager(manager);
+                guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE),mContext));
                 break;
-//            case ItemType.GUESS_LIKE:
-//                Glide.with(mContext)
-//                        .load(imageUrl1)
-//                        .apply(RECYCLER_OPTIONS)
-//                        .into((ImageView) holder.getView(R.id.the_three_1));
-//                break;
             default:
                 break;
         }
