@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.classify
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -23,14 +24,18 @@ import com.google.gson.Gson
 import java.util.*
 import android.opengl.ETC1.getWidth
 import android.opengl.ETC1.getHeight
+import android.support.v4.app.ActivityCompat.invalidateOptionsMenu
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.ViewTreeObserver
 import android.view.View.MeasureSpec
 import android.view.View.MeasureSpec.UNSPECIFIED
 import android.view.View.MeasureSpec.makeMeasureSpec
+import android.view.Window
 import com.example.emall_core.app.Emall
+import android.view.MenuInflater
 
 
 /**
@@ -52,7 +57,7 @@ class ClassifyDelegate : BottomItemDelegate() {
         DELEGATE = getParentDelegate()
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
-        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+//        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         classify_ctl.isTitleEnabled = false
         classify_down_btn.typeface = Typeface.createFromAsset(activity.assets, "iconfont/down.ttf")
         classify_down_btn.setOnClickListener {
@@ -73,13 +78,20 @@ class ClassifyDelegate : BottomItemDelegate() {
                 if (state == AppBarStateChangeListener.State.EXPANDED) {
                     classify_toolbar.title = ""
                     //展开状态
+                    classify_toolbar.setNavigationIcon(R.drawable.ic_back_small)
+                    classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search)
+
 
                 } else if (state == AppBarStateChangeListener.State.COLLAPSED) {
 
                     //折叠状态
                     classify_toolbar.title = "光学1级"
+                    classify_toolbar.setTitleTextColor(Color.parseColor("#5C5C5C"))
+                    classify_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
+                    classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search_small_dark)
 
                 } else {
+//                    classify_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
 
                     //中间状态
                     classify_toolbar.title = ""
@@ -126,13 +138,13 @@ class ClassifyDelegate : BottomItemDelegate() {
 
     fun getTextViewHeight(): Int? {
         var height: Int? = 0
-        val observer = classify_introduction_tv.getViewTreeObserver()
+        val observer = classify_introduction_tv.viewTreeObserver
         observer.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 //避免重复监听
-                classify_introduction_tv.getViewTreeObserver().removeGlobalOnLayoutListener(this)
+                classify_introduction_tv.viewTreeObserver.removeGlobalOnLayoutListener(this)
 
-                height = classify_introduction_tv.getMeasuredHeight()//获文本高度
+                height = classify_introduction_tv.measuredHeight//获文本高度
                 //获取高度后要进行的操作就在这里执行，
                 //在外面可能onGlobalLayout还没有执行而获取不到height
 
@@ -187,7 +199,11 @@ class ClassifyDelegate : BottomItemDelegate() {
     private fun initRecyclerView() {
         val glm = GridLayoutManager(context, 2)
         val manager = glm
+        manager.isSmoothScrollbarEnabled = true
+        manager.isAutoMeasureEnabled = true
         classify_rv.layoutManager = manager
+        classify_rv.setHasFixedSize(true)
+        classify_rv.isNestedScrollingEnabled = false
         mAdapter = ClassifyAdapter(R.layout.item_classify, data, glm)
         classify_rv.adapter = mAdapter
     }
@@ -209,7 +225,6 @@ class ClassifyDelegate : BottomItemDelegate() {
                 .params(sceneSearchParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         val size = sceneSearch.data.searchReturnDtoList.size
                         for (i in 0 until size) {

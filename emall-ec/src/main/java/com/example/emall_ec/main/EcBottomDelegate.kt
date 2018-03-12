@@ -6,6 +6,7 @@ import com.example.emall_core.delegates.bottom.BottomTabBean
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.delegates.bottom.ItemBuilder
 import com.example.emall_ec.R
+import com.example.emall_ec.main.classify.BaseClassifyDelegate
 import com.example.emall_ec.main.discover.DiscoverDelegate
 import com.example.emall_ec.main.index.IndexDelegate
 import com.example.emall_ec.main.classify.ClassifyDelegate
@@ -18,11 +19,11 @@ import com.example.emall_ec.main.me.MeDelegate
 open class EcBottomDelegate : BaseBottomDelegate(){
     override fun setItems(builder: ItemBuilder): LinkedHashMap<BottomTabBean, BottomItemDelegate> {
         val items : LinkedHashMap<BottomTabBean, BottomItemDelegate> ?= LinkedHashMap()
-        items!!.put(BottomTabBean(R.drawable.test_icon_small, "主页"), IndexDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon_small, "分类"), ClassifyDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon, "发现"), DiscoverDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon_small, "购物车"), DiscoverDelegate())
-        items.put(BottomTabBean(R.drawable.test_icon_small, "我的"), MeDelegate())
+        items!!.put(BottomTabBean(R.drawable.home_h, "首页"), IndexDelegate())
+        items.put(BottomTabBean(R.drawable.classify_n, "分类"), BaseClassifyDelegate())
+        items.put(BottomTabBean(R.drawable.center, "发现"), DiscoverDelegate())
+        items.put(BottomTabBean(R.drawable.special_n, "专题"), DiscoverDelegate())
+        items.put(BottomTabBean(R.drawable.me_n, "我的"), MeDelegate())
         return builder.addItems(items)!!.build()!!
     }
 
@@ -31,6 +32,6 @@ open class EcBottomDelegate : BaseBottomDelegate(){
     }
 
     override fun setClickedColor(): Int {
-        return Color.parseColor("#ffff8800")
+        return Color.parseColor("#B4A078")
     }
 }

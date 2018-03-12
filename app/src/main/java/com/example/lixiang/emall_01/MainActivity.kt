@@ -1,5 +1,6 @@
 package com.example.lixiang.emall_01
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.example.emall_ec.launcher.LauncherDelegate
 import com.example.emall_ec.sign.ISignListener
 import com.example.emall_ec.sign.SignUpDelegate
 import com.example.emall_ec.main.EcBottomDelegate
+import com.githang.statusbar.StatusBarCompat
 
 
 class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
@@ -47,6 +49,7 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
             actionBar.hide()
         }
 
+        StatusBarCompat.setStatusBarColor(this, Color.WHITE)
 //        WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).path)
     }
 

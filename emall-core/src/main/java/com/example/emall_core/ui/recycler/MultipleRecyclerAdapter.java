@@ -115,7 +115,6 @@ public class MultipleRecyclerAdapter extends
                 break;
             case ItemType.THE_THREE:
                 theThreeList = entity.getField(MultipleFields.THE_THREE);
-                EmallLogger.INSTANCE.d(entity.getField(MultipleFields.THE_THREE));
                 Glide.with(mContext)
                         .load(theThreeList.get(0).getImageUrl())
                         .apply(RECYCLER_OPTIONS)
