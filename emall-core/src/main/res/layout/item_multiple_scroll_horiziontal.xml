@@ -22,11 +22,11 @@
         android:background="#F0F0F0"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="54dp">
+        android:layout_height="34dp">
         <RelativeLayout
             android:layout_width="75dp"
             android:layout_height="14dp"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="14dp"

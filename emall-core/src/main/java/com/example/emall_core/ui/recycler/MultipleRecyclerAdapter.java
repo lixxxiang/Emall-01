@@ -21,6 +21,7 @@ import com.example.emall_core.ui.recycler.data.GuessLikeBean;
 import com.example.emall_core.ui.recycler.data.TheThreeBean;
 import com.example.emall_core.ui.recycler.data.UnitBean;
 import com.example.emall_core.util.log.EmallLogger;
+import com.example.emall_core.util.view.GridSpacingItemDecoration;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -134,6 +135,8 @@ public class MultipleRecyclerAdapter extends
             case ItemType.GUESS_LIKE:
                 EmallLogger.INSTANCE.d("hahahaha");
                 RecyclerView.LayoutManager manager = new GridLayoutManager(mContext, 2);
+                guessLikeRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 20, true));
+
                 guessLikeRecyclerView.setLayoutManager(manager);
                 guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE),mContext));
                 break;

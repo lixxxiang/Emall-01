@@ -14,7 +14,6 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.AppBarStateChangeListener
 import com.example.emall_ec.main.classify.data.ClassifyAdapter
@@ -22,20 +21,10 @@ import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.google.gson.Gson
 import java.util.*
-import android.opengl.ETC1.getWidth
-import android.opengl.ETC1.getHeight
-import android.support.v4.app.ActivityCompat.invalidateOptionsMenu
-import android.util.Log
-import android.view.Menu
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.ViewTreeObserver
-import android.view.View.MeasureSpec
-import android.view.View.MeasureSpec.UNSPECIFIED
-import android.view.View.MeasureSpec.makeMeasureSpec
-import android.view.Window
-import com.example.emall_core.app.Emall
-import android.view.MenuInflater
+import com.example.emall_core.util.view.GridSpacingItemDecoration
 
 
 /**
@@ -53,8 +42,12 @@ class ClassifyDelegate : BottomItemDelegate() {
         return R.layout.delegate_classify
     }
 
+    fun create(): ClassifyDelegate? {
+        return ClassifyDelegate()
+    }
+
     override fun initial() {
-        DELEGATE = getParentDelegate()
+//        DELEGATE = getParentDelegate()
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
 //        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -198,14 +191,15 @@ class ClassifyDelegate : BottomItemDelegate() {
 
     private fun initRecyclerView() {
         val glm = GridLayoutManager(context, 2)
-        val manager = glm
-        manager.isSmoothScrollbarEnabled = true
-        manager.isAutoMeasureEnabled = true
-        classify_rv.layoutManager = manager
+        glm.isSmoothScrollbarEnabled = true
+        glm.isAutoMeasureEnabled = true
+        classify_rv.addItemDecoration(GridSpacingItemDecoration(2, 30, true))
+        classify_rv.layoutManager = glm
         classify_rv.setHasFixedSize(true)
         classify_rv.isNestedScrollingEnabled = false
         mAdapter = ClassifyAdapter(R.layout.item_classify, data, glm)
         classify_rv.adapter = mAdapter
+
     }
 
     private fun getData() {
