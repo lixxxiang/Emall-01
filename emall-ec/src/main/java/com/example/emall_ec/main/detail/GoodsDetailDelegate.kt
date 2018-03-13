@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.detail
 
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -18,8 +19,10 @@ import com.flyco.tablayout.listener.CustomTabEntity
 import kotlinx.android.synthetic.main.delegate_video_goods_detail.*
 import android.view.MotionEvent
 import com.baidu.mapapi.map.MapView
+import com.example.emall_core.net.RestCreator.params
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.order.OrderDelegate
+import kotlinx.android.synthetic.main.delegate_classify.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
@@ -30,9 +33,13 @@ import java.util.*
  */
 class GoodsDetailDelegate : BottomItemDelegate() {
     var DATA: MutableList<MultipleItemEntity>? = mutableListOf()
-
+    var sceneDetailParams : WeakHashMap<String, Any>? = WeakHashMap()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
+    }
+
+    override fun setLayout(): Any? {
+        return R.layout.delegate_video_goods_detail
     }
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
@@ -41,6 +48,9 @@ class GoodsDetailDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        video_goods_detail_toolbar.title = ""
+        (activity as AppCompatActivity).setSupportActionBar(video_goods_detail_toolbar)
+        video_goods_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
         val mTitles = arrayOf("预览图", "参数", "位置")
         val mIconUnselectIds = intArrayOf(
                 R.mipmap.tab_home_unselect,
@@ -56,26 +66,29 @@ class GoodsDetailDelegate : BottomItemDelegate() {
             tl_6.setTabData(mTabEntities)
         }
 
-        val url: String = if (FileUtil.checkEmulator()) {
-            "http://10.0.2.2:3033/data"
-        } else {
-            "http://10.10.90.38:3033/data"
-        }
+//        val url: String = if (FileUtil.checkEmulator()) {
+//            "http://10.0.2.2:3033/data"
+//        } else {
+//            "http://10.10.90.11:8086/global/sceneDetail?productId=JL101A_PMS_20160820102530_000012697_101_0021_001_L1_PAN&type=1"
+//        }
 
+        sceneDetailParams!!["productId"] = "JL101A_PMS_20160820102530_000012697_101_0021_001_L1_PAN"
+        sceneDetailParams!!["type"] = "1"
 
-
+//        EmallLogger.d(url)
         RestClient().builder()
-                .url(url)//EMULATOR
-                .params(RestCreator.params)
+                .url("http://10.10.90.11:8086/global/sceneDetail")//EMULATOR
+                .params(sceneDetailParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        val bannerSize = VideoDetailDataConverter().setJsonData(response).convert()
-                        EmallLogger.d(bannerSize[0].getField(VideoDetailFields.DURATION))
-                        DATA = bannerSize
-
-                        Glide.with(context)
-                                .load(DATA!![0].getField(VideoDetailFields.IMAGEDETAILURL))
-                                .into(video_goods_detail_title_image)
+                        EmallLogger.d(response)
+//                        val bannerSize = VideoDetailDataConverter().setJsonData(response).convert()
+//                        EmallLogger.d(bannerSize[0].getField(VideoDetailFields.DURATION))
+//                        DATA = bannerSize
+//
+//                        Glide.with(context)
+//                                .load(DATA!![0].getField(VideoDetailFields.IMAGEDETAILURL))
+//                                .into(video_goods_detail_title_image)
                     }
                 })
                 .failure(object : IFailure {
@@ -116,9 +129,7 @@ class GoodsDetailDelegate : BottomItemDelegate() {
 
     }
 
-    override fun setLayout(): Any? {
-        return R.layout.delegate_video_goods_detail
-    }
+
 
     class TabEntity(var title: String, var selectedIcon: Int, var unSelectedIcon: Int) : CustomTabEntity {
 

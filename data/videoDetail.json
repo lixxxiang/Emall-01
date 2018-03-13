@@ -1,6 +1,5 @@
 {
-    "data":{
-    	"data": {
+    "data": {
         "cloud": "0",
         "duration": "32s",
         "geo": "{\"type\":\"Polygon\",\"coordinates\":[[[35.457584,33.948135],[35.594112,33.92194],[35.586525,33.867798],[35.449474,33.894363],[35.457584,33.948135]]]}",
@@ -16,11 +15,12 @@
         "salePrice": "50000.00",
         "satelliteId": "JL103B",
         "sensor": "MSS",
-        "serviceDescription": "若今日24:00前下单，2018年03月03日可交付",
+        "serviceDescription": "若今日24:00前下单，2018年03月16日可交付",
         "size": "77.85",
         "startTime": "2017-10-06 16:27:35",
         "title": "黎巴嫩 贝努特",
         "videoPath": "http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20171006162735_100002453_101_001_L1B_MSS.mp4"
-    }
-    }
+    },
+    "message": "success",
+    "status": 200
 }
