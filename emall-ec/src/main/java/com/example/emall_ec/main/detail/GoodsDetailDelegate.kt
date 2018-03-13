@@ -21,7 +21,10 @@ import android.view.MotionEvent
 import com.baidu.mapapi.map.MapView
 import com.example.emall_core.net.RestCreator.params
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.detail.data.VideoDetailBean
 import com.example.emall_ec.main.order.OrderDelegate
+import com.example.emall_ec.main.order.state.data.OrderDetail
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_classify.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -34,6 +37,7 @@ import java.util.*
 class GoodsDetailDelegate : BottomItemDelegate() {
     var DATA: MutableList<MultipleItemEntity>? = mutableListOf()
     var sceneDetailParams : WeakHashMap<String, Any>? = WeakHashMap()
+    var videoDetail = VideoDetailBean()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -75,20 +79,16 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         sceneDetailParams!!["productId"] = "JL101A_PMS_20160820102530_000012697_101_0021_001_L1_PAN"
         sceneDetailParams!!["type"] = "1"
 
-//        EmallLogger.d(url)
         RestClient().builder()
-                .url("http://10.10.90.11:8086/global/sceneDetail")//EMULATOR
-                .params(sceneDetailParams!!)
+//                .url("http://10.10.90.11:8086/global/sceneDetail")//EMULATOR
+                .url("http://192.168.1.36:3005/data")//EMULATOR
+//                .params(sceneDetailParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
-//                        val bannerSize = VideoDetailDataConverter().setJsonData(response).convert()
-//                        EmallLogger.d(bannerSize[0].getField(VideoDetailFields.DURATION))
-//                        DATA = bannerSize
-//
-//                        Glide.with(context)
-//                                .load(DATA!![0].getField(VideoDetailFields.IMAGEDETAILURL))
-//                                .into(video_goods_detail_title_image)
+                        videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
+                        Glide.with(context)
+                                .load(videoDetail.data.imageDetailUrl)
+                                .into(video_goods_detail_title_image)
                     }
                 })
                 .failure(object : IFailure {

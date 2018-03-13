@@ -52,4 +52,9 @@
     <string name="index_searchbar_hint">搜索卫星数据，共有5大类产品</string>
     <string name="classify">分类</string>
     <string name="special">专题</string>
+    <string name="video_detail_mask">当前为试看视频，可观看原始尺寸、0.92m高清画质卫星视频</string>
+    <string name="example">样例</string>
+    <string name="video1A_1B">视频1A+1B</string>
+    <string name="time_limit">限时促销</string>
+    <string name="time_limit_2">遥感数据全类型开发购买</string>
 </resources>
