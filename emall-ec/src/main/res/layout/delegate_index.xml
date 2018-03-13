@@ -31,7 +31,7 @@
 
             <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="31dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
@@ -47,7 +47,7 @@
 
             <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="31dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_weight="6"
                 android:background="@drawable/style_home_pager_toolbar_search_view"

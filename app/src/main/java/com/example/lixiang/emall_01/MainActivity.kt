@@ -49,7 +49,7 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
             actionBar.hide()
         }
 
-        StatusBarCompat.setStatusBarColor(this, Color.WHITE)
+//        StatusBarCompat.setStatusBarColor(this, Color.WHITE)
 //        WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).path)
     }
 

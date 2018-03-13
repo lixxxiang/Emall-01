@@ -1,24 +1,24 @@
-package com.example.emall_core.ui.recycler;
+package com.example.emall_ec.main.special;
 
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.emall_core.util.log.EmallLogger;
+import com.example.emall_core.ui.recycler.MultipleViewHolder;
 
 /**
- * Created by lixiang on 18/02/2018.
+ * Created by lixiang on 2018/3/13.
  */
 
-public class MultipleViewHolder extends BaseViewHolder {
+public class SpecialMultipleViewHolder extends BaseViewHolder {
 
-    private MultipleViewHolder(View view) {
+    private SpecialMultipleViewHolder(View view) {
         super(view);
     }
 
-    public static MultipleViewHolder create(View view) {
-        return new MultipleViewHolder(view);
+    public static SpecialMultipleViewHolder create(View view) {
+        return new SpecialMultipleViewHolder(view);
     }
 
     @Override

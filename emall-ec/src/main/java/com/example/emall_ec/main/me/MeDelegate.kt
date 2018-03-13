@@ -1,9 +1,12 @@
 package com.example.emall_ec.main.me
 
+import android.app.Activity
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_core.util.view.StatusBarCompat
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
@@ -36,6 +39,9 @@ class MeDelegate : BottomItemDelegate() {
         titleList!!.add(R.string.contact_us)
         titleList!!.add(R.string.suggestion)
 
+//        StatusBarCompat.setStatusBarColor(activity, Color.TRANSPARENT)
+        //should hide status bar background (default black background) when SDK >= 21
+//        StatusBarCompat.translucentStatusBar(activity, true);
         DELEGATE = getParentDelegate()
 
         me_foward.typeface = Typeface.createFromAsset(activity.assets, "iconfont/foward.ttf")

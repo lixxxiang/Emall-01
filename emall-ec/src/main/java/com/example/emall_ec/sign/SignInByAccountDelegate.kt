@@ -19,7 +19,7 @@ class SignInByAccountDelegate : EmallDelegate() {
 
     override fun initial() {
 
-        StatusBarCompat.setStatusBarColor(activity, Color.WHITE)
+//        StatusBarCompat.setStatusBarColor(activity, Color.WHITE)
         sign_in_by_account_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_in_by_account_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         sign_in_by_account_hide_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/hide.ttf")

@@ -60,9 +60,9 @@ public class MultipleRecyclerAdapter extends
         return new MultipleRecyclerAdapter(data);
     }
 
-    public static MultipleRecyclerAdapter create(DataConverter converter) {
-        return new MultipleRecyclerAdapter(converter.convert());
-    }
+//    public static MultipleRecyclerAdapter create(DataConverter converter) {
+//        return new MultipleRecyclerAdapter(converter.convert());
+//    }
 
     public void refresh(List<MultipleItemEntity> data) {
         getData().clear();
@@ -136,7 +136,6 @@ public class MultipleRecyclerAdapter extends
                 EmallLogger.INSTANCE.d("hahahaha");
                 RecyclerView.LayoutManager manager = new GridLayoutManager(mContext, 2);
                 guessLikeRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 20, true));
-
                 guessLikeRecyclerView.setLayoutManager(manager);
                 guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE),mContext));
                 break;

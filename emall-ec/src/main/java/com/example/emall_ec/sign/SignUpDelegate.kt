@@ -26,7 +26,7 @@ class SignUpDelegate : EmallDelegate() {
 
 
     override fun initial() {
-        StatusBarCompat.setStatusBarColor(activity, Color.WHITE)
+//        StatusBarCompat.setStatusBarColor(activity, Color.WHITE)
         sign_up_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_up_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         val params : WeakHashMap<String, Any> ?= RestClient().PARAMS

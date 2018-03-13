@@ -5,6 +5,7 @@ import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.example.emall_core.ui.recycler.data.GuessLikeBean
 import com.example.emall_core.ui.recycler.data.UnitBean
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.special.beans.SpecialHorizontalBean
 import com.example.emall_ec.main.special.beans.SpecialVerticalBean
 
@@ -12,13 +13,13 @@ import com.example.emall_ec.main.special.beans.SpecialVerticalBean
  * Created by lixiang on 2018/3/12.
  */
 class SpecialDataConverter {
-    val ENTITIES: ArrayList<MultipleItemEntity> = ArrayList()
+    val ENTITIES: ArrayList<SpecialItemEntity> = ArrayList()
     var horizontalData : MutableList<SpecialHorizontalBean>? = mutableListOf()
     var verticalData : MutableList<SpecialVerticalBean>? = mutableListOf()
 
     private var mJsonData: String? = null
 
-    fun horizontalConvert(): ArrayList<MultipleItemEntity>{
+    fun horizontalConvert(): ArrayList<SpecialItemEntity>{
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(0).getJSONArray("pieces")
         var size = jsonObject.size
         var title: String?
@@ -34,16 +35,17 @@ class SpecialDataConverter {
             type = jsonObject.getJSONObject(i).getString("dataType")
             horizontalData!!.add(SpecialHorizontalBean(title, detail, imageUrl, type, link))
         }
-        val entity = MultipleItemEntity.builder()
+        val entity = SpecialItemEntity.builder()
                 .setField(SpecialMultipleFields.HORIZONTAL, horizontalData!!)
                 .setField(SpecialMultipleFields.SPAN_SIZE, 2)
                 .setField(SpecialMultipleFields.ITEM_TYPE, 0)
                 .build()
 
         ENTITIES.add(entity)
+        var list:MutableList<SpecialHorizontalBean> = ENTITIES[0].getField(SpecialMultipleFields.HORIZONTAL)
         return ENTITIES
     }
-    fun verticalConvert(): ArrayList<MultipleItemEntity>{
+    fun verticalConvert(): ArrayList<SpecialItemEntity>{
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(2).getJSONArray("pieces")
         var size = jsonObject.size
         var dataType: String?
@@ -59,7 +61,7 @@ class SpecialDataConverter {
             price = jsonObject.getJSONObject(i).getString("price")
             verticalData!!.add(SpecialVerticalBean(dataType, imageUrl, posTitle, posDescription, price))
         }
-        val entity = MultipleItemEntity.builder()
+        val entity = SpecialItemEntity.builder()
                 .setField(SpecialMultipleFields.VERTICAL, verticalData!!)
                 .setField(SpecialMultipleFields.SPAN_SIZE, 2)
                 .setField(SpecialMultipleFields.ITEM_TYPE, 1)
