@@ -57,4 +57,10 @@
     <string name="video1A_1B">视频1A+1B</string>
     <string name="time_limit">限时促销</string>
     <string name="time_limit_2">遥感数据全类型开发购买</string>
+    <string name="get_ticket">领券：</string>
+    <string name="service">服务：</string>
+    <string name="params">参数</string>
+    <string name="location">位置</string>
+    <string name="buy_now">立即购买</string>
+
 </resources>

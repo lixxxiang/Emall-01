@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.detail
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -53,6 +54,9 @@ class GoodsDetailDelegate : BottomItemDelegate() {
 
     override fun initial() {
         video_goods_detail_toolbar.title = ""
+        video_detail_star_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/star.ttf")
+        video_detail_head_set_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/headset.ttf")
+
         (activity as AppCompatActivity).setSupportActionBar(video_goods_detail_toolbar)
         video_goods_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
         val mTitles = arrayOf("预览图", "参数", "位置")
@@ -80,9 +84,9 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         sceneDetailParams!!["type"] = "1"
 
         RestClient().builder()
-//                .url("http://10.10.90.11:8086/global/sceneDetail")//EMULATOR
-                .url("http://192.168.1.36:3005/data")//EMULATOR
-//                .params(sceneDetailParams!!)
+                .url("http://10.10.90.11:8086/global/sceneDetail")//EMULATOR
+//                .url("http://192.168.1.36:3005/data")//EMULATOR
+                .params(sceneDetailParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
