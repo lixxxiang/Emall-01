@@ -7,36 +7,33 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.RestCreator
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_core.ui.recycler.MultipleItemEntity
-import com.example.emall_core.util.file.FileUtil
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.main.index.VideoDetailFields
 import com.flyco.tablayout.listener.CustomTabEntity
 import kotlinx.android.synthetic.main.delegate_video_goods_detail.*
 import android.view.MotionEvent
 import com.baidu.mapapi.map.MapView
-import com.example.emall_core.net.RestCreator.params
-import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.detail.data.VideoDetailBean
 import com.example.emall_ec.main.order.OrderDelegate
-import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_classify.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
+import android.view.View.OnTouchListener
+import com.example.emall_core.util.view.ScreenUtil
+import android.R.attr.scrollX
+import android.os.Handler
+import android.util.Log
+import android.widget.ScrollView
+import com.example.emall_core.util.view.ListenningScrollView
 
 
 /**
  * Created by lixiang on 2018/2/26.
  */
 class GoodsDetailDelegate : BottomItemDelegate() {
-    var DATA: MutableList<MultipleItemEntity>? = mutableListOf()
     var sceneDetailParams : WeakHashMap<String, Any>? = WeakHashMap()
     var videoDetail = VideoDetailBean()
     fun create(): GoodsDetailDelegate? {
@@ -47,12 +44,38 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         return R.layout.delegate_video_goods_detail
     }
 
-    override fun onLazyInitView(savedInstanceState: Bundle?) {
-        super.onLazyInitView(savedInstanceState)
-
-    }
 
     override fun initial() {
+        initViews()
+
+        sceneDetailParams!!["productId"] = "JL101A_PMS_20160820102530_000012697_101_0021_001_L1_PAN"
+        sceneDetailParams!!["type"] = "1"
+        getData(sceneDetailParams!!)
+        resolveConflict()
+
+        video_goods_buy_now_btn.setOnClickListener{
+            val delegate: OrderDelegate = OrderDelegate().create()!!
+            val bundle : Bundle ?= Bundle()
+            bundle!!.putString("KEY", "ID")
+            delegate.arguments = bundle
+            start(delegate)
+        }
+
+        video_goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
+            val scrollY = ScreenUtil.px2dip(context, video_goods_detail_scrollview.scrollY.toFloat())
+            when {
+                scrollY < 491 -> video_detail_tablayout_ctl.currentTab = 0
+                scrollY in 491..848 -> {
+                    video_detail_tablayout_ctl.currentTab = 1
+                }
+                scrollY > 844 -> video_detail_tablayout_ctl.currentTab = 2
+            }
+        }
+    }
+
+
+
+    private fun initViews() {
         video_goods_detail_toolbar.title = ""
         video_detail_star_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/star.ttf")
         video_detail_head_set_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/headset.ttf")
@@ -60,33 +83,20 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(video_goods_detail_toolbar)
         video_goods_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
         val mTitles = arrayOf("预览图", "参数", "位置")
-        val mIconUnselectIds = intArrayOf(
-                R.mipmap.tab_home_unselect,
-                R.mipmap.tab_speech_unselect,
-                R.mipmap.tab_contact_unselect)
-        val mIconSelectIds = intArrayOf(
-                R.mipmap.tab_home_select,
-                R.mipmap.tab_speech_select,
-                R.mipmap.tab_contact_select)
-        var mTabEntities: ArrayList<CustomTabEntity>? = ArrayList()
+        val mIconUnselectIds = intArrayOf(R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect, R.mipmap.tab_contact_unselect)
+        val mIconSelectIds = intArrayOf(R.mipmap.tab_home_select, R.mipmap.tab_speech_select, R.mipmap.tab_contact_select)
+        val mTabEntities: ArrayList<CustomTabEntity>? = ArrayList()
         for (i in 0 until mTitles.size) {
             mTabEntities!!.add(TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]))
-            tl_6.setTabData(mTabEntities)
+            video_detail_tablayout_ctl.setTabData(mTabEntities)
         }
+    }
 
-//        val url: String = if (FileUtil.checkEmulator()) {
-//            "http://10.0.2.2:3033/data"
-//        } else {
-//            "http://10.10.90.11:8086/global/sceneDetail?productId=JL101A_PMS_20160820102530_000012697_101_0021_001_L1_PAN&type=1"
-//        }
-
-        sceneDetailParams!!["productId"] = "JL101A_PMS_20160820102530_000012697_101_0021_001_L1_PAN"
-        sceneDetailParams!!["type"] = "1"
-
+    private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         RestClient().builder()
                 .url("http://10.10.90.11:8086/global/sceneDetail")//EMULATOR
 //                .url("http://192.168.1.36:3005/data")//EMULATOR
-                .params(sceneDetailParams!!)
+                .params(sceneDetailParams)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
@@ -107,12 +117,10 @@ class GoodsDetailDelegate : BottomItemDelegate() {
                 })
                 .build()
                 .get()
+    }
 
-        EmallLogger.d(DATA!!)
-
-
+    private fun resolveConflict() {
         val mMapView = activity.findViewById(R.id.video_detail_map) as MapView
-
         val v = mMapView.getChildAt(0)
         v.setOnTouchListener(View.OnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -122,17 +130,7 @@ class GoodsDetailDelegate : BottomItemDelegate() {
             }
             false
         })
-
-        video_goods_buy_now_btn.setOnClickListener{
-            val delegate: OrderDelegate = OrderDelegate().create()!!
-            val bundle : Bundle ?= Bundle()
-            bundle!!.putString("KEY", "ID")
-            delegate.arguments = bundle
-            start(delegate)
-        }
-
     }
-
 
 
     class TabEntity(var title: String, var selectedIcon: Int, var unSelectedIcon: Int) : CustomTabEntity {
