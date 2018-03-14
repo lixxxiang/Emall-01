@@ -123,6 +123,7 @@
                     android:id="@+id/video_detail_time_limit_tv"
                     android:text="@string/time_limit"/>
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/video_detail_promotion_description_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/video_detail_time_limit_tv"

@@ -21,13 +21,7 @@ import com.google.gson.Gson
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
-import android.view.View.OnTouchListener
 import com.example.emall_core.util.view.ScreenUtil
-import android.R.attr.scrollX
-import android.os.Handler
-import android.util.Log
-import android.widget.ScrollView
-import com.example.emall_core.util.view.ListenningScrollView
 
 
 /**
@@ -52,7 +46,7 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         sceneDetailParams!!["type"] = "1"
         getData(sceneDetailParams!!)
         resolveConflict()
-
+        setData(videoDetail)
         video_goods_buy_now_btn.setOnClickListener{
             val delegate: OrderDelegate = OrderDelegate().create()!!
             val bundle : Bundle ?= Bundle()
@@ -73,6 +67,15 @@ class GoodsDetailDelegate : BottomItemDelegate() {
         }
     }
 
+    private fun setData(videoDetail: VideoDetailBean) {
+        val data = videoDetail.data
+        Glide.with(context)
+                .load(data.imageDetailUrl)
+                .into(video_goods_detail_title_image)
+        video_detail_title_tv.text = data.title
+        video_detail_promotion_description_tv.text = data.promotionDescription
+
+    }
 
 
     private fun initViews() {
@@ -100,9 +103,8 @@ class GoodsDetailDelegate : BottomItemDelegate() {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
-                        Glide.with(context)
-                                .load(videoDetail.data.imageDetailUrl)
-                                .into(video_goods_detail_title_image)
+                        setData(videoDetail)
+
                     }
                 })
                 .failure(object : IFailure {
