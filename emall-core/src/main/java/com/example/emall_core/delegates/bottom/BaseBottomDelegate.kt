@@ -135,6 +135,13 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
 
     override fun onClick(v: View) {
         val tag = v.tag as Int
+        if(tag != 4){
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+        }else{
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+
+        }
+
         resetColor()
         val item = v as RelativeLayout
         val itemIcon = item.getChildAt(0) as AppCompatImageView

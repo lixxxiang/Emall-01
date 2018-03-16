@@ -1,20 +1,13 @@
 package com.example.emall_ec.main.order
 
-import com.bumptech.glide.Glide
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.RestCreator
-import com.example.emall_core.net.RestCreator.params
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.main.detail.GoodsDetailDelegate
-import com.example.emall_ec.main.detail.VideoDetailDataConverter
-import com.example.emall_ec.main.index.VideoDetailFields
-import kotlinx.android.synthetic.main.delegate_video_goods_detail.*
 import java.util.*
 
 /**

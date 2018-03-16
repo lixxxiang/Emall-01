@@ -62,5 +62,14 @@
     <string name="params">参数</string>
     <string name="location">位置</string>
     <string name="buy_now">立即购买</string>
+    <string name="video_detail_area">%1$s平方公里</string>
+    <string name="video_detail_sale_price">¥%1$s</string>
+    <string name="video_detail_original_price">¥%1$s</string>
+    <string name="video_detail_cloud">%1$s%%</string>
+    <string name="video_detail_location">%1$s %2$s, %3$s %4$s</string>
+    <string name="video_detail_angle">%1$s°</string>
+    <string name="video_detail_gather_time">%1$s 北京时间</string>
+    <string name="search_program">搜索感兴趣的地点</string>
+
 
 </resources>

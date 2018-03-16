@@ -23,6 +23,7 @@ abstract class ProxyActivity : SupportActivity() {
 
     fun initContainer(savedInstanceState: Bundle?) {
         val container = ContentFrameLayout(this)
+//        container.fitsSystemWindows = true
         container.id = R.id.delegate_container
         setContentView(container)
         if (savedInstanceState == null) {

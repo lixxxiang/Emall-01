@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+    <com.baidu.mapapi.map.MapView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.baidu.mapapi.map.MapView>
     <LinearLayout
         android:layout_alignParentTop="true"
         android:id="@+id/ll_bar"
         android:layout_width="fill_parent"
-        android:layout_height="10dp"
+        android:layout_height="12dp"
         android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:background="#8C000000">
     </LinearLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout_index"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_index">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_index"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
-
     <android.support.v7.widget.Toolbar
         android:layout_below="@+id/ll_bar"
-        android:id="@+id/toolbar_index"
+        android:id="@+id/program_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF">
+        android:background="#8C000000">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,13 +34,11 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/index_scan_tv"
-                    android:layout_width="25dp"
-                    android:layout_height="21dp"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/scan"
-                    android:textSize="25dp" />
+                    android:background="@drawable/ic_back_small"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -63,26 +51,16 @@
 
                 <RelativeLayout
                     android:layout_width="184dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true">
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/index_search_icon"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="0dp"
-                        android:background="@drawable/ic_search_dark" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/edt_search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/index_search_icon"
                         android:lines="1"
-                        android:text="@string/index_searchbar_hint"
+                        android:layout_centerVertical="true"
+                        android:text="@string/search_program"
                         android:textColor="#9B9B9B"
                         android:textColorHint="#9B9B9B"
                         android:textSize="12dp"/>
@@ -96,18 +74,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/index_noti_tv"
-                    android:layout_width="25dp"
-                    android:layout_height="21dp"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/scan"
-                    android:textSize="25dp" />
             </RelativeLayout>
 
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
-
 </RelativeLayout>

@@ -78,7 +78,6 @@ public class SpecialAdapter extends
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
                 SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
                 snapHelperStart.attachToRecyclerView(horiziontalRecyclerView);
-                EmallLogger.INSTANCE.d(item.getField(SpecialMultipleFields.HORIZONTAL));
                 horiziontalRecyclerView.setAdapter(new ItemSpecialAdapter((List<SpecialHorizontalBean>) item.getField(SpecialMultipleFields.HORIZONTAL), mContext));
                 break;
             case SpecialItemType.VERTICAL:

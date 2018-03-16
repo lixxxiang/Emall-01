@@ -1,101 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tl="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
     app:ignore="NamespaceTypo">
 
+    <LinearLayout
+        android:id="@+id/ll_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical" />
+
     <com.example.emall_core.util.view.ListenningScrollView
-        android:layout_below="@+id/video_goods_detail_toolbar"
         android:id="@+id/video_goods_detail_scrollview"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/video_detail_bottom_bar_ll"
-        android:layout_height="wrap_content">
+        android:layout_below="@+id/video_goods_detail_toolbar">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="255dp">
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/video_goods_detail_title_image"
                     android:layout_width="match_parent"
-                    android:scaleType="centerCrop"
-                    android:layout_height="255dp" />
+                    android:layout_height="255dp"
+                    android:scaleType="centerCrop" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="255dp"
-                    android:background="#33000000"/>
+                    android:background="#33000000" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="59dp"
                     android:layout_height="59dp"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/play"/>
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/play" />
+
                 <RelativeLayout
                     android:id="@+id/video_goods_detail_mask_iv"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_alignParentTop="true"
                     android:background="#4C000000">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/video_detail_mask"
-                        android:textSize="10dp"
-                        android:layout_marginLeft="12dp"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:textColor="#FFFFFF"/>
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/video_detail_mask"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
 
                     <RelativeLayout
                         android:layout_width="68dp"
                         android:layout_height="14dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true">
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/video_detail_eye_tv"
                             android:layout_width="13dp"
                             android:layout_height="9dp"
-                            android:background="@drawable/eye"
+                            android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"/>
+                            android:background="@drawable/eye" />
+
                         <android.support.v7.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/example"
-                            android:layout_toRightOf="@+id/video_detail_eye_tv"
+                            android:layout_centerVertical="true"
                             android:layout_marginLeft="9dp"
+                            android:layout_toRightOf="@+id/video_detail_eye_tv"
+                            android:text="@string/example"
                             android:textColor="#FFFFFF"
-                            android:textSize="10dp"
-                            android:layout_centerVertical="true"/>
+                            android:textSize="10dp" />
+
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_width="10dp"
                             android:layout_height="10dp"
-                            android:background="@drawable/ic_foward_white"
                             android:layout_centerVertical="true"
+                            android:layout_marginLeft="36dp"
                             android:layout_toRightOf="@+id/video_detail_eye_tv"
-                            android:layout_marginLeft="36dp"/>
+                            android:background="@drawable/ic_foward_white" />
                     </RelativeLayout>
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="73dp"
                     android:layout_height="22dp"
-                    android:background="#B4A078"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="16dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="28dp">
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="28dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="#B4A078">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/video1A_1B"
-                        android:textSize="10dp"
-                        android:textColor="#FFFFFF"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:text="@string/video1A_1B"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -104,434 +124,474 @@
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background="#FFFFFF">
+
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/video_detail_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="20dp"
                     android:textColor="#5C5C5C"
-                    android:textSize="14dp"
-                    android:text="视频标题"
-                    android:id="@+id/video_detail_title_tv"/>
+                    android:textSize="14dp" />
+
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/video_detail_time_limit_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="47dp"
+                    android:text="@string/time_limit"
                     android:textColor="#B80017"
-                    android:textSize="12dp"
-                    android:id="@+id/video_detail_time_limit_tv"
-                    android:text="@string/time_limit"/>
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/video_detail_promotion_description_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/video_detail_time_limit_tv"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="47dp"
+                    android:layout_toRightOf="@+id/video_detail_time_limit_tv"
                     android:textColor="#9B9B9B"
-                    android:textSize="12dp"
-                    android:text="@string/time_limit_2"/>
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/video_detail_sale_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_marginRight="28dp"
-                    android:layout_alignParentRight="true"
                     android:layout_marginTop="17dp"
+                    android:text="@string/video_detail_sale_price"
                     android:textColor="#B80017"
-                    android:textSize="18dp"
-                    android:text="$20000.00"/>
+                    android:textSize="18dp" />
+
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/video_detail_original_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="45dp"
+                    android:layout_alignLeft="@+id/video_detail_sale_price_tv"
                     android:layout_marginTop="46dp"
-                    android:layout_alignParentRight="true"
+                    android:text="@string/video_detail_original_price"
                     android:textColor="#9B9B9B"
-                    android:textSize="14dp"
-                    android:text="$20000.00"/>
-                <RelativeLayout
-                    android:layout_width="63dp"
-                    android:layout_height="1dp"
-                    android:background="#9B9B9B"
-                    android:layout_marginRight="45dp"
-                    android:layout_marginTop="56dp"
-                    android:layout_alignParentRight="true"
-                    />
+                    android:textSize="14dp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#F0F0F0"/>
+                    android:background="#F0F0F0" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="143dp"
                 android:background="#FFFFFF">
+
                 <RelativeLayout
                     android:id="@+id/video_detail_get_ticket_rl"
                     android:layout_width="match_parent"
                     android:layout_height="40dp">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:textColor="#5C5C5C"
-                        android:text="@string/get_ticket"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="13dp"/>
+                        android:layout_marginLeft="13dp"
+                        android:text="@string/get_ticket"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:background="@drawable/ic_foward"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="14dp"/>
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:background="@drawable/ic_foward" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/line"
-                    android:layout_below="@+id/video_detail_get_ticket_rl"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#E0E0E0"/>
+                    android:layout_below="@+id/video_detail_get_ticket_rl"
+                    android:background="#E0E0E0" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/video_detail_service_tv"
-                    android:layout_below="@+id/line"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/service"
-                    android:textSize="12dp"
-                    android:textColor="#5C5C5C"
+                    android:layout_below="@+id/line"
+                    android:layout_marginLeft="13dp"
                     android:layout_marginTop="11dp"
-                    android:layout_marginLeft="13dp"/>
+                    android:text="@string/service"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <ImageView
                     android:id="@+id/dot_1"
                     android:layout_width="4dp"
                     android:layout_height="4dp"
-                    android:background="@drawable/dot"
-                    android:layout_toRightOf="@+id/video_detail_service_tv"
-                    android:layout_marginLeft="18dp"
                     android:layout_alignTop="@+id/video_detail_service_tv"
-                    android:layout_marginTop="7dp"/>
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toRightOf="@+id/video_detail_service_tv"
+                    android:background="@drawable/dot" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/video_detail_service_1_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="若今日 24:00 前下单，2017.12.22 可交付"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_alignTop="@+id/video_detail_service_tv"
+                    android:layout_marginLeft="36dp"
                     android:layout_toRightOf="@+id/video_detail_service_tv"
-                    android:layout_marginLeft="36dp" />
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <ImageView
                     android:id="@+id/dot_2"
                     android:layout_width="4dp"
                     android:layout_height="4dp"
-                    android:background="@drawable/dot"
-                    android:layout_below="@+id/dot_1"
                     android:layout_alignLeft="@+id/dot_1"
-                    android:layout_marginTop="24dp"/>
+                    android:layout_below="@+id/dot_1"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/dot" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/video_detail_service_2_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/video_detail_service_1_tv"
+                    android:layout_below="@+id/video_detail_service_1_tv"
+                    android:layout_marginTop="12dp"
                     android:text="长光卫星星座数据支持"
                     android:textColor="#5C5C5C"
-                    android:textSize="12dp"
-                    android:layout_below="@+id/video_detail_service_1_tv"
-                    android:layout_alignLeft="@+id/video_detail_service_1_tv"
-                    android:layout_marginTop="12dp" />
+                    android:textSize="12dp" />
+
                 <ImageView
                     android:layout_width="4dp"
                     android:layout_height="4dp"
-                    android:background="@drawable/dot"
-                    android:layout_below="@+id/dot_2"
                     android:layout_alignLeft="@+id/dot_2"
-                    android:layout_marginTop="24dp"/>
+                    android:layout_below="@+id/dot_2"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/dot" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/video_detail_service_2_tv"
+                    android:layout_below="@+id/video_detail_service_2_tv"
+                    android:layout_marginTop="12dp"
                     android:text="卫星回传数据10分钟快速上架"
                     android:textColor="#5C5C5C"
-                    android:textSize="12dp"
-                    android:layout_below="@+id/video_detail_service_2_tv"
-                    android:layout_alignLeft="@+id/video_detail_service_2_tv"
-                    android:layout_marginTop="12dp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:background="#FFFFFF">
+
                 <RelativeLayout
                     android:id="@+id/video_detail_params_rl"
                     android:layout_width="match_parent"
                     android:layout_height="40dp">
+
                     <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/video_detail_params_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:textColor="#4A4A4A"
-                        android:text="@string/params"
-                        android:layout_marginLeft="13dp"
                         android:layout_centerVertical="true"
-                        android:id="@+id/video_detail_params_tv"
-                        />
+                        android:layout_marginLeft="13dp"
+                        android:text="@string/params"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
                     <RelativeLayout
                         android:layout_width="1dp"
                         android:layout_height="12dp"
-                        android:background="#9B9B9B"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/video_detail_params_tv"/>
+                        android:layout_toRightOf="@+id/video_detail_params_tv"
+                        android:background="#9B9B9B" />
+
                     <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/video_detail_product_id_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="JL103B_MSS_20170320213446_100001008_101_0161_002"
-                        android:textSize="10dp"
-                        android:textColor="#9B9B9B"
-                        android:layout_toRightOf="@+id/video_detail_params_tv"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="21dp"/>
+                        android:layout_marginLeft="21dp"
+                        android:layout_toRightOf="@+id/video_detail_params_tv"
+                        android:textColor="#9B9B9B"
+                        android:textSize="10dp" />
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E0E0E0"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginLeft="13dp"/>
+                        android:layout_marginLeft="13dp"
+                        android:background="#E0E0E0" />
                 </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/video_detail_params_title_ll"
-                    android:background="#FFFFFF"
-                    android:layout_below="@+id/video_detail_params_rl"
-                    android:layout_alignParentLeft="true"
                     android:layout_width="111dp"
                     android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/video_detail_params_rl"
+                    android:background="#FFFFFF"
                     android:orientation="vertical">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
                         android:layout_marginTop="14dp"
+                        android:layout_weight="1"
                         android:text="卫星"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="产品级别"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="分辨率"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="采集时间"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="面积"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="云量"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="侧摆角"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="景中心经纬度"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="11dp"
-                        android:textSize="12dp"
-                        android:textColor="#9B9B9B"
+                        android:layout_weight="1"
                         android:text="坐标系统"
-                        android:layout_weight="1"/>
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_below="@+id/video_detail_params_rl"
-                    android:layout_toRightOf="@+id/video_detail_params_title_ll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@+id/video_detail_params_rl"
+                    android:layout_toRightOf="@+id/video_detail_params_title_ll"
                     android:orientation="vertical">
+
                     <android.support.v7.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="#4A4A4A"
-                        android:layout_marginTop="14dp"
-                        android:textSize="12dp"
-                        android:layout_marginLeft="0dp"
                         android:id="@+id/video_detail_satellite_tv"
-                        android:text="JL101A ( PMS 0.72m + 2.88m )"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="14dp"
                         android:layout_weight="1"
                         android:textColor="#4A4A4A"
-                        android:textSize="12dp"
-                        android:layout_marginLeft="0dp"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_product_level_tv"
-                        android:text="L1"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="#4A4A4A"
-                        android:textSize="12dp"
                         android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="L1"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_ratio_tv"
-                        android:text="0.73m + 2.88m"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_weight="1"
                         android:textColor="#4A4A4A"
-                        android:textSize="12dp"
-                        android:layout_marginLeft="0dp"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_gather_time_tv"
-                        android:text="2017.08.09 11:09:28 北京时间"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_weight="1"
                         android:textColor="#4A4A4A"
-                        android:textSize="12dp"
-                        android:layout_marginLeft="0dp"
+                        android:text="@string/video_detail_gather_time"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_area_tv"
-                        android:text="312.31 平方公里"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="#4A4A4A"
-                        android:textSize="12dp"
                         android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/video_detail_area"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_cloud_tv"
-                        android:text="1%"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_weight="1"
                         android:textColor="#4A4A4A"
-                        android:textSize="12dp"
-                        android:layout_marginLeft="0dp"
+                        android:text="@string/video_detail_cloud"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_angle_tv"
-                        android:text="2°"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="#4A4A4A"
-                        android:textSize="12dp"
                         android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/video_detail_angle"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_location_tv"
-                        android:text="124.323131 E ，32.321432 N"/>
-                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_weight="1"
                         android:textColor="#4A4A4A"
-                        android:textSize="12dp"
-                        android:layout_marginLeft="0dp"
+                        android:text="@string/video_detail_location"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/video_detail_coordinate_tv"
-                        android:text="WGS-84"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
 
 
                 </LinearLayout>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:background="#FFFFFF"
                 android:layout_height="40dp">
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="13dp"
                     android:text="@string/location"
                     android:textColor="#4A4A4A"
-                    android:textSize="12dp"
-                    android:layout_marginLeft="13dp"
-                    android:layout_centerVertical="true"/>
+                    android:textSize="12dp" />
             </RelativeLayout>
+
             <com.baidu.mapapi.map.MapView
                 android:id="@+id/video_detail_map"
                 android:layout_width="match_parent"
                 android:layout_height="259dp"
                 android:clickable="true" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
                 android:background="#FFFF00">
+
                 <AutoCompleteTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="textScroll"/>
+                    android:text="textScroll" />
             </RelativeLayout>
         </LinearLayout>
     </com.example.emall_core.util.view.ListenningScrollView>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/video_goods_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/ll_bar"
         android:background="#FFFFFF">
 
         <com.flyco.tablayout.CommonTabLayout
             android:id="@+id/video_detail_tablayout_ctl"
             android:layout_width="184dp"
             android:layout_height="48dp"
-            android:background="#FFFFFF"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
+            android:background="#FFFFFF"
             tl:tl_iconVisible="false"
+            tl:tl_indicator_color="#B4A078"
             tl:tl_indicator_corner_radius="1.5dp"
             tl:tl_indicator_height="3dp"
             tl:tl_indicator_width="50dp"
-            tl:tl_indicator_color="#B4A078"
+            tl:tl_tab_space_equal="true"
             tl:tl_textSelectColor="#B4A078"
             tl:tl_textUnselectColor="#4A4A4A"
-            tl:tl_tab_space_equal="true"
-            tl:tl_textsize="16sp"/>
+            tl:tl_textsize="16sp" />
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
@@ -541,46 +601,52 @@
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
         android:orientation="horizontal">
+
         <RelativeLayout
             android:id="@+id/video_detail_head_set_rl"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true">
+
             <TextView
                 android:id="@+id/video_detail_head_set_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="@string/headset"
-                android:textSize="18dp"
-                android:layout_centerInParent="true"/>
+                android:textSize="18dp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="1px"
             android:layout_height="match_parent"
-            android:background="#E0E0E0"
-            android:layout_toRightOf="@id/video_detail_head_set_rl"/>
+            android:layout_toRightOf="@id/video_detail_head_set_rl"
+            android:background="#E0E0E0" />
+
         <RelativeLayout
             android:id="@+id/video_detail_star_rl"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/video_detail_head_set_rl">
+
             <TextView
                 android:id="@+id/video_detail_star_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="@string/star"
-                android:textSize="18dp"
-                android:layout_centerInParent="true"/>
+                android:textSize="18dp" />
         </RelativeLayout>
+
         <android.support.v7.widget.AppCompatButton
-            android:layout_toRightOf="@+id/video_detail_star_rl"
             android:id="@+id/video_goods_buy_now_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/video_detail_star_rl"
             android:background="#B4A078"
-            android:textSize="12dp"
+            android:text="@string/buy_now"
             android:textColor="#FFFFFF"
-            android:text="@string/buy_now"/>
+            android:textSize="12dp" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -4,7 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/ll_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:orientation="vertical"
+        android:background="#FFFFFF"/>
     <android.support.v7.widget.Toolbar
+        android:layout_below="@+id/ll_bar"
         android:id="@+id/special_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
