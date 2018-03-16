@@ -12,14 +12,14 @@
         android:layout_width="fill_parent"
         android:layout_height="12dp"
         android:orientation="vertical"
-        android:background="#8C000000">
+        android:background="#BF000000">
     </LinearLayout>
     <android.support.v7.widget.Toolbar
         android:layout_below="@+id/ll_bar"
         android:id="@+id/program_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#8C000000">
+        android:background="#BF000000">
 
         <LinearLayout
             android:layout_width="match_parent"
