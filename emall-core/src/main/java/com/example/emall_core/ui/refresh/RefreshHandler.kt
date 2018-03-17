@@ -9,6 +9,8 @@ import android.util.Log
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.net.RestClient
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.ui.recycler.*
 
 
@@ -41,25 +43,41 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
+    fun getUnit(unitUrl: String){
+        RestClient().builder()
+                .url(unitUrl)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        println("success+")
+                        data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
+                        data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
+                        data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
+                    }
+                })
+                .error(object : IError{
+                    override fun onError(code: Int, msg: String) {
+                        println("error_")
+
+                    }
+                })
+                .failure(object : IFailure{
+                    override fun onFailure() {
+                        println("failure_")
+                    }
+
+                })
+                .build()
+                .get()
+    }
+
     fun firstPage(bannerUrl: String, url: String, unitUrl: String) {
 //        BEAN.setDelayed(1000)
-
 
         RestClient().builder()
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        RestClient().builder()
-                                .url(unitUrl)
-                                .success(object : ISuccess {
-                                    override fun onSuccess(response: String) {
-                                        data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
-                                        data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
-                                        data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
-                                    }
-                                })
-                                .build()
-                                .get()
+                        getUnit(unitUrl)
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
@@ -70,6 +88,18 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                         RECYCLERVIEW.adapter = mAdapter
                         BEAN.addIndex()
                     }
+                })
+                .error(object : IError{
+                    override fun onError(code: Int, msg: String) {
+                        println("error")
+
+                    }
+                })
+                .failure(object : IFailure{
+                    override fun onFailure() {
+                        println("failure")
+                    }
+
                 })
                 .build()
                 .get()

@@ -57,17 +57,13 @@ class IndexDelegate : BottomItemDelegate() {
         }
         initRefreshLayout()
         initRecyclerView()
-        if (FileUtil.checkEmulator()) {
-            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data", "http://10.10.90.11:8086/global/homePageUnits")
-//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data", "http://10.0.2.2:3004/data")
+//        if (FileUtil.checkEmulator()) {
+//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data", "http://10.10.90.11:8086/global/homePageUnits")
+//        } else {
+//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://10.10.90.11:8086/global/homePageUnits")
+            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://192.168.1.44:3003/data")
 
-        } else {
-//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.10.90.38:3030/data")
-            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://10.10.90.11:8086/global/homePageUnits")
-//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://192.168.1.36:3004/data")
-//                        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://10.10.90.38:3004/data")
-
-        }
+//        }
 
     }
 

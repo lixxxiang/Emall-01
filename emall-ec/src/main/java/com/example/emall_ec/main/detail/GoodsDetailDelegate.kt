@@ -198,7 +198,8 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         RestClient().builder()
-                .url("http://10.10.90.11:8086/global/videoDetail")//EMULATOR
+//                .url("http://10.10.90.11:8086/global/videoDetail")//EMULATOR
+                .url("http://192.168.1.36:3037/data")
 //                .url("http://192.168.1.36:3005/data")//EMULATOR
                 .params(sceneDetailParams)
                 .success(object : ISuccess {

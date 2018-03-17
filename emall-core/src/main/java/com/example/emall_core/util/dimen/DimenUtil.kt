@@ -1,5 +1,6 @@
 package com.example.emall_core.util.dimen
 
+import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import com.example.emall_core.app.Emall
@@ -18,5 +19,18 @@ class DimenUtil {
         val resources: Resources = Emall().getApplication().resources
         val dm: DisplayMetrics = resources.displayMetrics
         return dm.heightPixels
+    }
+
+    fun dip2px(context: Context, dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    fun px2dip(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
     }
 }

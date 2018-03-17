@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/program_root_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.baidu.mapapi.map.MapView
@@ -79,4 +80,24 @@
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
+    <!--<RelativeLayout-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="55dp"-->
+        <!--android:layout_above="@+id/program_bottom_rl"-->
+        <!--android:layout_marginBottom="65dp"-->
+        <!--android:background="#FFFF00"-->
+        <!--android:layout_centerHorizontal="true"/>-->
+    <RelativeLayout
+        android:id="@+id/program_bottom_rl"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:background="#BF000000"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/camera"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
 </RelativeLayout>
