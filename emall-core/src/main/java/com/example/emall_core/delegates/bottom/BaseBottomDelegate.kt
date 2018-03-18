@@ -107,8 +107,7 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
                 val itemIcon: AppCompatImageView = item.getChildAt(0) as AppCompatImageView
                 val bean: BottomTabBean = TAB_BEANS[i]
                 itemIcon.setImageResource(bean.icon)
-                itemIcon.layoutParams = RelativeLayout.LayoutParams(MATCH_PARENT,
-                        MATCH_PARENT)
+                itemIcon.layoutParams = RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                 if (i == mIndexDelegate) {
 //                    itemIcon.setTextColor(mClickedColor)
 //                    itemTitle.setTextColor(mClickedColor)

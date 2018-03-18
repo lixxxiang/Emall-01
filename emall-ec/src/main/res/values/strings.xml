@@ -70,6 +70,8 @@
     <string name="video_detail_angle">%1$s°</string>
     <string name="video_detail_gather_time">%1$s 北京时间</string>
     <string name="search_program">搜索感兴趣的地点</string>
+    <string name="program_toolbar">请选择拍摄时的参数</string>
+    <string name="next_step">下一步</string>
 
 
 </resources>
