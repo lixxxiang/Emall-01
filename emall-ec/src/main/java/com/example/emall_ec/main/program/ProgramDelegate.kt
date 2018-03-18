@@ -144,7 +144,6 @@ class ProgramDelegate : BottomItemDelegate() {
         title.visibility = View.GONE
         program_root_rl.addView(title, titleParams)
 
-
         val nextStep = TextView(activity)
         val nextStepParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         nextStepParams.addRule(RelativeLayout.ALIGN_PARENT_END)
