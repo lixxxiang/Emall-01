@@ -15,6 +15,7 @@ import com.example.emall_core.util.view.TextSwitcherView
 import java.util.ArrayList
 import android.animation.ObjectAnimator
 import android.os.Handler
+import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.view.RulerView
 import com.example.emall_core.util.view.ScreenUtil.dip2px
 
@@ -23,6 +24,7 @@ import com.example.emall_core.util.view.ScreenUtil.dip2px
  * Created by lixiang on 2018/3/16.
  */
 class ProgramDelegate : BottomItemDelegate() {
+
     override fun setLayout(): Any? {
         return R.layout.delegate_program
     }
@@ -155,7 +157,6 @@ class ProgramDelegate : BottomItemDelegate() {
 
         val fakeToolbarRl = RelativeLayout(activity)
         fakeToolbarRl.id = 5
-        EmallLogger.d(program_toolbar.height.toFloat())
         val fakeToolbarParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DimenUtil().dip2px(context, 54F))
         fakeToolbarParams.addRule(RelativeLayout.BELOW, R.id.ll_bar)
         fakeToolbarRl.layoutParams = fakeToolbarParams
@@ -277,7 +278,9 @@ class ProgramDelegate : BottomItemDelegate() {
             rular2.visibility = View.VISIBLE
         }
 
+        nextStep.setOnClickListener {
+            val delegate : ProgramParamsDelegate = ProgramParamsDelegate().create()!!
+            start(delegate)
+        }
     }
-
-
 }
