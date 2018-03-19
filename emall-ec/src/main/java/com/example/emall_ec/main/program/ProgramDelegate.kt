@@ -2,7 +2,6 @@ package com.example.emall_ec.main.program
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -11,8 +10,13 @@ import kotlinx.android.synthetic.main.delegate_program.*
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.TextSwitcherView
 import java.util.ArrayList
+import android.animation.ObjectAnimator
+import android.os.Handler
+import com.example.emall_core.util.view.RulerView
+import com.example.emall_core.util.view.ScreenUtil.dip2px
 
 
 /**
@@ -21,6 +25,10 @@ import java.util.ArrayList
 class ProgramDelegate : BottomItemDelegate() {
     override fun setLayout(): Any? {
         return R.layout.delegate_program
+    }
+
+    fun create(): ProgramDelegate? {
+        return ProgramDelegate()
     }
 
     override fun initial() {
@@ -133,27 +141,122 @@ class ProgramDelegate : BottomItemDelegate() {
         br.layoutParams = tlParams
         program_root_rl.addView(br, brParams)
 
+        val move = ImageView(activity)
+        val moveParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 230F), DimenUtil().dip2px(context, 2F))
+        moveParams.addRule(RelativeLayout.BELOW, topRl.id)
+        moveParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        moveParams.setMargins(DimenUtil().dip2px(context, 2F), DimenUtil().dip2px(context, 0F), 0, 0)
+        move.setImageResource(R.drawable.move)
+        move.layoutParams = moveParams
+        program_root_rl.addView(move, moveParams)
+
+
+
+
+        val fakeToolbarRl = RelativeLayout(activity)
+        fakeToolbarRl.id = 5
+        EmallLogger.d(program_toolbar.height.toFloat())
+        val fakeToolbarParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DimenUtil().dip2px(context, 54F))
+        fakeToolbarParams.addRule(RelativeLayout.BELOW, R.id.ll_bar)
+        fakeToolbarRl.layoutParams = fakeToolbarParams
+        program_root_rl.addView(fakeToolbarRl, fakeToolbarParams)
+
         val title = TextView(activity)
         val titleParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-        titleParams.setMargins(0, DimenUtil().dip2px(context, 28F), 0, 0)
         title.layoutParams = titleParams
         titleParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        titleParams.addRule(RelativeLayout.CENTER_VERTICAL)
         title.text = resources.getString(R.string.program_toolbar)
         title.setTextColor(Color.parseColor("#FFFFFF"))
-        title.textSize = 14F
+        title.textSize = 16F
         title.visibility = View.GONE
-        program_root_rl.addView(title, titleParams)
+        fakeToolbarRl.addView(title, titleParams)
 
         val nextStep = TextView(activity)
         val nextStepParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         nextStepParams.addRule(RelativeLayout.ALIGN_PARENT_END)
-        nextStepParams.setMargins(0, DimenUtil().dip2px(context, 28F), DimenUtil().dip2px(context, 18F), 0)
+        nextStepParams.setMargins(0, 0, DimenUtil().dip2px(context, 18F), 0)
+        nextStepParams.addRule(RelativeLayout.CENTER_VERTICAL)
         nextStep.layoutParams = titleParams
         nextStep.text = resources.getString(R.string.next_step)
         nextStep.setTextColor(Color.parseColor("#FFFFFF"))
-        nextStep.textSize = 14F
+        nextStep.textSize = 16F
         nextStep.visibility = View.GONE
-        program_root_rl.addView(nextStep, nextStepParams)
+        fakeToolbarRl.addView(nextStep, nextStepParams)
+
+
+
+        val handler = Handler()
+        val task = object : Runnable {
+            override fun run() {
+                // TODO Auto-generated method stub
+                handler.postDelayed(this, 3 * 1000)
+                val curTranslationY = move.translationY
+                val animator : ObjectAnimator = ObjectAnimator.ofFloat(move, "translationY", curTranslationY, DimenUtil().dip2px(context, 248F).toFloat(), curTranslationY)
+                animator.duration = 3000
+                animator.start()
+            }
+        }
+
+        handler.post(task)
+
+
+        val rulerRl = RelativeLayout(activity)
+        val rulerRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+        rulerRlParams.addRule(RelativeLayout.BELOW, topRl.id)
+        rulerRlParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        rulerRlParams.setMargins(0, DimenUtil().dip2px(context, 300F), 0, 0)
+        rulerRl.layoutParams = rulerRlParams
+        rulerRl.visibility = View.INVISIBLE
+        rulerRl.setBackgroundColor(Color.parseColor("#00000000"))
+        program_root_rl.addView(rulerRl, rulerRlParams)
+
+
+        val rular = RulerView(activity)
+        val rularParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        rularParams.setMargins(0, DimenUtil().dip2px(context, 40F), 0, 0)
+        rular.mMaxValue = 5000
+        rular.mMinValue = 1000
+        rular.mScaleBase = 100
+        rular.mMaxScaleColor = Color.parseColor("#ffffff")
+        rular.mMidScaleColor = Color.parseColor("#666666")
+        rular.mMinScaleColor = Color.parseColor("#666666")
+        rular.mMaxScaleHeightRatio = 0.2F
+        rular.mMidScaleHeightRatio = 0.2F
+        rular.mMinScaleHeightRatio = 0.2F
+        rular.mMaxScaleWidth = DimenUtil().dip2px(activity, 2.5F).toFloat()
+        rular.mMidScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
+        rular.mMinScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
+        rular.mCurrentValue = 10
+        rular.mScaleValueColor = Color.parseColor("#666666")
+        rular.isScaleGradient = false
+        rular.isShowScaleValue = false
+        rular.layoutParams = rularParams
+        rular.visibility = View.INVISIBLE
+        rulerRl.addView(rular, rularParams)
+
+        val rular2 = RulerView(activity)
+        val rular2Params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        rular2Params.setMargins(0, DimenUtil().dip2px(context, 120F), 0, 0)
+        rular2.mMaxValue = 5000
+        rular2.mMinValue = 1000
+        rular2.mScaleBase = 100
+        rular2.mMaxScaleColor = Color.parseColor("#ffffff")
+        rular2.mMidScaleColor = Color.parseColor("#666666")
+        rular2.mMinScaleColor = Color.parseColor("#666666")
+        rular2.mMaxScaleHeightRatio = 0.2F
+        rular2.mMidScaleHeightRatio = 0.2F
+        rular2.mMinScaleHeightRatio = 0.2F
+        rular2.mMaxScaleWidth = DimenUtil().dip2px(activity, 2.5F).toFloat()
+        rular2.mMidScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
+        rular2.mMinScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
+        rular2.mCurrentValue = 10
+        rular2.mScaleValueColor = Color.parseColor("#666666")
+        rular2.isScaleGradient = false
+        rular2.isShowScaleValue = false
+        rular2.layoutParams = rular2Params
+        rular2.visibility = View.INVISIBLE
+        rulerRl.addView(rular2, rular2Params)
 
         program_camera.setOnClickListener {
             program_toolbar.setBackgroundColor(Color.parseColor("#333333"))
@@ -169,6 +272,9 @@ class ProgramDelegate : BottomItemDelegate() {
             title.visibility = View.VISIBLE
             program_toolbar_searchbar.visibility = View.INVISIBLE
             nextStep.visibility = View.VISIBLE
+            rulerRl.visibility = View.VISIBLE
+            rular.visibility = View.VISIBLE
+            rular2.visibility = View.VISIBLE
         }
 
     }

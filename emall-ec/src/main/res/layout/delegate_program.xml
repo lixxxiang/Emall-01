@@ -22,16 +22,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#BF000000">
 
-        <TextView
-            android:id="@+id/program_toolbar_title"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:text="@string/program_toolbar"
-            android:textColor="@android:color/white"
-            android:textSize="14dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -85,10 +75,10 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical">
             </RelativeLayout>
-
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
         android:id="@+id/program_bottom_rl"
         android:layout_width="match_parent"
@@ -103,4 +93,5 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
+
 </RelativeLayout>

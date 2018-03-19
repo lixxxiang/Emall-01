@@ -8,6 +8,7 @@ import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.program.ProgramDelegate
 
 
 /**
@@ -18,7 +19,10 @@ class IndexItemClickListener(private val DELEGATE: EmallDelegate) : SimpleClickL
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         println(position)
 
-        val delegate : GoodsDetailDelegate = GoodsDetailDelegate().create()!!
+//        val delegate : GoodsDetailDelegate = GoodsDetailDelegate().create()!!
+//        DELEGATE.start(delegate)
+
+        val delegate : ProgramDelegate = ProgramDelegate().create()!!
         DELEGATE.start(delegate)
     }
 
