@@ -16,6 +16,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_poi_toolbar"
         android:layout_width="match_parent"
+        android:background="#FFFFFF"
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/ll_bar">
 
@@ -86,6 +87,7 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/search_poi_text1_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12dp"
@@ -96,6 +98,7 @@
         android:text="@string/search_poi_tv_1"/>
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/search_poi_text2_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12dp"
@@ -105,8 +108,20 @@
         android:layout_marginTop="62dp"
         android:text="@string/search_poi_tv_2"/>
     <ListView
-        android:id="@+id/search_poi_listview"
+        android:background="#FFFFFF"
+        android:id="@+id/search_poi_cities_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:dividerHeight="1dp"
+        android:divider="@drawable/list_item_divider_3"
+        android:layout_below="@+id/search_poi_toolbar"/>
+    <ListView
+        android:background="#FFFFFF"
+        android:id="@+id/search_poi_poi_listview"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="1dp"
+        android:divider="@drawable/list_item_divider_4"
         android:layout_below="@+id/search_poi_toolbar"/>
 </RelativeLayout>
