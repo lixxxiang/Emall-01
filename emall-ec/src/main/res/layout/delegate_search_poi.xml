@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0">
+
+    <LinearLayout
+        android:id="@+id/ll_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/search_poi_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/ll_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/index_scan_tv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_back_small_dark" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/index_search_rl"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="6"
+                android:background="@drawable/style_home_pager_toolbar_search_view"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical">
+
+                <com.example.emall_core.util.view.EditTextWithDeleteButton
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/search_poi_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/search_poi"
+                    android:textSize="12dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:textColorHint="#9B9B9B"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="31dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/index_noti_tv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_search_small_dark" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="#9B9B9B"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/search_poi_toolbar"
+        android:layout_marginTop="31dp"
+        android:text="@string/search_poi_tv_1"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="#9B9B9B"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/search_poi_toolbar"
+        android:layout_marginTop="62dp"
+        android:text="@string/search_poi_tv_2"/>
+    <ListView
+        android:id="@+id/search_poi_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_poi_toolbar"/>
+</RelativeLayout>

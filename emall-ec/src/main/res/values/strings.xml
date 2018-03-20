@@ -51,6 +51,8 @@
     <string name="noctilucence">夜光1A+1A_ENH</string>
     <string name="long_text">虎扑3月7日讯 2017-2018赛季C BA季后赛十进八第二场今晚继续开战，上海坐镇主场迎战北京， 首场比赛，上海客场力克北京占得先机，北京也换回此前受伤的 小外援阿隆-杰克逊，京沪大战一触即发。首节比赛，朱彦西补篮 命中，吹响北京的进攻号角，罗汉琛突破造成犯规两罚全中，上海毫不示弱，双方防守强度都很高，比赛十分激烈，北京连续飙中三分，贾斯汀-汉密尔顿内线接连得分，北京取得领先优势，吉默-弗雷戴特里突外投，上海紧追比分，蔡亮飙中三分，上海反超比分，王骁辉命中三分，还以颜色，首节战罢，双方20-20打平。次节较量，常林起飞放篮命中，罗汉琛突破上篮得手，弗雷戴特跳投命中，汉密尔顿两罚全中，双方对飙三分，比赛十分精彩，刘晓宇、阿隆杰克逊接连命中高难度三分，半场战罢，北京49-42领先。易边再战，汉密尔顿勾手命中，弗雷戴特突破命中，尼克-明纳拉斯里突外投，上海努力追分，北京外线手感火热，扩大领先优势，蔡亮连得7分，上海努力追赶，汉密尔顿单节独得18分帮助北京再度取得两位数的领先优势，三节战罢，北京79-69领先。末节比赛，蔡亮左手上篮命中，上海依然没有想到限制汉密尔顿太好的方法，让汉密尔顿在内线予取予求，弗雷戴特连续突破得分，蔡亮打成二加一又反击暴扣得手，上海不断缩小分差，杰克逊飙中三分，常林篮下强打命中，北京稳住局势，朱彦西膝盖受伤下场，杰克逊、弗雷戴特对飙三分，比赛进入白热化阶段，弗雷戴特突破造成犯规两罚全中，上海仅落后1分，关键时刻，曾文鼎两罚不中，方硕跳投命中，弗雷戴特高难度跳投命中，王骁辉横移命中高难度三分，弗雷戴特三分不中，方硕两罚稳稳命中，最终北京客场101-95力克上海，双方将回到北京迎来决战。</string>
     <string name="index_searchbar_hint">搜索卫星数据，共有5大类产品</string>
+    <string name="search_searchbar_hint">输入感兴趣的地点</string>
+
     <string name="classify">分类</string>
     <string name="special">专题</string>
     <string name="video_detail_mask">当前为试看视频，可观看原始尺寸、0.92m高清画质卫星视频</string>
@@ -77,4 +79,12 @@
     <string name="start_time">起始时间</string>
     <string name="end_time">结束时间</string>
     <string name="done">完成</string>
+    <string name="search_result">搜索结果</string>
+    <string name="gather_time">采集时间</string>
+    <string name="price">价格</string>
+    <string name="screen">筛选</string>
+    <string name="search_poi">搜索感兴趣的地点</string>
+    <string name="search_poi_tv_1">支持国内、国外任意地点搜索</string>
+    <string name="search_poi_tv_2">快速定位到您感兴趣的位置</string>
+
 </resources>

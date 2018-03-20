@@ -8,8 +8,11 @@ import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
 import com.example.emall_core.ui.refresh.RefreshHandler
 import android.support.v7.widget.GridLayoutManager
+import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.file.FileUtil
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.classify.ClassifyDelegate
+import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.sign.SignUpDelegate
 
 
@@ -21,6 +24,7 @@ import com.example.emall_ec.sign.SignUpDelegate
  * Created by lixiang on 15/02/2018.
  */
 class IndexDelegate : BottomItemDelegate() {
+    var DELEGATE: EmallDelegate? = null
 
     var refreshHandler: RefreshHandler? = null
     override fun setLayout(): Any? {
@@ -47,6 +51,8 @@ class IndexDelegate : BottomItemDelegate() {
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
         index_noti_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
 //        initState()
+        DELEGATE = getParentDelegate()
+
         refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(),IndexDataConverter(), IndexDataConverter())
         index_scan_tv.setOnClickListener {
             val delegate: SignUpDelegate = SignUpDelegate().create()!!
@@ -64,6 +70,10 @@ class IndexDelegate : BottomItemDelegate() {
 //            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://192.168.1.36:3038/data")
 
 //        }
+        index_search_rl.setOnClickListener {
+            val delegate: SearchDelegate = SearchDelegate().create()!!
+            (DELEGATE as EcBottomDelegate).start(delegate)
+        }
 
     }
 

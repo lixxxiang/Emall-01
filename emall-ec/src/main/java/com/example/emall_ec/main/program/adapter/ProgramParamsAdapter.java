@@ -21,6 +21,7 @@ import java.util.List;
 public class ProgramParamsAdapter extends BaseAdapter {
 
     private List<Integer> titleList;
+    private List<String> detailList;
     private LayoutInflater inflater;
     private Context context;
 
@@ -28,8 +29,9 @@ public class ProgramParamsAdapter extends BaseAdapter {
     public ProgramParamsAdapter() {
     }
 
-    public ProgramParamsAdapter( List<Integer> titleList, Context context) {
+    public ProgramParamsAdapter( List<Integer> titleList, List<String> detailList,Context context) {
         this.titleList = titleList;
+        this.detailList = detailList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
@@ -54,7 +56,9 @@ public class ProgramParamsAdapter extends BaseAdapter {
         @SuppressLint("ViewHolder")
         View view = inflater.inflate(R.layout.item_program_params, null);
         TextView item_tv = view.findViewById(R.id.program_params_title_tv);
+        TextView item_detail_tv = view.findViewById(R.id.program_params_detail_tv);
         item_tv.setText(titleList.get(position));
+        item_detail_tv.setText(detailList.get(position));
         return view;
     }
 }

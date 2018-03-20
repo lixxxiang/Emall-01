@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/ll_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="12dp"
+        android:orientation="vertical"
+        android:background="#FFFFFF"/>
+    <RelativeLayout
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@+id/ll_bar"
+        android:id="@+id/search_searchbar_rl"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/style_home_pager_toolbar_search_view"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="116dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/index_search_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dp"
+                android:background="@drawable/ic_search_dark" />
+
+            <TextView
+                android:id="@+id/edt_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/index_search_icon"
+                android:lines="1"
+                android:text="@string/search_searchbar_hint"
+                android:textColor="#9B9B9B"
+                android:textColorHint="#9B9B9B"
+                android:textSize="12dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/search_searchbar_rl"
+        android:layout_marginTop="10dp"
+        android:background="#EDEDED" />
+
+    <com.baidu.mapapi.map.MapView
+        android:layout_below="@+id/search_searchbar_rl"
+        android:layout_marginTop="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:background="@drawable/search_border"
+        android:rotation="270"
+        android:layout_below="@+id/search_searchbar_rl"
+        android:layout_marginTop="21dp"
+        android:layout_marginLeft="17dp"
+        />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:background="@drawable/search_border"
+        android:layout_below="@+id/search_searchbar_rl"
+        android:layout_marginTop="21dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="17dp"
+        />
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:rotation="90"
+        android:background="@drawable/search_border"
+        android:layout_marginBottom="21dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="17dp"
+        />
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:rotation="180"
+        android:background="@drawable/search_border"
+        android:layout_marginBottom="21dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="17dp"/>
+
+    <ImageView
+        android:layout_width="174dp"
+        android:layout_height="37dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/search_btn"
+        />
+</RelativeLayout>

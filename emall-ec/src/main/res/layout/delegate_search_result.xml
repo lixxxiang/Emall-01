@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tl="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/ll_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:orientation="vertical"
+        android:background="#FFFFFF"/>
     <android.support.v7.widget.Toolbar
-        android:id="@+id/order_list_toolbar"
+        android:id="@+id/search_result_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFFFFF">
@@ -15,23 +21,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/my_order"
+            android:text="@string/search_result"
             android:textSize="14dp"
             android:textColor="#686868"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
     </android.support.v7.widget.Toolbar>
     <android.support.design.widget.TabLayout
-        android:id="@+id/tab_FindFragment_title"
+        android:id="@+id/search_result_tl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         app:tabIndicatorColor="#B80017"
         app:tabSelectedTextColor="#B80017"
-        app:tabTextColor="#5C5C5C" />
+        app:tabTextColor="#5C5C5C"
+        app:tabTextAppearance="@style/TabLayoutTextStyle" />
 
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/vp_FindFragment_pager"
+        android:id="@+id/search_result_vp"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
