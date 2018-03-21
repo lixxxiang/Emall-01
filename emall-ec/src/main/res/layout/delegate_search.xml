@@ -103,6 +103,7 @@
         android:layout_marginLeft="17dp"/>
 
     <ImageView
+        android:id="@+id/search_btn"
         android:layout_width="174dp"
         android:layout_height="37dp"
         android:layout_centerHorizontal="true"

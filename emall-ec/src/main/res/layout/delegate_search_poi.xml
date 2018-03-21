@@ -113,6 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="1dp"
+        android:visibility="invisible"
         android:divider="@drawable/list_item_divider_3"
         android:layout_below="@+id/search_poi_toolbar"/>
     <ListView
@@ -124,4 +125,26 @@
         android:dividerHeight="1dp"
         android:divider="@drawable/list_item_divider_4"
         android:layout_below="@+id/search_poi_toolbar"/>
+    <RelativeLayout
+        android:id="@+id/search_poi_no_result_rl"
+        android:layout_width="160dp"
+        android:layout_height="105dp"
+        android:layout_below="@+id/search_poi_toolbar"
+        android:layout_marginTop="143dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true">
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="61dp"
+            android:layout_height="61dp"
+            android:background="@drawable/no_result"
+            android:layout_centerHorizontal="true" />
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_result"
+            android:textSize="14dp"
+            android:textColor="#9B9B9B"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
 </RelativeLayout>

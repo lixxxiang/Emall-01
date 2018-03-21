@@ -20,8 +20,12 @@ class SearchDelegate : BottomItemDelegate() {
 
     override fun initial() {
         search_searchbar_rl.setOnClickListener {
-//            start(SearchResultDelegate().create())
             start(SearchPoiDelegate().create())
         }
+
+        search_btn.setOnClickListener {
+            start(SearchResultDelegate().create())
+        }
+
     }
 }

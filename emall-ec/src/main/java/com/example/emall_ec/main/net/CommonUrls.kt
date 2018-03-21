@@ -16,6 +16,9 @@ import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.google.gson.Gson
 import java.util.*
+import android.support.v7.widget.LinearLayoutManager
+
+
 
 /**
  * Created by lixiang on 2018/3/20.
@@ -67,4 +70,5 @@ class CommonUrls {
         val mAdapter: ClassifyAdapter? = ClassifyAdapter(R.layout.item_classify, data, glm)
         recyclerView.adapter = mAdapter
     }
+
 }

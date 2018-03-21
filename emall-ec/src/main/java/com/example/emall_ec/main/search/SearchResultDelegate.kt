@@ -4,13 +4,14 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.order.Find_tab_Adapter
 import com.example.emall_ec.main.search.type.NoctilucenceDelegate
 import com.example.emall_ec.main.search.type.Optics1Delegate
 import com.example.emall_ec.main.search.type.Video1A1BDelegate
-import kotlinx.android.synthetic.main.delegate_order_list.*
+import kotlinx.android.synthetic.main.delegate_optics1.*
 import kotlinx.android.synthetic.main.delegate_search_result.*
 
 /**
@@ -60,5 +61,11 @@ class SearchResultDelegate : BottomItemDelegate() {
 
         search_result_vp.adapter = fAdapter
         search_result_tl.setupWithViewPager(search_result_vp)
+
+//        optics_screen_tv.setOnClickListener {
+//            optics_screen_rl.visibility = View.VISIBLE
+//        }
+
+
     }
 }

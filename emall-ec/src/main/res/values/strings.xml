@@ -87,5 +87,21 @@
     <string name="search_poi_tv_1">支持国内、国外任意地点搜索</string>
     <string name="search_poi_tv_2">快速定位到您感兴趣的位置</string>
     <string name="search_poi_head">找到相关地点，请选择城市</string>
+    <string name="no_result">抱歉，没有找到相关地点</string>
+    <string name="screen_title">分辨率/卫星</string>
+    <string name="screen_1">小于1m</string>
+    <string name="screen_2">小于3m</string>
+    <string name="screen_3">小于8m</string>
+    <string name="screen_4">小于16m</string>
+    <string name="screen_5">JL101A（PMS 0.73m + 2.88m）</string>
+    <string name="screen_c1">小于10%</string>
+    <string name="screen_c2">小于20%</string>
+    <string name="screen_c3">小于30%</string>
+    <string name="screen_c4">小于40%</string>
+    <string name="screen_date">年/月/日</string>
+    <string name="screen_cloud">云量</string>
+    <string name="screen_take">拍摄日期</string>
+    <string name="reset">重置</string>
+    <string name="confirm_2">确定</string>
 
 </resources>
