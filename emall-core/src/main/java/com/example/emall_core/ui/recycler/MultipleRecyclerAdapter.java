@@ -1,5 +1,6 @@
 package com.example.emall_core.ui.recycler;
 
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.example.emall_core.ui.recycler.data.TheThreeBean;
 import com.example.emall_core.ui.recycler.data.UnitBean;
 import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_core.util.view.GridSpacingItemDecoration;
+import com.example.emall_core.util.view.TextSwitcherView;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -43,6 +45,7 @@ public class MultipleRecyclerAdapter extends
     //确保初始化一次Banner，防止重复Item加载
     private boolean mIsInitBanner = false;
     ArrayList<TheThreeBean> theThreeList = new ArrayList<>();
+    ArrayList<String> dailyPicTitleList = new ArrayList<>();
 
     //设置图片加载策略
     private static final RequestOptions RECYCLER_OPTIONS =
@@ -77,6 +80,7 @@ public class MultipleRecyclerAdapter extends
         addItemType(ItemType.SCROLL_HORIZIONTAL, R.layout.item_multiple_scroll_horiziontal);
         addItemType(ItemType.THE_THREE, R.layout.item_multiple_the_three);
         addItemType(ItemType.GUESS_LIKE, R.layout.item_multiple_image_guess_like);
+
         //设置宽度监听
         setSpanSizeLookup(this);
         openLoadAnimation();
@@ -107,12 +111,15 @@ public class MultipleRecyclerAdapter extends
                 }
                 break;
             case ItemType.EVERYDAY_PIC:
+                dailyPicTitleList = entity.getField(MultipleFields.EVERY_DAY_PIC_TITLE);
+                TextSwitcherView tsv = holder.getView(R.id.mep_detail_tv);
+                tsv.getResource(dailyPicTitleList);
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
                 SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
                 snapHelperStart.attachToRecyclerView(horiziontalRecyclerView);
-                horiziontalRecyclerView.setAdapter(new ItemUnitAdapter((List<UnitBean>) entity.getField(MultipleFields.HORIZONTAL_SCROLL),mContext));
+                horiziontalRecyclerView.setAdapter(new ItemUnitAdapter((List<UnitBean>) entity.getField(MultipleFields.HORIZONTAL_SCROLL), mContext));
                 break;
             case ItemType.THE_THREE:
                 theThreeList = entity.getField(MultipleFields.THE_THREE);
@@ -128,16 +135,12 @@ public class MultipleRecyclerAdapter extends
                         .load(theThreeList.get(2).getImageUrl())
                         .apply(RECYCLER_OPTIONS)
                         .into((ImageView) holder.getView(R.id.the_three_3));
-//                holder.addOnClickListener(R.id.the_three_1);
-//
-//                holder.addOnClickListener(R.id.the_three_2);
                 break;
             case ItemType.GUESS_LIKE:
-                EmallLogger.INSTANCE.d("hahahaha");
                 RecyclerView.LayoutManager manager = new GridLayoutManager(mContext, 2);
                 guessLikeRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 20, true));
                 guessLikeRecyclerView.setLayoutManager(manager);
-                guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE),mContext));
+                guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE), mContext));
                 break;
             default:
                 break;
@@ -146,7 +149,6 @@ public class MultipleRecyclerAdapter extends
 
     @Override
     public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
-//        return content.get(position).getField(MultipleFields.SPAN_SIZE);
         return getData().get(position).getField(MultipleFields.SPAN_SIZE);
     }
 

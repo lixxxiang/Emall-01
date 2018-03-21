@@ -32,4 +32,17 @@
         android:layout_marginBottom="21dp"
         android:scaleType="centerCrop"
         />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/unit_description_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/index_horizontal_text_border"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        android:layout_alignTop="@+id/unit_image_iv"
+        android:layout_marginTop="11dp"
+        android:textSize="12dp" />
 </RelativeLayout>

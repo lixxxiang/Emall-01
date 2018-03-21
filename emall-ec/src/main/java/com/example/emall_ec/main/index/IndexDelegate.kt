@@ -16,10 +16,6 @@ import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.sign.SignUpDelegate
 
 
-
-
-
-
 /**
  * Created by lixiang on 15/02/2018.
  */
@@ -43,33 +39,27 @@ class IndexDelegate : BottomItemDelegate() {
     private fun initRecyclerView() {
         val manager = GridLayoutManager(context, 2)
         recycler_view_index.layoutManager = manager
-        val ecBottomDelegate : EcBottomDelegate = getParentDelegate()
+        val ecBottomDelegate: EcBottomDelegate = getParentDelegate()
         recycler_view_index.addOnItemTouchListener(IndexItemClickListener(ecBottomDelegate))
     }
 
     override fun initial() {
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
-        index_noti_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
-//        initState()
         DELEGATE = getParentDelegate()
 
-        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(),IndexDataConverter(), IndexDataConverter())
+        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter())
         index_scan_tv.setOnClickListener {
             val delegate: SignUpDelegate = SignUpDelegate().create()!!
-            val bundle : Bundle ?= Bundle()
+            val bundle: Bundle? = Bundle()
             bundle!!.putString("KEY", "ID")
             delegate.arguments = bundle
             start(delegate)
         }
         initRefreshLayout()
         initRecyclerView()
-//        if (FileUtil.checkEmulator()) {
-//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://10.0.2.2:3030/data", "http://10.10.90.11:8086/global/homePageUnits")
-//        } else {
-            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://59.110.162.194:5201/global/homePageUnits")
-//            refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide", "http://192.168.1.36:3030/data","http://192.168.1.36:3038/data")
-
-//        }
+        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide",
+                "http://192.168.1.36:3030/data",
+                "http://59.110.162.194:5201/global/homePageUnits","http://202.111.178.10:28085/mobile/homePage")
         index_search_rl.setOnClickListener {
             val delegate: SearchDelegate = SearchDelegate().create()!!
             (DELEGATE as EcBottomDelegate).start(delegate)

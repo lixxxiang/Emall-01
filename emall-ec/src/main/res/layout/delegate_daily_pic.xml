@@ -2,6 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/ll_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/daily_pic_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/star_journey"
+            android:textColor="#686868"
+            android:textSize="16dp" />
+    </android.support.v7.widget.Toolbar>
     <com.example.emall_core.util.view.SwipeRefreshView
         android:id="@+id/daily_pic_srv"
         android:layout_width="match_parent"
@@ -10,6 +31,8 @@
             android:id="@+id/daily_pic_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:dividerHeight="1dp"
+            android:divider="@drawable/list_item_divider_5"
             android:layout_below="@+id/banner" />
     </com.example.emall_core.util.view.SwipeRefreshView>
 </LinearLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="350dp">
+    android:layout_height="326dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -42,8 +42,11 @@
                 android:text="@string/guess_like"
                 android:layout_toRightOf="@+id/scroll_favourite_iv"
                 android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
                 android:textColor="#5C5C5C"/>
         </RelativeLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="11dp"
+        android:background="#FFFFFF"/>
 </LinearLayout>

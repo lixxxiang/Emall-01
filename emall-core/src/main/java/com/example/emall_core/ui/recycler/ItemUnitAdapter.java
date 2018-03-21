@@ -37,6 +37,8 @@ public class ItemUnitAdapter extends RecyclerView.Adapter<ItemUnitAdapter.ViewHo
         UnitBean app = mApps.get(position);
         holder.unit_title_tv.setText(app.getTitle());
         holder.unit_detail_tv.setText(app.getDetail());
+        holder.unit_description_tv.setText(app.getTitle());
+
         Glide.with(context)
                 .load(app.getImageUrl())
                 .into(holder.unit_image_iv);
@@ -57,6 +59,7 @@ public class ItemUnitAdapter extends RecyclerView.Adapter<ItemUnitAdapter.ViewHo
         public RoundImageView unit_image_iv;
         public TextView unit_title_tv;
         public TextView unit_detail_tv;
+        public TextView unit_description_tv;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +67,7 @@ public class ItemUnitAdapter extends RecyclerView.Adapter<ItemUnitAdapter.ViewHo
             unit_image_iv = itemView.findViewById(R.id.unit_image_iv);
             unit_title_tv = itemView.findViewById(R.id.unit_title_tv);
             unit_detail_tv = itemView.findViewById(R.id.unit_detail_tv);
+            unit_description_tv = itemView.findViewById(R.id.unit_description_tv);
         }
 
         @Override

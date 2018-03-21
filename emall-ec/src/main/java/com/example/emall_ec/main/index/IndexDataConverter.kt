@@ -8,6 +8,7 @@ import com.example.emall_core.ui.recycler.data.GuessLikeBean
 import com.example.emall_core.ui.recycler.data.TheThreeBean
 import com.example.emall_core.ui.recycler.data.UnitBean
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_ec.main.index.dailypic.data.HomePageBean
 
 
 /**
@@ -15,9 +16,29 @@ import com.example.emall_core.util.log.EmallLogger
  */
 class IndexDataConverter : DataConverter() {
 
+
     var unit: MutableList<UnitBean>? = mutableListOf()
     var theThree: MutableList<TheThreeBean>? = mutableListOf()
     var guessLike: MutableList<GuessLikeBean>? = mutableListOf()
+    var dailyPic: MutableList<String>? = mutableListOf()
+
+
+    override fun dailyPicConvert(): ArrayList<MultipleItemEntity> {
+        val jsonObject = JSON.parseObject(getJsonData()).getJSONObject("data").getJSONArray("MixedContentList")
+        for (i in 0..2){
+            dailyPic!!.add(jsonObject.getJSONObject(i).getString("contentName"))
+        }
+        EmallLogger.d("lllllll")
+
+        EmallLogger.d(dailyPic!!)
+        val entity = MultipleItemEntity.builder()
+                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, dailyPic!!)
+                .setField(MultipleFields.SPAN_SIZE, 2)
+                .setField(MultipleFields.ITEM_TYPE, 4)
+                .build()
+        ENTITIES.add(entity)
+        return ENTITIES
+    }
 
     override fun guessLikeConvert(): ArrayList<MultipleItemEntity> {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(2).getJSONArray("pieces")

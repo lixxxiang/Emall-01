@@ -25,10 +25,10 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/mep_title_tv"
             android:layout_marginLeft="17dp"/>
-        <android.support.v7.widget.AppCompatTextView
+        <com.example.emall_core.util.view.TextSwitcherView
+            android:id="@+id/mep_detail_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="文章标题"
             android:lines="1"
             android:textColor="#5C5C5C"
             android:textSize="14dp"

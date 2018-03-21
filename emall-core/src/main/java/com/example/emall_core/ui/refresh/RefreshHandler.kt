@@ -12,6 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.ui.recycler.*
+import com.google.gson.Gson
+import java.util.*
 
 
 /**
@@ -24,11 +26,12 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                                          private val HORIZONTAL_SCROLL_CONVERTER: DataConverter,
                                          private val THE_THREE_CONVERTER: DataConverter,
                                          private val GUESS_LIKE_CONVERTER: DataConverter,
+                                         private val DAILY_PIC_CONVERTER:DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private var mAdapter: MultipleRecyclerAdapter? = null
     private var bannerResponse = String()
-    //    private var converter = DataConverter()
+    var homePageParams: WeakHashMap<String, Any>? = WeakHashMap()
     private var data: MutableList<MultipleItemEntity>? = mutableListOf()
 
     init {
@@ -43,15 +46,16 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun getUnit(unitUrl: String){
+    fun getUnit(unitUrl: String, dailyPicUrl: String){
         RestClient().builder()
                 .url(unitUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        println("success+")
                         data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
                         data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
+                        getDailyPicTitle(dailyPicUrl)
+
                     }
                 })
                 .error(object : IError{
@@ -70,22 +74,48 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .get()
     }
 
-    fun firstPage(bannerUrl: String, url: String, unitUrl: String) {
+    fun getDailyPicTitle(url : String){
+        homePageParams!!["pageSize"] = "10"
+        homePageParams!!["pageNum"] = "1"
+        RestClient().builder()
+                .url(url)
+                .params(homePageParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        data!!.add(DAILY_PIC_CONVERTER.setJsonData(response).dailyPicConvert()[0])
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
+    }
+
+    fun firstPage(bannerUrl: String, url: String, unitUrl: String, dailyPicUrl : String) {
 //        BEAN.setDelayed(1000)
 
         RestClient().builder()
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        getUnit(unitUrl)
+                        getUnit(unitUrl, dailyPicUrl)
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
                         }
-                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
+//                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
                         mAdapter = MultipleRecyclerAdapter.create(data)
-                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
+//                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
                         RECYCLERVIEW.adapter = mAdapter
+//                        mAdapter!!.disableLoadMoreIfNotFullPage()
                         BEAN.addIndex()
                     }
                 })
@@ -154,6 +184,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                    horizontal_scroll_converter: DataConverter,
                    the_three_converter: DataConverter,
                    guess_like_converter: DataConverter,
+                   daily_pic_converter: DataConverter,
                    converter: DataConverter): RefreshHandler {
             return RefreshHandler(swipeRefreshLayout,
                     recyclerView,
@@ -162,6 +193,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                     horizontal_scroll_converter,
                     the_three_converter,
                     guess_like_converter,
+                    daily_pic_converter,
                     converter,
                     PagingBean())
         }

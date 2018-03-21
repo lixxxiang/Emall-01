@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.emall_core.util.view.RoundImageView;
 import com.example.emall_core.util.view.SquareRoundImageView;
 import com.example.emall_ec.R;
@@ -93,10 +94,13 @@ public class HomePageListViewAdapter extends BaseAdapter {
                 } else {
                     pic1Holder = (Pic1Holder) convertView.getTag();
                 }
-//                    pic1Holder.pic1Pic.setImageURI(Uri.parse(homePageData.get(position).getThumbnail1Path()));
-                    pic1Holder.pic1Name.setText(homePageData.get(position).getContentName());
-                    pic1Holder.pic1Date.setText("每日一图 · " + homePageData.get(position).getContentName()
-                            .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
+
+                Glide.with(context)
+                        .load(homePageData.get(position).getThumbnail1Path())
+                        .into(pic1Holder.pic1Pic);
+                pic1Holder.pic1Name.setText(homePageData.get(position).getContentName());
+                pic1Holder.pic1Date.setText("每日一图 · " + homePageData.get(position).getContentName()
+                        .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
                 break;
             case TYPE_PIC_2:
                 if (convertView == null) {
@@ -111,19 +115,25 @@ public class HomePageListViewAdapter extends BaseAdapter {
                 } else {
                     pic2Holder = (Pic2Holder) convertView.getTag();
                 }
-                    pic2Holder.pic2Name.setText(homePageData.get(position).getContentName());
-                    pic2Holder.pic2Date.setText("每日一图 · " + homePageData.get(position).getContentDate()
-                            .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
-                    pic2Holder.pic2Pic1.setImageURI(Uri.parse(homePageData.get(position).getThumbnail1Path()));
+                pic2Holder.pic2Name.setText(homePageData.get(position).getContentName());
+                pic2Holder.pic2Date.setText("每日一图 · " + homePageData.get(position).getContentDate()
+                        .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
+                Glide.with(context)
+                        .load(homePageData.get(position).getThumbnail1Path())
+                        .into(pic2Holder.pic2Pic1);
                 if (homePageData.get(position).getThumbnail2Path().length() == 0) {
                     pic2Holder.pic2Pic2.setVisibility(View.INVISIBLE);
                 } else {
-                    pic2Holder.pic2Pic2.setImageURI(Uri.parse(homePageData.get(position).getThumbnail2Path()));
+                    Glide.with(context)
+                            .load(homePageData.get(position).getThumbnail2Path())
+                            .into(pic2Holder.pic2Pic2);
                 }
                 if (homePageData.get(position).getThumbnail3Path().length() == 0) {
                     pic2Holder.pic2Pic3.setVisibility(View.INVISIBLE);
                 } else {
-                    pic2Holder.pic2Pic3.setImageURI(Uri.parse(homePageData.get(position).getThumbnail3Path()));
+                    Glide.with(context)
+                            .load(homePageData.get(position).getThumbnail3Path())
+                            .into(pic2Holder.pic2Pic3);
                 }
                 break;
             case TYPE_VIDEO:
@@ -139,12 +149,14 @@ public class HomePageListViewAdapter extends BaseAdapter {
                 } else {
                     videoHolder = (VideoHolder) convertView.getTag();
                 }
-                    videoHolder.videoName.setText(homePageData.get(position).getContentName());
-                    videoHolder.videoPic.setImageURI(Uri.parse(homePageData.get(position).getThumbnail1Path()));
-                    videoHolder.playTimes.setText(homePageData.get(position).getPlayCount() + "次播放");
-                    videoHolder.duration.setText(homePageData.get(position).getDuration());
-                    videoHolder.date.setText("脉动地球 · " + homePageData.get(position).getContentDate()
-                            .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
+                videoHolder.videoName.setText(homePageData.get(position).getContentName());
+                Glide.with(context)
+                        .load(homePageData.get(position).getThumbnail1Path())
+                        .into(videoHolder.videoPic);
+                videoHolder.playTimes.setText(homePageData.get(position).getPlayCount() + "次播放");
+                videoHolder.duration.setText(homePageData.get(position).getDuration());
+                videoHolder.date.setText("脉动地球 · " + homePageData.get(position).getContentDate()
+                        .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
 
         }
         return convertView;

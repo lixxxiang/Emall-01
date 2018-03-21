@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.index.dailypic
 
+import android.support.v7.app.AppCompatActivity
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -12,6 +13,7 @@ import com.example.emall_ec.main.index.dailypic.data.BannerBean
 import com.example.emall_ec.main.index.dailypic.data.HomePageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_daily_pic.*
+import kotlinx.android.synthetic.main.delegate_order_list.*
 import java.util.*
 
 /**
@@ -24,11 +26,20 @@ class DailyPicDelegate : BottomItemDelegate() {
     var adapter = HomePageListViewAdapter()
     var homePageData : MutableList<HomePageBean.DataBean.MixedContentListBean> ?= mutableListOf()
 
+    fun create():DailyPicDelegate?{
+        return DailyPicDelegate()
+    }
+
     override fun setLayout(): Any? {
         return R.layout.delegate_daily_pic
     }
 
     override fun initial() {
+
+        daily_pic_toolbar.title = ""
+        (activity as AppCompatActivity).setSupportActionBar(daily_pic_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         homePageParams!!["pageSize"] = "10"
         homePageParams!!["pageNum"] = "1"
 
