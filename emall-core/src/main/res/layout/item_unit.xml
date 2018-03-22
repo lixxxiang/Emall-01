@@ -43,7 +43,8 @@
         android:layout_marginRight="12dp"
         android:layout_alignTop="@+id/unit_image_iv"
         android:layout_marginTop="11dp"
+        android:background="@drawable/index_horizontal_text_border"
         android:textSize="12dp" />
-    <!--android:background="@drawable/index_horizontal_text_border"-->
+    <!---->
 
 </RelativeLayout>
