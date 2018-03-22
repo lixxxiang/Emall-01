@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
@@ -24,6 +25,7 @@ import com.example.emall_core.ui.recycler.data.UnitBean;
 import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_core.util.view.GridSpacingItemDecoration;
 import com.example.emall_core.util.view.TextSwitcherView;
+import com.example.emall_core.util.view.TextSwitcherView2;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -112,8 +114,10 @@ public class MultipleRecyclerAdapter extends
                 break;
             case ItemType.EVERYDAY_PIC:
                 dailyPicTitleList = entity.getField(MultipleFields.EVERY_DAY_PIC_TITLE);
-                TextSwitcherView tsv = holder.getView(R.id.mep_detail_tv);
+                TextSwitcherView2 tsv = holder.getView(R.id.mep_detail_tv);
                 tsv.getResource(dailyPicTitleList);
+//                TextView textView = holder.getView(R.id.mep_detail_tv);
+//                textView.setText("df");
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));

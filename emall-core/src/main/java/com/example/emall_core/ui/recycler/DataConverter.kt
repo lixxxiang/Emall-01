@@ -17,7 +17,7 @@ abstract class DataConverter {
     abstract fun horizontalScrollConvert(): ArrayList<MultipleItemEntity>
     abstract fun theThreeConvert(): ArrayList<MultipleItemEntity>
     abstract fun guessLikeConvert(): ArrayList<MultipleItemEntity>
-    abstract fun dailyPicConvert(): ArrayList<MultipleItemEntity>
+//    abstract fun dailyPicConvert(): ArrayList<MultipleItemEntity>
 
 
 

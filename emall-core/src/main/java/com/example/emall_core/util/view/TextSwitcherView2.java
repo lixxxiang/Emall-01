@@ -21,20 +21,20 @@ import java.util.TimerTask;
  */
 
 
-public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewFactory {
+public class TextSwitcherView2 extends TextSwitcher implements ViewSwitcher.ViewFactory {
     private ArrayList<String> reArrayList = new ArrayList<String>();
     private int resIndex = 0;
     private final int UPDATE_TEXTSWITCHER = 1;
     private int timerStartAgainCount = 0;
     private Context mContext;
-    public TextSwitcherView(Context context) {
+    public TextSwitcherView2(Context context) {
 
         super(context);
         // TODO Auto-generated constructor stub
         mContext = context;
         init();
     }
-    public TextSwitcherView(Context context, AttributeSet attrs) {
+    public TextSwitcherView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         init();
@@ -91,8 +91,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     public View makeView() {
         // TODO Auto-generated method stub
         TextView tView = new TextView(getContext());
-        tView.setTextSize(12);
-        tView.setTextColor(Color.parseColor("#FFFFFF"));
+        tView.setTextSize(14);
+        tView.setTextColor(Color.parseColor("#5C5C5C"));
         return tView;
     }
 }

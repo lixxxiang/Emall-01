@@ -21,7 +21,8 @@
         android:textSize="10dp"
         android:text="字段字段字段字段字段"
         android:textColor="#FFFFFF"
-        android:background="@drawable/index_guess_like_text_border"/>
+        />
+    <!--android:background="@drawable/index_guess_like_text_border"-->
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/item_guess_like_title_tv"
         android:layout_width="wrap_content"

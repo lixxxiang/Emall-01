@@ -23,22 +23,22 @@ class IndexDataConverter : DataConverter() {
     var dailyPic: MutableList<String>? = mutableListOf()
 
 
-    override fun dailyPicConvert(): ArrayList<MultipleItemEntity> {
-        val jsonObject = JSON.parseObject(getJsonData()).getJSONObject("data").getJSONArray("MixedContentList")
-        for (i in 0..2){
-            dailyPic!!.add(jsonObject.getJSONObject(i).getString("contentName"))
-        }
-        EmallLogger.d("lllllll")
-
-        EmallLogger.d(dailyPic!!)
-        val entity = MultipleItemEntity.builder()
-                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, dailyPic!!)
-                .setField(MultipleFields.SPAN_SIZE, 2)
-                .setField(MultipleFields.ITEM_TYPE, 4)
-                .build()
-        ENTITIES.add(entity)
-        return ENTITIES
-    }
+//    override fun dailyPicConvert(): ArrayList<MultipleItemEntity> {
+//        val jsonObject = JSON.parseObject(getJsonData()).getJSONObject("data").getJSONArray("MixedContentList")
+//        for (i in 0..2){
+//            dailyPic!!.add(jsonObject.getJSONObject(i).getString("contentName"))
+//        }
+//        EmallLogger.d("lllllll")
+//
+//        EmallLogger.d(dailyPic!!)
+//        val entity = MultipleItemEntity.builder()
+//                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, dailyPic!!)
+//                .setField(MultipleFields.SPAN_SIZE, 2)
+//                .setField(MultipleFields.ITEM_TYPE, 1)
+//                .build()
+//        ENTITIES.add(entity)
+//        return ENTITIES
+//    }
 
     override fun guessLikeConvert(): ArrayList<MultipleItemEntity> {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(2).getJSONArray("pieces")
@@ -114,11 +114,20 @@ class IndexDataConverter : DataConverter() {
     }
 
     override fun everyDayPicConvert(): ArrayList<MultipleItemEntity> {
+        val jsonObject = JSON.parseObject(getJsonData()).getJSONObject("data").getJSONArray("MixedContentList")
+        for (i in 0..2){
+            dailyPic!!.add(jsonObject.getJSONObject(i).getString("contentName"))
+        }
         val entity = MultipleItemEntity.builder()
-                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, "title")
+                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, dailyPic!!)
                 .setField(MultipleFields.SPAN_SIZE, 2)
                 .setField(MultipleFields.ITEM_TYPE, 1)
                 .build()
+//        val entity = MultipleItemEntity.builder()
+//                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, "title")
+//                .setField(MultipleFields.SPAN_SIZE, 2)
+//                .setField(MultipleFields.ITEM_TYPE, 1)
+//                .build()
         ENTITIES.add(entity)
         return ENTITIES
     }

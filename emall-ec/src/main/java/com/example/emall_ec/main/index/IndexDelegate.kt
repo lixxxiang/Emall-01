@@ -12,6 +12,7 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.file.FileUtil
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.classify.ClassifyDelegate
+import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.sign.SignUpDelegate
 
@@ -47,13 +48,17 @@ class IndexDelegate : BottomItemDelegate() {
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
         DELEGATE = getParentDelegate()
 
-        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index, recycler_view_index, IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter(), IndexDataConverter())
+        refreshHandler = RefreshHandler.create(swipe_refresh_layout_index,
+                recycler_view_index,
+                IndexDataConverter(),
+                IndexDataConverter(),
+                IndexDataConverter(),
+                IndexDataConverter(),
+                IndexDataConverter(),
+                IndexDataConverter())
         index_scan_tv.setOnClickListener {
-            val delegate: SignUpDelegate = SignUpDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("KEY", "ID")
-            delegate.arguments = bundle
-            start(delegate)
+            val delegate: ScannerDelegate = ScannerDelegate().create()!!
+            (DELEGATE as EcBottomDelegate).start(delegate)
         }
         initRefreshLayout()
         initRecyclerView()

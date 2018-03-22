@@ -104,5 +104,9 @@
     <string name="reset">重置</string>
     <string name="confirm_2">确定</string>
     <string name="star_journey">星途</string>
+    <string name="scan_hint">将二维码放入框内，即可自动扫描</string>
+    <string name="scan_hint_2">请登录网页端 遥感易购</string>
+    <string name="scan_hint_3">http://mall.charmingglobe.com/</string>
+    <string name="scan_loggin">扫码登录</string>
 
 </resources>

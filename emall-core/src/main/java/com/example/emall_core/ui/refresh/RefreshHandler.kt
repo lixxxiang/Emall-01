@@ -26,7 +26,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                                          private val HORIZONTAL_SCROLL_CONVERTER: DataConverter,
                                          private val THE_THREE_CONVERTER: DataConverter,
                                          private val GUESS_LIKE_CONVERTER: DataConverter,
-                                         private val DAILY_PIC_CONVERTER:DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private var mAdapter: MultipleRecyclerAdapter? = null
@@ -51,24 +50,26 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .url(unitUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+
                         data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
                         data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
-                        getDailyPicTitle(dailyPicUrl)
-
+                        EmallLogger.d("bibibibib")
+//                        getDailyPicTitle(dailyPicUrl)
+                        mAdapter = MultipleRecyclerAdapter.create(data)
+                        RECYCLERVIEW.adapter = mAdapter
+                        BEAN.addIndex()
                     }
                 })
                 .error(object : IError{
                     override fun onError(code: Int, msg: String) {
                         println("error_")
-
                     }
                 })
                 .failure(object : IFailure{
                     override fun onFailure() {
                         println("failure_")
                     }
-
                 })
                 .build()
                 .get()
@@ -82,17 +83,16 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .params(homePageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        data!!.add(DAILY_PIC_CONVERTER.setJsonData(response).dailyPicConvert()[0])
+                        data!!.add(EVERY_DAY_PIC_CONVERTER.setJsonData(response).everyDayPicConvert()[0])
+
                     }
                 })
                 .failure(object : IFailure {
                     override fun onFailure() {
-
                     }
                 })
                 .error(object : IError {
                     override fun onError(code: Int, msg: String) {
-
                     }
                 })
                 .build()
@@ -107,29 +107,24 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         getUnit(unitUrl, dailyPicUrl)
+                        getDailyPicTitle(dailyPicUrl)
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
                         }
+//                        EmallLogger.d("aiaiaia")
 //                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
-                        mAdapter = MultipleRecyclerAdapter.create(data)
-//                        mAdapter!!.setOnLoadMoreListener(this@RefreshHandler, RECYCLERVIEW)
-                        RECYCLERVIEW.adapter = mAdapter
-//                        mAdapter!!.disableLoadMoreIfNotFullPage()
-                        BEAN.addIndex()
                     }
                 })
                 .error(object : IError{
                     override fun onError(code: Int, msg: String) {
                         println("error")
-
                     }
                 })
                 .failure(object : IFailure{
                     override fun onFailure() {
                         println("failure")
                     }
-
                 })
                 .build()
                 .get()
@@ -184,7 +179,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                    horizontal_scroll_converter: DataConverter,
                    the_three_converter: DataConverter,
                    guess_like_converter: DataConverter,
-                   daily_pic_converter: DataConverter,
                    converter: DataConverter): RefreshHandler {
             return RefreshHandler(swipeRefreshLayout,
                     recyclerView,
@@ -193,7 +187,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                     horizontal_scroll_converter,
                     the_three_converter,
                     guess_like_converter,
-                    daily_pic_converter,
                     converter,
                     PagingBean())
         }
