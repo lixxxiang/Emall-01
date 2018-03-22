@@ -8,6 +8,7 @@ import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
 import com.example.emall_core.ui.refresh.RefreshHandler
 import android.support.v7.widget.GridLayoutManager
+import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.file.FileUtil
 import com.example.emall_ec.main.EcBottomDelegate
@@ -15,6 +16,10 @@ import com.example.emall_ec.main.classify.ClassifyDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.sign.SignUpDelegate
+import android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+
 
 
 /**
@@ -26,10 +31,6 @@ class IndexDelegate : BottomItemDelegate() {
     var refreshHandler: RefreshHandler? = null
     override fun setLayout(): Any? {
         return R.layout.delegate_index
-    }
-
-    override fun onLazyInitView(savedInstanceState: Bundle?) {
-        super.onLazyInitView(savedInstanceState)
     }
 
     fun initRefreshLayout() {
@@ -45,6 +46,7 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
         DELEGATE = getParentDelegate()
 

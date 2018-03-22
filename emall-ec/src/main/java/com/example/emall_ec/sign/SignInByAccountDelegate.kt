@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.R
-import com.githang.statusbar.StatusBarCompat
 import kotlinx.android.synthetic.main.delegate_sign_in_by_account.*
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 

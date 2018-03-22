@@ -2,13 +2,16 @@ package com.example.emall_ec.main.classify
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_classify.*
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.GridLayoutManager
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -47,6 +50,8 @@ class ClassifyDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+//        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//        (activity.window.decorView.findViewById(R.id.content) as CoordinatorLayout).setPadding(0, 0, 0, 25)
 //        DELEGATE = getParentDelegate()
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
@@ -67,8 +72,11 @@ class ClassifyDelegate : BottomItemDelegate() {
 //        }
 //        classify_search.typeface = Typeface.createFromAsset(activity.assets, "iconfont/search.ttf")
         classify_appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onStateChanged(appBarLayout: AppBarLayout, state: AppBarStateChangeListener.State) {
                 if (state == AppBarStateChangeListener.State.EXPANDED) {
+                    activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
                     classify_toolbar.title = ""
                     //展开状态
                     classify_toolbar.setNavigationIcon(R.drawable.ic_back_small)
@@ -76,7 +84,7 @@ class ClassifyDelegate : BottomItemDelegate() {
 
 
                 } else if (state == AppBarStateChangeListener.State.COLLAPSED) {
-
+                    activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                     //折叠状态
                     classify_toolbar.title = "光学1级"
                     classify_toolbar.setTitleTextColor(Color.parseColor("#5C5C5C"))

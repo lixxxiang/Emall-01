@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.delegate_me.*
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.os.Build
-
-
+import com.example.emall_core.util.view.StatusBarUtil
 
 
 /**
@@ -33,10 +32,11 @@ class MeDelegate : BottomItemDelegate() {
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
-        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+//        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     override fun initial() {
+//        StatusBarUtil.setTranslucentForImageViewInFragment(activity, null)
         iconList!!.add(R.drawable.me_favorite)
         iconList!!.add(R.drawable.me_ticket)
         iconList!!.add(R.drawable.me_bill)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.ContentFrameLayout
 import com.example.emall_core.R
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.util.view.StatusBarUtil
 import me.yokeyword.fragmentation.SupportActivity
 
 /**
@@ -23,9 +24,12 @@ abstract class ProxyActivity : SupportActivity() {
 
     fun initContainer(savedInstanceState: Bundle?) {
         val container = ContentFrameLayout(this)
-//        container.fitsSystemWindows = true
         container.id = R.id.delegate_container
         setContentView(container)
+//        StatusBarUtil.setLightMode(this)
+//        StatusBarUtil.setTransparent(this)
+        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0,null)
+
         if (savedInstanceState == null) {
             loadRootFragment(R.id.delegate_container, setRootDelegate())
         }

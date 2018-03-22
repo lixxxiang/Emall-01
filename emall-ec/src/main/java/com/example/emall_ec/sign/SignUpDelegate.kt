@@ -8,7 +8,6 @@ import com.example.emall_core.util.log.EmallLogger
 import java.util.*
 import android.graphics.Typeface
 import android.graphics.Color
-import com.githang.statusbar.StatusBarCompat
 
 
 /**
