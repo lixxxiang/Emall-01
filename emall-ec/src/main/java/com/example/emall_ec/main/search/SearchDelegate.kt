@@ -26,6 +26,5 @@ class SearchDelegate : BottomItemDelegate() {
         search_btn.setOnClickListener {
             start(SearchResultDelegate().create())
         }
-
     }
 }

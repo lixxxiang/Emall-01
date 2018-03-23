@@ -99,7 +99,7 @@ public class HomePageListViewAdapter extends BaseAdapter {
                         .load(homePageData.get(position).getThumbnail1Path())
                         .into(pic1Holder.pic1Pic);
                 pic1Holder.pic1Name.setText(homePageData.get(position).getContentName());
-                pic1Holder.pic1Date.setText("每日一图 · " + homePageData.get(position).getContentName()
+                pic1Holder.pic1Date.setText("每日一图 · " + homePageData.get(position).getContentDate()
                         .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
                 break;
             case TYPE_PIC_2:
@@ -169,9 +169,9 @@ public class HomePageListViewAdapter extends BaseAdapter {
     }
 
     class Pic2Holder {
-        SquareRoundImageView pic2Pic1;
-        SquareRoundImageView pic2Pic2;
-        SquareRoundImageView pic2Pic3;
+        RoundImageView pic2Pic1;
+        RoundImageView pic2Pic2;
+        RoundImageView pic2Pic3;
         AppCompatTextView pic2Name;
         AppCompatTextView pic2Date;
     }
