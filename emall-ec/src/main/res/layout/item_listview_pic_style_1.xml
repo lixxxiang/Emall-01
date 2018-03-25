@@ -16,7 +16,7 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/item_pic_1_detail_tv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="85dp"
         android:layout_alignTop="@+id/item_pic_1_riv"
         android:layout_marginLeft="21dp"
