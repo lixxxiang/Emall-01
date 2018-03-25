@@ -23,13 +23,13 @@
             tools:ignore="Suspicious0dp" />
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/bottom_bar"
+            android:elevation="4dp"
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:background="#FAFAFA"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            tools:targetApi="lollipop">
         </android.support.v7.widget.LinearLayoutCompat>
     </LinearLayout>
-
-
 </RelativeLayout>

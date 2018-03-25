@@ -152,9 +152,6 @@ class ProgramDelegate : BottomItemDelegate() {
         move.layoutParams = moveParams
         program_root_rl.addView(move, moveParams)
 
-
-
-
         val fakeToolbarRl = RelativeLayout(activity)
         fakeToolbarRl.id = 5
         val fakeToolbarParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DimenUtil().dip2px(context, 54F))
@@ -193,7 +190,7 @@ class ProgramDelegate : BottomItemDelegate() {
                 // TODO Auto-generated method stub
                 handler.postDelayed(this, 3 * 1000)
                 val curTranslationY = move.translationY
-                val animator : ObjectAnimator = ObjectAnimator.ofFloat(move, "translationY", curTranslationY, DimenUtil().dip2px(context, 248F).toFloat(), curTranslationY)
+                val animator : ObjectAnimator = ObjectAnimator.ofFloat(move, "translationY", curTranslationY, DimenUtil().dip2px(context, 236F).toFloat(), curTranslationY)
                 animator.duration = 3000
                 animator.start()
             }

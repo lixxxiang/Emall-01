@@ -27,6 +27,7 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.flyco.tablayout.listener.OnTabSelectListener
+import kotlinx.android.synthetic.main.delegate_classify.*
 
 
 /**
@@ -51,12 +52,36 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
 
 
     override fun initial() {
+        RestClient().builder()
+//                    .url("http://59.110.164.214:8024/global/sceneDetail")
+//                    .params(sceneDetailParams)
+//                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=1","JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN"))
+                .url("http://59.110.164.214:8024/global/homePageUnits")
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+//                            videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
+//                            EmallLogger.d(videoDetail)
+//                            setData(videoDetail)
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+                        EmallLogger.d(code)
+                    }
+                })
+                .build()
+                .get()
         initViews()
         resolveConflict()
 
-
-        sceneDetailParams!!["productId"] = "JL103B_MSS_20171006162735_100002453_101_001_L1B_MSS"
-//        sceneDetailParams!!["type"] = "1"
+        sceneDetailParams!!["productId"] = arguments["productId"]
+        sceneDetailParams!!["type"] = arguments["type"]
         getData(sceneDetailParams!!)
         video_goods_buy_now_btn.setOnClickListener {
             val delegate: OrderDelegate = OrderDelegate().create()!!
@@ -66,18 +91,23 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
             start(delegate)
         }
 
-        video_goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
-            val scrollY = ScreenUtil.px2dip(context, video_goods_detail_scrollview.scrollY.toFloat())
-            when {
-                scrollY < 491 -> video_detail_tablayout_ctl.currentTab = 0
-                scrollY in 491..848 -> {
-                    video_detail_tablayout_ctl.currentTab = 1
+        if (video_goods_detail_scrollview != null){
+            video_goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
+                val scrollY = ScreenUtil.px2dip(context, video_goods_detail_scrollview.scrollY.toFloat())
+                when {
+                    scrollY < 491 -> video_detail_tablayout_ctl.currentTab = 0
+                    scrollY in 491..848 -> {
+                        video_detail_tablayout_ctl.currentTab = 1
+                    }
+                    scrollY > 844 -> video_detail_tablayout_ctl.currentTab = 2
                 }
-                scrollY > 844 -> video_detail_tablayout_ctl.currentTab = 2
             }
         }
 
         video_detail_tablayout_ctl.setOnTabSelectListener(this)
+        video_goods_detail_toolbar.setNavigationOnClickListener {
+            _mActivity.onBackPressed()
+        }
     }
 
     override fun onTabSelect(position: Int) {
@@ -197,35 +227,38 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     }
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
-        RestClient().builder()
-//                .url("http://10.10.90.11:8086/global/videoDetail")//EMULATOR
-                .url("http://192.168.1.36:3037/data")
-//                .url("http://192.168.1.36:3005/data")//EMULATOR
-                .params(sceneDetailParams)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
-                        EmallLogger.d(videoDetail)
-                        setData(videoDetail)
+        if (sceneDetailParams["type"] == "1"){
+            RestClient().builder()
+//                    .url("http://59.110.164.214:8024/global/sceneDetail")
+//                    .params(sceneDetailParams)
+//                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=1","JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN"))
+                    .url("http://59.110.164.214:8024/global/homePageUnits")
+                    .success(object : ISuccess {
+                        override fun onSuccess(response: String) {
+                            EmallLogger.d(response)
+//                            videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
+//                            EmallLogger.d(videoDetail)
+//                            setData(videoDetail)
+                        }
+                    })
+                    .failure(object : IFailure {
+                        override fun onFailure() {
 
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
+                        }
+                    })
+                    .error(object : IError {
+                        override fun onError(code: Int, msg: String) {
+                            EmallLogger.d(code)
+                        }
+                    })
+                    .build()
+                    .get()
+        }
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-
-                    }
-                })
-                .build()
-                .get()
     }
 
     private fun resolveConflict() {
-        mMapView = activity.findViewById(R.id.video_detail_map) as MapView
+        mMapView = activity.findViewById<MapView>(R.id.video_detail_map) as MapView
         mBaiduMap = mMapView!!.map
         val v = mMapView!!.getChildAt(0)
         v.setOnTouchListener(View.OnTouchListener { v, event ->

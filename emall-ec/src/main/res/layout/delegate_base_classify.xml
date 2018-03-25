@@ -7,57 +7,65 @@
         android:layout_alignParentTop="true"
         android:id="@+id/ll_bar"
         android:layout_width="fill_parent"
-        android:layout_height="12dp"
+        android:elevation="4dp"
+        android:layout_height="20dp"
         android:orientation="vertical"
         android:background="#FFFFFF">
     </LinearLayout>
     <RelativeLayout
-        android:layout_below="@+id/ll_bar"
         android:id="@+id/base_classify_searchbar_rl"
+        android:layout_below="@+id/ll_bar"
         android:layout_width="match_parent"
-        android:layout_height="31dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/style_home_pager_toolbar_search_view"
-        android:gravity="center_vertical">
-
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
         <RelativeLayout
-            android:layout_width="184dp"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true">
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/style_home_pager_toolbar_search_view"
+            android:gravity="center_vertical">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/index_search_icon"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="0dp"
-                android:background="@drawable/ic_search_dark" />
+            <RelativeLayout
+                android:layout_width="184dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true">
 
-            <TextView
-                android:id="@+id/edt_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/index_search_icon"
-                android:lines="1"
-                android:text="@string/index_searchbar_hint"
-                android:textColor="#9B9B9B"
-                android:textColorHint="#9B9B9B"
-                android:textSize="12dp" />
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/index_search_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="0dp"
+                    android:background="@drawable/ic_search_dark" />
+
+                <TextView
+                    android:id="@+id/edt_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/index_search_icon"
+                    android:lines="1"
+                    android:text="@string/index_searchbar_hint"
+                    android:textColor="#9B9B9B"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+
         </RelativeLayout>
-
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/base_classify_searchbar_rl"
-        android:layout_marginTop="10dp"
-        android:background="#EDEDED" />
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@+id/base_classify_searchbar_rl"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="#EDEDED" />-->
 
     <RelativeLayout
         android:layout_width="match_parent"

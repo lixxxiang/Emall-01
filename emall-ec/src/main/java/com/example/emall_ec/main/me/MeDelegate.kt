@@ -16,7 +16,13 @@ import kotlinx.android.synthetic.main.delegate_me.*
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.os.Build
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import com.blankj.utilcode.util.SizeUtils
+import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.StatusBarUtil
+import kotlinx.android.synthetic.main.delegate_program.*
 
 
 /**
@@ -50,8 +56,18 @@ class MeDelegate : BottomItemDelegate() {
         titleList!!.add(R.string.setting)
         titleList!!.add(R.string.contact_us)
         titleList!!.add(R.string.suggestion)
-//        StatusBarCompat.setStatusBarColor(activity, Color.TRANSPARENT)
-        //should hide status bar background (default black background) when SDK >= 21
+
+        if(DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll) > 0){
+            val rl = RelativeLayout(activity)
+            val rlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll)))
+            rl.layoutParams = rlParams
+            rl.setBackgroundColor(Color.parseColor("#F0F0F0"))
+            me_ll.addView(rl, rlParams)
+        }
+
+
+        EmallLogger.d(DimenUtil().getScreenHeight())
+        EmallLogger.d(SizeUtils.getMeasuredHeight(me_ll))
         DELEGATE = getParentDelegate()
 
         me_foward.typeface = Typeface.createFromAsset(activity.assets, "iconfont/foward.ttf")

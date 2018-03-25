@@ -3,7 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/me_bg">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#F0F0F0"
+        android:layout_alignParentBottom="true"
+        />
     <com.example.emall_core.util.view.BounceScrollView
         android:id="@+id/me_bsv"
         android:layout_width="match_parent"
@@ -11,8 +16,9 @@
         android:overScrollMode="never">
 
         <LinearLayout
+            android:id="@+id/me_ll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -267,10 +273,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
                 android:background="#F0F0F0"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:background="#F0F0F0"/>
         </LinearLayout>
     </com.example.emall_core.util.view.BounceScrollView>
+
 </RelativeLayout>

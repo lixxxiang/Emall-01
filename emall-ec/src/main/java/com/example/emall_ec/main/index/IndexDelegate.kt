@@ -18,8 +18,11 @@ import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.sign.SignUpDelegate
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-
+import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.log.EmallLogger
 
 
 /**
@@ -71,8 +74,5 @@ class IndexDelegate : BottomItemDelegate() {
             val delegate: SearchDelegate = SearchDelegate().create()!!
             (DELEGATE as EcBottomDelegate).start(delegate)
         }
-
     }
-
-
 }
