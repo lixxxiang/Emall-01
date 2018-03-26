@@ -3,6 +3,7 @@ package com.example.emall_ec.main.classify;
 
 import com.example.emall_ec.main.classify.data.SceneDetail;
 import com.example.emall_ec.main.classify.data.SceneSearch;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -24,7 +25,7 @@ public interface ApiService {
     @POST("/global/mobile/sceneSearch")
     @FormUrlEncoded
     Call<SceneSearch> sceneSearch(@Field("scopeGeo") String targetSentence,
-                            @Field("productType") String targetSentence2,
+                                  @Field("productType") String targetSentence2,
                                   @Field("resolution") String targetSentenc3,
                                   @Field("satelliteId") String targetSentence4,
                                   @Field("startTime") String targetSentence5,

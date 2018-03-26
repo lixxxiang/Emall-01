@@ -108,5 +108,6 @@
     <string name="scan_hint_2">请登录网页端 遥感易购</string>
     <string name="scan_hint_3">http://mall.charmingglobe.com/</string>
     <string name="scan_loggin">扫码登录</string>
+    <string name="scene_detail_mask">此图经过了处理，购买后或查看样例，可获得原始高清数据</string>
 
 </resources>

@@ -52,7 +52,7 @@ class ClassifyDelegate : BottomItemDelegate() {
     private var data: MutableList<Model>? = mutableListOf()
     private var mAdapter: ClassifyAdapter? = null
     private var viewHeight = 0
-    private var productId: MutableList<String>? = mutableListOf()
+    var productId: MutableList<String>? = mutableListOf()
     var handler = Handler()
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
@@ -84,7 +84,7 @@ class ClassifyDelegate : BottomItemDelegate() {
         }
 
         classify_toolbar.setNavigationOnClickListener {
-//            _mActivity.onBackPressed()
+            //            _mActivity.onBackPressed()
             val delegate = GoodsDetailDelegate().create()
             val bundle: Bundle? = Bundle()
 //        bundle!!.putString("productId", productId!![position])
@@ -93,6 +93,14 @@ class ClassifyDelegate : BottomItemDelegate() {
             start(delegate)
         }
 
+        mAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            val delegate = GoodsDetailDelegate().create()
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("productId", productId!![position])
+            bundle.putString("type", "1")
+            delegate!!.arguments = bundle
+            start(delegate)
+        }
 
 
 
@@ -139,10 +147,7 @@ class ClassifyDelegate : BottomItemDelegate() {
         classify_rv.isNestedScrollingEnabled = false
         mAdapter = ClassifyAdapter(R.layout.item_classify, data, glm)
         classify_rv.adapter = mAdapter
-        classify_rv.addOnItemTouchListener(ClassifyItemClickListener(this))
-//        mAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-//
-//        }
+//        classify_rv.addOnItemTouchListener(ClassifyItemClickListener(this))
     }
 
 
@@ -150,48 +155,16 @@ class ClassifyDelegate : BottomItemDelegate() {
         sceneSearch = arguments.getSerializable("data") as SceneSearch
         EmallLogger.d(sceneSearch.data.searchReturnDtoList[0].thumbnailUrl)
 
-//        ssp!!["scopeGeo"] = "{\"type\":\"Polygon\",\"coordinates\":[[[2.288164,48.871997],[2.466378,48.894223],[2.487259,48.848535],[2.309833,48.826008],[2.288164,48.871997]]]}"
-//        ssp!!["productType"] = ""
-//        ssp!!["resolution"] = ""
-//        ssp!!["satelliteId"] = ""
-//        ssp!!["startTime"] = "2018-01-01"
-//        ssp!!["endTime"] = "2018-03-25"
-//        ssp!!["cloud"] = ""
-//        ssp!!["type"] = "0"
-//        ssp!!["pageSize"] = "10"
-//        ssp!!["pageNum"] = "1"
-//
-//        RestClient().builder()
-//                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")//EMULATOR
-//                .params(ssp!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
-                        val size = sceneSearch.data.searchReturnDtoList.size
-                        ssp!!.clear()
-                        for (i in 0 until size) {
-                            val model = Model()
-                            model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
-                            model.price = sceneSearch.data.searchReturnDtoList[i].price
-                            model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
-                            productId!!.add(sceneSearch.data.searchReturnDtoList[i].productId)
-                            data!!.add(model)
-                        }
-                        initRecyclerView()
-//                    }
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {
-//
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {
-//
-//                    }
-//                })
-//                .build()
-//                .post()
-
+        val size = sceneSearch.data.searchReturnDtoList.size
+        ssp!!.clear()
+        for (i in 0 until size) {
+            val model = Model()
+            model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
+            model.price = sceneSearch.data.searchReturnDtoList[i].price
+            model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
+            productId!!.add(sceneSearch.data.searchReturnDtoList[i].productId)
+            data!!.add(model)
+        }
+        initRecyclerView()
     }
 }

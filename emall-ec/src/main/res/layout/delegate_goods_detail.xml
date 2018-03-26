@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     app:ignore="NamespaceTypo">
 
-    <LinearLayout
+    <View
         android:id="@+id/ll_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="10dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
-        android:orientation="vertical" />
+        android:elevation="4dp" />
 
     <com.example.emall_core.util.view.ListenningScrollView
         android:id="@+id/video_goods_detail_scrollview"
@@ -100,6 +99,58 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scene_goods_detail_mask_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#4C000000">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="@string/scene_detail_mask"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
+
+                    <RelativeLayout
+                        android:layout_width="68dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/scene_detail_eye_tv"
+                            android:layout_width="13dp"
+                            android:layout_height="9dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/eye" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="9dp"
+                            android:layout_toRightOf="@+id/scene_detail_eye_tv"
+                            android:text="@string/example"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10dp" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="36dp"
+                            android:layout_toRightOf="@+id/scene_detail_eye_tv"
+                            android:background="@drawable/ic_foward_white" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/video_mark"
                     android:layout_width="73dp"
                     android:layout_height="22dp"
                     android:layout_alignParentBottom="true"
@@ -114,6 +165,26 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:text="@string/video1A_1B"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/scene_mark"
+                    android:layout_width="63dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="#B4A078">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/optics_1"
                         android:textColor="#FFFFFF"
                         android:textSize="10dp" />
                 </RelativeLayout>
@@ -473,8 +544,8 @@
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="1"
-                        android:textColor="#4A4A4A"
                         android:text="@string/video_detail_gather_time"
+                        android:textColor="#4A4A4A"
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -493,8 +564,8 @@
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="1"
-                        android:textColor="#4A4A4A"
                         android:text="@string/video_detail_cloud"
+                        android:textColor="#4A4A4A"
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -513,8 +584,8 @@
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_weight="1"
-                        android:textColor="#4A4A4A"
                         android:text="@string/video_detail_location"
+                        android:textColor="#4A4A4A"
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -537,8 +608,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="#FFFFFF"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:background="#FFFFFF">
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -574,7 +645,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/ll_bar"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:elevation="4dp">
 
         <com.flyco.tablayout.CommonTabLayout
             android:id="@+id/video_detail_tablayout_ctl"
@@ -597,10 +669,16 @@
     <RelativeLayout
         android:id="@+id/video_detail_bottom_bar_ll"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="51dp"
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
         android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentTop="true"
+            android:background="#E0E0E0" />
 
         <RelativeLayout
             android:id="@+id/video_detail_head_set_rl"
