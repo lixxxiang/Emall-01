@@ -4,6 +4,10 @@ import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.SimpleClickListener
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.recycler.MultipleFields
 import com.example.emall_core.ui.recycler.MultipleItemEntity
 import com.example.emall_core.util.log.EmallLogger
@@ -18,11 +22,13 @@ import com.example.emall_ec.main.program.ProgramDelegate
 class IndexItemClickListener(private val DELEGATE: EmallDelegate) : SimpleClickListener() {
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        val delegate : ProgramDelegate = ProgramDelegate().create()!!
-        DELEGATE.start(delegate)
-        if (position == 1){
-            DELEGATE.start(DailyPicDelegate().create())
-        }
+//        val delegate : ProgramDelegate = ProgramDelegate().create()!!
+//        DELEGATE.start(delegate)
+//        if (position == 1){
+//            DELEGATE.start(DailyPicDelegate().create())
+//        }
+
+
     }
 
     override fun onItemLongClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {}

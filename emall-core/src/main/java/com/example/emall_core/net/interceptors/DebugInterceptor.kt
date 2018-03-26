@@ -1,6 +1,7 @@
 package com.example.emall_core.net.interceptors
 
 import android.support.annotation.RawRes
+import android.view.PixelCopy.request
 import com.example.emall_core.util.file.FileUtil
 import okhttp3.*
 import java.io.IOException

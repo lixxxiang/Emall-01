@@ -46,15 +46,16 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     }
 
     fun getUnit(unitUrl: String, dailyPicUrl: String){
+        var fa: WeakHashMap<String, Any>? = WeakHashMap()
         RestClient().builder()
                 .url(unitUrl)
+                .params(fa!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-
+                        EmallLogger.d(response)
                         data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
                         data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
-                        EmallLogger.d("bibibibib")
 //                        getDailyPicTitle(dailyPicUrl)
                         mAdapter = MultipleRecyclerAdapter.create(data)
                         RECYCLERVIEW.adapter = mAdapter
@@ -153,6 +154,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                                 BEAN.setCurrentCount(mAdapter!!.data.size)
                                 mAdapter!!.loadMoreComplete()
                                 BEAN.addIndex()
+
                             }
                         })
                         .build()

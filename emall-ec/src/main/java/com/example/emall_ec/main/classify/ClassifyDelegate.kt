@@ -34,7 +34,11 @@ import android.os.Handler
 import com.example.emall_core.util.dimen.DimenUtil
 import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.example.emall_ec.R.string.classify
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import okhttp3.*
+import retrofit2.Retrofit
+import java.io.IOException
 
 
 /**
@@ -42,7 +46,7 @@ import com.example.emall_ec.main.detail.GoodsDetailDelegate
  */
 class ClassifyDelegate : BottomItemDelegate() {
 
-    var sceneSearchParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var ssp: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
     private var data: MutableList<Model>? = mutableListOf()
@@ -58,29 +62,9 @@ class ClassifyDelegate : BottomItemDelegate() {
         return ClassifyDelegate()
     }
 
-    override fun initial() {
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/sceneDetail?productId=JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN&type=1")
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
-//                            videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
-//                            EmallLogger.d(videoDetail)
-//                            setData(videoDetail)
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-                        EmallLogger.d(code)
-                    }
-                })
-                .build()
-                .get()
+    override fun initial() {
+        getData()
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
         classify_ctl.isTitleEnabled = false
@@ -91,7 +75,6 @@ class ClassifyDelegate : BottomItemDelegate() {
                 if (observer.isAlive) {
                     observer.removeGlobalOnLayoutListener(this)
                     viewHeight = classify_introduction_rl.measuredHeight
-                    EmallLogger.d(viewHeight)
                 }
             }
         })
@@ -101,7 +84,13 @@ class ClassifyDelegate : BottomItemDelegate() {
         }
 
         classify_toolbar.setNavigationOnClickListener {
-            _mActivity.onBackPressed()
+//            _mActivity.onBackPressed()
+            val delegate = GoodsDetailDelegate().create()
+            val bundle: Bundle? = Bundle()
+//        bundle!!.putString("productId", productId!![position])
+            bundle!!.putString("type", "1")
+            delegate!!.arguments = bundle
+            start(delegate)
         }
 
 
@@ -137,37 +126,8 @@ class ClassifyDelegate : BottomItemDelegate() {
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
-        getData()
-
     }
-    var runnable: Runnable = object : Runnable {
-        override fun run() {
-            // TODO Auto-generated method stub
-            RestClient().builder()
-                    .url("http://59.110.164.214:8024/global/sceneDetail?productId=JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN&type=1")
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-                            EmallLogger.d(response)
-//                            videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
-//                            EmallLogger.d(videoDetail)
-//                            setData(videoDetail)
-                        }
-                    })
-                    .failure(object : IFailure {
-                        override fun onFailure() {
 
-                        }
-                    })
-                    .error(object : IError {
-                        override fun onError(code: Int, msg: String) {
-                            EmallLogger.d(code)
-                        }
-                    })
-                    .build()
-                    .get()
-            handler.postDelayed(this, 2000)
-        }
-    }
 
     private fun initRecyclerView() {
         val glm = GridLayoutManager(context, 2)
@@ -179,37 +139,36 @@ class ClassifyDelegate : BottomItemDelegate() {
         classify_rv.isNestedScrollingEnabled = false
         mAdapter = ClassifyAdapter(R.layout.item_classify, data, glm)
         classify_rv.adapter = mAdapter
-        mAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-//            val delegate = GoodsDetailDelegate().create()
-//            val bundle: Bundle? = Bundle()
-//            bundle!!.putString("productId", productId!![position])
-//            bundle.putString("type", "1")
-//            delegate!!.arguments = bundle
-//            start(delegate)
-            handler.postDelayed(runnable, 0)
-
-        }
+        classify_rv.addOnItemTouchListener(ClassifyItemClickListener(this))
+//        mAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+//
+//        }
     }
 
-    private fun getData() {
-        sceneSearchParams!!["scopeGeo"] = "{\"type\":\"Polygon\",\"coordinates\":[[[2.288164,48.871997],[2.466378,48.894223],[2.487259,48.848535],[2.309833,48.826008],[2.288164,48.871997]]]}"
-        sceneSearchParams!!["productType"] = ""
-        sceneSearchParams!!["resolution"] = ""
-        sceneSearchParams!!["satelliteId"] = ""
-        sceneSearchParams!!["startTime"] = "2018-01-01"
-        sceneSearchParams!!["endTime"] = "2018-03-25"
-        sceneSearchParams!!["cloud"] = ""
-        sceneSearchParams!!["type"] = "0"
-        sceneSearchParams!!["pageSize"] = "10"
-        sceneSearchParams!!["pageNum"] = "1"
 
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")//EMULATOR
-                .params(sceneSearchParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
+    private fun getData() {
+        sceneSearch = arguments.getSerializable("data") as SceneSearch
+        EmallLogger.d(sceneSearch.data.searchReturnDtoList[0].thumbnailUrl)
+
+//        ssp!!["scopeGeo"] = "{\"type\":\"Polygon\",\"coordinates\":[[[2.288164,48.871997],[2.466378,48.894223],[2.487259,48.848535],[2.309833,48.826008],[2.288164,48.871997]]]}"
+//        ssp!!["productType"] = ""
+//        ssp!!["resolution"] = ""
+//        ssp!!["satelliteId"] = ""
+//        ssp!!["startTime"] = "2018-01-01"
+//        ssp!!["endTime"] = "2018-03-25"
+//        ssp!!["cloud"] = ""
+//        ssp!!["type"] = "0"
+//        ssp!!["pageSize"] = "10"
+//        ssp!!["pageNum"] = "1"
+//
+//        RestClient().builder()
+//                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")//EMULATOR
+//                .params(ssp!!)
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         val size = sceneSearch.data.searchReturnDtoList.size
+                        ssp!!.clear()
                         for (i in 0 until size) {
                             val model = Model()
                             model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
@@ -219,19 +178,20 @@ class ClassifyDelegate : BottomItemDelegate() {
                             data!!.add(model)
                         }
                         initRecyclerView()
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//
+//                    }
+//                })
+//                .build()
+//                .post()
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-
-                    }
-                })
-                .build()
-                .post()
     }
 }

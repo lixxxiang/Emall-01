@@ -26,8 +26,18 @@ import java.util.*
 import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
+import com.example.emall_core.app.Emall
+import com.example.emall_ec.main.classify.ApiService
+import com.example.emall_ec.main.classify.NetUtils
+import com.example.emall_ec.main.classify.data.SceneDetail
+import com.example.emall_ec.main.classify.data.SceneSearch
 import com.flyco.tablayout.listener.OnTabSelectListener
 import kotlinx.android.synthetic.main.delegate_classify.*
+import okhttp3.*
+import java.io.IOException
+import retrofit2.Retrofit
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 
 /**
@@ -42,6 +52,8 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     var longi = "W"
     var mMapView: MapView? = null
     var mBaiduMap: BaiduMap? = null
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -52,34 +64,116 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
 
 
     override fun initial() {
-        RestClient().builder()
-//                    .url("http://59.110.164.214:8024/global/sceneDetail")
-//                    .params(sceneDetailParams)
-//                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=1","JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN"))
-                .url("http://59.110.164.214:8024/global/homePageUnits")
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
-//                            videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
-//                            EmallLogger.d(videoDetail)
-//                            setData(videoDetail)
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-                        EmallLogger.d(code)
-                    }
-                })
-                .build()
-                .get()
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.sceneDetail("JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN", "1")
+        call.enqueue(object : retrofit2.Callback<SceneDetail> {
+
+            override fun onResponse(call: retrofit2.Call<SceneDetail>, response: retrofit2.Response<SceneDetail>) {
+                if (response.body() != null) {
+                    EmallLogger.d(response.message())
+                } else {
+                    EmallLogger.d("errpr")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<SceneDetail>, throwable: Throwable) {}
+        })
+//        RestClient().builder()
+////                    .url("http://59.110.164.214:8024/global/sceneDetail")
+////                    .params(sceneDetailParams)
+//                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=1","JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN"))
+////                .url("http://59.110.164.214:8024/global/homePageUnits")
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        EmallLogger.d(response)
+////                            videoDetail = Gson().fromJson(response, VideoDetailBean::class.java)
+////                            EmallLogger.d(videoDetail)
+////                            setData(videoDetail)
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//                        EmallLogger.d(code)
+//                    }
+//                })
+//                .build()
+//                .get()
+//
+//        val url = "http://59.110.164.214:8024/global/sceneDetail?productId=JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN&type=1"
+//        val okHttpClient = OkHttpClient()
+//        val request = Request.Builder()
+//                .url(url)
+//                .build()
+//        val call = okHttpClient.newCall(request)
+//        call.enqueue(object : Callback {
+//            override fun onFailure(p0: Call?, p1: IOException?) {
+//                EmallLogger.d(p1!!.message!!)
+//            }
+//
+//            override fun onResponse(p0: Call?, p1: Response?) {
+//                EmallLogger.d(p1!!.message())
+//            }
+//        })
+
+//        var homePageParams: WeakHashMap<String, Any>? = WeakHashMap()
+//        homePageParams!!["pageSize"] = "10"
+//        homePageParams!!["pageNum"] = "1"
+//        RestClient().builder()
+//                .url("http://202.111.178.10:28085/mobile/homePage")
+//                .params(homePageParams!!)
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+////                            data!!.add(EVERY_DAY_PIC_CONVERTER.setJsonData(response).everyDayPicConvert()[0])
+//                        EmallLogger.d(response)
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//                    }
+//                })
+//                .build()
+//                .post()
+//
+//        var url = "http://59.110.164.214:8024/global/homePageUnits"
+//        var string = String(url.toByteArray(charset("gbk")), Charsets.UTF_8)
+//        RestClient().builder()
+//                .url(string)
+//                .params("","")
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        EmallLogger.d(response)
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//                        EmallLogger.d(code)
+//                    }
+//                })
+//                .build()
+//                .get()
+
+//        val clientBuilder = OkHttpClient.Builder()
+//        val loggingInterceptor = HttpLoggingInterceptor()
+//        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+//        clientBuilder.addInterceptor(loggingInterceptor)
         initViews()
         resolveConflict()
-
         sceneDetailParams!!["productId"] = arguments["productId"]
         sceneDetailParams!!["type"] = arguments["type"]
         getData(sceneDetailParams!!)
@@ -91,7 +185,7 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
             start(delegate)
         }
 
-        if (video_goods_detail_scrollview != null){
+        if (video_goods_detail_scrollview != null) {
             video_goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
                 val scrollY = ScreenUtil.px2dip(context, video_goods_detail_scrollview.scrollY.toFloat())
                 when {
@@ -109,6 +203,7 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
             _mActivity.onBackPressed()
         }
     }
+
 
     override fun onTabSelect(position: Int) {
         when (position) {
@@ -227,12 +322,17 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     }
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
-        if (sceneDetailParams["type"] == "1"){
+        if (sceneDetailParams["type"] == "1") {
+
+            var pa: WeakHashMap<String, Any>? = WeakHashMap()
+            pa!!["productId"] = "JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN"
+            pa["type"] = "1"
             RestClient().builder()
 //                    .url("http://59.110.164.214:8024/global/sceneDetail")
-//                    .params(sceneDetailParams)
+//                    .params(sceneDetailParams)OkHttpClient
 //                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=1","JL101A_PMS_20180316184644_000021554_204_0011_001_L1_PAN"))
-                    .url("http://59.110.164.214:8024/global/homePageUnits")
+                    .url("http://59.110.164.214:8024/global/sceneDetail")
+                    .params(pa)
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
                             EmallLogger.d(response)

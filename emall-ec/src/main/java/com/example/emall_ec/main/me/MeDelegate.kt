@@ -66,8 +66,6 @@ class MeDelegate : BottomItemDelegate() {
         }
 
 
-        EmallLogger.d(DimenUtil().getScreenHeight())
-        EmallLogger.d(SizeUtils.getMeasuredHeight(me_ll))
         DELEGATE = getParentDelegate()
 
         me_foward.typeface = Typeface.createFromAsset(activity.assets, "iconfont/foward.ttf")

@@ -8,6 +8,7 @@ import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
 import com.example.emall_core.ui.refresh.RefreshHandler
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.file.FileUtil
@@ -43,7 +44,7 @@ class IndexDelegate : BottomItemDelegate() {
 
     private fun initRecyclerView() {
         val manager = GridLayoutManager(context, 2)
-        recycler_view_index.layoutManager = manager
+        recycler_view_index.layoutManager = manager as RecyclerView.LayoutManager?
         val ecBottomDelegate: EcBottomDelegate = getParentDelegate()
         recycler_view_index.addOnItemTouchListener(IndexItemClickListener(ecBottomDelegate))
     }
