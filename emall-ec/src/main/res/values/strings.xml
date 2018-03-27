@@ -121,5 +121,6 @@
     <string name="fill_order">填写订单</string>
     <string name="coupon">优惠券</string>
     <string name="invoice">我要开发票</string>
+    <string name="go_pay">前往付款</string>
 
 </resources>

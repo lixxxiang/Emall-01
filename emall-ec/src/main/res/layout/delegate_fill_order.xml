@@ -252,6 +252,7 @@
 
         <RelativeLayout
             android:layout_width="0dp"
+            android:background="#b80017"
             android:layout_height="match_parent"
             android:layout_weight="1">
             <android.support.v7.widget.AppCompatTextView
@@ -259,7 +260,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-
+                android:text="@string/go_pay"
+                android:textColor="#FFFFFF"
+                android:textSize="12dp"
                 />
         </RelativeLayout>
     </LinearLayout>
