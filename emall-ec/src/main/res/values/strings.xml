@@ -38,9 +38,17 @@
     <string name="order_time">下单时间</string>
     <string name="pay_method">支付方式</string>
     <string name="original_price">原价</string>
+    <string name="original_price_">原价：</string>
+
     <string name="current_price">现价</string>
+    <string name="current_price_">现价：</string>
+
     <string name="discount">优惠</string>
+    <string name="discount_">优惠：</string>
+
     <string name="out_of_pocket">实付</string>
+    <string name="out_of_pocket_">实付：</string>
+    <string name="test_price">¥3441.00</string>
     <string name="service_time">服务时间</string>
     <string name="service_time_detail">工作日 8:30 - 5:30</string>
     <string name="to_download">前往下载</string>
@@ -109,5 +117,9 @@
     <string name="scan_hint_3">http://mall.charmingglobe.com/</string>
     <string name="scan_loggin">扫码登录</string>
     <string name="scene_detail_mask">此图经过了处理，购买后或查看样例，可获得原始高清数据</string>
+    <string name="classify_video">当前为试看视频</string>
+    <string name="fill_order">填写订单</string>
+    <string name="coupon">优惠券</string>
+    <string name="invoice">我要开发票</string>
 
 </resources>

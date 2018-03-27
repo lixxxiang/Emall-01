@@ -20,10 +20,10 @@ import java.util.List;
  * Created by lixiang on 2018/3/7.
  */
 
-public class ClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder> {
+public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder> {
 
     private GridLayoutManager glm = null;
-    public ClassifyAdapter(@LayoutRes int layoutResId, @Nullable List<Model> data, GridLayoutManager glm) {
+    public SceneClassifyAdapter(@LayoutRes int layoutResId, @Nullable List<Model> data, GridLayoutManager glm) {
         super(layoutResId, data);
         this.glm = glm;
     }

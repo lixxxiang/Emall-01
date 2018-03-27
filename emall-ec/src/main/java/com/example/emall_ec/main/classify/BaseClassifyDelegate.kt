@@ -3,18 +3,13 @@ package com.example.emall_ec.main.classify
 import android.os.Bundle
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
-import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.callback.IError
-import com.example.emall_core.net.callback.IFailure
-import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.classify.data.Model
-import com.example.emall_ec.main.classify.data.SceneDetail
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.classify.data.SceneSearch
-import com.example.emall_ec.main.order.OrderListDelegate
-import com.google.gson.Gson
+import com.example.emall_ec.main.classify.data.VideoSearch
 import kotlinx.android.synthetic.main.delegate_base_classify.*
 import retrofit2.Retrofit
 import java.util.*
@@ -25,6 +20,8 @@ import java.util.*
 class BaseClassifyDelegate : BottomItemDelegate() {
     var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
+    var videoSearch = VideoSearch()
+
     var ssp: WeakHashMap<String, Any>? = WeakHashMap()
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
@@ -51,7 +48,8 @@ class BaseClassifyDelegate : BottomItemDelegate() {
                     if (response.body() != null) {
                         EmallLogger.d(response.body()!!.data.searchReturnDtoList[0].thumbnailUrl)
                         sceneSearch = response.body()!!
-                        bundle!!.putSerializable("data", sceneSearch)
+                        bundle!!.putString("type","1")
+                        bundle.putSerializable("sceneData", sceneSearch)
                         delegate.arguments = bundle
                         (DELEGATE as EcBottomDelegate).start(delegate)
                     } else {
@@ -62,5 +60,37 @@ class BaseClassifyDelegate : BottomItemDelegate() {
                 override fun onFailure(call: retrofit2.Call<SceneSearch>, throwable: Throwable) {}
             })
         }
+
+        base_classify_noctilucence_siv.setOnClickListener {
+
+        }
+
+        base_classify_video_siv.setOnClickListener {
+            val delegate: ClassifyDelegate = ClassifyDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+
+            retrofit = NetUtils.getRetrofit()
+            apiService = retrofit!!.create(ApiService::class.java)
+            val call = apiService!!.videoSearch("{\"type\":\"Polygon\",\"coordinates\":[[[35.457584,33.948135],[35.594112,33.92194],[35.586525,33.867798],[35.449474,33.894363],[35.457584,33.948135]]]}",
+                    "0")
+            call.enqueue(object : retrofit2.Callback<VideoSearch> {
+
+                override fun onResponse(call: retrofit2.Call<VideoSearch>, response: retrofit2.Response<VideoSearch>) {
+                    if (response.body() != null) {
+                        EmallLogger.d(response.body()!!.data[0].detailPath)
+                        videoSearch = response.body()!!
+                        bundle!!.putString("type","0")
+                        bundle.putSerializable("videoData", videoSearch)
+                        delegate.arguments = bundle
+                        (DELEGATE as EcBottomDelegate).start(delegate)
+                    } else {
+                        EmallLogger.d("errpr")
+                    }
+                }
+
+                override fun onFailure(call: retrofit2.Call<VideoSearch>, throwable: Throwable) {}
+            })
+        }
+
     }
 }

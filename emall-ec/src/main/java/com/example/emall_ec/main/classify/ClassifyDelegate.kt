@@ -11,34 +11,18 @@ import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_classify.*
 import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.GridLayoutManager
-import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.callback.IError
-import com.example.emall_core.net.callback.IFailure
-import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.AppBarStateChangeListener
-import com.example.emall_ec.main.classify.data.ClassifyAdapter
-import com.example.emall_ec.main.classify.data.Model
-import com.example.emall_ec.main.classify.data.SceneSearch
-import com.google.gson.Gson
 import java.util.*
 import android.view.View
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.ViewTreeObserver
 import com.example.emall_core.util.view.GridSpacingItemDecoration
-import android.opengl.ETC1.getWidth
-import android.opengl.ETC1.getHeight
 import android.os.Handler
 import com.example.emall_core.util.dimen.DimenUtil
-import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.example.emall_ec.R.string.classify
+import com.example.emall_ec.main.classify.data.*
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
-import okhttp3.*
-import retrofit2.Retrofit
-import java.io.IOException
 
 
 /**
@@ -49,11 +33,16 @@ class ClassifyDelegate : BottomItemDelegate() {
     var ssp: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
+    var videoSearch = VideoSearch()
+
     private var data: MutableList<Model>? = mutableListOf()
-    private var mAdapter: ClassifyAdapter? = null
+    private var sceneAdapter: SceneClassifyAdapter? = null
+    private var videoAdapter: VideoClassifyAdapter? = null
+
     private var viewHeight = 0
     var productId: MutableList<String>? = mutableListOf()
     var handler = Handler()
+    var type = "scene"
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
     }
@@ -64,7 +53,16 @@ class ClassifyDelegate : BottomItemDelegate() {
 
 
     override fun initial() {
-        getData()
+        if (arguments.getString("type") == "1") {
+            getSceneData()
+            type = "scene"
+            classify_title_tv.text = resources.getString(R.string.optics_1)
+        } else if (arguments.getString("type") == "0") {
+            getVideoData()
+            type = "video"
+            classify_title_tv.text = resources.getString(R.string.video1A_1B)
+
+        }
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
         classify_ctl.isTitleEnabled = false
@@ -84,23 +82,21 @@ class ClassifyDelegate : BottomItemDelegate() {
         }
 
         classify_toolbar.setNavigationOnClickListener {
-            //            _mActivity.onBackPressed()
-            val delegate = GoodsDetailDelegate().create()
-            val bundle: Bundle? = Bundle()
-//        bundle!!.putString("productId", productId!![position])
-            bundle!!.putString("type", "1")
-            delegate!!.arguments = bundle
-            start(delegate)
+            _mActivity.onBackPressed()
         }
 
-        mAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            val delegate = GoodsDetailDelegate().create()
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("productId", productId!![position])
-            bundle.putString("type", "1")
-            delegate!!.arguments = bundle
-            start(delegate)
+        if (sceneAdapter != null){
+            sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+                val delegate = GoodsDetailDelegate().create()
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("productId", productId!![position])
+                bundle.putString("type", "1")
+                delegate!!.arguments = bundle
+                start(delegate)
+            }
         }
+
+
 
 
 
@@ -117,7 +113,11 @@ class ClassifyDelegate : BottomItemDelegate() {
 
                 } else if (state == AppBarStateChangeListener.State.COLLAPSED) {
                     activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    classify_toolbar.title = "光学1级"
+                    if (type == "scene"){
+                        classify_toolbar.title = "光学1级"
+                    }else if (type == "video"){
+                        classify_toolbar.title = "视频1A+1B"
+                    }
                     classify_toolbar.setTitleTextColor(Color.parseColor("#5C5C5C"))
                     classify_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
                     classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search_small_dark)
@@ -137,26 +137,39 @@ class ClassifyDelegate : BottomItemDelegate() {
     }
 
 
-    private fun initRecyclerView() {
-        val glm = GridLayoutManager(context, 2)
-        glm.isSmoothScrollbarEnabled = true
-        glm.isAutoMeasureEnabled = true
-        classify_rv.addItemDecoration(GridSpacingItemDecoration(2, DimenUtil().dip2px(context, 14F), true))
-        classify_rv.layoutManager = glm
-        classify_rv.setHasFixedSize(true)
-        classify_rv.isNestedScrollingEnabled = false
-        mAdapter = ClassifyAdapter(R.layout.item_classify, data, glm)
-        classify_rv.adapter = mAdapter
+    private fun initRecyclerView(type: String) {
+        if (type == "0") {
+            val glm = GridLayoutManager(context, 1)
+            glm.isSmoothScrollbarEnabled = true
+            glm.isAutoMeasureEnabled = true
+            classify_rv.addItemDecoration(GridSpacingItemDecoration(1, DimenUtil().dip2px(context, 14F), true))
+            classify_rv.layoutManager = glm
+            classify_rv.setHasFixedSize(true)
+            classify_rv.isNestedScrollingEnabled = false
+            videoAdapter = VideoClassifyAdapter(R.layout.item_classify_video, data, glm)
+            classify_rv.adapter = videoAdapter
+        } else if (type == "1") {
+            val glm = GridLayoutManager(context, 2)
+            glm.isSmoothScrollbarEnabled = true
+            glm.isAutoMeasureEnabled = true
+            classify_rv.addItemDecoration(GridSpacingItemDecoration(2, DimenUtil().dip2px(context, 14F), true))
+            classify_rv.layoutManager = glm
+            classify_rv.setHasFixedSize(true)
+            classify_rv.isNestedScrollingEnabled = false
+            sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, glm)
+            classify_rv.adapter = sceneAdapter
+        }
+
 //        classify_rv.addOnItemTouchListener(ClassifyItemClickListener(this))
     }
 
 
-    private fun getData() {
-        sceneSearch = arguments.getSerializable("data") as SceneSearch
+    private fun getSceneData() {
+        sceneSearch = arguments.getSerializable("sceneData") as SceneSearch
         EmallLogger.d(sceneSearch.data.searchReturnDtoList[0].thumbnailUrl)
 
         val size = sceneSearch.data.searchReturnDtoList.size
-        ssp!!.clear()
+//        ssp!!.clear()
         for (i in 0 until size) {
             val model = Model()
             model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
@@ -165,6 +178,23 @@ class ClassifyDelegate : BottomItemDelegate() {
             productId!!.add(sceneSearch.data.searchReturnDtoList[i].productId)
             data!!.add(model)
         }
-        initRecyclerView()
+        initRecyclerView("1")
+    }
+
+
+    private fun getVideoData() {
+        videoSearch = arguments.getSerializable("videoData") as VideoSearch
+        EmallLogger.d(videoSearch.data[0].detailPath)
+
+        val size = videoSearch.data.size
+        for (i in 0 until size) {
+            val model = Model()
+            model.imageUrl = videoSearch.data[i].detailPath
+            model.price = videoSearch.data[i].price
+            model.time = videoSearch.data[i].startTime
+            productId!!.add(videoSearch.data[i].productId)
+            data!!.add(model)
+        }
+        initRecyclerView("0")
     }
 }

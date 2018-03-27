@@ -14,7 +14,7 @@
         android:elevation="4dp" />
 
     <com.example.emall_core.util.view.ListenningScrollView
-        android:id="@+id/video_goods_detail_scrollview"
+        android:id="@+id/goods_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/video_detail_bottom_bar_ll"
@@ -41,6 +41,7 @@
                     android:background="#33000000" />
 
                 <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/play_btn"
                     android:layout_width="59dp"
                     android:layout_height="59dp"
                     android:layout_centerHorizontal="true"
@@ -192,6 +193,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/video_rl"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background="#FFFFFF">
@@ -241,6 +243,60 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/video_detail_sale_price_tv"
+                    android:layout_marginTop="46dp"
+                    android:text="@string/video_detail_original_price"
+                    android:textColor="#9B9B9B"
+                    android:textSize="14dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#F0F0F0" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/scene_rl"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="#FFFFFF">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/scene_detail_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="#5C5C5C"
+                    android:text="@string/time_limit"
+                    android:textSize="14dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/scene_detail_promotion_description_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="47dp"
+                    android:text="@string/time_limit"
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/scene_detail_sale_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="28dp"
+                    android:layout_marginTop="17dp"
+                    android:text="@string/video_detail_sale_price"
+                    android:textColor="#B80017"
+                    android:textSize="18dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/scene_detail_original_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/scene_detail_sale_price_tv"
                     android:layout_marginTop="46dp"
                     android:text="@string/video_detail_original_price"
                     android:textColor="#9B9B9B"
@@ -392,7 +448,7 @@
                         android:background="#9B9B9B" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_product_id_tv"
+                        android:id="@+id/detail_product_id_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -510,7 +566,7 @@
                     android:orientation="vertical">
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_satellite_tv"
+                        android:id="@+id/detail_satellite_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -520,7 +576,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_product_level_tv"
+                        android:id="@+id/detail_product_level_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -530,7 +586,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_ratio_tv"
+                        android:id="@+id/detail_ratio_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -539,7 +595,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_gather_time_tv"
+                        android:id="@+id/detail_gather_time_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -549,7 +605,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_area_tv"
+                        android:id="@+id/detail_area_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -559,7 +615,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_cloud_tv"
+                        android:id="@+id/detail_cloud_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -569,7 +625,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_angle_tv"
+                        android:id="@+id/detail_angle_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -579,7 +635,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_location_tv"
+                        android:id="@+id/detail_location_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"
@@ -589,7 +645,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/video_detail_coordinate_tv"
+                        android:id="@+id/detail_coordinate_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginLeft="0dp"

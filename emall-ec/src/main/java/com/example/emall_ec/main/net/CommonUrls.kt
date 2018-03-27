@@ -10,14 +10,11 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
-import com.example.emall_ec.R.id.optics_rv
-import com.example.emall_ec.main.classify.data.ClassifyAdapter
+import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.google.gson.Gson
 import java.util.*
-import android.support.v7.widget.LinearLayoutManager
-
 
 
 /**
@@ -67,7 +64,7 @@ class CommonUrls {
         recyclerView.layoutManager = glm
         recyclerView.setHasFixedSize(true)
         recyclerView.isNestedScrollingEnabled = false
-        val mAdapter: ClassifyAdapter? = ClassifyAdapter(R.layout.item_classify, data, glm)
+        val mAdapter: SceneClassifyAdapter? = SceneClassifyAdapter(R.layout.item_classify_scene, data, glm)
         recyclerView.adapter = mAdapter
     }
 

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/classify_video_image_iv"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="223dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="195dp"
+        android:background="#33000000" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="92dp"
+        android:background="@drawable/play_btn_gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_alignBottom="@+id/classify_video_image_iv"
+        android:background="#66747474">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13dp"
+            android:text="@string/classify_video"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/video_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="13dp"
+            android:textColor="#FFFFFF"
+            android:text="试看时长：31分32秒"
+            android:textSize="12dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@+id/classify_video_image_iv"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFFFFF">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="#5C5C5C"
+            android:id="@+id/classify_video_title"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="14dp" />
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#9B9B9B"
+            android:id="@+id/classify_video_time"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="45dp" />
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="12dp"
+            android:textColor="#B80017"
+            android:id="@+id/classify_video_price"
+            android:layout_marginRight="19dp"
+            android:layout_marginTop="17dp" />
+    </RelativeLayout>
+</RelativeLayout>

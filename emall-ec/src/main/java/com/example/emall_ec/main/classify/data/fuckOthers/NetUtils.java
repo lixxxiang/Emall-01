@@ -1,4 +1,4 @@
-package com.example.emall_ec.main.classify;
+package com.example.emall_ec.main.classify.data.fuckOthers;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

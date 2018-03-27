@@ -1,8 +1,9 @@
-package com.example.emall_ec.main.classify;
+package com.example.emall_ec.main.classify.data.fuckOthers;
 
 
 import com.example.emall_ec.main.classify.data.SceneDetail;
 import com.example.emall_ec.main.classify.data.SceneSearch;
+import com.example.emall_ec.main.classify.data.VideoSearch;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -34,4 +35,9 @@ public interface ApiService {
                                   @Field("type") String targetSentence8,
                                   @Field("pageSize") String targetSentence9,
                                   @Field("pageNum") String targetSentence10);
+
+    @POST("/global/videoSearch")
+    @FormUrlEncoded
+    Call<VideoSearch> videoSearch(@Field("geo") String targetSentence,
+                                  @Field("type") String targetSentence2);
 }
