@@ -29,8 +29,13 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.example.emall_ec.main.demand.FillOrderDelegate
+import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
+import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
+import com.example.emall_ec.main.index.dailypic.data.BannerBean
+import com.example.emall_ec.main.index.dailypic.data.HomePageBean
 import com.flyco.tablayout.listener.OnTabSelectListener
+import kotlinx.android.synthetic.main.delegate_daily_pic.*
 
 
 /**
@@ -45,6 +50,9 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     var longi = "W"
     var mMapView: MapView? = null
     var mBaiduMap: BaiduMap? = null
+    var commoditySubmitDemandParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var commoditySubmitDemandBean = CommoditySubmitDemandBean()
+    var sceneData = SceneDetailBean().data
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -64,15 +72,12 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
         EmallLogger.d(sceneDetailParams!!["productId"]!!)
         getData(sceneDetailParams!!)
         video_goods_buy_now_btn.setOnClickListener {
-            val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("KEY", "ID")
-            delegate.arguments = bundle
-            start(delegate)
+            commoditySubmitDemand()
+
         }
 
         goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
-            if (goods_detail_scrollview!= null){
+            if (goods_detail_scrollview != null) {
                 val scrollY = ScreenUtil.px2dip(context, goods_detail_scrollview.scrollY.toFloat())
                 when {
                     scrollY < 491 -> video_detail_tablayout_ctl.currentTab = 0
@@ -86,11 +91,43 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
 
         video_detail_tablayout_ctl.setOnTabSelectListener(this)
         video_goods_detail_toolbar.setNavigationOnClickListener {
-//            goods_detail_scrollview.removeOnLayoutChangeListener(this)
             supportDelegate.pop()
-//            goods_detail_scrollview.clearFocus()
-//            _mActivity.onBackPressed()
         }
+    }
+
+    private fun commoditySubmitDemand() {
+        commoditySubmitDemandParams!!["productId"] = arguments.getString("productId")
+        commoditySubmitDemandParams!!["geo"] = ""
+        commoditySubmitDemandParams!!["status"] = "0"
+        commoditySubmitDemandParams!!["type"] = "1"
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/commoditySubmitDemand")
+                .params(commoditySubmitDemandParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        commoditySubmitDemandBean = Gson().fromJson(response, CommoditySubmitDemandBean::class.java)
+                        val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
+                        val bundle: Bundle? = Bundle()
+                        bundle!!.putString("demandId", commoditySubmitDemandBean.data)
+                        bundle.putString("imageUrl",sceneData.imageDetailUrl)
+                        bundle.putString("title", sceneData.productId)
+                        bundle.putString("time",sceneData.centerTime)
+                        delegate.arguments = bundle
+                        start(delegate)
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
     }
 
 
@@ -107,27 +144,28 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     }
 
     private fun setSceneData(sceneDetail: SceneDetailBean) {
-        val data = sceneDetail.data
-        EmallLogger.d(data)
-        detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), data.centerTime)
-        detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), data.swingSatelliteAngle)
+        sceneData = sceneDetail.data
+
+        EmallLogger.d(sceneData)
+        detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), sceneData.centerTime)
+        detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), sceneData.swingSatelliteAngle)
 
         Glide.with(context)
-                .load(data.imageDetailUrl)
+                .load(sceneData.imageDetailUrl)
                 .into(video_goods_detail_title_image)
-        drawMap(getGeo(data.geo))
-        scene_detail_promotion_description_tv.text = data.promotionDescription
-        scene_detail_sale_price_tv.text = String.format(resources.getString(R.string.video_detail_sale_price), data.salePrice)
-        scene_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), data.originalPrice)
-        changeColor(data.serviceDescription)
-        detail_product_id_tv.text = data.productId
-        detail_satellite_tv.text = data.satelliteId
-        detail_ratio_tv.text = data.resolution
-        detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), data.size)
-        detail_cloud_tv.text = String.format(resources.getString(R.string.video_detail_cloud), data.cloud)
-        judgeLati_longi(data.latitude, data.longitude)
-        detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), data.longitude, longi, data.latitude, lati)
-        detail_coordinate_tv.text = data.sensor
+        drawMap(getGeo(sceneData.geo))
+        scene_detail_promotion_description_tv.text = sceneData.promotionDescription
+        scene_detail_sale_price_tv.text = String.format(resources.getString(R.string.video_detail_sale_price), sceneData.salePrice)
+        scene_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), sceneData.originalPrice)
+        changeColor(sceneData.serviceDescription)
+        detail_product_id_tv.text = sceneData.productId
+        detail_satellite_tv.text = sceneData.satelliteId
+        detail_ratio_tv.text = sceneData.resolution
+        detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), sceneData.size)
+        detail_cloud_tv.text = String.format(resources.getString(R.string.video_detail_cloud), sceneData.cloud)
+        judgeLati_longi(sceneData.latitude, sceneData.longitude)
+        detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), sceneData.longitude, longi, sceneData.latitude, lati)
+        detail_coordinate_tv.text = sceneData.sensor
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {

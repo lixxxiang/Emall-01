@@ -122,5 +122,8 @@
     <string name="coupon">优惠券</string>
     <string name="invoice">我要开发票</string>
     <string name="go_pay">前往付款</string>
+    <string name="choose_pay_method">请选择付款方式</string>
+    <string name="wechat_pay">微信支付</string>
+    <string name="to_public">对公转账</string>
 
 </resources>
