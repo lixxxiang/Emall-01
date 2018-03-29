@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/topbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:background="@color/colorPrimary"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ImageButton-->
+    <!--android:id="@+id/back"-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="17dp"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="17dp"-->
+    <!--android:layout_marginStart="17dp"-->
+    <!--android:background="@drawable/back" />-->
+
+    <!---->
+    <!--</RelativeLayout>-->
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#B4A078"
+        android:elevation="4dp" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/pic_detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ll_bar"
+        android:background="#B4A078"
+        android:elevation="4dp">
+
+        <com.androidkun.xtablayout.XTabLayout
+            android:id="@+id/xTablayout"
+            android:layout_width="163dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:xTabBackgroundColor="#B4A078"
+            app:xTabIndicatorHeight="0dp"
+            app:xTabMode="scrollable"
+            app:xTabSelectedTextColor="#FFFFFF"
+            app:xTabSelectedTextSize="16dp"
+            app:xTabTextColor="#FFFFFF"
+            app:xTabTextSelectedBold="true"
+            app:xTabTextSize="14dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="99dp"
+        android:layout_below="@+id/pic_detail_toolbar"
+        android:background="#B4A078"
+        android:elevation="4dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_below="@+id/viewpager">
+
+        <!--<include layout="@layout/pic_detail_2" />-->
+        <include layout="@layout/pic_detail_1" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#ffffff">
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/gray_line"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.5dp"-->
+            <!--android:background="#cecece" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/comment"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="64dp"-->
+            <!--android:layout_marginLeft="14dp"-->
+            <!--android:layout_marginRight="64dp"-->
+            <!--android:layout_marginStart="14dp"-->
+            <!--android:layout_toLeftOf="@+id/collect"-->
+            <!--android:layout_toStartOf="@+id/collect"-->
+            <!--android:background="@drawable/bar" />-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="64dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginStart="14dp"
+            android:layout_toLeftOf="@+id/collect"
+            android:layout_toStartOf="@+id/collect"
+            android:background="@drawable/style_home_pager_toolbar_search_view">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/edt_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:lines="1"
+                android:text="写评论..."
+                android:textColor="#9B9B9B"
+                android:textColorHint="#9B9B9B"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/repost"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="21dp"
+            android:layout_marginRight="21dp"
+            android:background="@drawable/repost" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/collect"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="22dp"
+            android:layout_marginRight="22dp"
+            android:layout_toLeftOf="@+id/repost"
+            android:layout_toStartOf="@+id/repost" />
+
+        <com.example.emall_core.util.view.BottomBarView
+            android:id="@+id/comments"
+            android:layout_width="60dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/collect"
+            android:layout_toStartOf="@+id/collect" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="19dp"-->
+            <!--android:layout_marginStart="19dp"-->
+            <!--android:text="写评论..."-->
+            <!--android:textColor="#9b9b9b"-->
+            <!--android:textSize="14dp" />-->
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -11,10 +11,8 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.demand.data.ViewDemandBean
-import com.example.emall_ec.main.detail.PayMethodDelegate
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
-import kotlinx.android.synthetic.main.me_function_item.*
 import java.util.*
 
 /**
@@ -76,6 +74,10 @@ class FillOrderDelegate : BottomItemDelegate() {
             if (!isChecked){
                 cb.isChecked = true
                 isChecked = true
+                val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                delegate.arguments = bundle
+                start(delegate)
             }else{
                 cb.isChecked = false
                 isChecked = false

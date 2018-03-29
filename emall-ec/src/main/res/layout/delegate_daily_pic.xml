@@ -8,8 +8,10 @@
         android:layout_height="10dp"
         android:layout_alignParentTop="true"
         android:background="#FFFFFF"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:elevation="4dp"/>
     <android.support.v7.widget.Toolbar
+        android:elevation="4dp"
         android:id="@+id/daily_pic_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -31,7 +33,7 @@
             android:id="@+id/daily_pic_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:dividerHeight="1dp"
+            android:dividerHeight="2px"
             android:divider="@drawable/list_item_divider_5"
             android:layout_below="@+id/banner" />
     </com.example.emall_core.util.view.SwipeRefreshView>

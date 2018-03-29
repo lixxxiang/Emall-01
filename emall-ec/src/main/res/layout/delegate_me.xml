@@ -118,7 +118,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2px"
                         android:layout_alignParentBottom="true"
                         android:layout_marginLeft="13dp"
                         android:background="#DADADA" />
@@ -264,7 +264,7 @@
                 <ListView
                     android:id="@+id/me_function_lv"
                     android:divider="@drawable/list_item_divider"
-                    android:dividerHeight="1dp"
+                    android:dividerHeight="2px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </RelativeLayout>

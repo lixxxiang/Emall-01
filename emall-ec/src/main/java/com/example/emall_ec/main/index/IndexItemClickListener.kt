@@ -22,13 +22,11 @@ import com.example.emall_ec.main.program.ProgramDelegate
 class IndexItemClickListener(private val DELEGATE: EmallDelegate) : SimpleClickListener() {
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-//        val delegate : ProgramDelegate = ProgramDelegate().create()!!
-//        DELEGATE.start(delegate)
-//        if (position == 1){
-//            DELEGATE.start(DailyPicDelegate().create())
-//        }
-
-
+        val delegate : ProgramDelegate = ProgramDelegate().create()!!
+        DELEGATE.start(delegate)
+        if (position == 1){
+            DELEGATE.start(DailyPicDelegate().create())
+        }
     }
 
     override fun onItemLongClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {}

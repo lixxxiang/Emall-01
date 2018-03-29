@@ -2,22 +2,21 @@ package com.example.emall_ec.main.index.dailypic.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.emall_core.util.view.GlideRoundTransform;
 import com.example.emall_core.util.view.RoundImageView;
-import com.example.emall_core.util.view.SquareRoundImageView;
+import com.example.emall_core.util.view.SquareImageView;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.index.dailypic.data.HomePageBean;
-
 import java.util.List;
+
 
 /**
  * Created by lixiang on 2017/11/8.
@@ -81,7 +80,9 @@ public class HomePageListViewAdapter extends BaseAdapter {
         Pic1Holder pic1Holder;
         Pic2Holder pic2Holder;
         VideoHolder videoHolder;
-
+        RequestOptions myOptions = new RequestOptions()
+                .centerCrop()
+                .transform(new GlideRoundTransform(context,5));
         switch (getItemViewType(position)) {
             case TYPE_PIC_1:
                 if (convertView == null) {
@@ -118,14 +119,19 @@ public class HomePageListViewAdapter extends BaseAdapter {
                 pic2Holder.pic2Name.setText(homePageData.get(position).getContentName());
                 pic2Holder.pic2Date.setText("每日一图 · " + homePageData.get(position).getContentDate()
                         .substring(homePageData.get(position).getContentDate().length() - 5, homePageData.get(position).getContentDate().length()));
+
                 Glide.with(context)
                         .load(homePageData.get(position).getThumbnail1Path())
+                        .apply(myOptions)
                         .into(pic2Holder.pic2Pic1);
+
+
                 if (homePageData.get(position).getThumbnail2Path().length() == 0) {
                     pic2Holder.pic2Pic2.setVisibility(View.INVISIBLE);
                 } else {
                     Glide.with(context)
                             .load(homePageData.get(position).getThumbnail2Path())
+                            .apply(myOptions)
                             .into(pic2Holder.pic2Pic2);
                 }
                 if (homePageData.get(position).getThumbnail3Path().length() == 0) {
@@ -133,6 +139,7 @@ public class HomePageListViewAdapter extends BaseAdapter {
                 } else {
                     Glide.with(context)
                             .load(homePageData.get(position).getThumbnail3Path())
+                            .apply(myOptions)
                             .into(pic2Holder.pic2Pic3);
                 }
                 break;
@@ -169,9 +176,9 @@ public class HomePageListViewAdapter extends BaseAdapter {
     }
 
     class Pic2Holder {
-        RoundImageView pic2Pic1;
-        RoundImageView pic2Pic2;
-        RoundImageView pic2Pic3;
+        SquareImageView pic2Pic1;
+        SquareImageView pic2Pic2;
+        SquareImageView pic2Pic3;
         AppCompatTextView pic2Name;
         AppCompatTextView pic2Date;
     }

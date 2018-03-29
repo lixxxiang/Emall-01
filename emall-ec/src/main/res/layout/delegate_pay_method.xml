@@ -31,69 +31,107 @@
         android:layout_width="match_parent"
         android:background="#F0F0F0"
         android:layout_height="match_parent">
-        <LinearLayout
+        <RelativeLayout
             android:background="#FFFFFF"
             android:layout_marginTop="6dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <RelativeLayout
-                android:background="#FFFFFF"
-                android:layout_width="match_parent"
-                android:layout_height="53dp">
-                <CheckBox
+            <RadioGroup
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="19dp"
+                android:id="@+id/radioGroup">
+                <RadioButton
+                    android:id="@+id/radioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="19dp"/>
+                    android:layout_marginTop="10dp"
+                    />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    />
+
+            </RadioGroup>
+            <RelativeLayout
+                android:id="@+id/rl"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:layout_toRightOf="@+id/radioGroup"
+                android:layout_marginLeft="22dp">
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="21dp"
                     android:background="@drawable/wechat"
-                    android:layout_marginLeft="60dp"
                     android:layout_centerVertical="true"/>
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
                     android:textColor="#5C5C5C"
-                    android:text="@string/wechat_pay"
+                    android:layout_marginLeft="41dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="100dp"/>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:background="#E0E0E0"
-                    android:layout_marginLeft="13dp"
-                    android:layout_alignParentBottom="true"/>
+                    android:text="@string/wechat_pay"
+                    />
             </RelativeLayout>
             <RelativeLayout
-                android:background="#FFFFFF"
-
                 android:layout_width="match_parent"
-                android:layout_height="53dp">
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="19dp"/>
+                android:layout_height="2px"
+                android:background="#E0E0E0"
+                android:layout_below="@+id/rl"
+                android:layout_marginLeft="13dp"/>
+            <RelativeLayout
+                android:id="@+id/rl2"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:layout_toRightOf="@+id/radioGroup"
+                android:layout_marginLeft="22dp"
+                android:layout_below="@+id/rl"
+                android:focusable="true">
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="24dp"
-                    android:layout_height="21dp"
+                    android:layout_height="18dp"
                     android:background="@drawable/to_public"
-                    android:layout_marginLeft="60dp"
                     android:layout_centerVertical="true"/>
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
+                    android:layout_marginLeft="41dp"
+                    android:layout_centerVertical="true"
                     android:textColor="#5C5C5C"
                     android:text="@string/to_public"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="100dp"/>
+                    />
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
     </com.example.emall_core.util.view.BounceScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            android:layout_centerInParent="true"
+            android:textSize="12dp"
+            android:textColor="#FFFFFF"/>
+    </RelativeLayout>
 </RelativeLayout>

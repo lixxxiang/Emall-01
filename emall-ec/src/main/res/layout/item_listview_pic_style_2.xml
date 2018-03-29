@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
     <android.support.v7.widget.AppCompatTextView
@@ -25,7 +22,7 @@
     <LinearLayout
         android:id="@+id/item_pic_2_ll"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/item_pic_2_detail_tv"
         android:layout_marginLeft="17dp"
         android:layout_marginStart="17dp"
@@ -34,29 +31,42 @@
         android:layout_marginEnd="17dp"
         android:orientation="horizontal">
 
-        <com.example.emall_core.util.view.SquareRoundImageView
-            android:id="@+id/item_pic_2_pic1_sriv"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1">
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/item_pic_2_pic1_sriv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="2dp"
 
-        <com.example.emall_core.util.view.SquareRoundImageView
-            android:id="@+id/item_pic_2_pic2_sriv"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp" />
+            android:layout_weight="1">
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/item_pic_2_pic2_sriv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
 
-        <com.example.emall_core.util.view.SquareRoundImageView
-            android:id="@+id/item_pic_2_pic3_sriv"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp" />
+            android:layout_weight="1">
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/item_pic_2_pic3_sriv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatTextView

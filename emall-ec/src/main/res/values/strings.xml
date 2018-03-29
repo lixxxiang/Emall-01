@@ -125,5 +125,6 @@
     <string name="choose_pay_method">请选择付款方式</string>
     <string name="wechat_pay">微信支付</string>
     <string name="to_public">对公转账</string>
+    <string name="invoice_title">发票信息</string>
 
 </resources>
