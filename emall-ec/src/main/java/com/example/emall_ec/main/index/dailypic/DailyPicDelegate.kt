@@ -140,7 +140,7 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
         banner.setBannerTitles(titles)
         banner.start()
         banner.setOnBannerListener {
-            start(PicDetailDelegate().create())
+//            start(PicDetailDelegate().create())
         }
         daily_pic_lv.addHeaderView(headerView)
         banner.startAutoPlay()

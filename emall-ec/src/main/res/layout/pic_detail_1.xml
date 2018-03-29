@@ -121,7 +121,7 @@
                 android:layout_height="match_parent">
                 <com.example.emall_core.util.view.CommentListView
                     android:layout_width="match_parent"
-                    android:divider="@drawable/list_item_divider_5"
+                    android:divider="@drawable/list_item_divider_2"
                     android:dividerHeight="2px"
                     android:id="@+id/comment_listview"
                     android:layout_height="match_parent">

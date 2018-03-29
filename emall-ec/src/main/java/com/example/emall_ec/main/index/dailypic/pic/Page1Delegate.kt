@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.index.dailypic.pic
 
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 
 /**
@@ -16,6 +17,6 @@ class Page1Delegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-
+//        EmallLogger.d(PicDetailDelegate().getDailyPicDetailBean.data.image1FilePath)
     }
 }
