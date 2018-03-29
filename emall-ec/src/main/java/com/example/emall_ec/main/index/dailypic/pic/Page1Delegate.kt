@@ -8,7 +8,9 @@ import com.example.emall_ec.R
  * Created by lixiang on 2018/3/29.
  */
 class Page1Delegate : BottomItemDelegate() {
-    fun create(): Page1Delegate? {
+    var contentId = ""
+    fun create(contentId: String): Page1Delegate? {
+        this.contentId = contentId
         return Page1Delegate()
     }
 
@@ -17,6 +19,6 @@ class Page1Delegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-//        EmallLogger.d(PicDetailDelegate().getDailyPicDetailBean.data.image1FilePath)
+        EmallLogger.d(contentId)
     }
 }

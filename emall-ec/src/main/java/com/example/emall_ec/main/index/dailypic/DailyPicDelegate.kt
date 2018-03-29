@@ -10,11 +10,10 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.recycler.GlideImageLoader
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.R.id.daily_pic_lv
-import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
 import com.example.emall_ec.main.index.dailypic.data.BannerBean
 import com.example.emall_ec.main.index.dailypic.data.HomePageBean
+import com.example.emall_ec.main.index.dailypic.pic.Page1Delegate
 import com.example.emall_ec.main.index.dailypic.pic.PicDetailDelegate
 import com.google.gson.Gson
 import com.youth.banner.Banner
@@ -112,6 +111,7 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
         daily_pic_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (homePageData!![i - 1].type == "1"){
                 EmallLogger.d(homePageData!![i - 1].contentName)
+                Page1Delegate().create(homePageData!![i - 1].contentId)
                 val delegate : PicDetailDelegate = PicDetailDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("imageId", homePageData!![i - 1].contentId)
