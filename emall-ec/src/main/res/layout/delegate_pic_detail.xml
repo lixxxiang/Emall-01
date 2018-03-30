@@ -76,6 +76,7 @@
     </FrameLayout>
 
     <RelativeLayout
+        android:elevation="4dp"
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="49dp"
@@ -104,6 +105,7 @@
             <!--android:background="@drawable/bar" />-->
 
         <RelativeLayout
+            android:id="@+id/comment_rl"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_centerVertical="true"

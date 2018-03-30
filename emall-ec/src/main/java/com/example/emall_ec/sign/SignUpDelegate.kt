@@ -8,6 +8,11 @@ import com.example.emall_core.util.log.EmallLogger
 import java.util.*
 import android.graphics.Typeface
 import android.graphics.Color
+import android.view.View
+import android.widget.Toast
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.net.callback.ISuccess
 
 
 /**
@@ -15,7 +20,8 @@ import android.graphics.Color
  */
 class SignUpDelegate : EmallDelegate() {
 
-
+    var tel = String()
+    var sendMessageParams : WeakHashMap<String, Any>?= WeakHashMap()
     fun create(): SignUpDelegate?{
         return SignUpDelegate()
     }
@@ -25,9 +31,12 @@ class SignUpDelegate : EmallDelegate() {
 
 
     override fun initial() {
-//        StatusBarCompat.setStatusBarColor(activity, Color.WHITE)
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         sign_up_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_up_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
+
+        tel = sign_up_tel_et.text.toString()
+
         val params : WeakHashMap<String, Any> ?= RestClient().PARAMS
         params!!["name"] = "n"
         params["userId"] = 123
@@ -36,18 +45,35 @@ class SignUpDelegate : EmallDelegate() {
         params["gender"] = "gender"
 
         btn_sign_up_submit.setOnClickListener{
-            /**
-             * 获取验证码
-             */
-             EmallLogger.d("get verify code")
-        }
+            if (tel.isEmpty()){
+                Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT).show()
+            }else{
+                sendMessageParams!!["telephone"] = tel
+                RestClient().builder()
+                        .url("http://10.10.90.11:8099/global/mall/sendMessage.do")
+                        .success(object : ISuccess {
+                            override fun onSuccess(response: String) {
 
-        btn_sign_up_submit.setOnClickListener {
-            startWithPop(SetPasswordDelegate())
+                            }
+                        })
+                        .error(object : IError {
+                            override fun onError(code: Int, msg: String) {}
+                        })
+                        .failure(object : IFailure {
+                            override fun onFailure() {}
+                        })
+                        .build()
+                        .get()
+            }
+
         }
 
         sign_up_login_tv.setOnClickListener {
-            println("dd")
+            if (tel.isEmpty()){
+                Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT).show()
+            }else{
+
+            }
             startWithPop(SignInByTelDelegate())
         }
 

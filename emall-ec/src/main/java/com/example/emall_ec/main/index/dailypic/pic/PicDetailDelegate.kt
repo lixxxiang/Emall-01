@@ -1,8 +1,13 @@
 package com.example.emall_ec.main.index.dailypic.pic
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import com.androidkun.xtablayout.XTabLayout
@@ -13,13 +18,17 @@ import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.R.id.collect
+import com.example.emall_ec.R.id.like_count
 import com.example.emall_ec.main.index.dailypic.adapter.CommentListViewAdapter
 import com.example.emall_ec.main.index.dailypic.adapter.PicDetailAdapter
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.index.dailypic.data.GetArticleAttachBean
 import com.example.emall_ec.main.index.dailypic.data.GetDailyPicDetailBean
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.comment.view.*
 import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import java.util.*
@@ -97,6 +106,7 @@ class PicDetailDelegate : BottomItemDelegate() {
 //            }
         }
 
+
         collect.setOnClickListener {
             //            if (sp.getString("userId", null) != null) {
             isCollected = if (!isCollected) {
@@ -111,6 +121,43 @@ class PicDetailDelegate : BottomItemDelegate() {
 //                startActivity(Intent(this, LoginActivity::class.java))
 //            }
         }
+
+        val bottomDialog = Dialog(activity, R.style.BottomDialog)
+        val contentView = LayoutInflater.from(activity).inflate(R.layout.comment, null)
+
+
+        comment_rl.setOnClickListener {
+//            if (isLogined) {
+                bottomDialog.setContentView(contentView)
+                val layoutParams = contentView.layoutParams
+                layoutParams.width = resources.displayMetrics.widthPixels
+                contentView.layoutParams = layoutParams
+                bottomDialog.window!!.setGravity(Gravity.BOTTOM)
+                bottomDialog.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
+                bottomDialog.show()
+                if(!contentView.comment_area.text.toString().isEmpty()){
+                    contentView.comment_area.setText("")
+                }
+//            } else {
+//                startActivity(Intent(this, LoginActivity::class.java))
+//            }
+        }
+
+        contentView.cancel.setOnClickListener {
+            bottomDialog.hide()
+        }
+
+        contentView.release.setOnClickListener {
+//            val sp2 = activity.getSharedPreferences("User", Context.MODE_PRIVATE)
+//            println("--->" + sp2.getString("userId", null) + "--->" + articleId + "--->" + type + "--->" + contentView.comment_area.text.toString())
+//            if(!contentView.comment_area.text.toString().isEmpty()){
+//                presenter.submitComment(sp.getString("userId", null), articleId, type, contentView.comment_area.text.toString())
+//                bottomDialog.hide()
+//            } else
+//                toast("评论不能为空")
+
+        }
+
     }
 
     private fun addCollection() {
@@ -209,10 +256,12 @@ class PicDetailDelegate : BottomItemDelegate() {
 
     private fun getdata(id: String?) {
         getDailyPicDetailParams!!["imageId"] = id
+        EmallLogger.d(getDailyPicDetailParams!!["imageId"]!!)
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getDailyPicDetail")
                 .params(getDailyPicDetailParams!!)
                 .success(object : ISuccess {
+                    @SuppressLint("ApplySharedPref")
                     override fun onSuccess(response: String) {
                         getDailyPicDetailBean = Gson().fromJson(response, GetDailyPicDetailBean::class.java)
                         /**
@@ -221,6 +270,14 @@ class PicDetailDelegate : BottomItemDelegate() {
                         userParams!!["articleId"] = imageId
                         userParams!!["userId"] = "22"
                         userParams!!["type"] = "1"
+                        val imageDate = getDailyPicDetailBean.data.imageDate.substring(getDailyPicDetailBean.data.imageDate.length - 5, getDailyPicDetailBean.data.imageDate.length)
+                        EmallLogger.d(getDailyPicDetailBean.data.imageName)
+
+                        val mSharedPreferences = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
+                        val editor = mSharedPreferences.edit()
+                        editor.putString("imageName", getDailyPicDetailBean.data.imageName)
+                        editor.putString("imageDate", imageDate)
+                        editor.commit()
 
 
                         initViews(getDailyPicDetailBean)

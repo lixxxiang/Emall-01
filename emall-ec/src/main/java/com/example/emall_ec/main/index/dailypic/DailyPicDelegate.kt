@@ -21,6 +21,15 @@ import com.youth.banner.BannerConfig
 import com.youth.banner.listener.OnBannerListener
 import kotlinx.android.synthetic.main.delegate_daily_pic.*
 import java.util.*
+import android.R.id.edit
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+
+
+
+
 
 /**
  * Created by lixiang on 2018/3/21.
@@ -46,6 +55,7 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
         return R.layout.delegate_daily_pic
     }
 
+    @SuppressLint("ApplySharedPref")
     override fun initial() {
 
         daily_pic_toolbar.title = ""
@@ -110,8 +120,11 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
 
         daily_pic_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (homePageData!![i - 1].type == "1"){
+//                Page1Delegate().create()
+
+
+
                 EmallLogger.d(homePageData!![i - 1].contentName)
-                Page1Delegate().create(homePageData!![i - 1].contentId)
                 val delegate : PicDetailDelegate = PicDetailDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("imageId", homePageData!![i - 1].contentId)

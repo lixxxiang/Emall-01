@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF">
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -85,7 +90,7 @@
 
             <RelativeLayout
                 android:id="@+id/sign_up_cut_off_rl"
-                android:layout_width="1dp"
+                android:layout_width="2px"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
@@ -112,7 +117,7 @@
                 android:layout_marginStart="13dp" />
             <RelativeLayout
                 android:layout_width="300dp"
-                android:layout_height="1dp"
+                android:layout_height="2px"
                 android:layout_alignParentBottom="true"
                 android:background="#F4F4F4"/>
         </RelativeLayout>
@@ -123,7 +128,7 @@
             android:layout_height="50dp"
             android:layout_below="@+id/sign_up_tel_rl"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="1dp">
+            android:layout_marginTop="2px">
             <com.example.emall_core.util.view.EditTextWithDeleteButton
                 android:id="@+id/sign_up_vcode_et"
                 android:layout_width="100dp"
@@ -140,7 +145,7 @@
                 android:layout_marginStart="0dp" />
             <RelativeLayout
                 android:id="@+id/sign_up_cut_off_2_rl"
-                android:layout_width="1dp"
+                android:layout_width="2px"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="75dp"
@@ -160,7 +165,7 @@
                 android:layout_toEndOf="@+id/sign_up_cut_off_2_rl" />
             <RelativeLayout
                 android:layout_width="300dp"
-                android:layout_height="1dp"
+                android:layout_height="2px"
                 android:layout_alignParentBottom="true"
                 android:background="#F4F4F4"/>
         </RelativeLayout>

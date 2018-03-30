@@ -15,6 +15,8 @@ abstract class ProxyActivity : SupportActivity() {
     /**
      * 主fragment
      */
+
+
     abstract fun setRootDelegate(): EmallDelegate
 
     override fun onCreate(savedInstanceState: Bundle?) {

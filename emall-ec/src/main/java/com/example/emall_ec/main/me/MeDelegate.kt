@@ -22,6 +22,8 @@ import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.StatusBarUtil
+import com.example.emall_ec.sign.SignInByTelDelegate
+import com.example.emall_ec.sign.SignUpDelegate
 import kotlinx.android.synthetic.main.delegate_program.*
 
 
@@ -80,11 +82,11 @@ class MeDelegate : BottomItemDelegate() {
         }
 
         me_avatar_iv.setOnClickListener {
-            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("KEY", "ID")
-            delegate.arguments = bundle
-            (DELEGATE as EcBottomDelegate).start(delegate)
+//            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
+//            val bundle: Bundle? = Bundle()
+//            bundle!!.putString("KEY", "ID")
+//            delegate.arguments = bundle
+            (DELEGATE as EcBottomDelegate).start(SignInByTelDelegate().create()!!)
         }
     }
 }

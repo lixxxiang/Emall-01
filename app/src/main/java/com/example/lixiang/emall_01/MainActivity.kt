@@ -17,10 +17,17 @@ import com.example.emall_ec.main.EcBottomDelegate
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import com.jaeger.library.StatusBarUtil
 
 
 class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
+
+    var iid = String()
+    fun getIId(): String {
+        return iid
+    }
+    fun setIId(){
+        this.iid = iid
+    }
 
     override fun onLauncherFinish(tag: OnLauncherFinishTag) {
         when (tag) {
