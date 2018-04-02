@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="150dp">
+    <RelativeLayout
+        android:id="@+id/forget_rl1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:focusable="true">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#B4A078"
+            android:textSize="14dp"
+            android:text="@string/sign_in_by_tel"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#efefef"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/forget_rl2"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#B4A078"
+            android:textSize="14dp"
+            android:text="@string/modify_pwd"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#efefef"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/forget_rl3"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#B4A078"
+            android:textSize="14dp"
+            android:text="@string/cancel"/>
+    </RelativeLayout>
+</LinearLayout>

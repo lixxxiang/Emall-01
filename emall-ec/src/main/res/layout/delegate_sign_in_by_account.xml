@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF">
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -12,7 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"
-            android:layout_height="20dp">
+            android:layout_height="25dp">
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/sign_in_by_account_login_tv"
                 android:layout_width="wrap_content"
@@ -86,7 +91,7 @@
 
             <RelativeLayout
                 android:id="@+id/sign_in_by_account_cut_off_rl"
-                android:layout_width="1dp"
+                android:layout_width="2px"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
@@ -114,7 +119,7 @@
             <RelativeLayout
                 android:id="@+id/sign_in_by_account_sep_rl"
                 android:layout_width="300dp"
-                android:layout_height="1dp"
+                android:layout_height="2px"
                 android:layout_alignParentBottom="true"
                 android:background="#F4F4F4"/>
         </RelativeLayout>
@@ -127,7 +132,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="1dp">
             <com.example.emall_core.util.view.EditTextWithDeleteButton
-                android:id="@+id/sign_in_by_account_vcode_et"
+                android:id="@+id/sign_in_by_account_pwd_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="16"
@@ -138,14 +143,13 @@
                 android:textCursorDrawable="@null"
                 android:hint="@string/sign_in_by_account_pwd"
                 android:textColor="#9B9B9B"
-                android:inputType="number"
                 android:layout_toLeftOf="@+id/sign_in_by_account_cut_off_2_rl"
                 android:layout_marginEnd="14dp"
                 android:layout_marginStart="0dp"
                 android:layout_marginRight="14dp" />
             <RelativeLayout
                 android:id="@+id/sign_in_by_account_cut_off_2_rl"
-                android:layout_width="1dp"
+                android:layout_width="2px"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/sign_in_by_account_hide_tv"
@@ -169,13 +173,13 @@
             <RelativeLayout
                 android:id="@+id/sign_in_by_account_sep_rl_2"
                 android:layout_width="300dp"
-                android:layout_height="1dp"
+                android:layout_height="2px"
                 android:layout_alignParentBottom="true"
                 android:background="#F4F4F4"/>
         </RelativeLayout>
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/sign_in_by_account_vcode_tv"
+            android:id="@+id/sign_in_by_account_forget_password_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#B4A078"
@@ -191,7 +195,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="11dp"
             android:textColor="#FFFFFF"
-            android:layout_below="@+id/sign_in_by_account_vcode_tv"
+            android:layout_below="@+id/sign_in_by_account_forget_password_tv"
             android:textSize="14dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/sign_up_btn_shape"

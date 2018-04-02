@@ -1,49 +1,51 @@
 package com.example.emall_ec.sign
 
 import android.graphics.Typeface
+import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.RegexUtils
-import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.sign.data.CheckMessageBean
-import com.example.emall_ec.sign.data.SendMessageBean
+import kotlinx.android.synthetic.main.delegate_daily_pic.*
+import kotlinx.android.synthetic.main.delegate_modify_password.*
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
-import java.util.*
-import android.text.Editable
-import android.text.TextWatcher
-
 
 /**
- * Created by lixiang on 2018/2/5.
+ * Created by lixiang on 2018/4/2.
  */
-class SignInByTelDelegate : EmallDelegate() {
-
+class ModifyPasswordDelegate : BottomItemDelegate() {
     var tel = String()
     var vCode = String()
-    var sendMessageBean = SendMessageBean()
-    var checkMessageBean = CheckMessageBean()
-    var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
 
-    fun create(): SignInByTelDelegate? {
-        return SignInByTelDelegate()
+    fun create(): ModifyPasswordDelegate?{
+        return ModifyPasswordDelegate()
     }
 
     override fun setLayout(): Any? {
-        return R.layout.delegate_sign_in_by_tel
+        return R.layout.delegate_modify_password
     }
 
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        sign_in_by_tel_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
-        sign_in_by_tel_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
+        modify_pwd_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
+        modify_pwd_toolbar.title = ""
+        (activity as AppCompatActivity).setSupportActionBar(modify_pwd_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        sign_in_by_tel_tel_et.addTextChangedListener(mTextWatcher)
-        sign_in_by_tel_count_down.setCountDownMillis(60000)
-        sign_in_by_tel_count_down.setOnClickListener {
-            tel = sign_in_by_tel_tel_et.text.toString()
-            vCode = sign_in_by_tel_vcode_et.text.toString()
+        modify_pwd_vcode_et.addTextChangedListener(mTextWatcher)
+
+        modify_pwd_toolbar.setNavigationOnClickListener {
+            _mActivity.onBackPressed()
+        }
+
+        modify_pwd_count_down.setCountDownMillis(60000)
+        modify_pwd_count_down.setOnClickListener {
+            tel = modify_pwd_tel_et.text.toString()
+            vCode = modify_pwd_vcode_et.text.toString()
             if (tel.isEmpty()) {
                 /**
                  * empty tel
@@ -57,7 +59,7 @@ class SignInByTelDelegate : EmallDelegate() {
                     /**
                      * tel is valid
                      */
-                    sign_in_by_tel_count_down.start()
+                    modify_pwd_count_down.start()
                     getVCode()
                 } else {
                     /**
@@ -69,16 +71,14 @@ class SignInByTelDelegate : EmallDelegate() {
 //            sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
         }
 
-        sign_in_by_tel_submit_btn.setOnClickListener {
-            //            startWithPop(SignInByAccountDelegate())
-            tel = sign_in_by_tel_tel_et.text.toString()
-            vCode = sign_in_by_tel_vcode_et.text.toString()
-            EmallLogger.d(tel)
+        modify_pwd_submit_btn.setOnClickListener {
+            tel = modify_pwd_tel_et.text.toString()
+            vCode = modify_pwd_vcode_et.text.toString()
             if (tel.isEmpty()) {
                 /**
                  * empty tel
                  */
-                Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.empty_tel) + tel, Toast.LENGTH_SHORT).show()
             } else {
                 /**
                  * tel ok
@@ -98,43 +98,18 @@ class SignInByTelDelegate : EmallDelegate() {
                          * tel ok & vcode ok
                          */
                         checkMessage()
-
                     }
                 } else {
                     /**
                      * tel is invalid
                      */
-                    Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-
-        btn_sign_in_by_account_submit.setOnClickListener {
-            startWithPop(SignInByAccountDelegate())
+//            sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
         }
 
     }
-
-    private var mTextWatcher: TextWatcher = object : TextWatcher {
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            // TODO Auto-generated method stub
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
-                                       after: Int) {
-            // TODO Auto-generated method stub
-        }
-
-        override fun afterTextChanged(s: Editable) {
-            // TODO Auto-generated method stub
-            EmallLogger.d("change")
-            sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
-            if (sign_in_by_tel_tel_et.text.toString() == "") {
-                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
-            }
-        }
-    }
-
 
     private fun checkMessage() {
 //        RestClient().builder()
@@ -166,6 +141,7 @@ class SignInByTelDelegate : EmallDelegate() {
              * success
              */
             EmallLogger.d("success")
+            start(ResetPasswordDelegate().create())
         } else {
             Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
         }
@@ -216,11 +192,31 @@ class SignInByTelDelegate : EmallDelegate() {
     }
 
     private fun showHint() {
-        sign_in_by_tel_vcode_tv.text = String.format("已向手机%s发送验证码",hideTel())
-        sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
+        modify_pwd_vcode_tv.text = String.format("已向手机%s发送验证码",hideTel())
+        modify_pwd_vcode_tv.visibility = View.VISIBLE
     }
 
     private fun hideTel(): String {
         return String.format("%s****%s", tel.substring(0, 4), tel.substring(7, 11))
+    }
+
+    private var mTextWatcher: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
+                                       after: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            // TODO Auto-generated method stub
+            EmallLogger.d("change")
+            modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+            if (modify_pwd_vcode_et.text.toString() == "") {
+                modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+            }
+        }
     }
 }
