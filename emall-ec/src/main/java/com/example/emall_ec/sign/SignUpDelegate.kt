@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_ec.main.EcBottomDelegate
 
 
 /**
@@ -75,6 +76,10 @@ class SignUpDelegate : EmallDelegate() {
 
             }
             startWithPop(SignInByTelDelegate())
+        }
+
+        sign_up_close.setOnClickListener {
+            startWithPop(EcBottomDelegate())
         }
 
 

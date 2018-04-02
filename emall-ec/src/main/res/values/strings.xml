@@ -142,5 +142,9 @@
     <string name="new_pwd_hint">8-20位密码，必须包含字母和数字</string>
     <string name="repeat_pwd">请再次输入密码</string>
     <string name="confirm_modify">确认修改</string>
+    <string name="error_pwd_format">密码格式不正确</string>
+    <string name="pwd_min">密码长度不得小于8位</string>
+    <string name="pwd_no_match">密码不一致</string>
+    <string name="pwd_max">密码长度不得大于20位</string>
 
 </resources>

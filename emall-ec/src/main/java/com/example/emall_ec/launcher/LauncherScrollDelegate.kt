@@ -11,6 +11,8 @@ import com.example.emall_ec.R
 import android.accounts.AccountManager
 import com.example.emall_core.net.ui.ScrollLauncherTag
 import com.example.emall_core.util.storage.EmallPreference
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.index.IndexDelegate
 
 
 /**
@@ -25,6 +27,7 @@ class LauncherScrollDelegate(): EmallDelegate(), AdapterView.OnItemClickListener
         if (position == INTEGERS.size - 1) {
             EmallPreference().setAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name, true)
             println("last click")
+            startWithPop(EcBottomDelegate())
         }
     }
 

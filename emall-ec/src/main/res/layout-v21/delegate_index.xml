@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <View
+        android:id="@+id/fake_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_index"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_index">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_index"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_below="@+id/fake_status_bar"
+        android:id="@+id/toolbar_index"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/index_scan_tv"
+                    android:layout_width="25dp"
+                    android:layout_height="21dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/scan"
+                    android:textSize="25dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/index_search_rl"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="6"
+                android:background="@drawable/style_home_pager_toolbar_search_view"
+                android:gravity="center_vertical">
+
+                <RelativeLayout
+                    android:layout_width="184dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/index_search_icon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="0dp"
+                        android:background="@drawable/ic_search_dark" />
+
+                    <TextView
+                        android:id="@+id/edt_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@+id/index_search_icon"
+                        android:lines="1"
+                        android:text="@string/index_searchbar_hint"
+                        android:textColor="#9B9B9B"
+                        android:textColorHint="#9B9B9B"
+                        android:textSize="12dp"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="31dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/index_noti_tv"
+                    android:layout_width="20dp"
+                    android:layout_height="22dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/notification"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</RelativeLayout>

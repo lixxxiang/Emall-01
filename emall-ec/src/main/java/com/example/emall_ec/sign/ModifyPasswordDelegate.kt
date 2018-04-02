@@ -1,6 +1,7 @@
 package com.example.emall_ec.sign
 
 import android.graphics.Typeface
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
@@ -141,7 +142,11 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
              * success
              */
             EmallLogger.d("success")
-            start(ResetPasswordDelegate().create())
+            val delegate :ResetPasswordDelegate = ResetPasswordDelegate().create()!!
+            val bundle = Bundle()
+            bundle.putString("MODIFY_PASSWORD_TELEPHONE", tel)
+            delegate.arguments = bundle
+            start(delegate)
         } else {
             Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
         }
