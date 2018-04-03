@@ -46,25 +46,27 @@ class SettingDelegate : BottomItemDelegate() {
 
         setting_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (i == 2) {
-                val items = arrayOf("每次提醒", "提醒一次")
+                val items = arrayOf(getString(R.string.alert_every_time), getString(R.string.alert_once))
                 val builder = AlertDialog.Builder(activity)
-                builder.setTitle("非WiFi网络播放提醒")
-                        .setSingleChoiceItems(items, index, DialogInterface.OnClickListener { dialog, which ->
+                builder.setTitle(getString(R.string.no_wifi_play_noti))
+                        .setSingleChoiceItems(items, index, { _, which ->
                             index = which
                         })
-                builder.setPositiveButton("确定") { dialog, which ->
+                builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
                     val tv = setting_lv.getChildAt(2).findViewById<AppCompatTextView>(R.id.detail_tv)
                     tv.text = items[index]
                     dialog.dismiss()
-
                 }
 
-                builder.setNegativeButton("取消"){dialog, which ->
+                builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                     dialog.dismiss()
                 }
 
                 builder.create().show()
+            }
 
+            if (i == 0) {
+                start(AccountPrivacySettingsDelegate().create())
             }
         }
 

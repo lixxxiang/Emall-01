@@ -139,7 +139,7 @@
     <string name="modify_password">修改登录密码</string>
     <string name="new_pwd">新密码</string>
     <string name="confirm_pwd">确认密码</string>
-    <string name="new_pwd_hint">8-20位密码，必须包含字母和数字</string>
+    <string name="new_pwd_hint">8–20位密码，必须包含字母和数字</string>
     <string name="repeat_pwd">请再次输入密码</string>
     <string name="confirm_modify">确认修改</string>
     <string name="error_pwd_format">密码格式不正确</string>
@@ -153,5 +153,9 @@
     <string name="clear_cache">清除缓存</string>
     <string name="no_wifi_play_noti">非Wi-Fi网络播放提醒</string>
     <string name="alert_once">提醒一次</string>
+    <string name="alert_every_time">每次提醒</string>
+    <string name="account_privacy_settings">账号和隐私设置</string>
+    <string name="modify_tel">修改手机号码</string>
+    <string name="exit">退出登录</string>
 
 </resources>

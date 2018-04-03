@@ -60,7 +60,7 @@ class MeDelegate : BottomItemDelegate() {
         titleList!!.add(R.string.contact_us)
         titleList!!.add(R.string.suggestion)
 
-        if(DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll) > 0){
+        if (DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll) > 0) {
             val rl = RelativeLayout(activity)
             val rlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll)))
             rl.layoutParams = rlParams
@@ -83,7 +83,7 @@ class MeDelegate : BottomItemDelegate() {
         }
 
         me_avatar_iv.setOnClickListener {
-//            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
+            //            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
 //            val bundle: Bundle? = Bundle()
 //            bundle!!.putString("KEY", "ID")
 //            delegate.arguments = bundle
@@ -91,7 +91,7 @@ class MeDelegate : BottomItemDelegate() {
         }
 
         me_function_lv.setOnItemClickListener { adapterView, view, i, l ->
-            when(i){
+            when (i) {
                 0 -> {
 
                 }
@@ -102,7 +102,7 @@ class MeDelegate : BottomItemDelegate() {
 
                 }
                 3 -> {
-                    start(SettingDelegate().create())
+                    (DELEGATE as EcBottomDelegate).start(SettingDelegate().create())
                 }
                 4 -> {
 
