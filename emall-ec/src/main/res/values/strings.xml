@@ -149,5 +149,9 @@
     <string name="username_taken">该用户名已被使用</string>
     <string name="empty_userName">用户名不能为空</string>
     <string name="register_success">注册成功</string>
+    <string name="account_privacy_setting">账号和隐私设置</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="no_wifi_play_noti">非Wi-Fi网络播放提醒</string>
+    <string name="alert_once">提醒一次</string>
 
 </resources>

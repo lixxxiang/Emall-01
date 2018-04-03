@@ -22,6 +22,7 @@ import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.StatusBarUtil
+import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.sign.SignInByTelDelegate
 import com.example.emall_ec.sign.SignUpDelegate
 import kotlinx.android.synthetic.main.delegate_program.*
@@ -87,6 +88,29 @@ class MeDelegate : BottomItemDelegate() {
 //            bundle!!.putString("KEY", "ID")
 //            delegate.arguments = bundle
             (DELEGATE as EcBottomDelegate).start(SignInByTelDelegate().create()!!)
+        }
+
+        me_function_lv.setOnItemClickListener { adapterView, view, i, l ->
+            when(i){
+                0 -> {
+
+                }
+                1 -> {
+
+                }
+                2 -> {
+
+                }
+                3 -> {
+                    start(SettingDelegate().create())
+                }
+                4 -> {
+
+                }
+                5 -> {
+
+                }
+            }
         }
     }
 }
