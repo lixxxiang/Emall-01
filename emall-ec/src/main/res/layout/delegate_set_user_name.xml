@@ -4,7 +4,11 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
-
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -84,7 +88,7 @@
 
             <RelativeLayout
                 android:id="@+id/set_nickname_cut_off_rl"
-                android:layout_width="1dp"
+                android:layout_width="2px"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="11dp"
@@ -102,6 +106,7 @@
                 android:layout_toRightOf="@+id/set_nickname_cut_off_rl"
                 android:layout_marginLeft="13dp"
                 android:background="@null"
+                android:singleLine="true"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:hint="@string/set_nickname_hint"
@@ -110,7 +115,7 @@
                 android:layout_marginStart="13dp" />
             <RelativeLayout
                 android:layout_width="300dp"
-                android:layout_height="1dp"
+                android:layout_height="2px"
                 android:layout_alignParentBottom="true"
                 android:background="#F4F4F4"/>
         </RelativeLayout>

@@ -146,5 +146,8 @@
     <string name="pwd_min">密码长度不得小于8位</string>
     <string name="pwd_no_match">密码不一致</string>
     <string name="pwd_max">密码长度不得大于20位</string>
+    <string name="username_taken">该用户名已被使用</string>
+    <string name="empty_userName">用户名不能为空</string>
+    <string name="register_success">注册成功</string>
 
 </resources>

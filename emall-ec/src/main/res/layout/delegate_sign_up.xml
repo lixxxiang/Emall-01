@@ -16,7 +16,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"
-            android:layout_height="20dp">
+            android:layout_height="25dp">
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/sign_up_login_tv"
                 android:layout_width="wrap_content"
@@ -105,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:ems="11"
                 android:layout_centerVertical="true"
+                android:singleLine="true"
                 android:layout_toRightOf="@+id/sign_up_cut_off_rl"
                 android:layout_marginLeft="13dp"
                 android:background="@null"
@@ -131,38 +132,47 @@
             android:layout_marginTop="2px">
             <com.example.emall_core.util.view.EditTextWithDeleteButton
                 android:id="@+id/sign_up_vcode_et"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="4"
-                android:layout_marginLeft="0dp"
+                android:layout_toLeftOf="@+id/sign_up_cut_off_2_rl"
+                android:layout_marginRight="14dp"
+                android:singleLine="true"
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:hint="@string/sign_up_vcode"
                 android:textColor="#9B9B9B"
-                android:inputType="number"
-                android:layout_marginStart="0dp" />
+                android:inputType="number" />
             <RelativeLayout
                 android:id="@+id/sign_up_cut_off_2_rl"
                 android:layout_width="2px"
                 android:layout_height="21dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="75dp"
-                android:layout_toRightOf="@+id/sign_up_vcode_et"
-                android:background="#DDDDDD"
-                android:layout_marginStart="75dp"
-                android:layout_toEndOf="@+id/sign_up_vcode_et" />
-            <android.support.v7.widget.AppCompatButton
+                android:layout_marginRight="0dp"
+                android:layout_toLeftOf="@+id/sign_up_get_vcode_btn"
+                android:background="#DDDDDD" />
+
+            <RelativeLayout
+                android:id="@+id/sign_up_get_vcode_btn"
                 android:layout_width="120dp"
                 android:layout_height="48dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/sign_up_cut_off_2_rl"
-                android:text="@string/sign_up_get_vcode"
-                android:textSize="14dp"
-                android:background="#00000000"
-                android:textColor="#5F5F5F"
-                android:layout_toEndOf="@+id/sign_up_cut_off_2_rl" />
+                android:clickable="true"
+                android:focusable="true"
+                android:background="#00000000">
+
+                <com.example.emall_core.util.view.CountDownTextView
+                    android:id="@+id/sign_up_count_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up_get_vcode"
+                    android:textColor="#5F5F5F"
+                    android:layout_centerInParent="true"
+                    android:textSize="14dp" />
+            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="300dp"
                 android:layout_height="2px"
@@ -184,6 +194,7 @@
             android:text="@string/sign_up_next_step" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sign_up_vcode_tv"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_centerHorizontal="true"
@@ -191,6 +202,7 @@
             android:textSize="14dp"
             android:textColor="#9B9B9B"
             android:layout_marginTop="12dp"
-            android:text="已向手机012****890发送验证码"/>
+            android:text="已向手机012****890发送验证码"
+            android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>

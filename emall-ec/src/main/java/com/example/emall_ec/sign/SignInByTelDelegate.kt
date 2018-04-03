@@ -113,6 +113,10 @@ class SignInByTelDelegate : EmallDelegate() {
             startWithPop(SignInByAccountDelegate())
         }
 
+        sign_in_by_tel_login_tv.setOnClickListener {
+            startWithPop(SignUpDelegate())
+        }
+
     }
 
     private var mTextWatcher: TextWatcher = object : TextWatcher {

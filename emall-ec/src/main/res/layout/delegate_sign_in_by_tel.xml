@@ -116,6 +116,8 @@
                 android:layout_toRightOf="@+id/sign_in_by_tel_cut_off_rl"
                 android:background="@null"
                 android:ems="11"
+                android:singleLine="true"
+
                 android:hint="@string/sign_up_tel"
                 android:inputType="phone"
                 android:textColor="#9B9B9B"
@@ -147,6 +149,8 @@
                 android:layout_toLeftOf="@+id/sign_in_by_tel_cut_off_2_rl"
                 android:background="@null"
                 android:ems="4"
+                android:singleLine="true"
+
                 android:hint="@string/sign_up_vcode"
                 android:inputType="number"
                 android:textColor="#9B9B9B"

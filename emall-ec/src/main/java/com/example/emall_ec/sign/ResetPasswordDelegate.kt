@@ -17,7 +17,6 @@ import com.example.emall_ec.R
 import com.example.emall_ec.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
-import kotlinx.android.synthetic.main.delegate_sign_in_by_account.*
 import java.util.*
 
 /**
