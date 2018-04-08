@@ -2,6 +2,7 @@ package com.example.emall_ec.main.sign
 
 import android.app.Activity
 import android.graphics.Typeface
+import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
@@ -21,7 +22,10 @@ import java.util.regex.Pattern
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.util.view.SoftKeyboardListener
+import com.example.emall_ec.main.me.MeDelegate
+import kotlinx.android.synthetic.main.delegate_set_password.*
 
 
 /**
@@ -51,18 +55,22 @@ class SetUserNameDelegate : EmallDelegate() {
 
     override fun initial() {
         set_nickname_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
-        set_nickname_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
-
+//        set_nickname_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
+        set_user_name_toolbar.title = ""
+        (activity as AppCompatActivity).setSupportActionBar(set_user_name_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         set_nickname_tel_et.addTextChangedListener(mTextWatcher)
         setEditTextInhibitInputSpeChat(set_nickname_tel_et)
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                set_nickname_title_rl.visibility = View.GONE
+                if (set_nickname_title_rl != null)
+                    set_nickname_title_rl.visibility = View.GONE
             }
 
             override fun keyBoardHide(height: Int) {
-                set_nickname_title_rl.visibility = View.VISIBLE
+                if (set_nickname_title_rl != null)
+                    set_nickname_title_rl.visibility = View.VISIBLE
             }
         })
 
@@ -98,7 +106,8 @@ class SetUserNameDelegate : EmallDelegate() {
                 if (!checkMinLength(userName)) {
                     if (!checkMaxLength(userName)) {
 //                        userNameAvailable(userName)
-                        supportDelegate.pop()
+                        EmallLogger.d(topFragment)
+                        supportDelegate.popTo(BottomItemDelegate::class.java,false)
                     } else
                         Toast.makeText(activity, "用户名过长", Toast.LENGTH_SHORT).show()
                 } else

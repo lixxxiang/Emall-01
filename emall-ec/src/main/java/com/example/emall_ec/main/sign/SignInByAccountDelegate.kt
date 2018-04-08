@@ -50,6 +50,11 @@ class SignInByAccountDelegate : EmallDelegate() {
         sign_in_by_account_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_in_by_account_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         sign_in_by_account_hide_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/hide.ttf")
+        sign_in_by_account_tel_et.requestFocus()
+
+        sign_in_by_account_tel_et.addTextChangedListener(mTelTextWatcher)
+        sign_in_by_account_pwd_et.addTextChangedListener(mPwdTextWatcher)
+
         val passwordLength = sign_in_by_account_pwd_et.text.length
         sign_in_by_account_pwd_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         sign_in_by_account_pwd_et.setSelection(passwordLength)
@@ -71,7 +76,7 @@ class SignInByAccountDelegate : EmallDelegate() {
             }
         }
 
-        sign_in_by_account_tel_et.addTextChangedListener(mTextWatcher)
+
 
         sign_in_by_account_submit_btn.setOnClickListener {
             tel = sign_in_by_account_tel_et.text.toString()

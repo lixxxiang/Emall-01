@@ -205,7 +205,7 @@ class SignUpDelegate : EmallDelegate() {
             val bundle = Bundle()
             bundle.putString("MODIFY_PASSWORD_TELEPHONE", tel)
             delegate.arguments = bundle
-            startWithPop(delegate)
+            start(delegate)
             KeyboardUtils.hideSoftInput(activity)
         } else {
             if (wrongVcodeToast != null) {

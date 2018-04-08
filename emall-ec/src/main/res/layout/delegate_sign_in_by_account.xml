@@ -54,6 +54,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/sign_in_by_account_title_rl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -199,6 +200,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="11dp"
             android:textColor="#FFFFFF"
+            android:clickable="false"
             android:layout_below="@+id/sign_in_by_account_forget_password_tv"
             android:textSize="14dp"
             android:layout_centerHorizontal="true"

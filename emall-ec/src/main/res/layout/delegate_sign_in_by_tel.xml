@@ -57,6 +57,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/sign_in_by_tel_title_rl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -207,6 +208,7 @@
             android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatButton
+            android:clickable="false"
             android:id="@+id/sign_in_by_tel_submit_btn"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="300dp"

@@ -36,7 +36,8 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
 
             OnLauncherFinishTag.NOT_SIGNED -> {
                 Toast.makeText(this, "启动结束，用户没登录", Toast.LENGTH_LONG).show()
-                supportDelegate.startWithPop(SignUpDelegate())
+//                supportDelegate.startWithPop(SignUpDelegate())
+                startWithPop(EcBottomDelegate())
 
             }
 

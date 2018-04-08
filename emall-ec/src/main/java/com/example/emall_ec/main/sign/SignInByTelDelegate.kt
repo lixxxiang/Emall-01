@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import java.util.*
 import android.text.Editable
 import android.text.TextWatcher
+import com.example.emall_core.util.view.SoftKeyboardListener
+import kotlinx.android.synthetic.main.delegate_sign_up.*
 
 
 /**
@@ -22,9 +24,14 @@ class SignInByTelDelegate : EmallDelegate() {
 
     var tel = String()
     var vCode = String()
+    var flag1 = false
+    var flag2 = false
     var sendMessageBean = SendMessageBean()
     var checkMessageBean = CheckMessageBean()
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var emptyToast: Toast? = null
+    var wrongToast: Toast? = null
+    var wrongVcodeToast: Toast? = null
 
     fun create(): SignInByTelDelegate? {
         return SignInByTelDelegate()
@@ -40,16 +47,38 @@ class SignInByTelDelegate : EmallDelegate() {
         sign_in_by_tel_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         sign_in_by_tel_tel_et.requestFocus()
 
-        sign_in_by_tel_tel_et.addTextChangedListener(mTextWatcher)
+        sign_in_by_tel_vcode_et.addTextChangedListener(mVcodeTextWatcher)
+        sign_in_by_tel_tel_et.addTextChangedListener(mTelTextWatcher)
         sign_in_by_tel_count_down.setCountDownMillis(60000)
+
+
+        SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
+            override fun keyBoardShow(height: Int) {
+                if (sign_in_by_tel_title_rl != null)
+                    sign_in_by_tel_title_rl.visibility = View.GONE
+            }
+
+            override fun keyBoardHide(height: Int) {
+                if (sign_in_by_tel_title_rl != null)
+                    sign_in_by_tel_title_rl.visibility = View.VISIBLE
+            }
+        })
+
+
         sign_in_by_tel_count_down.setOnClickListener {
             tel = sign_in_by_tel_tel_et.text.toString()
-            vCode = sign_in_by_tel_vcode_et.text.toString()
             if (tel.isEmpty()) {
                 /**
                  * empty tel
                  */
-                Toast.makeText(activity, getString(R.string.empty_tel) + tel, Toast.LENGTH_SHORT).show()
+                if (emptyToast != null) {
+                    emptyToast!!.setText(getString(R.string.empty_tel))
+                    emptyToast!!.duration = Toast.LENGTH_SHORT
+                    emptyToast!!.show()
+                } else {
+                    emptyToast = Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT)
+                    emptyToast!!.show()
+                }
             } else {
                 /**
                  * tel ok
@@ -64,48 +93,52 @@ class SignInByTelDelegate : EmallDelegate() {
                     /**
                      * tel is invalid
                      */
-                    Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
+                    if (wrongToast != null) {
+                        wrongToast!!.setText(getString(R.string.wrong_tel))
+                        wrongToast!!.duration = Toast.LENGTH_SHORT
+                        wrongToast!!.show()
+                    } else {
+                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                        wrongToast!!.show()
+                    }
                 }
             }
-//            sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
         }
 
-        sign_in_by_tel_submit_btn.setOnClickListener {
-            //            startWithPop(SignInByAccountDelegate())
-            tel = sign_in_by_tel_tel_et.text.toString()
-            vCode = sign_in_by_tel_vcode_et.text.toString()
-            EmallLogger.d(tel)
-            if (tel.isEmpty()) {
-                /**
-                 * empty tel
-                 */
-                Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT).show()
-            } else {
-                /**
-                 * tel ok
-                 */
-                if (RegexUtils.isMobileExact(tel)) {
+        sign_in_by_tel_tel_et.onFocusChangeListener = View.OnFocusChangeListener { _, b ->
+            if (sign_up_tel_et != null) {
+                if (!b) {
+                    tel = sign_in_by_tel_tel_et.text.toString()
                     /**
-                     * tel is valid
+                     * 不用验空 需验手机号是否有效
                      */
-
-                    if (vCode.isEmpty()) {
-                        /**
-                         * empty vcode
-                         */
-                        Toast.makeText(activity, getString(R.string.empty_vcode), Toast.LENGTH_SHORT).show()
-                    } else {
-                        /**
-                         * tel ok & vcode ok
-                         */
-                        checkMessage()
-
+                    if (!RegexUtils.isMobileExact(tel)) {
+                        if (wrongToast != null) {
+                            wrongToast!!.setText(getString(R.string.wrong_tel))
+                            wrongToast!!.duration = Toast.LENGTH_SHORT
+                            wrongToast!!.show()
+                        } else {
+                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                            wrongToast!!.show()
+                        }
                     }
+                }
+            }
+        }
+
+
+        sign_in_by_tel_submit_btn.setOnClickListener {
+            tel = sign_in_by_tel_tel_et.text.toString()
+            if (RegexUtils.isMobileExact(tel)) {
+                checkMessage()
+            } else {
+                if (wrongToast != null) {
+                    wrongToast!!.setText(getString(R.string.wrong_tel))
+                    wrongToast!!.duration = Toast.LENGTH_SHORT
+                    wrongToast!!.show()
                 } else {
-                    /**
-                     * tel is invalid
-                     */
-                    Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT).show()
+                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                    wrongToast!!.show()
                 }
             }
         }
@@ -120,7 +153,7 @@ class SignInByTelDelegate : EmallDelegate() {
 
     }
 
-    private var mTextWatcher: TextWatcher = object : TextWatcher {
+    private var mTelTextWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             // TODO Auto-generated method stub
         }
@@ -132,10 +165,51 @@ class SignInByTelDelegate : EmallDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
-            EmallLogger.d("change")
-            sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+//            EmallLogger.d("change")
+//            sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+//            if (sign_in_by_tel_tel_et.text.toString() == "") {
+//                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+//            }
+            flag1 = true
             if (sign_in_by_tel_tel_et.text.toString() == "") {
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag1 = false
+                sign_in_by_tel_submit_btn.isClickable = false
+            }
+            if (flag1 && flag2) {
+                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                sign_in_by_tel_submit_btn.isClickable = true
+            }
+        }
+    }
+
+    private var mVcodeTextWatcher: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
+                                       after: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            // TODO Auto-generated method stub
+//            EmallLogger.d("change")
+//            sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+//            if (sign_in_by_tel_tel_et.text.toString() == "") {
+//                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+//            }
+            flag2 = true
+            if (sign_in_by_tel_tel_et.text.toString() == "") {
+                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag2 = false
+                sign_in_by_tel_submit_btn.isClickable = false
+            }
+
+            if (flag1 && flag2) {
+                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                sign_in_by_tel_submit_btn.isClickable = true
             }
         }
     }
@@ -221,7 +295,7 @@ class SignInByTelDelegate : EmallDelegate() {
     }
 
     private fun showHint() {
-        sign_in_by_tel_vcode_tv.text = String.format("已向手机%s发送验证码",hideTel())
+        sign_in_by_tel_vcode_tv.text = String.format("已向手机%s发送验证码", hideTel())
         sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
     }
 

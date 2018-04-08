@@ -104,7 +104,7 @@ class SetPasswordDelegate : EmallDelegate() {
                             bundle.putString("USER_TELEPHONE", tel)
                             bundle.putString("USER_PWD", newPassword)
                             delegate.arguments = bundle
-                            startWithPop(delegate)
+                            start(delegate)
                             KeyboardUtils.hideSoftInput(activity)
 
 //                            changePassword()
