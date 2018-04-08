@@ -2,6 +2,7 @@ package com.example.emall_ec.main.sign
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -20,6 +21,7 @@ import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_reset_password.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
 import java.util.*
 
@@ -45,10 +47,15 @@ class SetPasswordDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        set_password_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
+//        set_password_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         set_password_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
 
         tel = arguments.getString("MODIFY_PASSWORD_TELEPHONE")
+
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        set_pwd_toolbar.title = ""
+        (activity as AppCompatActivity).setSupportActionBar(set_pwd_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         set_password_new_pwd_et.addTextChangedListener(mNewTextWatcher)
         set_password_confirm_password_et.addTextChangedListener(mConfirmTextWatcher)
