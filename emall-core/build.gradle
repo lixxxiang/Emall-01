@@ -104,6 +104,7 @@ dependencies {
 
     compile 'com.mcxiaoke.volley:library:1.0.19'
 
+    compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 
 }
 

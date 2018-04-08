@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#FFFFFF">
     <View
@@ -53,17 +54,19 @@
 
 
     <RelativeLayout
+        android:id="@+id/sign_up_title_rl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/sign_up_title_tv"
-            android:layout_width="144dp"
-            android:layout_height="56dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/app_title"
-            android:textColor="#B4A078"
-            android:textSize="36dp" />
+        android:layout_weight="1"
+        >
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/sign_up_title_tv"
+                android:layout_width="144dp"
+                android:layout_height="56dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/app_title"
+                android:textColor="#B4A078"
+                android:textSize="36dp" />
     </RelativeLayout>
 
 
@@ -83,7 +86,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="0dp"
-                android:text="+86"
+                android:text="@string/tel_prefix"
                 android:textColor="#9B9B9B"
                 android:textSize="14dp"
                 android:layout_marginStart="0dp" />
@@ -113,7 +116,7 @@
                 android:textCursorDrawable="@null"
                 android:hint="@string/sign_up_tel"
                 android:textColor="#9B9B9B"
-                android:inputType="phone"
+                android:inputType="number"
                 android:layout_toEndOf="@+id/sign_up_cut_off_rl"
                 android:layout_marginStart="13dp" />
             <RelativeLayout
@@ -182,6 +185,7 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_sign_up_submit"
+            android:clickable="false"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_below="@+id/sign_up_vcode_rl"

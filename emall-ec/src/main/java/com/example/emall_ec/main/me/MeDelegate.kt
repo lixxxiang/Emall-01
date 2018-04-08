@@ -1,31 +1,19 @@
 package com.example.emall_ec.main.me
 
-import android.app.Activity
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
-import com.example.emall_core.util.view.StatusBarCompat
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
-import com.example.emall_ec.main.order.OrderDetailDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.os.Build
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.util.dimen.DimenUtil
-import com.example.emall_core.util.log.EmallLogger
-import com.example.emall_core.util.view.StatusBarUtil
 import com.example.emall_ec.main.me.setting.SettingDelegate
-import com.example.emall_ec.sign.SignInByTelDelegate
-import com.example.emall_ec.sign.SignUpDelegate
-import kotlinx.android.synthetic.main.delegate_program.*
+import com.example.emall_ec.main.sign.SignInByTelDelegate
 
 
 /**

@@ -1,4 +1,4 @@
-package com.example.emall_ec.sign
+package com.example.emall_ec.main.sign
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
@@ -14,20 +14,15 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.sign.data.CommonBean
-import com.example.emall_ec.sign.data.UserNameLoginBean
+import com.example.emall_ec.main.sign.data.CommonBean
+import com.example.emall_ec.main.sign.data.UserNameLoginBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_sign_in_by_account.*
 import java.util.*
 import android.text.InputType
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
-import com.baidu.platform.comapi.map.ab
 import android.view.Gravity
-import android.R.attr.gravity
-import android.opengl.ETC1.getHeight
-import android.view.WindowManager
-import android.view.Display
 import com.example.emall_core.util.dimen.DimenUtil
 import kotlinx.android.synthetic.main.forget_pwd_dialog.*
 

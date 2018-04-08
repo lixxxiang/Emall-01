@@ -1,4 +1,4 @@
-package com.example.emall_ec.sign
+package com.example.emall_ec.main.sign
 
 import android.graphics.Typeface
 import android.view.View
@@ -7,8 +7,8 @@ import com.blankj.utilcode.util.RegexUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.sign.data.CheckMessageBean
-import com.example.emall_ec.sign.data.SendMessageBean
+import com.example.emall_ec.main.sign.data.CheckMessageBean
+import com.example.emall_ec.main.sign.data.SendMessageBean
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import java.util.*
 import android.text.Editable
@@ -38,6 +38,7 @@ class SignInByTelDelegate : EmallDelegate() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         sign_in_by_tel_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_in_by_tel_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
+        sign_in_by_tel_tel_et.requestFocus()
 
         sign_in_by_tel_tel_et.addTextChangedListener(mTextWatcher)
         sign_in_by_tel_count_down.setCountDownMillis(60000)

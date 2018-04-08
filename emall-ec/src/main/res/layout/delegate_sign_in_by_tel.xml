@@ -90,7 +90,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="0dp"
                 android:layout_marginStart="0dp"
-                android:text="+86"
+                android:text="@string/tel_prefix"
                 android:textColor="#9B9B9B"
                 android:textSize="14dp" />
 
@@ -117,7 +117,6 @@
                 android:background="@null"
                 android:ems="11"
                 android:singleLine="true"
-
                 android:hint="@string/sign_up_tel"
                 android:inputType="phone"
                 android:textColor="#9B9B9B"

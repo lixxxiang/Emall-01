@@ -39,5 +39,10 @@ class AccountPrivacySettingsDelegate : BottomItemDelegate() {
         account_privacy_settings_lv.adapter = adapter
 
 
+        account_privacy_settings_lv.setOnItemClickListener { adapterView, view, i, l ->
+            if (i == 0){
+                start(ModifyTelDelegate().create())
+            }
+        }
     }
 }

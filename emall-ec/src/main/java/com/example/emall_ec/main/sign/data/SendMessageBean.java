@@ -1,4 +1,4 @@
-package com.example.emall_ec.sign.data;
+package com.example.emall_ec.main.sign.data;
 
 /**
  * Created by lixiang on 2018/3/30.

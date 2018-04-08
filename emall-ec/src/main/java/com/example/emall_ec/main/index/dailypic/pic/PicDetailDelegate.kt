@@ -32,6 +32,12 @@ import kotlinx.android.synthetic.main.comment.view.*
 import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import java.util.*
+import android.R.id.edit
+import android.text.method.TextKeyListener.clear
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+
+
 
 /**
  * Created by lixiang on 2018/3/29.
@@ -51,6 +57,7 @@ class PicDetailDelegate : BottomItemDelegate() {
     var comment_adapter: CommentListViewAdapter? = null
     var isLiked = false
     var isCollected = false
+    var mSharedPreferences : SharedPreferences ?= null
     private val titleList = object : ArrayList<String>() {
         init {
             add("每日一图")
@@ -75,14 +82,20 @@ class PicDetailDelegate : BottomItemDelegate() {
         return R.layout.delegate_pic_detail
     }
 
+    @SuppressLint("ApplySharedPref")
     override fun initial() {
         imageId = arguments.getString("imageId")
+        mSharedPreferences = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
         getdata(imageId)
         pic_detail_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(pic_detail_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         pic_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small)
         pic_detail_toolbar.setNavigationOnClickListener {
+//            val sp = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
+//            if (sp != null) {
+//                sp.edit().clear().commit()
+//            }
             supportDelegate.pop()
         }
         adapter = PicDetailAdapter(activity.supportFragmentManager, titleList, fragmentList)
@@ -256,7 +269,6 @@ class PicDetailDelegate : BottomItemDelegate() {
 
     private fun getdata(id: String?) {
         getDailyPicDetailParams!!["imageId"] = id
-        EmallLogger.d(getDailyPicDetailParams!!["imageId"]!!)
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getDailyPicDetail")
                 .params(getDailyPicDetailParams!!)
@@ -271,15 +283,11 @@ class PicDetailDelegate : BottomItemDelegate() {
                         userParams!!["userId"] = "22"
                         userParams!!["type"] = "1"
                         val imageDate = getDailyPicDetailBean.data.imageDate.substring(getDailyPicDetailBean.data.imageDate.length - 5, getDailyPicDetailBean.data.imageDate.length)
-                        EmallLogger.d(getDailyPicDetailBean.data.imageName)
-
-                        val mSharedPreferences = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
-                        val editor = mSharedPreferences.edit()
+                        val editor = mSharedPreferences!!.edit()
                         editor.putString("imageName", getDailyPicDetailBean.data.imageName)
                         editor.putString("imageDate", imageDate)
                         editor.commit()
-
-
+                        EmallLogger.d(activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE).getString("imageName", ""))
                         initViews(getDailyPicDetailBean)
                         initComments()
                     }

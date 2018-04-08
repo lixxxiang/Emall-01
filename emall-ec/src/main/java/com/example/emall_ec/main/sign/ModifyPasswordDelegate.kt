@@ -1,4 +1,4 @@
-package com.example.emall_ec.sign
+package com.example.emall_ec.main.sign
 
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,9 +11,7 @@ import com.blankj.utilcode.util.RegexUtils
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import kotlinx.android.synthetic.main.delegate_daily_pic.*
 import kotlinx.android.synthetic.main.delegate_modify_password.*
-import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 
 /**
  * Created by lixiang on 2018/4/2.

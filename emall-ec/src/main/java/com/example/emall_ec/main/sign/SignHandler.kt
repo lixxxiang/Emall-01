@@ -1,4 +1,4 @@
-package com.example.emall_ec.sign
+package com.example.emall_ec.main.sign
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject

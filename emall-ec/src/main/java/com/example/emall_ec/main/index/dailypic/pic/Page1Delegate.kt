@@ -28,6 +28,7 @@ class Page1Delegate : BottomItemDelegate() {
 
     override fun initial() {
         val sp = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE) //取得user_id和手机号
+        EmallLogger.d(sp.getString("imageName",""))
         pic_brief.text = sp.getString("imageName", "")
         pic_date.text = String.format("每日一图 · %s", sp.getString("imageDate", ""))
     }

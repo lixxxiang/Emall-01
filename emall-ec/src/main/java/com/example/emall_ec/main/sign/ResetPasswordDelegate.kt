@@ -1,4 +1,4 @@
-package com.example.emall_ec.sign
+package com.example.emall_ec.main.sign
 
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
@@ -14,7 +14,7 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.sign.data.CommonBean
+import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
 import java.util.*

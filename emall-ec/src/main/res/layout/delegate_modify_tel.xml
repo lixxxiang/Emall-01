@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/modify_tel_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/new_tel"
+                android:textColor="#686868"
+                android:textSize="14dp" />
+
+        </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/modify_tel_title_tv"
+            android:layout_width="144dp"
+            android:layout_height="56dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_title"
+            android:textColor="#B4A078"
+            android:textSize="36dp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+
+        <RelativeLayout
+            android:id="@+id/modify_tel_tel_rl"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/modify_tel_new_pwd_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="0dp"
+                android:text="@string/tel_prefix"
+                android:textColor="#9B9B9B"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:id="@+id/modify_tel_cut_off_rl"
+                android:layout_width="2px"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_toEndOf="@+id/modify_tel_new_pwd_tv"
+                android:layout_toRightOf="@+id/modify_tel_new_pwd_tv"
+                android:background="#DDDDDD" />
+
+            <com.example.emall_core.util.view.EditTextWithDeleteButton
+                android:id="@+id/modify_tel_old_tel_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13dp"
+                android:singleLine="true"
+                android:layout_marginStart="13dp"
+                android:layout_toEndOf="@+id/modify_tel_cut_off_rl"
+                android:layout_toRightOf="@+id/modify_tel_cut_off_rl"
+                android:background="@null"
+                android:ems="11"
+                android:hint="@string/old_tel"
+                android:textColor="#9B9B9B"
+                android:textCursorDrawable="@null"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="2px"
+                android:layout_alignParentBottom="true"
+                android:background="#F4F4F4" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/modify_tel_vcode_rl"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/modify_tel_tel_rl"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2px">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/modify_tel_confirm_pwd_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="0dp"
+                android:text="@string/tel_prefix"
+                android:textColor="#9B9B9B"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:id="@+id/modify_tel_cut_off_2_rl"
+                android:layout_width="2px"
+                android:layout_height="21dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_toEndOf="@+id/modify_tel_confirm_pwd_tv"
+                android:layout_toRightOf="@+id/modify_tel_confirm_pwd_tv"
+                android:background="#DDDDDD"/>
+
+            <com.example.emall_core.util.view.EditTextWithDeleteButton
+                android:id="@+id/modify_tel_new_tel_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13dp"
+                android:singleLine="true"
+
+                android:layout_marginStart="13dp"
+                android:layout_toEndOf="@+id/modify_tel_cut_off_2_rl"
+                android:layout_toRightOf="@+id/modify_tel_cut_off_2_rl"
+                android:background="@null"
+                android:ems="11"
+                android:hint="@string/new_tel"
+                android:textColor="#9B9B9B"
+                android:textCursorDrawable="@null"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:id="@+id/modify_tel_sep_rl"
+                android:layout_width="300dp"
+                android:layout_height="2px"
+                android:layout_alignParentBottom="true"
+                android:background="#F4F4F4" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/modify_tel_submit_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/modify_tel_vcode_rl"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/sign_up_btn_shape"
+            android:text="@string/next_step"
+            android:textColor="#FFFFFF"
+            android:textSize="14dp" />
+
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:text="@string/design_by"
+            android:textColor="#B5B5B5"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+</LinearLayout>

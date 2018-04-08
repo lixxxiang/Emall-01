@@ -86,7 +86,6 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
                                             homePageData!!.add(homePageBean.data.mixedContentList[i])
                                         }
                                         adapter = HomePageListViewAdapter(context, homePageData)
-
                                         adapter.notifyDataSetChanged()
                                         daily_pic_lv.adapter = adapter
                                     }
@@ -121,10 +120,6 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
         daily_pic_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (homePageData!![i - 1].type == "1"){
 //                Page1Delegate().create()
-
-
-
-                EmallLogger.d(homePageData!![i - 1].contentName)
                 val delegate : PicDetailDelegate = PicDetailDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("imageId", homePageData!![i - 1].contentId)

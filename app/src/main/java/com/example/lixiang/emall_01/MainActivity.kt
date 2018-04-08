@@ -1,7 +1,5 @@
 package com.example.lixiang.emall_01
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
@@ -11,8 +9,8 @@ import com.example.emall_core.ui.launcher.ILauncherListener
 import com.example.emall_core.ui.launcher.OnLauncherFinishTag
 import com.example.emall_ec.R
 import com.example.emall_ec.launcher.LauncherDelegate
-import com.example.emall_ec.sign.ISignListener
-import com.example.emall_ec.sign.SignUpDelegate
+import com.example.emall_ec.main.sign.ISignListener
+import com.example.emall_ec.main.sign.SignUpDelegate
 import com.example.emall_ec.main.EcBottomDelegate
 import android.util.Log
 import android.view.View
