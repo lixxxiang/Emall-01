@@ -92,15 +92,12 @@ class PicDetailDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         pic_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small)
         pic_detail_toolbar.setNavigationOnClickListener {
-//            val sp = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
-//            if (sp != null) {
-//                sp.edit().clear().commit()
-//            }
-            supportDelegate.pop()
+            _mActivity.onBackPressed()
         }
-        adapter = PicDetailAdapter(activity.supportFragmentManager, titleList, fragmentList)
-        viewpager.adapter = adapter
-        setTabLayout()
+        EmallLogger.d(activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE).getString("imageName", ""))
+
+
+
 
         like.setOnClickListener {
             //            if (sp.getString("userId", null) != null) {
@@ -287,9 +284,11 @@ class PicDetailDelegate : BottomItemDelegate() {
                         editor.putString("imageName", getDailyPicDetailBean.data.imageName)
                         editor.putString("imageDate", imageDate)
                         editor.commit()
-                        EmallLogger.d(activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE).getString("imageName", ""))
                         initViews(getDailyPicDetailBean)
                         initComments()
+                        adapter = PicDetailAdapter(childFragmentManager, titleList, fragmentList)
+                        viewpager.adapter = adapter
+                        setTabLayout()
                     }
                 })
                 .failure(object : IFailure {

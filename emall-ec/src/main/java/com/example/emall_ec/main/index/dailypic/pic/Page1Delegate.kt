@@ -6,6 +6,7 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_page_1.*
 import android.R.attr.delay
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import com.example.emall_ec.main.index.dailypic.Id
@@ -26,6 +27,7 @@ class Page1Delegate : BottomItemDelegate() {
         return R.layout.delegate_page_1
     }
 
+    @SuppressLint("ApplySharedPref")
     override fun initial() {
         val sp = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE) //取得user_id和手机号
         EmallLogger.d(sp.getString("imageName",""))
@@ -35,5 +37,10 @@ class Page1Delegate : BottomItemDelegate() {
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EmallLogger.d("stop")
     }
 }
