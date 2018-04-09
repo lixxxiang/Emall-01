@@ -1,6 +1,5 @@
 package com.example.emall_ec.main.sign
 
-import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 import com.example.emall_core.util.log.EmallLogger
@@ -13,23 +12,37 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.RegexUtils
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.sign.data.CheckMessageBean
+import com.example.emall_ec.main.sign.data.SendMessageBean
+import com.google.gson.Gson
+import me.yokeyword.fragmentation.ISupportFragment
 
 
 /**
  * Created by lixiang on 2018/2/5.
  */
-class SignUpDelegate : EmallDelegate() {
+class SignUpDelegate : BottomItemDelegate() {
 
     var tel = String()
     var vCode = String()
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var checkMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+
     var flag1 = false
     var flag2 = false
     var emptyToast: Toast? = null
     var wrongToast: Toast? = null
     var wrongVcodeToast: Toast? = null
+    var checkMessageBean = CheckMessageBean()
+    var sendMessageBean = SendMessageBean()
+    private val REQ_MODIFY_FRAGMENT = 100
 
     fun create(): SignUpDelegate? {
         return SignUpDelegate()
@@ -86,7 +99,7 @@ class SignUpDelegate : EmallDelegate() {
                      * tel is valid
                      */
                     sign_up_count_down.start()
-                    getVCode()
+                    getVCode(tel)
                 } else {
                     /**
                      * tel is invalid
@@ -153,11 +166,12 @@ class SignUpDelegate : EmallDelegate() {
          */
         btn_sign_up_submit.setOnClickListener {
             tel = sign_up_tel_et.text.toString()
+            vCode = sign_up_vcode_et.text.toString()
             /**
              * 不用验空 需验手机号是否有效
              */
             if (RegexUtils.isMobileExact(tel)) {
-                checkMessage()
+                checkMessage(tel, vCode)
             } else {
                 if (wrongToast != null) {
                     wrongToast!!.setText(getString(R.string.wrong_tel))
@@ -169,54 +183,96 @@ class SignUpDelegate : EmallDelegate() {
                 }
             }
         }
+
+        btn_sign_up_submit.isClickable = false
     }
 
-    private fun checkMessage() {
-//        RestClient().builder()
-//                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
-//                .params(sendMessageParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        checkMessageBean = Gson().fromJson(response, CheckMessageBean::class.java)
-//                        if (checkMessageBean.meta == "success"){
-//                            /**
-//                             * success
-//                             */
-//                        }else{
-//                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {}
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {}
-//                })
-//                .build()
-//                .post()
-        var i = "success"
-        if (i == "success") {
-            /**
-             * success
-             */
-            EmallLogger.d("success")
-            val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
-            val bundle = Bundle()
-            bundle.putString("MODIFY_PASSWORD_TELEPHONE", tel)
-            delegate.arguments = bundle
-            start(delegate)
-            KeyboardUtils.hideSoftInput(activity)
-        } else {
-            if (wrongVcodeToast != null) {
-                wrongVcodeToast!!.setText(getString(R.string.wrong_vcode))
-                wrongVcodeToast!!.duration = Toast.LENGTH_SHORT
-                wrongVcodeToast!!.show()
-            } else {
-                wrongVcodeToast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
-                wrongVcodeToast!!.show()
-            }
-//            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+    private fun checkMessage(t: String, v: String) {
+        checkMessageParams!!["telephone"] = t
+        checkMessageParams!!["code"] = v
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
+                .params(checkMessageParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        checkMessageBean = Gson().fromJson(response, CheckMessageBean::class.java)
+                        if (checkMessageBean.meta == "success") {
+                            /**
+                             * success
+                             */
+                            EmallLogger.d("success")
+                            val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
+                            val bundle = Bundle()
+                            bundle.putString("MODIFY_PASSWORD_TELEPHONE", this@SignUpDelegate.tel)
+                            delegate.arguments = bundle
+                            start(delegate)
+//            startForResult(delegate, REQ_MODIFY_FRAGMENT)
+                            EmallLogger.d(topFragment)
+                            EmallLogger.d(preFragment)
+//            start(EcBottomDelegate())
+//            supportDelegate.showHideFragment(MeDelegate(),IndexDelegate())
+
+                            KeyboardUtils.hideSoftInput(activity)
+                        } else {
+                            if (wrongVcodeToast != null) {
+                                wrongVcodeToast!!.setText(getString(R.string.wrong_vcode))
+                                wrongVcodeToast!!.duration = Toast.LENGTH_SHORT
+                                wrongVcodeToast!!.show()
+                            } else {
+                                wrongVcodeToast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
+                                wrongVcodeToast!!.show()
+                            }
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+        /**
+         * test
+         */
+//        var i = "success"
+//        if (i == "success") {
+//            /**
+//             * success
+//             */
+//            EmallLogger.d("success")
+//            val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
+//            val bundle = Bundle()
+//            bundle.putString("MODIFY_PASSWORD_TELEPHONE", tel)
+//            delegate.arguments = bundle
+//            start(delegate)
+////            startForResult(delegate, REQ_MODIFY_FRAGMENT)
+//            EmallLogger.d(topFragment)
+//            EmallLogger.d(preFragment)
+////            start(EcBottomDelegate())
+////            supportDelegate.showHideFragment(MeDelegate(),IndexDelegate())
+//
+//            KeyboardUtils.hideSoftInput(activity)
+//        } else {
+//            if (wrongVcodeToast != null) {
+//                wrongVcodeToast!!.setText(getString(R.string.wrong_vcode))
+//                wrongVcodeToast!!.duration = Toast.LENGTH_SHORT
+//                wrongVcodeToast!!.show()
+//            } else {
+//                wrongVcodeToast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
+//                wrongVcodeToast!!.show()
+//            }
+////            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+//        }
+    }
+
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        if (requestCode == REQ_MODIFY_FRAGMENT && resultCode == ISupportFragment.RESULT_OK) {
+            // 在此通过Bundle data 获取返回的数据
+            EmallLogger.d(data.getString("test"))
+//            supportDelegate.pop()
         }
     }
 
@@ -273,48 +329,52 @@ class SignUpDelegate : EmallDelegate() {
         }
     }
 
-    private fun getVCode() {
-//        RestClient().builder()
-//                .url("http://10.10.90.11:8099/global/mall/sendMessage.do")
-//                .params(sendMessageParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        sendMessageBean = Gson().fromJson(response, SendMessageBean::class.java)
-//                        if (sendMessageBean.register == "0") {
-//                            /**
-//                             * unregister
-//                             */
-//                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            /**
-//                             * registered
-//                             */
+    private fun getVCode(t: String) {
+        sendMessageParams!!["telephone"] = t
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/sendMessage.do")
+                .params(sendMessageParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        sendMessageBean = Gson().fromJson(response, SendMessageBean::class.java)
+                        if (sendMessageBean.register == "0") {
+                            /**
+                             * unregister
+                             */
+                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                        } else {
+                            /**
+                             * registered
+                             */
+                            showHint()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+
+        /**
+         * test
+         */
+//        var i = "1"
+//        if (i == "0") {
+//            /**
+//             * unregister
+//             */
+//            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+//        } else {
+//            /**
+//             * registered
+//             */
+//            showHint()
 //
-//                        }
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {}
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {}
-//                })
-//                .build()
-//                .post()
-
-        var i = "1"
-        if (i == "0") {
-            /**
-             * unregister
-             */
-            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-        } else {
-            /**
-             * registered
-             */
-            showHint()
-
-        }
+//        }
     }
 
     private fun showHint() {

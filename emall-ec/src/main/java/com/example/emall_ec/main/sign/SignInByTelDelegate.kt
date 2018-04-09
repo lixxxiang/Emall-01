@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.RegexUtils
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
@@ -13,7 +12,14 @@ import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import java.util.*
 import android.text.Editable
 import android.text.TextWatcher
+import com.blankj.utilcode.util.KeyboardUtils
+import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 
 
@@ -29,6 +35,7 @@ class SignInByTelDelegate : EmallDelegate() {
     var sendMessageBean = SendMessageBean()
     var checkMessageBean = CheckMessageBean()
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var checkMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var emptyToast: Toast? = null
     var wrongToast: Toast? = null
     var wrongVcodeToast: Toast? = null
@@ -88,7 +95,7 @@ class SignInByTelDelegate : EmallDelegate() {
                      * tel is valid
                      */
                     sign_in_by_tel_count_down.start()
-                    getVCode()
+                    getVCode(tel)
                 } else {
                     /**
                      * tel is invalid
@@ -129,8 +136,9 @@ class SignInByTelDelegate : EmallDelegate() {
 
         sign_in_by_tel_submit_btn.setOnClickListener {
             tel = sign_in_by_tel_tel_et.text.toString()
+            vCode = sign_in_by_tel_vcode_et.text.toString()
             if (RegexUtils.isMobileExact(tel)) {
-                checkMessage()
+                checkMessage(tel, vCode)
             } else {
                 if (wrongToast != null) {
                     wrongToast!!.setText(getString(R.string.wrong_tel))
@@ -147,10 +155,12 @@ class SignInByTelDelegate : EmallDelegate() {
 
         btn_sign_in_by_account_submit.setOnClickListener {
             startWithPop(SignInByAccountDelegate())
+            KeyboardUtils.hideSoftInput(activity)
         }
 
         sign_in_by_tel_login_tv.setOnClickListener {
             startWithPop(SignUpDelegate())
+            KeyboardUtils.hideSoftInput(activity)
         }
 
     }
@@ -167,11 +177,6 @@ class SignInByTelDelegate : EmallDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
-//            EmallLogger.d("change")
-//            sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
-//            if (sign_in_by_tel_tel_et.text.toString() == "") {
-//                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
-//            }
             flag1 = true
             if (sign_in_by_tel_tel_et.text.toString() == "") {
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
@@ -179,7 +184,6 @@ class SignInByTelDelegate : EmallDelegate() {
                 sign_in_by_tel_submit_btn.isClickable = false
             }
             if (flag1 && flag2) {
-                EmallLogger.d("ffff1")
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
                 sign_in_by_tel_submit_btn.isClickable = true
             }
@@ -198,11 +202,6 @@ class SignInByTelDelegate : EmallDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
-//            EmallLogger.d("change")
-//            sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
-//            if (sign_in_by_tel_tel_et.text.toString() == "") {
-//                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
-//            }
             flag2 = true
             if (sign_in_by_tel_vcode_et.text.toString() == "") {
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
@@ -211,7 +210,6 @@ class SignInByTelDelegate : EmallDelegate() {
             }
 
             if (flag1 && flag2) {
-                EmallLogger.d("ffff")
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
                 sign_in_by_tel_submit_btn.isClickable = true
 
@@ -220,84 +218,99 @@ class SignInByTelDelegate : EmallDelegate() {
     }
 
 
-    private fun checkMessage() {
-//        RestClient().builder()
-//                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
-//                .params(sendMessageParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        checkMessageBean = Gson().fromJson(response, CheckMessageBean::class.java)
-//                        if (checkMessageBean.meta == "success"){
-//                            /**
-//                             * success
-//                             */
-//                        }else{
-//                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {}
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {}
-//                })
-//                .build()
-//                .post()
-        var i = "success"
-        if (i == "success") {
-            /**
-             * success
-             */
-            EmallLogger.d("success")
-            Toast.makeText(activity, "ss", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
-        }
+    private fun checkMessage(t: String, c: String) {
+        checkMessageParams!!["telephone"] = t
+        checkMessageParams!!["code"] = c
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
+                .params(checkMessageParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        checkMessageBean = Gson().fromJson(response, CheckMessageBean::class.java)
+                        if (checkMessageBean.meta == "success") {
+                            /**
+                             * success
+                             */
+                            EmallLogger.d(response)
+                            popTo(preFragment.javaClass, false)
+                            KeyboardUtils.hideSoftInput(activity)
+                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
+                        } else {
+                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+
+        /**
+         * test
+         */
+//        var i = "success"
+//        if (i == "success") {
+//            /**
+//             * success
+//             */
+//            EmallLogger.d("success")
+//            Toast.makeText(activity, "ss", Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+//        }
     }
 
-    private fun getVCode() {
-//        RestClient().builder()
-//                .url("http://10.10.90.11:8099/global/mall/sendMessage.do")
-//                .params(sendMessageParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        sendMessageBean = Gson().fromJson(response, SendMessageBean::class.java)
-//                        if (sendMessageBean.register == "0") {
-//                            /**
-//                             * unregister
-//                             */
-//                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            /**
-//                             * registered
-//                             */
+    private fun getVCode(t: String) {
+        sendMessageParams!!["telephone"] = t
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/sendMessage.do")
+                .params(sendMessageParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        sendMessageBean = Gson().fromJson(response, SendMessageBean::class.java)
+                        if (sendMessageBean.register == "0") {
+                            /**
+                             * unregister
+                             */
+                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                        } else {
+                            /**
+                             * registered
+                             */
+                            showHint()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+
+        /**
+         * test
+         */
+//        var i = "1"
+//        if (i == "0") {
+//            /**
+//             * unregister
+//             */
+//            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+//        } else {
+//            /**
+//             * registered
+//             */
+//            showHint()
 //
-//                        }
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {}
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {}
-//                })
-//                .build()
-//                .post()
-
-        var i = "1"
-        if (i == "0") {
-            /**
-             * unregister
-             */
-            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-        } else {
-            /**
-             * registered
-             */
-            showHint()
-
-        }
+//        }
     }
 
     private fun showHint() {

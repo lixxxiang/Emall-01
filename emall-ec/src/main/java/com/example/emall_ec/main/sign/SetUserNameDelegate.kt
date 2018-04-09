@@ -4,9 +4,7 @@ import android.app.Activity
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.RestCreator.params
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
@@ -24,18 +22,22 @@ import android.text.TextWatcher
 import android.view.View
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.util.view.SoftKeyboardListener
-import com.example.emall_ec.main.me.MeDelegate
-import kotlinx.android.synthetic.main.delegate_set_password.*
+import com.blankj.utilcode.util.KeyboardUtils
+import com.example.emall_ec.main.EcBottomDelegate
 
 
 /**
  * Created by lixiang on 14/02/2018.
  */
-class SetUserNameDelegate : EmallDelegate() {
+class SetUserNameDelegate : BottomItemDelegate() {
 
     private var mISignListener: ISignListener? = null
     var userName = String()
+    var tel = String()
+    var pwd = String()
     var findUserNameParam: WeakHashMap<String, Any>? = WeakHashMap()
+    var registerParam: WeakHashMap<String, Any>? = WeakHashMap()
+
     var commonBean = CommonBean()
 
     fun create(): SetUserNameDelegate? {
@@ -61,6 +63,9 @@ class SetUserNameDelegate : EmallDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         set_nickname_tel_et.addTextChangedListener(mTextWatcher)
         setEditTextInhibitInputSpeChat(set_nickname_tel_et)
+
+        tel = arguments.getString("USER_TELEPHONE")
+        pwd = arguments.getString("USER_PWD")
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
@@ -97,8 +102,6 @@ class SetUserNameDelegate : EmallDelegate() {
 
 
         btn_set_nickname_submit.setOnClickListener {
-            EmallLogger.d(params)
-
             userName = set_nickname_tel_et.text.toString()
             if (userName.isEmpty()) {
                 Toast.makeText(activity, getString(R.string.empty_userName), Toast.LENGTH_SHORT).show()
@@ -106,8 +109,16 @@ class SetUserNameDelegate : EmallDelegate() {
                 if (!checkMinLength(userName)) {
                     if (!checkMaxLength(userName)) {
 //                        userNameAvailable(userName)
-                        EmallLogger.d(topFragment)
-                        supportDelegate.popTo(BottomItemDelegate::class.java, false)
+//                        EmallLogger.d(topFragment)
+//                        supportDelegate.popTo(BottomItemDelegate::class.java, false)
+
+//                        val bundle = Bundle()
+//                        bundle.putString("test", "xxxx")
+//                        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+//                        supportDelegate.pop()
+//                        start(EcBottomDelegate())
+                        userNameAvailable(userName)
+
                     } else
                         Toast.makeText(activity, "用户名过长", Toast.LENGTH_SHORT).show()
                 } else
@@ -128,7 +139,44 @@ class SetUserNameDelegate : EmallDelegate() {
                         if (commonBean.meta == "success") {
                             Toast.makeText(activity, getString(R.string.username_taken), Toast.LENGTH_SHORT).show()
                         } else {
+                            register(tel, pwd, string)
                             Toast.makeText(activity, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                            KeyboardUtils.hideSoftInput(activity)
+                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+                        EmallLogger.d("failure")
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+                        EmallLogger.d("error")
+                    }
+                })
+                .build()
+//                    .get()
+                .post()
+    }
+
+    private fun register(t: String, p: String, n: String) {
+        registerParam!!["telephone"] = t
+        registerParam!!["userPassword"] = p.toLowerCase()
+        registerParam!!["userName"] = n
+            RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/register.do")
+                .params(registerParam!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if (commonBean.meta == "success") {
+                            Toast.makeText(activity, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                            KeyboardUtils.hideSoftInput(activity)
+                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         }
                     }
                 })
@@ -175,6 +223,10 @@ class SetUserNameDelegate : EmallDelegate() {
             // TODO Auto-generated method stub
             btn_set_nickname_submit.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
             btn_set_nickname_submit.isClickable = true
+            if(set_nickname_tel_et.text.toString() == ""){
+                btn_set_nickname_submit.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                btn_set_nickname_submit.isClickable = false
+            }
         }
     }
 

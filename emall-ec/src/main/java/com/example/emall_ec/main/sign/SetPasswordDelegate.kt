@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.blankj.utilcode.util.EncryptUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -19,16 +21,18 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
+import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
+import me.yokeyword.fragmentation.ISupportFragment
 import java.util.*
 
 /**
  * Created by lixiang on 14/02/2018.
  */
-class SetPasswordDelegate : EmallDelegate() {
+class SetPasswordDelegate : BottomItemDelegate() {
 
     var newPassword = String()
     var confirmPassword = String()
@@ -37,6 +41,7 @@ class SetPasswordDelegate : EmallDelegate() {
     var tel = String()
     var flag1 = false
     var flag2 = false
+    private val REQ_MODIFY_FRAGMENT = 100
 
     fun create(): SetPasswordDelegate? {
         return SetPasswordDelegate()
@@ -65,11 +70,14 @@ class SetPasswordDelegate : EmallDelegate() {
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                set_password_title_rl.visibility = View.GONE
+                if (set_password_title_rl != null)
+                    set_password_title_rl.visibility = View.GONE
             }
 
             override fun keyBoardHide(height: Int) {
-                set_password_title_rl.visibility = View.VISIBLE
+                if (set_password_title_rl != null)
+
+                    set_password_title_rl.visibility = View.VISIBLE
             }
         })
 
@@ -103,9 +111,14 @@ class SetPasswordDelegate : EmallDelegate() {
                             val delegate: SetUserNameDelegate = SetUserNameDelegate().create()!!
                             val bundle = Bundle()
                             bundle.putString("USER_TELEPHONE", tel)
-                            bundle.putString("USER_PWD", newPassword)
+                            bundle.putString("USER_PWD", EncryptUtils.encryptMD5ToString(newPassword))
                             delegate.arguments = bundle
                             start(delegate)
+//                            startForResult(delegate, REQ_MODIFY_FRAGMENT)
+                            EmallLogger.d(findFragment(EcBottomDelegate().javaClass))
+
+
+
                             KeyboardUtils.hideSoftInput(activity)
 
 //                            changePassword()
@@ -121,7 +134,14 @@ class SetPasswordDelegate : EmallDelegate() {
         btn_set_password_submit.isClickable = false
     }
 
-
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        if (requestCode == REQ_MODIFY_FRAGMENT && resultCode == ISupportFragment.RESULT_OK) {
+            // 在此通过Bundle data 获取返回的数据
+            EmallLogger.d(data.getString("test"))
+//            supportDelegate.pop()
+        }
+    }
 
     private fun changePassword() {
         changePasswordParams!!["userTelephone"] = tel

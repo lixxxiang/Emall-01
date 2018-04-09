@@ -118,10 +118,8 @@ class RestClient() {
     fun post() {
 //        request(HttpMethod.POST)
         if (BODY == null) {
-            println("1")
             request(HttpMethod.POST)
         } else {
-            println("2")
             if (!PARAMS!!.isEmpty()) {
                 throw RuntimeException("params must be null!")
             }
