@@ -25,7 +25,7 @@ import java.util.*
 /**
  * Created by lixiang on 2018/4/8.
  */
-class ModifyTelDelegate : BottomItemDelegate(){
+class ModifyTelDelegate : BottomItemDelegate() {
 
     var oldTel = String()
     var newTel = String()
@@ -37,9 +37,10 @@ class ModifyTelDelegate : BottomItemDelegate(){
 
     var commonBean = CommonBean()
 
-    fun create(): ModifyTelDelegate?{
+    fun create(): ModifyTelDelegate? {
         return ModifyTelDelegate()
     }
+
     override fun setLayout(): Any? {
         return R.layout.delegate_modify_tel
     }
@@ -65,10 +66,10 @@ class ModifyTelDelegate : BottomItemDelegate(){
         })
 
         modify_tel_old_tel_et.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
-            if(modify_tel_old_tel_et != null){
-                if (!b){
+            if (modify_tel_old_tel_et != null) {
+                if (!b) {
                     val tempTel = modify_tel_old_tel_et.text.toString()
-                    if (!RegexUtils.isMobileExact(tempTel)){
+                    if (!RegexUtils.isMobileExact(tempTel)) {
                         if (wrongToast != null) {
                             wrongToast!!.setText(getString(R.string.wrong_tel))
                             wrongToast!!.duration = Toast.LENGTH_SHORT
@@ -85,7 +86,7 @@ class ModifyTelDelegate : BottomItemDelegate(){
         modify_tel_submit_btn.setOnClickListener {
             oldTel = modify_tel_old_tel_et.text.toString()
             newTel = modify_tel_new_tel_et.text.toString()
-            if (!RegexUtils.isMobileExact(oldTel)){
+            if (!RegexUtils.isMobileExact(oldTel)) {
                 if (wrongToast != null) {
                     wrongToast!!.setText(getString(R.string.wrong_tel))
                     wrongToast!!.duration = Toast.LENGTH_SHORT
@@ -94,7 +95,7 @@ class ModifyTelDelegate : BottomItemDelegate(){
                     wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                     wrongToast!!.show()
                 }
-            }else if(!RegexUtils.isMobileExact(newTel)){
+            } else if (!RegexUtils.isMobileExact(newTel)) {
                 if (wrongToast != null) {
                     wrongToast!!.setText(getString(R.string.wrong_tel))
                     wrongToast!!.duration = Toast.LENGTH_SHORT
@@ -103,14 +104,16 @@ class ModifyTelDelegate : BottomItemDelegate(){
                     wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                     wrongToast!!.show()
                 }
-            }else{
-                if(oldTel != newTel){
+            } else {
+                if (oldTel != newTel) {
                     checkAccount(oldTel)
-                }else{
+                } else {
                     Toast.makeText(activity, "same tel?!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+        modify_tel_submit_btn.isClickable = false
     }
 
     private fun checkAccount(tel: String) {

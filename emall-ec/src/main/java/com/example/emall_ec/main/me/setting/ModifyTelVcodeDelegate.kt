@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.me.setting
 
 import android.graphics.Typeface
+import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -16,6 +17,7 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_modify_tel_vcode.*
+import kotlinx.android.synthetic.main.delegate_set_password.*
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 import java.util.*
 
@@ -40,6 +42,10 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         modify_tel_vcode_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
 //        modify_tel_vcode_vcode_et.requestFocus()
+
+        modify_tel_vcode_toolbar.title = ""
+        (activity as AppCompatActivity).setSupportActionBar(modify_tel_vcode_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         modify_tel_vcode_vcode_et.addTextChangedListener(mMVcodeTextWatcher)
         modify_tel_vcode_count_down.setCountDownMillis(60000)
@@ -92,6 +98,8 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
                 }
             }
         }
+
+        modify_tel_vcode_submit_btn.isClickable = false
     }
 
     private fun getVCode() {
