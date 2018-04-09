@@ -13,10 +13,14 @@ import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
+import com.example.emall_ec.R.id.reset_pwd_confirm_pwd_et
+import com.example.emall_ec.R.id.reset_pwd_submit_btn
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
+import kotlinx.android.synthetic.main.delegate_set_password.*
 import java.util.*
 
 /**
@@ -29,6 +33,8 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     var commonBean = CommonBean()
     var changePasswordParams: WeakHashMap<String, Any>? = WeakHashMap()
     var tel = String()
+    var flag1 = false
+    var flag2 = false
 
     fun create(): ResetPasswordDelegate? {
         return ResetPasswordDelegate()
@@ -47,15 +53,25 @@ class ResetPasswordDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         tel = arguments.getString("MODIFY_PASSWORD_TELEPHONE")
-        reset_pwd_confirm_pwd_et.addTextChangedListener(mTextWatcher)
-
+        reset_pwd_confirm_pwd_et.addTextChangedListener(mConfirmTextWatcher)
+        reset_pwd_new_pwd_et.addTextChangedListener(mNewTextWatcher)
         reset_pwd_confirm_pwd_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         reset_pwd_new_pwd_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
 
-        reset_pwd_new_pwd_et.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
 
-            } else {
+        SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
+            override fun keyBoardShow(height: Int) {
+                reset_pwd_title_rl.visibility = View.GONE
+            }
+
+            override fun keyBoardHide(height: Int) {
+                reset_pwd_title_rl.visibility = View.VISIBLE
+            }
+        })
+
+
+        reset_pwd_new_pwd_et.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
                 val temp = reset_pwd_new_pwd_et.text.toString()
                 EmallLogger.d(temp)
                 if (isLetterDigit(temp)) {
@@ -128,7 +144,10 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                 .post()
     }
 
-    private var mTextWatcher: TextWatcher = object : TextWatcher {
+    private var mNewTextWatcher: TextWatcher = object : TextWatcher {
+        /**
+         * 大于8小于20
+         */
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             // TODO Auto-generated method stub
         }
@@ -140,9 +159,43 @@ class ResetPasswordDelegate : BottomItemDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
-            reset_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+            flag1 = true
+            if (flag1 && flag2) {
+                reset_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                reset_pwd_submit_btn.isClickable = true
+
+            }
+            if (reset_pwd_new_pwd_et.text.toString() == "") {
+                reset_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag1 = false
+                reset_pwd_submit_btn.isClickable = false
+            }
+        }
+    }
+
+    private var mConfirmTextWatcher: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
+                                       after: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            // TODO Auto-generated method stub
+            flag2 = true
+
+            if (flag1 && flag2) {
+                reset_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                reset_pwd_submit_btn.isClickable = true
+            }
+
             if (reset_pwd_confirm_pwd_et.text.toString() == "") {
                 reset_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag2 = false
+                reset_pwd_submit_btn.isClickable = false
             }
         }
     }

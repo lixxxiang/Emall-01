@@ -185,7 +185,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_sign_up_submit"
-            android:clickable="false"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_below="@+id/sign_up_vcode_rl"

@@ -10,8 +10,11 @@ import android.widget.Toast
 import com.blankj.utilcode.util.RegexUtils
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
+import com.example.emall_ec.R.id.*
 import kotlinx.android.synthetic.main.delegate_modify_password.*
+import kotlinx.android.synthetic.main.delegate_sign_up.*
 
 /**
  * Created by lixiang on 2018/4/2.
@@ -19,8 +22,9 @@ import kotlinx.android.synthetic.main.delegate_modify_password.*
 class ModifyPasswordDelegate : BottomItemDelegate() {
     var tel = String()
     var vCode = String()
-
-    fun create(): ModifyPasswordDelegate?{
+    var flag1 = false
+    var flag2 = false
+    fun create(): ModifyPasswordDelegate? {
         return ModifyPasswordDelegate()
     }
 
@@ -35,7 +39,20 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(modify_pwd_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        modify_pwd_vcode_et.addTextChangedListener(mTextWatcher)
+        modify_pwd_vcode_et.addTextChangedListener(mVcodeTextWatcher)
+        modify_pwd_tel_et.addTextChangedListener(mTelTextWatcher)
+
+        SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
+            override fun keyBoardShow(height: Int) {
+                if (modify_pwd_title_rl != null)
+                    modify_pwd_title_rl.visibility = View.GONE
+            }
+
+            override fun keyBoardHide(height: Int) {
+                if (modify_pwd_title_rl != null)
+                    modify_pwd_title_rl.visibility = View.VISIBLE
+            }
+        })
 
         modify_pwd_toolbar.setNavigationOnClickListener {
             _mActivity.onBackPressed()
@@ -44,7 +61,6 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
         modify_pwd_count_down.setCountDownMillis(60000)
         modify_pwd_count_down.setOnClickListener {
             tel = modify_pwd_tel_et.text.toString()
-            vCode = modify_pwd_vcode_et.text.toString()
             if (tel.isEmpty()) {
                 /**
                  * empty tel
@@ -72,42 +88,13 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
 
         modify_pwd_submit_btn.setOnClickListener {
             tel = modify_pwd_tel_et.text.toString()
-            vCode = modify_pwd_vcode_et.text.toString()
-            if (tel.isEmpty()) {
-                /**
-                 * empty tel
-                 */
-                Toast.makeText(activity, getString(R.string.empty_tel) + tel, Toast.LENGTH_SHORT).show()
+
+            if (RegexUtils.isMobileExact(tel)) {
+                checkMessage()
             } else {
-                /**
-                 * tel ok
-                 */
-                if (RegexUtils.isMobileExact(tel)) {
-                    /**
-                     * tel is valid
-                     */
-
-                    if (vCode.isEmpty()) {
-                        /**
-                         * empty vcode
-                         */
-                        Toast.makeText(activity, getString(R.string.empty_vcode), Toast.LENGTH_SHORT).show()
-                    } else {
-                        /**
-                         * tel ok & vcode ok
-                         */
-                        checkMessage()
-                    }
-                } else {
-                    /**
-                     * tel is invalid
-                     */
-                    Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
             }
-//            sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
         }
-
     }
 
     private fun checkMessage() {
@@ -140,7 +127,7 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
              * success
              */
             EmallLogger.d("success")
-            val delegate :ResetPasswordDelegate = ResetPasswordDelegate().create()!!
+            val delegate: ResetPasswordDelegate = ResetPasswordDelegate().create()!!
             val bundle = Bundle()
             bundle.putString("MODIFY_PASSWORD_TELEPHONE", tel)
             delegate.arguments = bundle
@@ -195,7 +182,7 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
     }
 
     private fun showHint() {
-        modify_pwd_vcode_tv.text = String.format("已向手机%s发送验证码",hideTel())
+        modify_pwd_vcode_tv.text = String.format("已向手机%s发送验证码", hideTel())
         modify_pwd_vcode_tv.visibility = View.VISIBLE
     }
 
@@ -203,7 +190,7 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
         return String.format("%s****%s", tel.substring(0, 4), tel.substring(7, 11))
     }
 
-    private var mTextWatcher: TextWatcher = object : TextWatcher {
+    private var mTelTextWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             // TODO Auto-generated method stub
         }
@@ -215,10 +202,43 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
-            EmallLogger.d("change")
-            modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+
+
+            flag1 = true
+            if (modify_pwd_tel_et.text.toString() == "") {
+                modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag1 = false
+                modify_pwd_submit_btn.isClickable = false
+            }
+            if (flag1 && flag2) {
+                modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                modify_pwd_submit_btn.isClickable = true
+            }
+        }
+    }
+
+    private var mVcodeTextWatcher: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
+                                       after: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            // TODO Auto-generated method stub
+
+            flag2 = true
             if (modify_pwd_vcode_et.text.toString() == "") {
                 modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag2 = false
+                modify_pwd_submit_btn.isClickable = false
+            }
+            if (flag1 && flag2) {
+                modify_pwd_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                modify_pwd_submit_btn.isClickable = true
             }
         }
     }

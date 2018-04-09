@@ -36,6 +36,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/modify_tel_title_rl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -145,7 +146,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="13dp"
                 android:singleLine="true"
-
                 android:layout_marginStart="13dp"
                 android:layout_toEndOf="@+id/modify_tel_cut_off_2_rl"
                 android:layout_toRightOf="@+id/modify_tel_cut_off_2_rl"

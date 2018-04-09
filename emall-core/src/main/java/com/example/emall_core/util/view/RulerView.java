@@ -539,7 +539,7 @@ public class RulerView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!isEnabled()) {
+        if (!isClickable()) {
             return true;
         }
         switch (event.getAction()) {

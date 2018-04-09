@@ -59,6 +59,7 @@ class SetPasswordDelegate : EmallDelegate() {
 
         set_password_new_pwd_et.addTextChangedListener(mNewTextWatcher)
         set_password_confirm_password_et.addTextChangedListener(mConfirmTextWatcher)
+
         set_password_confirm_password_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         set_password_new_pwd_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
 
@@ -117,7 +118,10 @@ class SetPasswordDelegate : EmallDelegate() {
             } else
                 Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
         }
+        btn_set_password_submit.isClickable = false
     }
+
+
 
     private fun changePassword() {
         changePasswordParams!!["userTelephone"] = tel

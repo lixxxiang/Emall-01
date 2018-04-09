@@ -107,13 +107,14 @@ class SetUserNameDelegate : EmallDelegate() {
                     if (!checkMaxLength(userName)) {
 //                        userNameAvailable(userName)
                         EmallLogger.d(topFragment)
-                        supportDelegate.popTo(BottomItemDelegate::class.java,false)
+                        supportDelegate.popTo(BottomItemDelegate::class.java, false)
                     } else
                         Toast.makeText(activity, "用户名过长", Toast.LENGTH_SHORT).show()
                 } else
                     Toast.makeText(activity, getString(R.string.empty_userName), Toast.LENGTH_SHORT).show()
             }
         }
+        btn_set_nickname_submit.isClickable = false
     }
 
     private fun userNameAvailable(string: String) {

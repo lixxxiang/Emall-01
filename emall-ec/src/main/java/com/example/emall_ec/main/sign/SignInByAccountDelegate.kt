@@ -23,7 +23,10 @@ import android.text.InputType
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.Gravity
+import android.view.View
 import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_core.util.view.SoftKeyboardListener
+import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import kotlinx.android.synthetic.main.forget_pwd_dialog.*
 
 
@@ -31,12 +34,14 @@ import kotlinx.android.synthetic.main.forget_pwd_dialog.*
  * Created by lixiang on 2018/3/3.
  */
 class SignInByAccountDelegate : EmallDelegate() {
-    var isHide : Boolean = true
+    var isHide: Boolean = true
     var tel = String()
     var password = String()
     var passwordMD5 = String()
-    var findTelephoneParams : WeakHashMap<String, Any> ?= WeakHashMap()
-    var userNameLoginParams : WeakHashMap<String, Any> ?= WeakHashMap()
+    var flag1 = false
+    var flag2 = false
+    var findTelephoneParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var userNameLoginParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commonBean = CommonBean()
     var userNameLoginBean = UserNameLoginBean()
 
@@ -59,14 +64,14 @@ class SignInByAccountDelegate : EmallDelegate() {
         sign_in_by_account_pwd_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         sign_in_by_account_pwd_et.setSelection(passwordLength)
         sign_in_by_account_hide_tv.setOnClickListener {
-            if (isHide){
+            if (isHide) {
                 sign_in_by_account_hide_tv.height = 14
                 sign_in_by_account_hide_tv.text = getString(R.string.show)
                 sign_in_by_account_hide_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/show.ttf")
                 sign_in_by_account_pwd_et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 sign_in_by_account_pwd_et.setSelection(sign_in_by_account_pwd_et.text.length)
                 isHide = false
-            }else{
+            } else {
                 sign_in_by_account_hide_tv.height = 9
                 sign_in_by_account_hide_tv.text = getString(R.string.hide)
                 sign_in_by_account_hide_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/hide.ttf")
@@ -76,46 +81,29 @@ class SignInByAccountDelegate : EmallDelegate() {
             }
         }
 
+        SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
+            override fun keyBoardShow(height: Int) {
+                if (sign_in_by_account_title_rl != null)
+                    sign_in_by_account_title_rl.visibility = View.GONE
+            }
 
+            override fun keyBoardHide(height: Int) {
+                if (sign_in_by_account_title_rl != null)
+                    sign_in_by_account_title_rl.visibility = View.VISIBLE
+            }
+        })
 
         sign_in_by_account_submit_btn.setOnClickListener {
             tel = sign_in_by_account_tel_et.text.toString()
             password = sign_in_by_account_pwd_et.text.toString()
-            EmallLogger.d(tel)
-            if (tel.isEmpty()) {
-                /**
-                 * empty tel
-                 */
-                Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT).show()
+            if (RegexUtils.isMobileExact(tel)) {
+                checkAccount()
             } else {
-                /**
-                 * tel ok
-                 */
-                if (RegexUtils.isMobileExact(tel)) {
-                    /**
-                     * tel is valid
-                     */
-
-                    if (password.isEmpty()) {
-                        /**
-                         * empty pwd
-                         */
-                        Toast.makeText(activity, getString(R.string.empty_password), Toast.LENGTH_SHORT).show()
-                    } else {
-                        /**
-                         * tel ok & pwd ok
-                         */
-                        checkAccount()
-                    }
-                } else {
-                    /**
-                     * tel is invalid
-                     */
-                    Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT).show()
             }
         }
 
+        sign_in_by_account_submit_btn.isClickable = false
         btn_sign_in_by_tel_submit.setOnClickListener {
             startWithPop(SignInByTelDelegate())
         }
@@ -135,16 +123,16 @@ class SignInByAccountDelegate : EmallDelegate() {
             params.gravity = Gravity.CENTER_HORIZONTAL
             dialog.window.attributes = params
 
-            dialog.forget_rl1.setOnClickListener{
+            dialog.forget_rl1.setOnClickListener {
                 startWithPop(SignInByTelDelegate())
             }
 
-            dialog.forget_rl2.setOnClickListener{
+            dialog.forget_rl2.setOnClickListener {
                 dialog.dismiss()
                 start(ModifyPasswordDelegate().create())
             }
 
-            dialog.forget_rl3.setOnClickListener{
+            dialog.forget_rl3.setOnClickListener {
             }
 
         }
@@ -180,7 +168,7 @@ class SignInByAccountDelegate : EmallDelegate() {
                 .post()
     }
 
-    private fun login(){
+    private fun login() {
         userNameLoginParams!!["userTelephone"] = tel
         passwordMD5 = EncryptUtils.encryptMD5ToString(password)
         EmallLogger.d(passwordMD5)
@@ -196,7 +184,6 @@ class SignInByAccountDelegate : EmallDelegate() {
                             /**
                              * success
                              */
-
                         } else {
                             Toast.makeText(activity, getString(R.string.account_pwd_error), Toast.LENGTH_SHORT).show()
                         }
@@ -212,7 +199,7 @@ class SignInByAccountDelegate : EmallDelegate() {
                 .post()
     }
 
-    private var mTextWatcher: TextWatcher = object : TextWatcher {
+    private var mTelTextWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             // TODO Auto-generated method stub
         }
@@ -224,10 +211,42 @@ class SignInByAccountDelegate : EmallDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
-            EmallLogger.d("change")
-            sign_in_by_account_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+
+            flag1 = true
             if (sign_in_by_account_tel_et.text.toString() == "") {
                 sign_in_by_account_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag1 = false
+                sign_in_by_account_submit_btn.isClickable = false
+            }
+            if (flag1 && flag2) {
+                sign_in_by_account_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                sign_in_by_account_submit_btn.isClickable = true
+            }
+        }
+    }
+
+    private var mPwdTextWatcher: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,
+                                       after: Int) {
+            // TODO Auto-generated method stub
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            // TODO Auto-generated method stub
+
+            flag2 = true
+            if (sign_in_by_account_pwd_et.text.toString() == "") {
+                sign_in_by_account_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
+                flag2 = false
+                sign_in_by_account_submit_btn.isClickable = false
+            }
+            if (flag1 && flag2) {
+                sign_in_by_account_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+                sign_in_by_account_submit_btn.isClickable = true
             }
         }
     }

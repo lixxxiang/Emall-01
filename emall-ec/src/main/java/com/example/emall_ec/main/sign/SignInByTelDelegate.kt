@@ -142,6 +142,8 @@ class SignInByTelDelegate : EmallDelegate() {
                 }
             }
         }
+        sign_in_by_tel_submit_btn.isClickable = false
+
 
         btn_sign_in_by_account_submit.setOnClickListener {
             startWithPop(SignInByAccountDelegate())
@@ -177,6 +179,7 @@ class SignInByTelDelegate : EmallDelegate() {
                 sign_in_by_tel_submit_btn.isClickable = false
             }
             if (flag1 && flag2) {
+                EmallLogger.d("ffff1")
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
                 sign_in_by_tel_submit_btn.isClickable = true
             }
@@ -201,15 +204,17 @@ class SignInByTelDelegate : EmallDelegate() {
 //                sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
 //            }
             flag2 = true
-            if (sign_in_by_tel_tel_et.text.toString() == "") {
+            if (sign_in_by_tel_vcode_et.text.toString() == "") {
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
                 flag2 = false
                 sign_in_by_tel_submit_btn.isClickable = false
             }
 
             if (flag1 && flag2) {
+                EmallLogger.d("ffff")
                 sign_in_by_tel_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
                 sign_in_by_tel_submit_btn.isClickable = true
+
             }
         }
     }
@@ -245,6 +250,7 @@ class SignInByTelDelegate : EmallDelegate() {
              * success
              */
             EmallLogger.d("success")
+            Toast.makeText(activity, "ss", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
         }
