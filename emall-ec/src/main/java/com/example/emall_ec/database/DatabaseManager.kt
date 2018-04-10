@@ -28,7 +28,7 @@ class DatabaseManager {
 
 
     fun initDao(context: Context) {
-        val helper: ReleaseOpenHelper? = ReleaseOpenHelper(context, "fast_ec.db")
+        val helper: ReleaseOpenHelper? = ReleaseOpenHelper(context, "fast_ec_1.db")
         var db: Database? = helper!!.writableDb
         mDaoSession = DaoMaster(db).newSession()
         mDao = mDaoSession!!.userProfileDao

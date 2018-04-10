@@ -3,6 +3,7 @@ package com.example.emall_ec.main.me
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
@@ -12,8 +13,12 @@ import kotlinx.android.synthetic.main.delegate_me.*
 import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.database.UserProfile
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
+import me.yokeyword.fragmentation.ISupportFragment
 
 
 /**
@@ -23,13 +28,39 @@ class MeDelegate : BottomItemDelegate() {
     var DELEGATE: EmallDelegate? = null
     var iconList: MutableList<Int>? = mutableListOf()
     var titleList: MutableList<Int>? = mutableListOf()
+    var userName = String()
+    var ME_USERNAME_CODE = 100
     override fun setLayout(): Any? {
         return R.layout.delegate_me
     }
 
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
-//        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
+    }
+
+    //    override fun onStart() {
+//        super.onStart()
+//        EmallLogger.d("dfdfd")
+//        val userDao = DatabaseManager().getInstance()!!.getDao()!!
+//        val list: List<UserProfile>? = userDao.loadAll()
+//        for (i in list!!.indices) {
+//            EmallLogger.d("google_lenve", "search: " + list[i].username)
+//            userName = list[i].username
+//        }
+//
+//        if(userName != ""){
+//            me_user_name.text = userName
+//
+//            me_hint.text = getString(R.string.me_hint)
+//        }
+//
+//    }
+//
+    override fun onResume() {
+        super.onResume()
+        EmallLogger.d("resume")
+
     }
 
     override fun initial() {
@@ -48,6 +79,7 @@ class MeDelegate : BottomItemDelegate() {
         titleList!!.add(R.string.contact_us)
         titleList!!.add(R.string.suggestion)
 
+
         if (DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll) > 0) {
             val rl = RelativeLayout(activity)
             val rlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (DimenUtil().getScreenHeight() - SizeUtils.getMeasuredHeight(me_ll)))
@@ -65,7 +97,7 @@ class MeDelegate : BottomItemDelegate() {
         me_order.setOnClickListener {
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle: Bundle? = Bundle()
-            bundle!!.putString("KEY", "ID")
+            bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
             delegate.arguments = bundle
             (DELEGATE as EcBottomDelegate).start(delegate)
         }
@@ -75,8 +107,11 @@ class MeDelegate : BottomItemDelegate() {
 //            val bundle: Bundle? = Bundle()
 //            bundle!!.putString("KEY", "ID")
 //            delegate.arguments = bundle
-            (DELEGATE as EcBottomDelegate).start(SignInByTelDelegate().create()!!)
+//            (DELEGATE as EcBottomDelegate).startForResult(SignInByTelDelegate().create()!!,ME_USERNAME_CODE)
+            DELEGATE!!.startForResult(SignInByTelDelegate().create()!!, ME_USERNAME_CODE)
         }
+
+
 
         me_function_lv.setOnItemClickListener { adapterView, view, i, l ->
             when (i) {
@@ -100,5 +135,22 @@ class MeDelegate : BottomItemDelegate() {
                 }
             }
         }
+    }
+
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+//        val list: List<UserProfile>? = DatabaseManager().getInstance()!!.getDao()!!.loadAll()
+//        EmallLogger.d("google_lenve", "search: " + list!![0].username)
+        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+            userName = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
+
+
+            if (userName != "") {
+                me_user_name.text = userName
+                me_hint.text = getString(R.string.me_hint)
+            }
+        }
+
     }
 }

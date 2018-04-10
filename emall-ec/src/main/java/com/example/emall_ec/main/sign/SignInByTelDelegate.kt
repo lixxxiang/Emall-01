@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import java.util.*
 import android.text.Editable
 import android.text.TextWatcher
+import com.blankj.utilcode.util.EncryptUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -21,12 +22,15 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_sign_up.*
+import android.app.Activity
+import android.os.Bundle
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 
 
 /**
  * Created by lixiang on 2018/2/5.
  */
-class SignInByTelDelegate : EmallDelegate() {
+class SignInByTelDelegate : BottomItemDelegate() {
 
     var tel = String()
     var vCode = String()
@@ -39,6 +43,14 @@ class SignInByTelDelegate : EmallDelegate() {
     var emptyToast: Toast? = null
     var wrongToast: Toast? = null
     var wrongVcodeToast: Toast? = null
+    private var mISignListener: ISignListener? = null
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        if (activity is ISignListener) {
+            mISignListener = activity
+        }
+    }
 
     fun create(): SignInByTelDelegate? {
         return SignInByTelDelegate()
@@ -52,7 +64,7 @@ class SignInByTelDelegate : EmallDelegate() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         sign_in_by_tel_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_in_by_tel_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
-        sign_in_by_tel_tel_et.requestFocus()
+//        sign_in_by_tel_tel_et.requestFocus()
 
         sign_in_by_tel_vcode_et.addTextChangedListener(mVcodeTextWatcher)
         sign_in_by_tel_tel_et.addTextChangedListener(mTelTextWatcher)
@@ -101,11 +113,11 @@ class SignInByTelDelegate : EmallDelegate() {
                      * tel is invalid
                      */
                     if (wrongToast != null) {
-                        wrongToast!!.setText(getString(R.string.wrong_tel))
+                        wrongToast!!.setText(getString(R.string.wrong_tel) + "1")
                         wrongToast!!.duration = Toast.LENGTH_SHORT
                         wrongToast!!.show()
                     } else {
-                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "1", Toast.LENGTH_SHORT)
                         wrongToast!!.show()
                     }
                 }
@@ -121,11 +133,13 @@ class SignInByTelDelegate : EmallDelegate() {
                      */
                     if (!RegexUtils.isMobileExact(tel)) {
                         if (wrongToast != null) {
-                            wrongToast!!.setText(getString(R.string.wrong_tel))
+                            wrongToast!!.setText(getString(R.string.wrong_tel) + "2")
                             wrongToast!!.duration = Toast.LENGTH_SHORT
                             wrongToast!!.show()
                         } else {
-                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                            EmallLogger.d("shibushi")
+                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "2", Toast.LENGTH_SHORT)
+
                             wrongToast!!.show()
                         }
                     }
@@ -141,11 +155,11 @@ class SignInByTelDelegate : EmallDelegate() {
                 checkMessage(tel, vCode)
             } else {
                 if (wrongToast != null) {
-                    wrongToast!!.setText(getString(R.string.wrong_tel))
+                    wrongToast!!.setText(getString(R.string.wrong_tel) + "3")
                     wrongToast!!.duration = Toast.LENGTH_SHORT
                     wrongToast!!.show()
                 } else {
-                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "3", Toast.LENGTH_SHORT)
                     wrongToast!!.show()
                 }
             }
@@ -232,9 +246,16 @@ class SignInByTelDelegate : EmallDelegate() {
                              * success
                              */
                             EmallLogger.d(response)
-                            popTo(preFragment.javaClass, false)
+
+                            SignHandler().onSignIn(response, mISignListener!!)
+                            val bundle = Bundle()
+                            bundle.putString("USER_NAME", checkMessageBean.userInfo.username)
                             KeyboardUtils.hideSoftInput(activity)
+//                            popTo(preFragment.javaClass, false)
+                            pop()
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            setFragmentResult(RESULT_OK, bundle)
+
 
                         } else {
                             Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
@@ -250,16 +271,24 @@ class SignInByTelDelegate : EmallDelegate() {
                 .build()
                 .post()
 
-        /**
-         * test
-         */
+//        /**
+//         * test
+//         */
 //        var i = "success"
 //        if (i == "success") {
 //            /**
 //             * success
 //             */
-//            EmallLogger.d("success")
-//            Toast.makeText(activity, "ss", Toast.LENGTH_SHORT).show()
+//            val bundle = Bundle()
+//            bundle.putString("USER_NAME", "lixxx")
+//            KeyboardUtils.hideSoftInput(activity)
+//            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//            setFragmentResult(RESULT_OK, bundle)
+//            supportDelegate.pop()
+//
+////            popTo(preFragment.javaClass, false)
+////            pop()
+//
 //        } else {
 //            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
 //        }

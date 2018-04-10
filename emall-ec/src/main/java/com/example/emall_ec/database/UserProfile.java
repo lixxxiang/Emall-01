@@ -11,51 +11,77 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity(nameInDb = "user_profile")
 public class UserProfile {
     @Id
-    private long userId = 0;
-    private String name = null;
-    private String avatar = null;
-    private String gender = null;
-    private String address = null;
-    @Generated(hash = 1202698052)
-    public UserProfile(long userId, String name, String avatar, String gender,
-            String address) {
+    private String userId = null;
+    private String username = null;
+    private String level = null;
+    private String label = null;
+    private String userTelephone = null;
+    private String userPassword = null;
+    private String imagePath = null;
+    private String gmtCreated = null;
+
+    @Generated(hash = 1323035424)
+    public UserProfile(String userId, String username, String level, String label,
+            String userTelephone, String userPassword, String imagePath,
+            String gmtCreated) {
         this.userId = userId;
-        this.name = name;
-        this.avatar = avatar;
-        this.gender = gender;
-        this.address = address;
+        this.username = username;
+        this.level = level;
+        this.label = label;
+        this.userTelephone = userTelephone;
+        this.userPassword = userPassword;
+        this.imagePath = imagePath;
+        this.gmtCreated = gmtCreated;
     }
     @Generated(hash = 968487393)
     public UserProfile() {
     }
-    public long getUserId() {
+    public String getUserId() {
         return this.userId;
     }
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.username;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
-    public String getAvatar() {
-        return this.avatar;
+    public String getLevel() {
+        return this.level;
     }
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setLevel(String level) {
+        this.level = level;
     }
-    public String getGender() {
-        return this.gender;
+    public String getLabel() {
+        return this.label;
     }
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setLabel(String label) {
+        this.label = label;
     }
-    public String getAddress() {
-        return this.address;
+    public String getUserTelephone() {
+        return this.userTelephone;
     }
-    public void setAddress(String address) {
-        this.address = address;
+    public void setUserTelephone(String userTelephone) {
+        this.userTelephone = userTelephone;
+    }
+    public String getUserPassword() {
+        return this.userPassword;
+    }
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+    public String getImagePath() {
+        return this.imagePath;
+    }
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+    public String getGmtCreated() {
+        return this.gmtCreated;
+    }
+    public void setGmtCreated(String gmtCreated) {
+        this.gmtCreated = gmtCreated;
     }
 }

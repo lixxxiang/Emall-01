@@ -5,11 +5,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"
+        android:elevation="4dp"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/order_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:elevation="4dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +35,8 @@
         android:background="#FFFFFF"
         app:tabIndicatorColor="#B80017"
         app:tabSelectedTextColor="#B80017"
-        app:tabTextColor="#5C5C5C" />
+        app:tabTextColor="#5C5C5C"
+        android:elevation="4dp"/>
 
 
     <android.support.v4.view.ViewPager

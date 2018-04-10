@@ -56,7 +56,7 @@ class SignUpDelegate : BottomItemDelegate() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         sign_up_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_up_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
-        sign_up_tel_et.requestFocus()
+//        sign_up_tel_et.requestFocus()
 
         sign_up_tel_et.addTextChangedListener(mTelTextWatcher)
         sign_up_vcode_et.addTextChangedListener(mVcodeTextWatcher)
@@ -105,11 +105,11 @@ class SignUpDelegate : BottomItemDelegate() {
                      * tel is invalid
                      */
                     if (wrongToast != null) {
-                        wrongToast!!.setText(getString(R.string.wrong_tel))
+                        wrongToast!!.setText(getString(R.string.wrong_tel) + "1")
                         wrongToast!!.duration = Toast.LENGTH_SHORT
                         wrongToast!!.show()
                     } else {
-                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "1", Toast.LENGTH_SHORT)
                         wrongToast!!.show()
                     }
                 }
@@ -129,11 +129,11 @@ class SignUpDelegate : BottomItemDelegate() {
                      */
                     if (!RegexUtils.isMobileExact(tel)) {
                         if (wrongToast != null) {
-                            wrongToast!!.setText(getString(R.string.wrong_tel))
+                            wrongToast!!.setText(getString(R.string.wrong_tel) + "2")
                             wrongToast!!.duration = Toast.LENGTH_SHORT
                             wrongToast!!.show()
                         } else {
-                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "2", Toast.LENGTH_SHORT)
                             wrongToast!!.show()
                         }
                     }
@@ -174,11 +174,11 @@ class SignUpDelegate : BottomItemDelegate() {
                 checkMessage(tel, vCode)
             } else {
                 if (wrongToast != null) {
-                    wrongToast!!.setText(getString(R.string.wrong_tel))
+                    wrongToast!!.setText(getString(R.string.wrong_tel) + "3")
                     wrongToast!!.duration = Toast.LENGTH_SHORT
                     wrongToast!!.show()
                 } else {
-                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "3", Toast.LENGTH_SHORT)
                     wrongToast!!.show()
                 }
             }

@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:elevation="1dp"
+    android:background="#FFFFFF"
     >
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/item_order_orderid_tv"
@@ -26,7 +28,7 @@
     <RelativeLayout
         android:id="@+id/item_order_sep_rl"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2px"
         android:layout_marginLeft="13dp"
         android:background="#e0e0e0"
         android:layout_below="@+id/item_order_btn"
@@ -89,7 +91,7 @@
     <RelativeLayout
         android:id="@+id/item_order_sep_2_rl"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2px"
         android:layout_marginLeft="13dp"
         android:background="#e0e0e0"
         android:layout_below="@+id/item_order_ll" />

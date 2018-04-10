@@ -9,8 +9,11 @@ import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.file.FileUtil
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.OrderListDelegate
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
@@ -23,6 +26,7 @@ import java.util.*
 class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     private var orderDetail = OrderDetail()
     private var data: MutableList<OrderDetail>? = mutableListOf()
+    var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
@@ -34,20 +38,11 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     }
 
     override fun initial() {
-//        data("http://10.10.90.11:8086/global/order/findOrderListByUserId")
-        val url: String = if (FileUtil.checkEmulator()) {
-//            "http://10.0.2.2:3035/data"
-            "http://10.10.90.11:8086/global/order/findOrderListByUserId"
-        } else {
-//            "http://192.168.1.36:3035/data"
-            "http://10.10.90.11:8086/global/order/findOrderListByUserId"
-        }
-        data(url)
-
+        data()
         all_lv.setOnItemClickListener { adapterView, view, i, l ->
 
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
-            val bundle : Bundle ?= Bundle()
+            val bundle: Bundle? = Bundle()
             bundle!!.putString("KEY", "ID")
             bundle!!.putParcelable("KEy", orderDetail)
             delegate.arguments = bundle
@@ -59,20 +54,22 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         }
     }
 
-    fun data(url: String) {
+    fun data() {
 
-        var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
-        findOrderListByUserIdParams!!["userId"] = "92209410004772"
+        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        findOrderListByUserIdParams!!["state"] = ""
+        findOrderListByUserIdParams!!["type"] = ""
 
         RestClient().builder()
-                .url(url)
-                .params(findOrderListByUserIdParams)
+                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
+                .params(findOrderListByUserIdParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-
                         orderDetail = Gson().fromJson(response, OrderDetail::class.java)
                         data!!.add(orderDetail)
                         initRefreshLayout()
+                        val head = View.inflate(activity, R.layout.orderlist_head_view, null)
+                        all_lv.addHeaderView(head)
                         all_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
                     }
                 })

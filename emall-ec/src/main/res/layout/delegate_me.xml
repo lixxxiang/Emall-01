@@ -52,26 +52,25 @@
                         android:layout_weight="4">
 
                         <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/me_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="22dp"
-                            android:layout_marginRight="22dp"
                             android:layout_marginStart="22dp"
-                            android:layout_toLeftOf="@+id/me_to_computer_iv"
                             android:lines="1"
                             android:singleLine="true"
-                            android:text="登录/注册登录/注册登录/注册登录/注册"
-
+                            android:text="@string/sign_in"
                             android:textColor="#FFFFFF"
                             android:textSize="16dp" />
 
                         <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/me_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_marginLeft="22dp"
                             android:layout_marginStart="22dp"
-                            android:text="星途，发现新世界"
+                            android:text="@string/click_to_login"
                             android:textColor="#c6b38c"
                             android:textSize="12dp" />
 

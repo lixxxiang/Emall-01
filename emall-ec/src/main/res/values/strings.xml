@@ -159,5 +159,8 @@
     <string name="exit">退出登录</string>
     <string name="old_tel">请输入当前绑定的手机号</string>
     <string name="new_tel">请输入新手机号</string>
+    <string name="click_to_login">点击登录遥感易购</string>
+    <string name="me_hint">遥感易购，发现新世界</string>
+
 
 </resources>

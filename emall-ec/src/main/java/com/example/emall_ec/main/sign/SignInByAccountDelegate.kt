@@ -1,7 +1,9 @@
 package com.example.emall_ec.main.sign
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Typeface
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
@@ -24,6 +26,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.Gravity
 import android.view.View
+import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.view.SoftKeyboardListener
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
@@ -44,7 +47,14 @@ class SignInByAccountDelegate : EmallDelegate() {
     var userNameLoginParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commonBean = CommonBean()
     var userNameLoginBean = UserNameLoginBean()
+    private var mISignListener: ISignListener? = null
 
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        if (activity is ISignListener) {
+            mISignListener = activity
+        }
+    }
     override fun setLayout(): Any? {
         return R.layout.delegate_sign_in_by_account
     }
@@ -170,7 +180,7 @@ class SignInByAccountDelegate : EmallDelegate() {
 
     private fun login() {
         userNameLoginParams!!["userTelephone"] = tel
-        passwordMD5 = EncryptUtils.encryptMD5ToString(password)
+        passwordMD5 = EncryptUtils.encryptMD5ToString(password).toLowerCase()
         EmallLogger.d(passwordMD5)
         userNameLoginParams!!["password"] = passwordMD5
 
@@ -184,6 +194,15 @@ class SignInByAccountDelegate : EmallDelegate() {
                             /**
                              * success
                              */
+                            EmallLogger.d("success")
+                            SignHandler().onSignIn(response, mISignListener!!)
+                            val bundle = Bundle()
+                            bundle.putString("USER_NAME", userNameLoginBean.user.username)
+                            KeyboardUtils.hideSoftInput(activity)
+//                            popTo(preFragment.javaClass, false)
+                            pop()
+                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            setFragmentResult(RESULT_OK, bundle)
                         } else {
                             Toast.makeText(activity, getString(R.string.account_pwd_error), Toast.LENGTH_SHORT).show()
                         }

@@ -8,8 +8,8 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import com.example.emall_ec.main.order.state.*
 import android.support.v4.app.FragmentPagerAdapter
-
-
+import android.view.View
+import com.example.emall_core.util.log.EmallLogger
 
 
 /**
@@ -18,13 +18,18 @@ import android.support.v4.app.FragmentPagerAdapter
 class OrderListDelegate : BottomItemDelegate() {
     var listFragment: MutableList<Fragment>? = mutableListOf()
     var listTitle: MutableList<String>? = mutableListOf()
+    var userId = String()
     private var fAdapter: FragmentPagerAdapter? = null
     fun create(): OrderListDelegate? {
         return OrderListDelegate()
     }
 
     override fun initial() {
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         order_list_toolbar.title = ""
+        userId = arguments.getString("USER_ID")
+        EmallLogger.d(userId)
         (activity as AppCompatActivity).setSupportActionBar(order_list_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         initControls()
