@@ -59,7 +59,7 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         findOrderListByUserIdParams!!["state"] = ""
         findOrderListByUserIdParams!!["type"] = ""
-
+        EmallLogger.d(findOrderListByUserIdParams!!["userId"]!!)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
                 .params(findOrderListByUserIdParams!!)
