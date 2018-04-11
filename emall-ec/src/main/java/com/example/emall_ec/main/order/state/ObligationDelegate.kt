@@ -15,6 +15,7 @@ import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
+import kotlinx.android.synthetic.main.delegate_me.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
 import java.util.*
 
@@ -44,8 +45,16 @@ class ObligationDelegate : EmallDelegate(){
 //            getParentDelegate.start(OrderDetailDelegate())
             (parentFragment as BottomItemDelegate).start(delegate)
 
+            theFourClick()
         }
     }
+
+    private fun theFourClick() {
+        me_obligation_rl.setOnClickListener {
+            EmallLogger.d("Dfdfsdfs")
+        }
+    }
+
 
     fun data() {
 

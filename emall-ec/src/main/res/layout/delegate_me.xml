@@ -129,6 +129,8 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusable="true"
                     android:id="@+id/me_four_icon_ll"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -136,7 +138,11 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
+                        android:id="@+id/me_obligation_rl"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_width="0dp"
+                        android:focusableInTouchMode="true"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 
@@ -151,6 +157,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/me_check_pending_rl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -164,6 +171,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/me_in_production_rl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -177,6 +185,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/me_delivered_rl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -194,6 +203,7 @@
                     android:layout_height="32dp"
                     android:layout_below="@+id/me_four_icon_ll">
                     <RelativeLayout
+                        android:id="@+id/me_obligation_rl2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -209,6 +219,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/me_check_pending_rl2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -223,6 +234,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/me_in_production_rl2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -237,6 +249,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/me_delivered_rl2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
