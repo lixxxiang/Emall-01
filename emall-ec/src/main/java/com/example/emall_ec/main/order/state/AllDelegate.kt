@@ -66,11 +66,17 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         orderDetail = Gson().fromJson(response, OrderDetail::class.java)
-                        data!!.add(orderDetail)
-                        initRefreshLayout()
-                        val head = View.inflate(activity, R.layout.orderlist_head_view, null)
-                        all_lv.addHeaderView(head)
-                        all_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                        if (orderDetail.data.isEmpty()){
+                            all_lv.visibility = View.INVISIBLE
+                            all_rl.visibility = View.VISIBLE
+                        }else{
+                            data!!.add(orderDetail)
+                            initRefreshLayout()
+                            val head = View.inflate(activity, R.layout.orderlist_head_view, null)
+                            all_lv.addHeaderView(head)
+                            all_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                        }
+
                     }
                 })
                 .build()

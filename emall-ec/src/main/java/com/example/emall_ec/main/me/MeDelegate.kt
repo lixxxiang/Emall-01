@@ -150,7 +150,9 @@ class MeDelegate : BottomItemDelegate() {
                 me_user_name.text = userName
                 me_hint.text = getString(R.string.me_hint)
             }
+        }else{
+            me_user_name.text = getString(R.string.sign_in)
+            me_hint.text = getString(R.string.click_to_login)
         }
-
     }
 }

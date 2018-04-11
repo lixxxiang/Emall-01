@@ -9,10 +9,10 @@ import java.util.List;
  * Created by lixiang on 2018/3/6.
  */
 
-public class OrderDetail implements Parcelable {
+public class OrderDetail implements Parcelable{
 
     /**
-     * data : [{"commitTime":"2017-11-24 11:48:51","details":{"centerTime":"2016-11-13 09:27:54","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[139.820421,35.786176],[139.964701,35.762829],[139.935792,35.647949],[139.791757,35.671273],[139.820421,35.786176]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg","latitude":"35.717030","longitude":"139.878406","originalPrice":"10380.00","productId":"JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.81m+3.25m","salePrice":"10380.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20161113092742_000015634_101_0009","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"173005950.24796021","swingSatelliteAngle":"-18.758638"},"fresh":0,"invoiceState":0,"orderId":"1711241148000515657","parentOrderId":"1711241148000202865","payment":1,"planCommitTime":"2017-11-26 11:48:51","productId":"JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN","state":2,"type":1,"userId":"92209410004772"},{"commitTime":"2017-11-24 11:26:18","details":{"centerTime":"2016-12-21 21:55:01","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[-56.326051,-34.757938],[-56.200412,-34.782163],[-56.230985,-34.890162],[-56.356782,-34.8659],[-56.326051,-34.757938]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161221215447_000017023_105_0011_001_L1_MSS.jpg","latitude":"-34.824071","longitude":"-56.278507","originalPrice":"8718.00","productId":"JL101A_PMS_20161221215447_000017023_105_0011_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.72m+2.90m","salePrice":"8718.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20161221215447_000017023_105_0011","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"145296598.265571266","swingSatelliteAngle":"-4.331561"},"fresh":0,"invoiceState":0,"orderId":"1711241126000181195","parentOrderId":"1711241125000296053","payment":3076,"planCommitTime":"2017-11-26 11:26:18","productId":"JL101A_PMS_20161221215447_000017023_105_0011_001_L1_PAN","state":4,"type":1,"userId":"92209410004772"},{"commitTime":"2017-11-21 17:18:39","details":{"cloud":"0","duration":"32s","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[20.020223,32.126537],[20.152459,32.101888],[20.145221,32.055796],[20.01283,32.080842],[20.020223,32.126537]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.jpg","latitude":"32.091364","longitude":"20.082430","originalPrice":"50000.00","productId":"JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS","promotionDescription":"遥感数据全类型开放购买","promotionType":"遥感易购","resolution":"1.01","rollSatelliteAngleMajor":"18.297349929810","salePrice":"50000.00","satelliteId":"JL103B","sensor":"MSS","serviceDescription":"若今日24:00前下单，可交付","size":"65470509.7704740614","startTime":"2017-08-23 17:32:05","title":"班加西","videoPath":"http://59.110.162.194:8085/ygyg/VIDEO103B/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.mp4"},"fresh":0,"invoiceState":0,"orderId":"1711211718000396547","parentOrderId":"1711211718000332658","payMethod":2,"payment":1,"planCommitTime":"2017-11-23 17:18:39","productId":"JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS","state":4,"type":3,"url":"http://202.111.178.10:10083/webhdfs/v1/product_entity/videoProduct/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.zip?op=OPEN&user.name=hadoop","userId":"92209410004772"}]
+     * data : [{"commitTime":"2018-04-11 11:31:54","details":{"centerTime":"2017-04-08 22:16:20","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[116.263051,39.919634],[116.420897,39.938535],[116.436266,39.875576],[116.279603,39.856733],[116.263051,39.919634]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/NIGHT103B/JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS.jpg","latitude":"39.897520","longitude":"116.350035","originalPrice":"49500.00","productId":"JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS","productLevel":"L1A","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.91m","salePrice":"0.01","satelliteId":"JL103B","sceneId":"JL103B_MSS_20170408221619_100001114_101_0013_","sensor":"MSS","serviceDescription":"若今日24:00前下单，可交付","size":"96829857.3439639062","swingSatelliteAngle":"2.69"},"fresh":0,"invoiceState":0,"orderId":"180411113100054697","parentOrderId":"180411113100052742","payment":0.01,"planCommitTime":"2018-05-11 11:31:54","productId":"JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS","state":2,"type":5,"userId":"92209140003462"},{"commitTime":"2017-11-23 16:32:51","details":{"centerTime":"2016-07-28 19:41:22","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[-9.140887,38.514158],[-9.005061,38.488205],[-9.039959,38.378883],[-9.175843,38.404833],[-9.140887,38.514158]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/old/JL101A_PMS_20160728194103_000011622_205_0014_001_L1_MSS.jpg","latitude":"38.446583","longitude":"-9.090770","originalPrice":"9161.00","productId":"JL101A_PMS_20160728194103_000011622_205_0014_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"1.50m+1.50m","salePrice":"9161.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20160728194103_000011622_205_0014","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"152685227.310682923","swingSatelliteAngle":"10.215837"},"fresh":0,"invoiceState":0,"orderId":"1711231632000516052","parentOrderId":"1711231632000317236","payMethod":2,"payTime":"2017-11-23 16:33:53","payment":1,"planCommitTime":"2017-11-25 16:32:51","productId":"JL101A_PMS_20160728194103_000011622_205_0014_001_L1_PAN","state":4,"type":1,"userId":"92209140003462"},{"commitTime":"2017-11-23 16:32:49","details":{"centerTime":"2016-07-28 19:41:22","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[-9.140887,38.514158],[-9.005061,38.488205],[-9.039959,38.378883],[-9.175843,38.404833],[-9.140887,38.514158]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/old/JL101A_PMS_20160728194103_000011622_205_0014_001_L1_MSS.jpg","latitude":"38.446583","longitude":"-9.090770","originalPrice":"9161.00","productId":"JL101A_PMS_20160728194103_000011622_205_0014_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"1.50m+1.50m","salePrice":"9161.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20160728194103_000011622_205_0014","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"152685227.310682923","swingSatelliteAngle":"10.215837"},"fresh":0,"invoiceState":0,"orderId":"1711231632000491514","parentOrderId":"1711231632000317236","payment":1,"planCommitTime":"2017-11-25 16:32:49","productId":"JL101A_PMS_20160728194103_000011622_205_0014_001_L1_PAN","state":2,"type":1,"userId":"92209140003462"}]
      * message : success
      * status : 200
      */
@@ -57,20 +57,20 @@ public class OrderDetail implements Parcelable {
 
     public static class DataBean {
         /**
-         * commitTime : 2017-11-24 11:48:51
-         * details : {"centerTime":"2016-11-13 09:27:54","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[139.820421,35.786176],[139.964701,35.762829],[139.935792,35.647949],[139.791757,35.671273],[139.820421,35.786176]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg","latitude":"35.717030","longitude":"139.878406","originalPrice":"10380.00","productId":"JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN","productLevel":"L1","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.81m+3.25m","salePrice":"10380.00","satelliteId":"JL101A","sceneId":"JL101A_PMS_20161113092742_000015634_101_0009","sensor":"PMS","serviceDescription":"若今日24:00前下单，可交付","size":"173005950.24796021","swingSatelliteAngle":"-18.758638"}
+         * commitTime : 2018-04-11 11:31:54
+         * details : {"centerTime":"2017-04-08 22:16:20","cloud":"0","geo":"{\"type\":\"Polygon\",\"coordinates\":[[[116.263051,39.919634],[116.420897,39.938535],[116.436266,39.875576],[116.279603,39.856733],[116.263051,39.919634]]]}","imageDetailUrl":"http://59.110.162.194:8085/ygyg/NIGHT103B/JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS.jpg","latitude":"39.897520","longitude":"116.350035","originalPrice":"49500.00","productId":"JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS","productLevel":"L1A","promotionDescription":"遥感数据全类型开放购买","promotionName":"遥感易购","resolution":"0.91m","salePrice":"0.01","satelliteId":"JL103B","sceneId":"JL103B_MSS_20170408221619_100001114_101_0013_","sensor":"MSS","serviceDescription":"若今日24:00前下单，可交付","size":"96829857.3439639062","swingSatelliteAngle":"2.69"}
          * fresh : 0
          * invoiceState : 0
-         * orderId : 1711241148000515657
-         * parentOrderId : 1711241148000202865
-         * payment : 1
-         * planCommitTime : 2017-11-26 11:48:51
-         * productId : JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN
+         * orderId : 180411113100054697
+         * parentOrderId : 180411113100052742
+         * payment : 0.01
+         * planCommitTime : 2018-05-11 11:31:54
+         * productId : JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS
          * state : 2
-         * type : 1
-         * userId : 92209410004772
+         * type : 5
+         * userId : 92209140003462
          * payMethod : 2
-         * url : http://202.111.178.10:10083/webhdfs/v1/product_entity/videoProduct/JL103B_MSS_20170823173205_100002070_102_001_L1B_MSS.zip?op=OPEN&user.name=hadoop
+         * payTime : 2017-11-23 16:33:53
          */
 
         private String commitTime;
@@ -79,14 +79,14 @@ public class OrderDetail implements Parcelable {
         private int invoiceState;
         private String orderId;
         private String parentOrderId;
-        private int payment;
+        private double payment;
         private String planCommitTime;
         private String productId;
         private int state;
         private int type;
         private String userId;
         private int payMethod;
-        private String url;
+        private String payTime;
 
         public String getCommitTime() {
             return commitTime;
@@ -136,11 +136,11 @@ public class OrderDetail implements Parcelable {
             this.parentOrderId = parentOrderId;
         }
 
-        public int getPayment() {
+        public double getPayment() {
             return payment;
         }
 
-        public void setPayment(int payment) {
+        public void setPayment(double payment) {
             this.payment = payment;
         }
 
@@ -192,35 +192,35 @@ public class OrderDetail implements Parcelable {
             this.payMethod = payMethod;
         }
 
-        public String getUrl() {
-            return url;
+        public String getPayTime() {
+            return payTime;
         }
 
-        public void setUrl(String url) {
-            this.url = url;
+        public void setPayTime(String payTime) {
+            this.payTime = payTime;
         }
 
         public static class DetailsBean {
             /**
-             * centerTime : 2016-11-13 09:27:54
+             * centerTime : 2017-04-08 22:16:20
              * cloud : 0
-             * geo : {"type":"Polygon","coordinates":[[[139.820421,35.786176],[139.964701,35.762829],[139.935792,35.647949],[139.791757,35.671273],[139.820421,35.786176]]]}
-             * imageDetailUrl : http://59.110.162.194:8085/ygyg/101A/JL101A_PMS_20161113092742_000015634_101_0009_001_L1_MSS.jpg
-             * latitude : 35.717030
-             * longitude : 139.878406
-             * originalPrice : 10380.00
-             * productId : JL101A_PMS_20161113092742_000015634_101_0009_001_L1_PAN
-             * productLevel : L1
+             * geo : {"type":"Polygon","coordinates":[[[116.263051,39.919634],[116.420897,39.938535],[116.436266,39.875576],[116.279603,39.856733],[116.263051,39.919634]]]}
+             * imageDetailUrl : http://59.110.162.194:8085/ygyg/NIGHT103B/JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS.jpg
+             * latitude : 39.897520
+             * longitude : 116.350035
+             * originalPrice : 49500.00
+             * productId : JL103B_MSS_20170408221619_100001114_101_0013_001_L1A_MSS
+             * productLevel : L1A
              * promotionDescription : 遥感数据全类型开放购买
              * promotionName : 遥感易购
-             * resolution : 0.81m+3.25m
-             * salePrice : 10380.00
-             * satelliteId : JL101A
-             * sceneId : JL101A_PMS_20161113092742_000015634_101_0009
-             * sensor : PMS
+             * resolution : 0.91m
+             * salePrice : 0.01
+             * satelliteId : JL103B
+             * sceneId : JL103B_MSS_20170408221619_100001114_101_0013_
+             * sensor : MSS
              * serviceDescription : 若今日24:00前下单，可交付
-             * size : 173005950.24796021
-             * swingSatelliteAngle : -18.758638
+             * size : 96829857.3439639062
+             * swingSatelliteAngle : 2.69
              */
 
             private String centerTime;

@@ -42,7 +42,7 @@ public class OrderListAdapter extends BaseAdapter {
         this.dataList = dataList;
         this.resource = resource;
 
-        EmallLogger.INSTANCE.d(dataList.get(0).getData().get(0).getDetails().getImageDetailUrl());
+//        EmallLogger.INSTANCE.d(dataList.get(0).getData().get(0).getDetails().getImageDetailUrl());
         for (int i = 0; i < dataList.get(0).getData().size(); i++) {
             imageList.add(dataList.get(0).getData().get(i).getDetails().getImageDetailUrl());
         }
@@ -94,7 +94,7 @@ public class OrderListAdapter extends BaseAdapter {
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
         util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
-        util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getDetails().getSalePrice()));
+        util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(),util.btn);
         Glide.with(context)
@@ -123,7 +123,11 @@ public class OrderListAdapter extends BaseAdapter {
     }
 
     private String stateFormat(int state, String planCommitTime) {
-        return String.format("%s：预计 %s 交付", stateArray[state], planCommitTime);
+        if (state != 4){
+            return String.format("%s：预计 %s 交付", stateArray[state], planCommitTime);
+        }else{
+            return String.format("%s：已交付", stateArray[state]);
+        }
     }
 
 

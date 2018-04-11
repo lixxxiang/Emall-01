@@ -13,6 +13,7 @@ import android.graphics.Color
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatTextView
 import android.widget.TextView
+import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.program.adapter.ProgramParamsTypeAdapter
 
 
@@ -36,6 +37,11 @@ class SettingDelegate : BottomItemDelegate() {
         setting_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(setting_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        setting_toolbar.setNavigationOnClickListener {
+
+            pop()
+            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        }
 
         titleList!!.add(R.string.account_privacy_setting)
         titleList!!.add(R.string.clear_cache)
@@ -68,6 +74,21 @@ class SettingDelegate : BottomItemDelegate() {
             if (i == 0) {
                 start(AccountPrivacySettingsDelegate().create())
             }
+        }
+
+        setting_log_out.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("确认登出吗？")
+            builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
+                DatabaseManager().getInstance()!!.getDao()!!.deleteAll()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.create().show()
         }
 
     }

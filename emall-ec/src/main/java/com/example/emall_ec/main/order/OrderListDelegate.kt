@@ -32,6 +32,10 @@ class OrderListDelegate : BottomItemDelegate() {
         EmallLogger.d(userId)
         (activity as AppCompatActivity).setSupportActionBar(order_list_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        order_list_toolbar.setNavigationOnClickListener {
+            pop()
+        }
         initControls()
     }
 

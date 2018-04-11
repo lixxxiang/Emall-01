@@ -49,6 +49,9 @@
     </com.example.emall_core.util.view.BounceScrollView>
 
     <RelativeLayout
+        android:id="@+id/setting_log_out"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:background="#B4A078"
