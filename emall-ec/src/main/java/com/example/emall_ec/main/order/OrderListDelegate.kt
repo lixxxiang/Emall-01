@@ -84,6 +84,7 @@ class OrderListDelegate : BottomItemDelegate() {
         //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
         //TabLayout加载viewpager
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager)
+        vp_FindFragment_pager.currentItem = arguments.getInt("INDEX")
         //tab_FindFragment_title.set
     }
 

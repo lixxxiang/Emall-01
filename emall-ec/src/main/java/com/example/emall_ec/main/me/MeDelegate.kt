@@ -12,6 +12,7 @@ import com.example.emall_ec.main.order.OrderListDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
+import com.example.emall_core.app.Emall
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
@@ -95,11 +96,7 @@ class MeDelegate : BottomItemDelegate() {
         me_function_lv.adapter = MeFunctionAdapter(iconList, titleList, context)
 
         me_order.setOnClickListener {
-            val delegate: OrderListDelegate = OrderListDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
-            delegate.arguments = bundle
-            (DELEGATE as EcBottomDelegate).start(delegate)
+            toOrderDelegate(0)
         }
 
         me_avatar_iv.setOnClickListener {
@@ -136,6 +133,33 @@ class MeDelegate : BottomItemDelegate() {
                 }
             }
         }
+
+        btn1.setOnClickListener {
+            toOrderDelegate(1)
+        }
+
+        btn2.setOnClickListener {
+            toOrderDelegate(2)
+        }
+
+        btn3.setOnClickListener {
+            toOrderDelegate(3)
+        }
+
+        btn4.setOnClickListener {
+            toOrderDelegate(4)
+        }
+
+
+    }
+
+    fun toOrderDelegate(index: Int){
+        val delegate: OrderListDelegate = OrderListDelegate().create()!!
+        val bundle: Bundle? = Bundle()
+        bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+        bundle.putInt("INDEX", index)
+        delegate.arguments = bundle
+        (DELEGATE as EcBottomDelegate).start(delegate)
     }
 
 

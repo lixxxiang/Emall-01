@@ -4,8 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0">
-    
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"
+        android:elevation="4dp"/>
     <ScrollView
+        android:layout_below="@+id/order_detail_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
@@ -15,10 +21,14 @@
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#F0F0F0"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="164dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2px"
                     android:background="#E0E0E0"
                     android:layout_alignParentTop="true"/>
                 <android.support.v7.widget.AppCompatTextView
@@ -27,12 +37,11 @@
                     android:layout_height="wrap_content"
                     android:textColor="#B80017"
                     android:textSize="12dp"
-                    android:text="订单状态（待付款/生产中：预计 2017-12-12 交付/已交付）"
                     android:layout_marginTop="14dp"
                     android:layout_marginLeft="15dp"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2px"
                     android:background="#E0E0E0"
                     android:layout_marginLeft="13dp"
                     android:layout_below="@+id/order_detail_state_tv"
@@ -41,13 +50,14 @@
                     android:id="@+id/order_detail_image_iv"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:scaleType="centerCrop"
                     android:layout_below="@+id/order_detail_state_tv"
                     android:layout_marginTop="34dp"
                     android:layout_marginLeft="15dp"/>
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="光学一级"
                     android:textSize="12dp"
                     android:textColor="#5C5C5C"
                     android:layout_toRightOf="@+id/order_detail_image_iv"
@@ -55,9 +65,9 @@
                     android:layout_below="@+id/order_detail_state_tv"
                     android:layout_marginTop="34dp" />
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="拍摄于 2017.01.21，13:13:27（北京时间）"
                     android:textSize="12dp"
                     android:textColor="#9B9B9B"
                     android:layout_below="@+id/order_detail_state_tv"
@@ -65,9 +75,9 @@
                     android:layout_toRightOf="@+id/order_detail_image_iv"
                     android:layout_marginLeft="14dp" />
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$3442"
                     android:textSize="12dp"
                     android:textColor="#5C5C5C"
                     android:layout_below="@+id/order_detail_state_tv"
@@ -93,11 +103,11 @@
                     android:layout_marginTop="11dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_id_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp"
-                    android:text="20170101090013123001"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="11dp"/>
 
@@ -111,16 +121,16 @@
                     android:layout_marginTop="40dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_order_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp"
-                    android:text="2017.12.12 14:12"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="40dp"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2px"
                     android:background="#E0E0E0"
                     android:layout_marginLeft="13dp"
                     android:layout_marginTop="71dp"/>
@@ -135,11 +145,11 @@
                     android:layout_marginLeft="15dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_pay_method_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp"
-                    android:text="微信"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="88dp"/>
                 <android.support.v7.widget.AppCompatTextView
@@ -152,11 +162,11 @@
                     android:layout_marginLeft="15dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_origional_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp"
-                    android:text="¥9999.00"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="117dp"/>
                 <android.support.v7.widget.AppCompatTextView
@@ -169,17 +179,17 @@
                     android:layout_marginLeft="15dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_current_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp"
-                    android:text="$3442.00"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="150dp"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="2px"
                     android:background="#E0E0E0"
                     android:layout_marginLeft="13dp"
                     android:layout_marginTop="177dp"/>
@@ -195,11 +205,11 @@
                     android:layout_marginLeft="15dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_discount_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp"
-                    android:text="-¥1.00"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="194dp"/>
                 <android.support.v7.widget.AppCompatTextView
@@ -212,11 +222,11 @@
                     android:layout_marginLeft="15dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/order_detail_final_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#B80017"
                     android:textSize="12dp"
-                    android:text="¥3441.00"
                     android:layout_marginLeft="85dp"
                     android:layout_marginTop="221dp"/>
             </RelativeLayout>
@@ -317,8 +327,10 @@
         </LinearLayout>
     </ScrollView>
     <android.support.v7.widget.Toolbar
+        android:layout_below="@+id/ll_bar"
         android:id="@+id/order_detail_list_toolbar"
         android:layout_width="match_parent"
+        android:elevation="4dp"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFFFFF">
 

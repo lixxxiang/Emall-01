@@ -44,11 +44,9 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("KEY", "ID")
-            bundle!!.putParcelable("KEy", orderDetail)
+            bundle.putParcelable("KEy", orderDetail)
+            bundle.putInt("INDEX", i - 1)
             delegate.arguments = bundle
-//            start(delegate)
-//            showHideFragment(OrderDetailDelegate(), getParentDelegate())
-//            getParentDelegate.start(OrderDetailDelegate())
             (parentFragment as BottomItemDelegate).start(delegate)
 
         }

@@ -33,8 +33,9 @@ public class OrderListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    private String[] typeArray = {"标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
-    private String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
+    public static String[] typeArray = {"标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
+    public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
 
     public OrderListAdapter(Context context, List<OrderDetail> dataList,
                             int resource) {
@@ -96,7 +97,7 @@ public class OrderListAdapter extends BaseAdapter {
         util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
         util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
-        buttonFormat(dataList.get(0).getData().get(i).getState(),util.btn);
+        buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
         Glide.with(context)
                 .load(imageList.get(i))
                 .into(util.imageView);
@@ -118,14 +119,14 @@ public class OrderListAdapter extends BaseAdapter {
         }
     }
 
-    private String timeFormat(String centerTime) {
+    public static String timeFormat(String centerTime) {
         return String.format("拍摄于 %s（北京时间）", centerTime.replace(" ", "，"));
     }
 
     private String stateFormat(int state, String planCommitTime) {
-        if (state != 4){
+        if (state != 4) {
             return String.format("%s：预计 %s 交付", stateArray[state], planCommitTime);
-        }else{
+        } else {
             return String.format("%s：已交付", stateArray[state]);
         }
     }

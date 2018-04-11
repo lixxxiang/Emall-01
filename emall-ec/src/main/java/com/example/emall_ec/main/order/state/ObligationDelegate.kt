@@ -44,16 +44,9 @@ class ObligationDelegate : EmallDelegate(){
 //            showHideFragment(OrderDetailDelegate(), getParentDelegate())
 //            getParentDelegate.start(OrderDetailDelegate())
             (parentFragment as BottomItemDelegate).start(delegate)
-
-            theFourClick()
         }
     }
 
-    private fun theFourClick() {
-        me_obligation_rl.setOnClickListener {
-            EmallLogger.d("Dfdfsdfs")
-        }
-    }
 
 
     fun data() {
