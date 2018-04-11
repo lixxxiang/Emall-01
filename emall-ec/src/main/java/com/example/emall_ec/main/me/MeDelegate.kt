@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
@@ -167,6 +168,8 @@ class MeDelegate : BottomItemDelegate() {
         super.onSupportVisible()
 //        val list: List<UserProfile>? = DatabaseManager().getInstance()!!.getDao()!!.loadAll()
 //        EmallLogger.d("google_lenve", "search: " + list!![0].username)
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
         if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
             userName = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
 
