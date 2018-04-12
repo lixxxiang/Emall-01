@@ -9,6 +9,7 @@ import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.me.setting.adapter.AccountPrivacySettingsAdapter
 import com.example.emall_ec.main.me.setting.adapter.SettingAdapter
+import com.example.emall_ec.main.sign.ModifyPasswordDelegate
 import kotlinx.android.synthetic.main.delegate_account_privacy_settings.*
 import kotlinx.android.synthetic.main.delegate_setting.*
 
@@ -50,7 +51,21 @@ class AccountPrivacySettingsDelegate : EmallDelegate() {
         account_privacy_settings_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (i == 0) {
                 start(ModifyTelDelegate().create())
+            }else if(i == 1){
+                start(ModifyPasswordDelegate().create())
             }
         }
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone.isEmpty()){
+            val tv = account_privacy_settings_lv.getChildAt(0).findViewById<AppCompatTextView>(R.id.detail_tv)
+            tv.text = hideTel(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone)
+        }
+    }
+
+    private fun hideTel(s: String): String {
+        return String.format("%s****%s", s.substring(0, 4), s.substring(7, 11))
     }
 }

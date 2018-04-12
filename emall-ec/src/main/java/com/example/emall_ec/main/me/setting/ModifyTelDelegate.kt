@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.RegexUtils
 import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -53,18 +54,20 @@ class ModifyTelDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         modify_tel_toolbar.setNavigationOnClickListener {
-                    pop()
-                }
+            pop()
+        }
         modify_tel_old_tel_et.addTextChangedListener(mOldTextWatcher)
         modify_tel_new_tel_et.addTextChangedListener(mNewTextWatcher)
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                modify_tel_title_rl.visibility = View.GONE
+                if (modify_tel_title_rl != null)
+                    modify_tel_title_rl.visibility = View.GONE
             }
 
             override fun keyBoardHide(height: Int) {
-                modify_tel_title_rl.visibility = View.VISIBLE
+                if (modify_tel_title_rl != null)
+                    modify_tel_title_rl.visibility = View.VISIBLE
             }
         })
 
@@ -133,6 +136,8 @@ class ModifyTelDelegate : BottomItemDelegate() {
                              * success
                              */
 //                            changeTelephone(oldTel, newTel)
+                            KeyboardUtils.hideSoftInput(activity)
+
                             val delegate = ModifyTelVcodeDelegate().create()
                             val bundle = Bundle()
                             bundle.putString("OLD_TELEPHONE", oldTel)
@@ -169,7 +174,6 @@ class ModifyTelDelegate : BottomItemDelegate() {
                             /**
                              * success
                              */
-                            EmallLogger.d("changeOk")
                             val delegate = ModifyTelVcodeDelegate().create()
                             val bundle = Bundle()
                             bundle.putString("NEW_TELEPHONE", newTel)

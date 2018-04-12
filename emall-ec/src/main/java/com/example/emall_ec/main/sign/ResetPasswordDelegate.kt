@@ -52,6 +52,9 @@ class ResetPasswordDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(reset_pwd_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        reset_pwd_toolbar.setNavigationOnClickListener {
+            pop()
+        }
         tel = arguments.getString("MODIFY_PASSWORD_TELEPHONE")
         reset_pwd_confirm_pwd_et.addTextChangedListener(mConfirmTextWatcher)
         reset_pwd_new_pwd_et.addTextChangedListener(mNewTextWatcher)
@@ -103,7 +106,6 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                         newPassword = reset_pwd_new_pwd_et.text.toString()
                         confirmPassword = reset_pwd_confirm_pwd_et.text.toString()
                         if (newPassword == confirmPassword) {
-                            Toast.makeText(activity, "pwd success", Toast.LENGTH_SHORT).show()
                             changePassword()
                         } else
                             Toast.makeText(activity, getString(R.string.pwd_no_match), Toast.LENGTH_SHORT).show()
@@ -129,6 +131,7 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         if (commonBean.meta == "success") {
                             Toast.makeText(activity, "change pwd success!!", Toast.LENGTH_SHORT).show()
+                            
                         } else {
                             Toast.makeText(activity, "change pwd failure!!", Toast.LENGTH_SHORT).show()
                         }

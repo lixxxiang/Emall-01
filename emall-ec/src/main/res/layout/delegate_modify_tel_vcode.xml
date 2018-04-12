@@ -172,7 +172,6 @@
             android:textSize="14dp"
             android:textColor="#9B9B9B"
             android:layout_marginTop="12dp"
-            android:text="已向手机012****890发送验证码"
             android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>

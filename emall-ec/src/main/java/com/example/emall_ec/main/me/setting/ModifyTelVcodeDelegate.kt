@@ -1,11 +1,13 @@
 package com.example.emall_ec.main.me.setting
 
 import android.graphics.Typeface
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -14,11 +16,16 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
+import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.database.UserProfile
 import com.example.emall_ec.main.sign.data.CheckMessageBean
+import com.example.emall_ec.main.sign.data.CommonBean
+import com.example.emall_ec.main.sign.data.SendMessageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_modify_tel_vcode.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
 import kotlinx.android.synthetic.main.delegate_sign_up.*
+import kotlinx.android.synthetic.main.me_function_item.*
 import java.util.*
 
 /**
@@ -30,7 +37,11 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     var newTel = String()
     var emptyToast: Toast? = null
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var checkMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var changeTelephoneParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var commonBean = CommonBean()
     var checkMessageBean = CheckMessageBean()
+    var sendMessageBean = SendMessageBean()
     fun create(): ModifyTelVcodeDelegate {
         return ModifyTelVcodeDelegate()
     }
@@ -47,6 +58,10 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
         modify_tel_vcode_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(modify_tel_vcode_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        modify_tel_vcode_toolbar.setNavigationOnClickListener {
+            pop()
+        }
 
         modify_tel_vcode_vcode_et.addTextChangedListener(mMVcodeTextWatcher)
         modify_tel_vcode_count_down.setCountDownMillis(60000)
@@ -66,7 +81,6 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
         })
 
         modify_tel_vcode_count_down.setOnClickListener {
-            vcode = modify_tel_vcode_vcode_et.text.toString()
             modify_tel_vcode_count_down.start()
             getVCode()
 //            if (vcode.isEmpty()) {
@@ -105,47 +119,51 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     }
 
     private fun getVCode() {
-//        RestClient().builder()
-//                .url("http://10.10.90.11:8099/global/mall/sendMessage.do")
-//                .params(sendMessageParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        sendMessageBean = Gson().fromJson(response, SendMessageBean::class.java)
-//                        if (sendMessageBean.register == "0") {
-//                            /**
-//                             * unregister
-//                             */
-//                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            /**
-//                             * registered
-//                             */
+        sendMessageParams!!["telephone"] = newTel
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/sendMessage.do")
+                .params(sendMessageParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        sendMessageBean = Gson().fromJson(response, SendMessageBean::class.java)
+                        if (sendMessageBean.register == "0") {
+                            /**
+                             * unregister
+                             */
+                            showHint()
+                        } else {
+                            /**
+                             * registered
+                             */
+                            Toast.makeText(activity, "cannot use this number because it is already signed up", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+
+        /**
+         * test
+         */
+//        var i = "1"
+//        if (i == "0") {
+//            /**
+//             * unregister
+//             */
+//            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+//        } else {
+//            /**
+//             * registered
+//             */
+//            showHint()
 //
-//                        }
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {}
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {}
-//                })
-//                .build()
-//                .post()
-
-        var i = "1"
-        if (i == "0") {
-            /**
-             * unregister
-             */
-            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-        } else {
-            /**
-             * registered
-             */
-            showHint()
-
-        }
+//        }
     }
 
     private fun showHint() {
@@ -158,11 +176,11 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     }
 
     private fun checkMessage(v: String) {
-        sendMessageParams!!["telephone"] = arguments.getString("NEW_TELEPHONE")
-        sendMessageParams!!["code"] = v
+        checkMessageParams!!["telephone"] = arguments.getString("NEW_TELEPHONE")
+        checkMessageParams!!["code"] = v
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
-                .params(sendMessageParams!!)
+                .params(checkMessageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         checkMessageBean = Gson().fromJson(response, CheckMessageBean::class.java)
@@ -170,6 +188,7 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
                             /**
                              * success
                              */
+                            changeTelephone(oldTel, newTel)
                         } else {
                             Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
                         }
@@ -199,6 +218,44 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
 //        }
     }
 
+    private fun changeTelephone(oldTel: String, newTel: String) {
+        changeTelephoneParams!!["oldTelephone"] = oldTel
+        changeTelephoneParams!!["newTelephone"] = newTel
+        EmallLogger.d(oldTel + newTel)
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/changeTelephone.do")
+                .params(changeTelephoneParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        EmallLogger.d(response)
+                        if (commonBean.meta == "success") {
+                            /**
+                             * success
+                             */
+                            val info = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0]
+                            if (info != null) {
+                                info.userTelephone = newTel
+                                DatabaseManager().getInstance()!!.getDao()!!.update(info)
+                            }
+                            popTo(findFragment(AccountPrivacySettingsDelegate().javaClass).javaClass, false)
+                            KeyboardUtils.hideSoftInput(activity)
+                        } else {
+                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+
+    }
+
 
     private var mMVcodeTextWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -212,13 +269,13 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
 
         override fun afterTextChanged(s: Editable) {
             // TODO Auto-generated method stub
+            modify_tel_vcode_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
+            modify_tel_vcode_submit_btn.isClickable = true
             if (modify_tel_vcode_vcode_et.text.toString() == "") {
                 modify_tel_vcode_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape)
                 modify_tel_vcode_submit_btn.isClickable = false
             }
 
-            modify_tel_vcode_submit_btn.setBackgroundResource(R.drawable.sign_up_btn_shape_dark)
-            modify_tel_vcode_submit_btn.isClickable = true
 
         }
     }
