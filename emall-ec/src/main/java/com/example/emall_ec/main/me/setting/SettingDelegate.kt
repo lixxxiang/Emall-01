@@ -15,6 +15,9 @@ import android.support.v7.widget.AppCompatTextView
 import android.widget.TextView
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.program.adapter.ProgramParamsTypeAdapter
+import com.example.emall_ec.main.sign.SignInByTelDelegate
+import kotlinx.android.synthetic.main.delegate_all.*
+import kotlinx.android.synthetic.main.delegate_me.*
 
 
 /**
@@ -24,6 +27,7 @@ class SettingDelegate : BottomItemDelegate() {
 
     var titleList: MutableList<Int>? = mutableListOf()
     var index = 0
+    var tel = String()
     fun create(): SettingDelegate? {
         return SettingDelegate()
     }
@@ -72,7 +76,11 @@ class SettingDelegate : BottomItemDelegate() {
             }
 
             if (i == 0) {
-                start(AccountPrivacySettingsDelegate().create())
+                if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+                    start(AccountPrivacySettingsDelegate().create())
+                }else{
+                    start(SignInByTelDelegate().create()!!)
+                }
             }
         }
 
@@ -91,5 +99,15 @@ class SettingDelegate : BottomItemDelegate() {
             builder.create().show()
         }
 
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+//            tel = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone
+//            val tv = setting_lv.getChildAt(0).findViewById<AppCompatTextView>(R.id.detail_tv)
+//            tv.text = tel
+//        }
     }
 }

@@ -168,10 +168,7 @@
 
                     <RelativeLayout
                         android:id="@+id/me_obligation_rl"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:layout_width="0dp"
-                        android:focusableInTouchMode="true"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 

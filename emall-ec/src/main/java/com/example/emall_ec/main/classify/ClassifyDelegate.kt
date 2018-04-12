@@ -28,21 +28,20 @@ import com.example.emall_ec.main.detail.GoodsDetailDelegate
 /**
  * Created by lixiang on 15/02/2018.
  */
-class ClassifyDelegate : BottomItemDelegate() {
+class ClassifyDelegate : EmallDelegate() {
 
     var ssp: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
     var videoSearch = VideoSearch()
-
     private var data: MutableList<Model>? = mutableListOf()
     private var sceneAdapter: SceneClassifyAdapter? = null
     private var videoAdapter: VideoClassifyAdapter? = null
-
     private var viewHeight = 0
     var productId: MutableList<String>? = mutableListOf()
     var handler = Handler()
     var type = "scene"
+
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
     }
@@ -50,7 +49,6 @@ class ClassifyDelegate : BottomItemDelegate() {
     fun create(): ClassifyDelegate? {
         return ClassifyDelegate()
     }
-
 
     override fun initial() {
         if (arguments.getString("type") == "1") {
@@ -196,5 +194,10 @@ class ClassifyDelegate : BottomItemDelegate() {
             data!!.add(model)
         }
         initRecyclerView("0")
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 }

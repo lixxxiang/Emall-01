@@ -15,6 +15,7 @@ import com.example.emall_core.util.view.TextSwitcherView
 import java.util.ArrayList
 import android.animation.ObjectAnimator
 import android.os.Handler
+import android.support.v7.app.AppCompatActivity
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.view.RulerView
 import com.example.emall_core.util.view.ScreenUtil.dip2px
@@ -23,8 +24,9 @@ import com.example.emall_core.util.view.ScreenUtil.dip2px
 /**
  * Created by lixiang on 2018/3/16.
  */
-class ProgramDelegate : BottomItemDelegate() {
-
+class ProgramDelegate : EmallDelegate() {
+    val handler = Handler()
+    var task : Runnable ?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_program
     }
@@ -34,6 +36,15 @@ class ProgramDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+//        program_toolbar.title = ""
+//        (activity as AppCompatActivity).setSupportActionBar(program_toolbar)
+//        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+//        program_toolbar.setNavigationOnClickListener {
+//            pop()
+//        }
+        program_back_btn_rl.setOnClickListener {
+            pop()
+        }
         initViews()
         println("dddd" + DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) + DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()))
     }
@@ -184,8 +195,7 @@ class ProgramDelegate : BottomItemDelegate() {
 
 
 
-        val handler = Handler()
-        val task = object : Runnable {
+        task = object : Runnable {
             override fun run() {
                 // TODO Auto-generated method stub
                 handler.postDelayed(this, 3 * 1000)
@@ -279,5 +289,15 @@ class ProgramDelegate : BottomItemDelegate() {
             val delegate : ProgramParamsDelegate = ProgramParamsDelegate().create()!!
             start(delegate)
         }
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        handler.removeCallbacks(task)
     }
 }

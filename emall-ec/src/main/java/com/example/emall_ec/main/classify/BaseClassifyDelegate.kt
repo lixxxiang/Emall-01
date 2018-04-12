@@ -10,6 +10,7 @@ import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.classify.data.VideoSearch
+import com.example.emall_ec.main.program.ProgramDelegate
 import kotlinx.android.synthetic.main.delegate_base_classify.*
 import retrofit2.Retrofit
 import java.util.*
@@ -63,6 +64,11 @@ class BaseClassifyDelegate : BottomItemDelegate() {
 
         base_classify_noctilucence_siv.setOnClickListener {
 
+        }
+
+        base_classify_program_siv.setOnClickListener {
+
+            (DELEGATE as EcBottomDelegate).start(ProgramDelegate().create()!!)
         }
 
         base_classify_video_siv.setOnClickListener {

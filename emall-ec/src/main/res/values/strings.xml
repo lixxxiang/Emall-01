@@ -51,6 +51,8 @@
     <string name="test_price">¥3441.00</string>
     <string name="service_time">服务时间</string>
     <string name="service_time_detail">工作日 08:30 - 17:30</string>
+    <string name="service_time_detail_2">服务时间：工作日 08:30 - 17:30</string>
+
     <string name="to_download">前往下载</string>
     <string name="delete_order">删除订单</string>
     <string name="tel_service">电话客服</string>
@@ -111,6 +113,7 @@
     <string name="screen_take">拍摄日期</string>
     <string name="reset">重置</string>
     <string name="confirm_2">确定</string>
+    <string name="call">呼叫</string>
     <string name="star_journey">星途</string>
     <string name="scan_hint">将二维码放入框内，即可自动扫描</string>
     <string name="scan_hint_2">请登录网页端 遥感易购</string>
@@ -162,6 +165,9 @@
     <string name="click_to_login">点击登录遥感易购</string>
     <string name="me_hint">遥感易购，发现新世界</string>
     <string name="no_order">暂无订单</string>
+    <string name="contact_service">联系客服</string>
+    <string name="app_title_full">长光卫星遥感易购</string>
+    <string name="app_hint">遥感数据全链路电商平台</string>
 
 
 </resources>

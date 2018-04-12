@@ -50,34 +50,11 @@ class ScannerDelegate : BottomItemDelegate() {
     }
 
     fun handlePermisson(){
-
-        // 需要动态申请的权限
         val permission = Manifest.permission.CAMERA
-
-        //查看是否已有权限
         val checkSelfPermission = ActivityCompat.checkSelfPermission(context,permission)
-
         if (checkSelfPermission  == PackageManager.PERMISSION_GRANTED) {
-            //已经获取到权限  获取用户媒体资源
-
         }else{
-
-            //没有拿到权限  是否需要在第二次请求权限的情况下
-            // 先自定义弹框说明 同意后在请求系统权限(就是是否需要自定义DialogActivity)
             if(ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)){
-
-//                ("安卓就是流氓的获取了你的私人信息","温馨提示"){
-//
-//                    yesButton {
-//                        // 点击同意 请求真的权限
-//                        myRequestPermission()
-//                    }
-//
-//                    noButton {
-//                        //可以回退到上一个界面 也可以不做任何处理
-//                    }
-//                }.show()
-
             }else{
                 myRequestPermission()
             }
@@ -85,7 +62,6 @@ class ScannerDelegate : BottomItemDelegate() {
     }
 
     private fun myRequestPermission() {
-        //可以添加多个权限申请
         val permissions = arrayOf(Manifest.permission.CAMERA)
         requestPermissions(permissions,1)
     }
@@ -95,10 +71,7 @@ class ScannerDelegate : BottomItemDelegate() {
      */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        //是否获取到权限
         if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//            TODO("你要实现的业务逻辑")
-
         }
     }
 

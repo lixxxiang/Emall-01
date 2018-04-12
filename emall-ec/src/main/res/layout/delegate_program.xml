@@ -27,6 +27,9 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <RelativeLayout
+                android:id="@+id/program_back_btn_rl"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"

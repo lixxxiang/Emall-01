@@ -194,8 +194,11 @@ class SignInByAccountDelegate : EmallDelegate() {
                             /**
                              * success
                              */
-                            EmallLogger.d("success")
-                            SignHandler().onSignIn(response, mISignListener!!)
+                            EmallLogger.d(response)
+                            /**
+                             * test------------------------------------
+                             */
+                            SignHandler().onSignIn(response.replaceFirst("null","\""+ tel +"\""), mISignListener!!)
                             val bundle = Bundle()
                             bundle.putString("USER_NAME", userNameLoginBean.user.username)
                             KeyboardUtils.hideSoftInput(activity)

@@ -26,15 +26,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-
-
-
+import com.example.emall_core.delegates.EmallDelegate
 
 
 /**
  * Created by lixiang on 2018/3/21.
  */
-class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
+class DailyPicDelegate : EmallDelegate(), OnBannerListener {
     override fun OnBannerClick(position: Int) {
 
     }
@@ -61,6 +59,10 @@ class DailyPicDelegate : BottomItemDelegate(), OnBannerListener {
         daily_pic_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(daily_pic_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        daily_pic_toolbar.setNavigationOnClickListener {
+            pop()
+        }
 
         homePageParams!!["pageSize"] = "10"
         homePageParams!!["pageNum"] = "1"

@@ -52,6 +52,9 @@ class ModifyTelDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(modify_tel_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        modify_tel_toolbar.setNavigationOnClickListener {
+                    pop()
+                }
         modify_tel_old_tel_et.addTextChangedListener(mOldTextWatcher)
         modify_tel_new_tel_et.addTextChangedListener(mNewTextWatcher)
 
@@ -129,7 +132,12 @@ class ModifyTelDelegate : BottomItemDelegate() {
                             /**
                              * success
                              */
-                            changeTelephone(oldTel, newTel)
+//                            changeTelephone(oldTel, newTel)
+                            val delegate = ModifyTelVcodeDelegate().create()
+                            val bundle = Bundle()
+                            bundle.putString("NEW_TELEPHONE", newTel)
+                            delegate.arguments = bundle
+                            start(delegate)
                         } else {
                             Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
                         }

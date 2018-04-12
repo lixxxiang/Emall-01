@@ -70,11 +70,9 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         }else{
                             data!!.add(orderDetail)
                             initRefreshLayout()
-                            val head = View.inflate(activity, R.layout.orderlist_head_view, null)
-                            all_lv.addHeaderView(head)
+                            all_lv.addHeaderView(View.inflate(activity, R.layout.orderlist_head_view, null))
                             all_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
                         }
-
                     }
                 })
                 .build()

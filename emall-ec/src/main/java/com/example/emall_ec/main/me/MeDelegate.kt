@@ -127,7 +127,7 @@ class MeDelegate : BottomItemDelegate() {
                     (DELEGATE as EcBottomDelegate).start(SettingDelegate().create())
                 }
                 4 -> {
-
+                    (DELEGATE as EcBottomDelegate).start(ContactDelegate().create())
                 }
                 5 -> {
 
@@ -172,7 +172,6 @@ class MeDelegate : BottomItemDelegate() {
 
         if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
             userName = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
-
 
             if (userName != "") {
                 me_user_name.text = userName

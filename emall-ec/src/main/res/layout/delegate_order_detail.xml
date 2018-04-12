@@ -319,7 +319,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="12dp"
                                 android:textColor="#666666"
-                                android:text="@string/tel_service" />
+                                android:text="@string/qq_service" />
                         </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
