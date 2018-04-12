@@ -26,7 +26,8 @@ import java.util.*
  */
 class ModifyTelVcodeDelegate : BottomItemDelegate() {
     var vcode = String()
-    var tel = String()
+    var oldTel = String()
+    var newTel = String()
     var emptyToast: Toast? = null
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var checkMessageBean = CheckMessageBean()
@@ -50,7 +51,8 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
         modify_tel_vcode_vcode_et.addTextChangedListener(mMVcodeTextWatcher)
         modify_tel_vcode_count_down.setCountDownMillis(60000)
 
-        tel = arguments.getString("NEW_TELEPHONE")
+        newTel = arguments.getString("NEW_TELEPHONE")
+        oldTel = arguments.getString("OLD_TELEPHONE")
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
                 if (modify_tel_vcode_title_rl != null)
@@ -152,7 +154,7 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     }
 
     private fun hideTel(): String {
-        return String.format("%s****%s", tel.substring(0, 4), tel.substring(7, 11))
+        return String.format("%s****%s", newTel.substring(0, 4), newTel.substring(7, 11))
     }
 
     private fun checkMessage(v: String) {
