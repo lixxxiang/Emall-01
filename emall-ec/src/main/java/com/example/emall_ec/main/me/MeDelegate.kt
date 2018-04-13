@@ -106,7 +106,13 @@ class MeDelegate : BottomItemDelegate() {
 //            bundle!!.putString("KEY", "ID")
 //            delegate.arguments = bundle
 //            (DELEGATE as EcBottomDelegate).startForResult(SignInByTelDelegate().create()!!,ME_USERNAME_CODE)
-            DELEGATE!!.startForResult(SignInByTelDelegate().create()!!, ME_USERNAME_CODE)
+            if(DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "AVATAR")
+                delegate.arguments = bundle
+                DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
+            }
         }
 
 

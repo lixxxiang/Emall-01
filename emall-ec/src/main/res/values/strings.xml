@@ -168,6 +168,6 @@
     <string name="contact_service">联系客服</string>
     <string name="app_title_full">长光卫星遥感易购</string>
     <string name="app_hint">遥感数据全链路电商平台</string>
-
-
+    <string name="check_pwd_repeat">新密码不能和原密码相同</string>
+    <string name="no_cache">0K</string>
 </resources>

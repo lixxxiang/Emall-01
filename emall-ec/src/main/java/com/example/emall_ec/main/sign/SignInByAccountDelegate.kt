@@ -55,6 +55,11 @@ class SignInByAccountDelegate : EmallDelegate() {
             mISignListener = activity
         }
     }
+
+    fun create(): SignInByAccountDelegate? {
+        return SignInByAccountDelegate()
+    }
+
     override fun setLayout(): Any? {
         return R.layout.delegate_sign_in_by_account
     }
@@ -66,6 +71,7 @@ class SignInByAccountDelegate : EmallDelegate() {
         sign_in_by_account_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         sign_in_by_account_hide_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/hide.ttf")
         sign_in_by_account_tel_et.requestFocus()
+        EmallLogger.d(arguments.getString("PAGE_FROM"))
 
         sign_in_by_account_tel_et.addTextChangedListener(mTelTextWatcher)
         sign_in_by_account_pwd_et.addTextChangedListener(mPwdTextWatcher)
@@ -139,7 +145,11 @@ class SignInByAccountDelegate : EmallDelegate() {
 
             dialog.forget_rl2.setOnClickListener {
                 dialog.dismiss()
-                start(ModifyPasswordDelegate().create())
+                val delegate: ModifyPasswordDelegate = ModifyPasswordDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+                delegate.arguments = bundle
+                start(delegate)
             }
 
             dialog.forget_rl3.setOnClickListener {
@@ -198,7 +208,7 @@ class SignInByAccountDelegate : EmallDelegate() {
                             /**
                              * test------------------------------------
                              */
-                            SignHandler().onSignIn(response.replaceFirst("null","\""+ tel +"\""), mISignListener!!)
+                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\""), mISignListener!!)
                             val bundle = Bundle()
                             bundle.putString("USER_NAME", userNameLoginBean.user.username)
                             KeyboardUtils.hideSoftInput(activity)

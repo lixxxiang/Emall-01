@@ -1,8 +1,10 @@
 package com.example.emall_ec.main.me.setting
 
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatTextView
 import android.view.View
+import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
@@ -10,6 +12,7 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.me.setting.adapter.AccountPrivacySettingsAdapter
 import com.example.emall_ec.main.me.setting.adapter.SettingAdapter
 import com.example.emall_ec.main.sign.ModifyPasswordDelegate
+import com.example.emall_ec.main.sign.ResetPasswordDelegate
 import kotlinx.android.synthetic.main.delegate_account_privacy_settings.*
 import kotlinx.android.synthetic.main.delegate_setting.*
 
@@ -51,15 +54,20 @@ class AccountPrivacySettingsDelegate : EmallDelegate() {
         account_privacy_settings_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (i == 0) {
                 start(ModifyTelDelegate().create())
-            }else if(i == 1){
-                start(ModifyPasswordDelegate().create())
+            } else if (i == 1) {
+                val delegate: ModifyPasswordDelegate = ModifyPasswordDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "ACCOUNT_PRIVACY_SETTINGS")
+                delegate.arguments = bundle
+                start(delegate)
+                KeyboardUtils.hideSoftInput(activity)
             }
         }
     }
 
     override fun onSupportVisible() {
         super.onSupportVisible()
-        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone.isEmpty()){
+        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone.isEmpty()) {
             val tv = account_privacy_settings_lv.getChildAt(0).findViewById<AppCompatTextView>(R.id.detail_tv)
             tv.text = hideTel(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone)
         }

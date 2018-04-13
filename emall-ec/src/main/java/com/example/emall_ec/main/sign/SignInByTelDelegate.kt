@@ -65,7 +65,7 @@ class SignInByTelDelegate : BottomItemDelegate() {
         sign_in_by_tel_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_in_by_tel_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
 //        sign_in_by_tel_tel_et.requestFocus()
-
+        EmallLogger.d(arguments.getString("PAGE_FROM"))
         sign_in_by_tel_vcode_et.addTextChangedListener(mVcodeTextWatcher)
         sign_in_by_tel_tel_et.addTextChangedListener(mTelTextWatcher)
         sign_in_by_tel_count_down.setCountDownMillis(60000)
@@ -139,7 +139,6 @@ class SignInByTelDelegate : BottomItemDelegate() {
                         } else {
                             EmallLogger.d("shibushi")
                             wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "2", Toast.LENGTH_SHORT)
-
                             wrongToast!!.show()
                         }
                     }
@@ -168,7 +167,12 @@ class SignInByTelDelegate : BottomItemDelegate() {
 
 
         btn_sign_in_by_account_submit.setOnClickListener {
-            startWithPop(SignInByAccountDelegate())
+            val delegate: SignInByAccountDelegate = SignInByAccountDelegate().create()!!
+            val arg = arguments.getString("PAGE_FROM")
+            val bundle = Bundle()
+            bundle.putString("PAGE_FROM", arg)
+            delegate.arguments = bundle
+            startWithPop(delegate)
             KeyboardUtils.hideSoftInput(activity)
         }
 
@@ -251,12 +255,8 @@ class SignInByTelDelegate : BottomItemDelegate() {
                             val bundle = Bundle()
                             bundle.putString("USER_NAME", checkMessageBean.userInfo.username)
                             KeyboardUtils.hideSoftInput(activity)
-//                            popTo(preFragment.javaClass, false)
                             pop()
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                            setFragmentResult(RESULT_OK, bundle)
-
-
                         } else {
                             Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
                         }

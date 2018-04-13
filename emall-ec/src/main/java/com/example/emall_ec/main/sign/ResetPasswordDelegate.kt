@@ -7,6 +7,8 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import com.blankj.utilcode.util.EncryptUtils
+import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -15,8 +17,12 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
-import com.example.emall_ec.R.id.reset_pwd_confirm_pwd_et
-import com.example.emall_ec.R.id.reset_pwd_submit_btn
+import com.example.emall_ec.R.id.*
+import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.me.MeDelegate
+import com.example.emall_ec.main.me.setting.AccountPrivacySettingsDelegate
+import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
@@ -64,11 +70,14 @@ class ResetPasswordDelegate : BottomItemDelegate() {
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                reset_pwd_title_rl.visibility = View.GONE
+                if (reset_pwd_title_rl != null)
+                    reset_pwd_title_rl.visibility = View.GONE
             }
 
             override fun keyBoardHide(height: Int) {
-                reset_pwd_title_rl.visibility = View.VISIBLE
+                if (reset_pwd_title_rl != null)
+
+                    reset_pwd_title_rl.visibility = View.VISIBLE
             }
         })
 
@@ -87,26 +96,24 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                         Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
-//                    reset_pwd_new_pwd_et.isFocusable = true
-//                    reset_pwd_new_pwd_et.isFocusableInTouchMode = true
-//                    reset_pwd_new_pwd_et.requestFocus()
-//                    if(reset_pwd_confirm_pwd_et.isFocusable == true){
-//                        reset_pwd_confirm_pwd_et.isFocusable = false
-//                    }
                 }
             }
         }
 
         reset_pwd_submit_btn.setOnClickListener {
             val temp = reset_pwd_new_pwd_et.text.toString()
-            EmallLogger.d(temp)
             if (isLetterDigit(temp)) {
                 if (!checkMinLength(temp)) {
                     if (!checkMaxLength(temp)) {
                         newPassword = reset_pwd_new_pwd_et.text.toString()
                         confirmPassword = reset_pwd_confirm_pwd_et.text.toString()
                         if (newPassword == confirmPassword) {
-                            changePassword()
+                            if (!pwdRepeat(temp)) {
+                                EmallLogger.d("new", EncryptUtils.encryptMD5ToString(temp))
+                                EmallLogger.d("old", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userPassword)
+                                changePassword()
+                            } else
+                                Toast.makeText(activity, getString(R.string.check_pwd_repeat), Toast.LENGTH_SHORT).show()
                         } else
                             Toast.makeText(activity, getString(R.string.pwd_no_match), Toast.LENGTH_SHORT).show()
                     } else
@@ -115,14 +122,16 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                     Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT).show()
             } else
                 Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
-
         }
+    }
+
+    private fun pwdRepeat(s: String): Boolean {
+        return EncryptUtils.encryptMD5ToString(s).toLowerCase() == DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userPassword
     }
 
     private fun changePassword() {
         changePasswordParams!!["userTelephone"] = tel
-        changePasswordParams!!["userPassword"] = confirmPassword
-
+        changePasswordParams!!["userPassword"] = EncryptUtils.encryptMD5ToString(confirmPassword).toLowerCase()
         RestClient().builder()
                 .url("http://59.110.161.48:8023/changePassword.do")
                 .params(changePasswordParams!!)
@@ -130,8 +139,21 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                     override fun onSuccess(response: String) {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         if (commonBean.meta == "success") {
-                            Toast.makeText(activity, "change pwd success!!", Toast.LENGTH_SHORT).show()
-                            
+                            EmallLogger.d(arguments.getString("PAGE_FROM"))
+                            when {
+                                arguments.getString("PAGE_FROM") == "SETTING" -> {
+                                    popTo(findFragment(SettingDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "ACCOUNT_PRIVACY_SETTINGS" -> {
+                                    popTo(findFragment(AccountPrivacySettingsDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "AVATAR" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                            }
                         } else {
                             Toast.makeText(activity, "change pwd failure!!", Toast.LENGTH_SHORT).show()
                         }
@@ -204,13 +226,13 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     }
 
     fun isLetterDigit(str: String): Boolean {
-        var isDigit = false//定义一个boolean值，用来表示是否包含数字
-        var isLetter = false//定义一个boolean值，用来表示是否包含字母
+        var isDigit = false
+        var isLetter = false
         for (i in 0 until str.length) {
-            if (Character.isDigit(str[i])) {   //用char包装类中的判断数字的方法判断每一个字符
+            if (Character.isDigit(str[i])) {
                 isDigit = true
             }
-            if (Character.isLetter(str[i])) {  //用char包装类中的判断字母的方法判断每一个字符
+            if (Character.isLetter(str[i])) {
                 isLetter = true
             }
         }
@@ -225,5 +247,4 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     fun checkMaxLength(string: String): Boolean {
         return string.length > 20
     }
-
 }
