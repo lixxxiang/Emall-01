@@ -146,6 +146,10 @@ class SignInByTelDelegate : BottomItemDelegate() {
             }
         }
 
+        sign_in_by_tel_close.setOnClickListener {
+            pop()
+        }
+
 
         sign_in_by_tel_submit_btn.setOnClickListener {
             tel = sign_in_by_tel_tel_et.text.toString()

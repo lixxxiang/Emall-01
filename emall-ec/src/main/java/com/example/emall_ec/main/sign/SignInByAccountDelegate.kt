@@ -128,6 +128,10 @@ class SignInByAccountDelegate : EmallDelegate() {
             startWithPop(SignUpDelegate())
         }
 
+        sign_in_by_account_close.setOnClickListener {
+            pop()
+        }
+
         sign_in_by_account_forget_password_tv.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             val dialog = builder.create()
