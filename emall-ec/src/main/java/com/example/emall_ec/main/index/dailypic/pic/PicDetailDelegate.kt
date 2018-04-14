@@ -20,10 +20,8 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.R.id.collect
-import com.example.emall_ec.R.id.like_count
 import com.example.emall_ec.main.index.dailypic.adapter.CommentListViewAdapter
-import com.example.emall_ec.main.index.dailypic.adapter.PicDetailAdapter
+import com.example.emall_ec.main.index.dailypic.adapter.DetailAdapter
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.index.dailypic.data.GetArticleAttachBean
 import com.example.emall_ec.main.index.dailypic.data.GetDailyPicDetailBean
@@ -32,22 +30,26 @@ import kotlinx.android.synthetic.main.comment.view.*
 import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import java.util.*
-import android.R.id.edit
-import android.text.method.TextKeyListener.clear
-import android.content.Context.MODE_PRIVATE
+import android.app.Activity
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
-import com.example.emall_core.app.Emall
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.sign.SignInByTelDelegate
+import kotlinx.android.synthetic.main.pic_detail_2.*
+import org.apache.cordova.*
+import org.apache.cordova.engine.SystemWebViewEngine
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 /**
  * Created by lixiang on 2018/3/29.
  */
-class PicDetailDelegate : BottomItemDelegate() {
+class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
 
-    private var adapter: PicDetailAdapter? = null
+
+    private var adapter: DetailAdapter? = null
     var userId = String()
     var imageId = String()
     var getDailyPicDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
@@ -56,7 +58,7 @@ class PicDetailDelegate : BottomItemDelegate() {
     var addCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var downvoteParams: WeakHashMap<String, Any>? = WeakHashMap()
     var upvoteParams: WeakHashMap<String, Any>? = WeakHashMap()
-
+    var submitCommentParams: WeakHashMap<String, Any>? = WeakHashMap()
     var userParams: WeakHashMap<String, Any>? = WeakHashMap()
     var getDailyPicDetailBean = GetDailyPicDetailBean()
     var getArticleAttachBean = GetArticleAttachBean()
@@ -69,6 +71,14 @@ class PicDetailDelegate : BottomItemDelegate() {
     var isCollected = false
     var mSharedPreferences: SharedPreferences? = null
     var isLogin: Boolean = false
+
+    var cordovaWebView: CordovaWebView? = null
+    private val threadPool = Executors.newCachedThreadPool()
+    protected var activityResultRequestCode: Int = 0
+    protected var prefs = CordovaPreferences()
+    protected var pluginEntries: ArrayList<PluginEntry>? = null
+    protected var activityResultCallback1: CordovaPlugin? = null
+
     private val titleList = object : ArrayList<String>() {
         init {
             add("每日一图")
@@ -78,8 +88,8 @@ class PicDetailDelegate : BottomItemDelegate() {
 
     private val fragmentList = object : ArrayList<Fragment>() {
         init {
-            add(Page1Delegate())
-            add(Page2Delegate())
+            add(ImagePage1Delegate())
+            add(ImagePage2Delegate())
         }
     }
 
@@ -95,18 +105,26 @@ class PicDetailDelegate : BottomItemDelegate() {
 
     @SuppressLint("ApplySharedPref")
     override fun initial() {
-        EmallLogger.d("initial")
-        imageId = arguments.getString("imageId")
+        imageId = arguments.getString("IMAGE_ID")
         isLogin = !DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()
+        collect.setImageResource(R.drawable.collection)
         userId = if (isLogin)
             DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         else
             "-2"
+        pic_detail_2.visibility = View.INVISIBLE
+        val parser = ConfigXmlParser()
+        parser.parse(activity)
+        cordovaWebView = CordovaWebViewImpl(SystemWebViewEngine(webview1))
+        cordovaWebView!!.init(this, parser.pluginEntries, parser.preferences)
+        webview1.loadUrl("file:///android_asset/www/index.html")
 
+
+        val bottomDialog = Dialog(activity, R.style.BottomDialog)
+        val contentView = LayoutInflater.from(activity).inflate(R.layout.comment, null)
         userParams!!["articleId"] = imageId
         userParams!!["userId"] = userId
         userParams!!["type"] = "1"
-
         mSharedPreferences = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
         getdata(imageId)
         pic_detail_toolbar.title = ""
@@ -116,10 +134,6 @@ class PicDetailDelegate : BottomItemDelegate() {
         pic_detail_toolbar.setNavigationOnClickListener {
             _mActivity.onBackPressed()
         }
-        EmallLogger.d(activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE).getString("imageName", ""))
-
-
-
 
         like.setOnClickListener {
             if (isLogin) {
@@ -133,7 +147,6 @@ class PicDetailDelegate : BottomItemDelegate() {
                     isLiked = false
                     downvote(imageId, userId, "1")
                     like_count.text = (upVoteAmount).toString()
-                    EmallLogger.d(upVoteAmount)
                     false
                 }
             } else {
@@ -148,7 +161,6 @@ class PicDetailDelegate : BottomItemDelegate() {
 
         collect.setOnClickListener {
             if (isLogin) {
-                EmallLogger.d(isCollected)
                 isCollected = if (!isCollected) {
                     collect.setImageResource(R.drawable.collection_highlight)
                     addCollection(imageId, userId, "1")
@@ -168,10 +180,6 @@ class PicDetailDelegate : BottomItemDelegate() {
                 start(delegate)
             }
         }
-
-        val bottomDialog = Dialog(activity, R.style.BottomDialog)
-        val contentView = LayoutInflater.from(activity).inflate(R.layout.comment, null)
-
 
         comment_rl.setOnClickListener {
             if (isLogin) {
@@ -199,16 +207,51 @@ class PicDetailDelegate : BottomItemDelegate() {
         }
 
         contentView.release.setOnClickListener {
-            //            val sp2 = activity.getSharedPreferences("User", Context.MODE_PRIVATE)
-//            println("--->" + sp2.getString("userId", null) + "--->" + articleId + "--->" + type + "--->" + contentView.comment_area.text.toString())
-//            if(!contentView.comment_area.text.toString().isEmpty()){
-//                presenter.submitComment(sp.getString("userId", null), articleId, type, contentView.comment_area.text.toString())
-//                bottomDialog.hide()
-//            } else
-//                toast("评论不能为空")
-
+            if (!contentView.comment_area.text.toString().isEmpty()) {
+                submitComment(userId, imageId, "1", contentView.comment_area.text.toString())
+                bottomDialog.hide()
+            } else
+                Toast.makeText(activity, "评论不能为空", Toast.LENGTH_SHORT).show()
         }
 
+        scrollview.setOnTouchListener { p0, p1 ->
+            if (scrollview.getChildAt(0).height - scrollview.height
+                    == scrollview.scrollY) {
+                comment_listview.visibility = View.VISIBLE
+            }
+            false
+        }
+
+
+
+    }
+
+    private fun submitComment(uId: String, aId: String, type: String, s: String) {
+        submitCommentParams!!["userId"] = uId
+        submitCommentParams!!["articleId"] = aId
+        submitCommentParams!!["articleType"] = type
+        submitCommentParams!!["content"] = s
+        RestClient().builder()
+                .url("http://202.111.178.10:28085/mobile/submitComment")
+                .params(submitCommentParams!!)
+                .success(object : ISuccess {
+                    @SuppressLint("ApplySharedPref")
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if (commonBean.message == "success") {
+                            initComments(imageId, userId, "1")
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .build()
+                .post()
     }
 
     private fun getdata(id: String?) {
@@ -220,9 +263,6 @@ class PicDetailDelegate : BottomItemDelegate() {
                     @SuppressLint("ApplySharedPref")
                     override fun onSuccess(response: String) {
                         getDailyPicDetailBean = Gson().fromJson(response, GetDailyPicDetailBean::class.java)
-                        /**
-                         * test
-                         */
 
                         val imageDate = getDailyPicDetailBean.data.imageDate.substring(getDailyPicDetailBean.data.imageDate.length - 5, getDailyPicDetailBean.data.imageDate.length)
                         val editor = mSharedPreferences!!.edit()
@@ -231,9 +271,43 @@ class PicDetailDelegate : BottomItemDelegate() {
                         editor.commit()
                         initViews(getDailyPicDetailBean)
                         initComments(imageId, userId, "1")
-                        adapter = PicDetailAdapter(childFragmentManager, titleList, fragmentList)
+                        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)
                         viewpager.adapter = adapter
                         setTabLayout()
+                        xTablayout.setupWithViewPager(viewpager)
+                        xTablayout!!.setOnTabSelectedListener(object : XTabLayout.OnTabSelectedListener {
+                            override fun onTabSelected(tab: XTabLayout.Tab) {
+                                viewpager.currentItem = tab.position
+                                if (tab.position == 0) {
+                                    EmallLogger.d(tab.position)
+                                    relativeLayout.setBackgroundColor(Color.WHITE)
+                                    comment_rl.visibility = View.VISIBLE
+                                    repost.visibility = View.VISIBLE
+                                    collect.visibility = View.VISIBLE
+                                    comments.visibility = View.VISIBLE
+                                    pic_detail_1.visibility = View.VISIBLE
+                                    pic_detail_2.visibility = View.INVISIBLE
+                                    relativeLayout.visibility = View.VISIBLE
+                                    webview1.loadUrl("javascript:fly(\"" + getDailyPicDetailBean.data.latitude + "\",\"" + getDailyPicDetailBean.data.longitude + "\")")
+                                } else {
+                                    EmallLogger.d(tab.position)
+                                    relativeLayout.setBackgroundColor(Color.BLACK)
+                                    comment_rl.visibility = View.GONE
+                                    repost.visibility = View.GONE
+                                    collect.visibility = View.GONE
+                                    comments.visibility = View.GONE
+                                    pic_detail_1.visibility = View.INVISIBLE
+                                    pic_detail_2.visibility = View.VISIBLE
+                                    webview1.loadUrl("javascript:fly(\"" + getDailyPicDetailBean.data.latitude + "\",\"" + getDailyPicDetailBean.data.longitude + "\")")
+                                }
+                            }
+
+                            override fun onTabUnselected(tab: XTabLayout.Tab) {
+                            }
+
+                            override fun onTabReselected(tab: XTabLayout.Tab) {
+                            }
+                        })
                     }
                 })
                 .failure(object : IFailure {
@@ -286,11 +360,9 @@ class PicDetailDelegate : BottomItemDelegate() {
     }
 
     fun initComments(articleId: String, userId: String, type: String) {
-        println("initCOMMENTS$userId")
         getArticleAttachParams!!["articleId"] = articleId
         getArticleAttachParams!!["userId"] = userId
         getArticleAttachParams!!["type"] = type
-        EmallLogger.d(articleId)
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getArticleAttach")
                 .params(getArticleAttachParams!!)
@@ -342,7 +414,6 @@ class PicDetailDelegate : BottomItemDelegate() {
         addCollectionParams!!["articleId"] = articleId
         addCollectionParams!!["userId"] = userId
         addCollectionParams!!["type"] = type
-        EmallLogger.d(userId)
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/addCollection")
                 .params(addCollectionParams!!)
@@ -485,5 +556,45 @@ class PicDetailDelegate : BottomItemDelegate() {
     override fun onSupportInvisible() {
         super.onSupportInvisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    override fun requestPermissions(p0: CordovaPlugin?, p1: Int, p2: Array<out String>?) {
+
+    }
+
+    override fun startActivityForResult(p0: CordovaPlugin?, p1: Intent?, p2: Int) {
+        setActivityResultCallback(p0)
+        try {
+            startActivityForResult(p1, p2)
+        } catch (e: RuntimeException) {
+            activityResultCallback1 = null
+            throw e
+        }
+    }
+
+    override fun setActivityResultCallback(p0: CordovaPlugin?) {
+        if (activityResultCallback1 != null) {
+            activityResultCallback1!!.onActivityResult(activityResultRequestCode, Activity.RESULT_CANCELED, null)
+        }
+        activityResultCallback1 = p0
+    }
+
+    override fun onMessage(p0: String?, p1: Any?): Any? {
+        if ("exit" == p0) {
+            activity.finish()
+        }
+        return null
+    }
+
+    override fun getThreadPool(): ExecutorService {
+        return threadPool
+
+    }
+
+    override fun hasPermission(p0: String?): Boolean {
+        return false
+    }
+
+    override fun requestPermission(p0: CordovaPlugin?, p1: Int, p2: String?) {
     }
 }

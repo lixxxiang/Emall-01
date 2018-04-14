@@ -63,6 +63,7 @@
         android:layout_marginTop="13dp"
         android:ems="10"
         android:hint="写评论..."
+        android:textCursorDrawable="@null"
         android:textColor="#9B9B9B"
         android:textSize="14dp" />
 

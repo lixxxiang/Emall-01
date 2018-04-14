@@ -2,7 +2,6 @@ package com.example.emall_ec.main.index.dailypic
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -13,7 +12,6 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
 import com.example.emall_ec.main.index.dailypic.data.BannerBean
 import com.example.emall_ec.main.index.dailypic.data.HomePageBean
-import com.example.emall_ec.main.index.dailypic.pic.Page1Delegate
 import com.example.emall_ec.main.index.dailypic.pic.PicDetailDelegate
 import com.google.gson.Gson
 import com.youth.banner.Banner
@@ -21,12 +19,9 @@ import com.youth.banner.BannerConfig
 import com.youth.banner.listener.OnBannerListener
 import kotlinx.android.synthetic.main.delegate_daily_pic.*
 import java.util.*
-import android.R.id.edit
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.main.index.dailypic.video.VideoDetailDelegate
 
 
 /**
@@ -76,7 +71,6 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
                         content = bannerBean.data
                         setBanner(content)
 
-
                         RestClient().builder()
                                 .url("http://202.111.178.10:28085/mobile/homePage")
                                 .params(homePageParams!!)
@@ -119,20 +113,20 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
                 .build()
                 .get()
 
-        daily_pic_lv.setOnItemClickListener { adapterView, view, i, l ->
+        daily_pic_lv.setOnItemClickListener { _, _, i, _ ->
             if (homePageData!![i - 1].type == "1"){
-//                Page1Delegate().create()
                 val delegate : PicDetailDelegate = PicDetailDelegate().create()!!
                 val bundle: Bundle? = Bundle()
-                bundle!!.putString("imageId", homePageData!![i - 1].contentId)
-//                bundle.putString("type", "1")
+                bundle!!.putString("IMAGE_ID", homePageData!![i - 1].contentId)
+                delegate.arguments = bundle
+                start(delegate)
+            }else if(homePageData!![i - 1].type == "2"){
+                val delegate : VideoDetailDelegate = VideoDetailDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("VIDEO_ID", homePageData!![i - 1].contentId)
                 delegate.arguments = bundle
                 start(delegate)
             }
-
-//            else {
-//                presenter.getVideoPicDetail(content[i - 1].contentId)
-//            }
         }
 
     }
