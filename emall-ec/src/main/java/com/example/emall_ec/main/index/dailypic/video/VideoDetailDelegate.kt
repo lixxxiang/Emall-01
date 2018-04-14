@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -32,6 +33,7 @@ import com.example.emall_ec.main.index.dailypic.pic.ImagePage1Delegate
 import com.example.emall_ec.main.index.dailypic.pic.ImagePage2Delegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.comment.view.*
 import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.delegate_video_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
@@ -170,6 +172,68 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
                 start(delegate)
             }
         }
+
+
+        comment_rl_video.setOnClickListener {
+            if (isLogin) {
+                bottomDialog.setContentView(contentView)
+                val layoutParams = contentView.layoutParams
+                layoutParams.width = resources.displayMetrics.widthPixels
+                contentView.layoutParams = layoutParams
+                bottomDialog.window!!.setGravity(Gravity.BOTTOM)
+                bottomDialog.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
+                bottomDialog.show()
+                if (!contentView.comment_area.text.toString().isEmpty()) {
+                    contentView.comment_area.setText("")
+                }
+            } else {
+                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "DAILY_PIC")
+                delegate.arguments = bundle
+                start(delegate)
+            }
+        }
+
+        contentView.cancel.setOnClickListener {
+            bottomDialog.hide()
+        }
+
+        contentView.release.setOnClickListener {
+            if (!contentView.comment_area.text.toString().isEmpty()) {
+                submitComment(userId, videoId, "1", contentView.comment_area.text.toString())
+                bottomDialog.hide()
+            } else
+                Toast.makeText(activity, "评论不能为空", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun submitComment(uId: String, aId: String, type: String, s: String) {
+        submitCommentParams!!["userId"] = uId
+        submitCommentParams!!["articleId"] = aId
+        submitCommentParams!!["articleType"] = type
+        submitCommentParams!!["content"] = s
+        RestClient().builder()
+                .url("http://202.111.178.10:28085/mobile/submitComment")
+                .params(submitCommentParams!!)
+                .success(object : ISuccess {
+                    @SuppressLint("ApplySharedPref")
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if (commonBean.message == "success") {
+                            initComments(videoId, userId, "2")
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .build()
+                .post()
     }
 
     private fun addCollection(articleId: String, userId: String, type: String) {
@@ -476,5 +540,10 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
             initComments(videoId, userId, "2")
             isLogin = true
         }
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }
