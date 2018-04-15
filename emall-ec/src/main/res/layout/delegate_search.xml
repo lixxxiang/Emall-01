@@ -2,64 +2,64 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_alignParentTop="true"
-        android:id="@+id/ll_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="12dp"
-        android:orientation="vertical"
+    <View
+        android:elevation="4dp"
+        android:id="@+id/fake_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"/>
-    <RelativeLayout
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_below="@+id/ll_bar"
-        android:id="@+id/search_searchbar_rl"
+    <android.support.v7.widget.Toolbar
+        android:layout_below="@+id/fake_status_bar"
+        android:id="@+id/search_searchbar_rl_"
         android:layout_width="match_parent"
-        android:layout_height="31dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/style_home_pager_toolbar_search_view"
-        android:gravity="center_vertical">
-
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:background="#FFFFFF">
         <RelativeLayout
-            android:layout_width="116dp"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true">
+            android:focusable="true"
+            android:clickable="true"
+            android:id="@+id/search_searchbar_rl"
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/style_home_pager_toolbar_search_view"
+            android:gravity="center_vertical">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/index_search_icon"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="0dp"
-                android:background="@drawable/ic_search_dark" />
+            <RelativeLayout
+                android:layout_width="116dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true">
 
-            <TextView
-                android:id="@+id/edt_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/index_search_icon"
-                android:lines="1"
-                android:text="@string/search_searchbar_hint"
-                android:textColor="#9B9B9B"
-                android:textColorHint="#9B9B9B"
-                android:textSize="12dp" />
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/index_search_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="0dp"
+                    android:background="@drawable/ic_search_dark" />
+
+                <TextView
+                    android:id="@+id/edt_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/index_search_icon"
+                    android:lines="1"
+                    android:text="@string/search_searchbar_hint"
+                    android:textColor="#9B9B9B"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="12dp" />
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/search_searchbar_rl"
-        android:layout_marginTop="10dp"
-        android:background="#EDEDED" />
+    </android.support.v7.widget.Toolbar>
 
     <com.baidu.mapapi.map.MapView
-        android:layout_below="@+id/search_searchbar_rl"
-        android:layout_marginTop="11dp"
+        android:id="@+id/mMapView"
+        android:layout_below="@+id/search_searchbar_rl_"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     
@@ -68,7 +68,7 @@
         android:layout_height="19dp"
         android:background="@drawable/search_border"
         android:rotation="270"
-        android:layout_below="@+id/search_searchbar_rl"
+        android:layout_below="@+id/search_searchbar_rl_"
         android:layout_marginTop="21dp"
         android:layout_marginLeft="17dp"
         />
@@ -77,7 +77,7 @@
         android:layout_width="19dp"
         android:layout_height="19dp"
         android:background="@drawable/search_border"
-        android:layout_below="@+id/search_searchbar_rl"
+        android:layout_below="@+id/search_searchbar_rl_"
         android:layout_marginTop="21dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="17dp"

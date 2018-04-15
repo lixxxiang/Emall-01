@@ -4,17 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_alignParentTop="true"
-        android:id="@+id/ll_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="10dp"
-        android:orientation="vertical"
+    <View
+        android:elevation="4dp"
+        android:id="@+id/fake_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"/>
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_result_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
         android:background="#FFFFFF">
 
         <TextView
@@ -32,6 +32,8 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         app:tabIndicatorColor="#B80017"
+        android:elevation="4dp"
+
         app:tabSelectedTextColor="#B80017"
         app:tabTextColor="#5C5C5C"
         app:tabTextAppearance="@style/TabLayoutTextStyle" />

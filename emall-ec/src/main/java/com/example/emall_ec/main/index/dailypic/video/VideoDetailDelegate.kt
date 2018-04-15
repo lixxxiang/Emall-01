@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -361,29 +362,29 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
                         video_xTablayout.setupWithViewPager(video_viewpager)
                         video_xTablayout!!.setOnTabSelectedListener(object : XTabLayout.OnTabSelectedListener {
                             override fun onTabSelected(tab: XTabLayout.Tab) {
-//                                video_viewpager.currentItem = tab.position
-//                                if (tab.position == 0) {
-//                                    EmallLogger.d(tab.position)
-//                                    relativeLayout.setBackgroundColor(Color.WHITE)
-//                                    comment_rl.visibility = View.VISIBLE
-//                                    repost.visibility = View.VISIBLE
-//                                    collect.visibility = View.VISIBLE
-//                                    comments.visibility = View.VISIBLE
-//                                    pic_detail_1.visibility = View.VISIBLE
-//                                    pic_detail_2.visibility = View.INVISIBLE
-//                                    relativeLayout.visibility = View.VISIBLE
-//                                    webview1.loadUrl("javascript:fly(\"" + getDailyPicDetailBean.data.latitude + "\",\"" + getDailyPicDetailBean.data.longitude + "\")")
-//                                } else {
-//                                    EmallLogger.d(tab.position)
-//                                    relativeLayout.setBackgroundColor(Color.BLACK)
-//                                    comment_rl.visibility = View.GONE
-//                                    repost.visibility = View.GONE
-//                                    collect.visibility = View.GONE
-//                                    comments.visibility = View.GONE
-//                                    pic_detail_1.visibility = View.INVISIBLE
-//                                    pic_detail_2.visibility = View.VISIBLE
-//                                    webview1.loadUrl("javascript:fly(\"" + getDailyPicDetailBean.data.latitude + "\",\"" + getDailyPicDetailBean.data.longitude + "\")")
-//                                }
+                                video_viewpager.currentItem = tab.position
+                                if (tab.position == 0) {
+                                    EmallLogger.d(tab.position)
+                                    relativeLayout_video.setBackgroundColor(Color.WHITE)
+                                    comment_rl_video.visibility = View.VISIBLE
+                                    repost_video.visibility = View.VISIBLE
+                                    video_collect.visibility = View.VISIBLE
+                                    video_comments.visibility = View.VISIBLE
+                                    video_detail_1.visibility = View.VISIBLE
+                                    video_detail_2.visibility = View.INVISIBLE
+                                    relativeLayout_video.visibility = View.VISIBLE
+                                    webview2.loadUrl("javascript:fly(\"" + getPlanetEarthDetailBean.data.latitude + "\",\"" + getPlanetEarthDetailBean.data.longitude + "\")")
+                                } else {
+                                    EmallLogger.d(tab.position)
+                                    relativeLayout_video.setBackgroundColor(Color.BLACK)
+                                    comment_rl_video.visibility = View.GONE
+                                    repost_video.visibility = View.GONE
+                                    video_collect.visibility = View.GONE
+                                    video_comments.visibility = View.GONE
+                                    video_detail_1.visibility = View.INVISIBLE
+                                    video_detail_2.visibility = View.VISIBLE
+                                    webview2.loadUrl("javascript:fly(\"" + getPlanetEarthDetailBean.data.latitude + "\",\"" + getPlanetEarthDetailBean.data.longitude + "\")")
+                                }
                             }
 
                             override fun onTabUnselected(tab: XTabLayout.Tab) {

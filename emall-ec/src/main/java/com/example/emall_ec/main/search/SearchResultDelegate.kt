@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.order.Find_tab_Adapter
 import com.example.emall_ec.main.search.type.NoctilucenceDelegate
@@ -21,6 +22,7 @@ class SearchResultDelegate : BottomItemDelegate() {
     var listTitle: MutableList<String>? = mutableListOf()
     var listFragment: MutableList<Fragment>? = mutableListOf()
     private var fAdapter: FragmentPagerAdapter? = null
+    var geo = String()
 
 
     fun create(): SearchResultDelegate? {
@@ -35,6 +37,12 @@ class SearchResultDelegate : BottomItemDelegate() {
         search_result_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(search_result_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        search_result_toolbar.setNavigationOnClickListener {
+            pop()
+        }
+
+        geo = arguments.getString("GEO")
+        EmallLogger.d(geo)
         initControls()
     }
 
