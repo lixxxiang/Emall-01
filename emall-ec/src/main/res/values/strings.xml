@@ -171,4 +171,5 @@
     <string name="check_pwd_repeat">新密码不能和原密码相同</string>
     <string name="no_cache">0K</string>
     <string name="play_times">次播放</string>
+    <string name="input_right_time">请输入正确的时间区间</string>
 </resources>

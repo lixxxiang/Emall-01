@@ -28,6 +28,13 @@ import java.util.*
 import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
+import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.classify.data.SceneDetail
+import com.example.emall_ec.main.classify.data.SceneSearch
+import com.example.emall_ec.main.classify.data.VideoSearch
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
@@ -36,13 +43,13 @@ import com.example.emall_ec.main.index.dailypic.data.BannerBean
 import com.example.emall_ec.main.index.dailypic.data.HomePageBean
 import com.flyco.tablayout.listener.OnTabSelectListener
 import kotlinx.android.synthetic.main.delegate_daily_pic.*
+import retrofit2.Retrofit
 
 
 /**
  * Created by lixiang on 2018/2/26.
  */
-class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
-
+class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     var sceneDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var sceneDetail = SceneDetailBean()
@@ -53,6 +60,8 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     var commoditySubmitDemandParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commoditySubmitDemandBean = CommoditySubmitDemandBean()
     var sceneData = SceneDetailBean().data
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -65,6 +74,8 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        mMapView = activity.findViewById(R.id.goods_detail_map) as MapView
+        mBaiduMap = mMapView!!.map
         initViews()
         resolveConflict()
         sceneDetailParams!!["productId"] = arguments.getString("productId")
@@ -73,7 +84,6 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
         getData(sceneDetailParams!!)
         video_goods_buy_now_btn.setOnClickListener {
             commoditySubmitDemand()
-
         }
 
         goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
@@ -109,9 +119,9 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
                         val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
                         val bundle: Bundle? = Bundle()
                         bundle!!.putString("demandId", commoditySubmitDemandBean.data)
-                        bundle.putString("imageUrl",sceneData.imageDetailUrl)
+                        bundle.putString("imageUrl", sceneData.imageDetailUrl)
                         bundle.putString("title", sceneData.productId)
-                        bundle.putString("time",sceneData.centerTime)
+                        bundle.putString("time", sceneData.centerTime)
                         delegate.arguments = bundle
                         start(delegate)
                     }
@@ -275,30 +285,53 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         EmallLogger.d(sceneDetailParams["type"]!!)
         if (sceneDetailParams["type"] == "1") {
-            RestClient().builder()
-                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=%s",
-                            arguments.getString("productId"),
-                            arguments.getString("type")))
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-                            EmallLogger.d(response)
-                            sceneDetail = Gson().fromJson(response, SceneDetailBean::class.java)
-                            EmallLogger.d(sceneDetail)
-                            setSceneData(sceneDetail)
-                        }
-                    })
-                    .failure(object : IFailure {
-                        override fun onFailure() {
-                            EmallLogger.d("fail")
-                        }
-                    })
-                    .error(object : IError {
-                        override fun onError(code: Int, msg: String) {
-                            EmallLogger.d(code)
-                        }
-                    })
-                    .build()
-                    .get()
+//            RestClient().builder()
+//                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=%s",
+//                            arguments.getString("productId"),
+//                            arguments.getString("type")))
+//                    .success(object : ISuccess {
+//                        override fun onSuccess(response: String) {
+//                            EmallLogger.d(response)
+//                            sceneDetail = Gson().fromJson(response, SceneDetailBean::class.java)
+//                            EmallLogger.d(sceneDetail)
+//                            setSceneData(sceneDetail)
+//                        }
+//                    })
+//                    .failure(object : IFailure {
+//                        override fun onFailure() {
+//                            EmallLogger.d("fail")
+//                        }
+//                    })
+//                    .error(object : IError {
+//                        override fun onError(code: Int, msg: String) {
+//                            EmallLogger.d(code)
+//                        }
+//                    })
+//                    .build()
+//                    .get()
+            retrofit = NetUtils.getRetrofit()
+            apiService = retrofit!!.create(ApiService::class.java)
+            val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
+            call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
+
+                override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
+                    if (response.body() != null) {
+                        EmallLogger.d(response.body()!!.data.imageDetailUrl)
+                        sceneDetail = response.body()!!
+                        EmallLogger.d(sceneDetail)
+                        setSceneData(sceneDetail)
+//                        videoSearch = response.body()!!
+//                        bundle!!.putString("type","0")
+//                        bundle.putSerializable("videoData", videoSearch)
+//                        delegate.arguments = bundle
+//                        (DELEGATE as EcBottomDelegate).start(delegate)
+                    } else {
+                        EmallLogger.d("errpr")
+                    }
+                }
+
+                override fun onFailure(call: retrofit2.Call<SceneDetailBean>, throwable: Throwable) {}
+            })
             video_mark.visibility = View.INVISIBLE
             video_goods_detail_mask_iv.visibility = View.INVISIBLE
             play_btn.visibility = View.INVISIBLE
@@ -308,8 +341,7 @@ class GoodsDetailDelegate : BottomItemDelegate(), OnTabSelectListener {
     }
 
     private fun resolveConflict() {
-        mMapView = activity.findViewById<MapView>(R.id.video_detail_map) as MapView
-        mBaiduMap = mMapView!!.map
+
         val v = mMapView!!.getChildAt(0)
         v.setOnTouchListener(View.OnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {

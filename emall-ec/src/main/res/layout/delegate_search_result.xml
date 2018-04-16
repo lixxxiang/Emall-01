@@ -33,7 +33,6 @@
         android:background="#FFFFFF"
         app:tabIndicatorColor="#B80017"
         android:elevation="4dp"
-
         app:tabSelectedTextColor="#B80017"
         app:tabTextColor="#5C5C5C"
         app:tabTextAppearance="@style/TabLayoutTextStyle" />

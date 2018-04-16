@@ -27,7 +27,9 @@ public class VideoClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, Model item) {
-        helper.setText(R.id.classify_video_title, item.getPrice());
+        ViewGroup.LayoutParams parm = helper.getView(R.id.classify_video_image_iv).getLayoutParams();
+        parm.height = glm.getWidth() / 2 - helper.getView(R.id.classify_video_image_iv).getPaddingLeft();
+        helper.setText(R.id.classify_video_title, item.getTitle());
         helper.setText(R.id.classify_video_time, item.getTime());
         helper.setText(R.id.classify_video_price, item.getPrice());
 

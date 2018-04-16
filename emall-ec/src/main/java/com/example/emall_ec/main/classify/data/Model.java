@@ -8,7 +8,24 @@ public class Model {
     private String imageUrl;
     private String price;
     private String time;
+    private String title;
+    private String productId;
 
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getImageUrl() {
         return imageUrl;

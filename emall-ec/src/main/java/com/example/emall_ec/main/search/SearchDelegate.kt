@@ -32,6 +32,7 @@ import com.baidu.platform.comapi.map.x
 import android.util.DisplayMetrics
 import com.baidu.mapapi.BMapManager
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
 
 
 /**
@@ -136,29 +137,22 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
             bundle.putString("GEO", geo)
             delegate!!.arguments = bundle
             start(delegate)
+
+
+        }
+
+        search_back_iv.setOnClickListener {
+            pop()
         }
     }
 
     private fun initMap() {
         val mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL
         mMapView = activity.findViewById<MapView>(R.id.mMapView)
-        mBaiduMap = mMapView!!.map
-        mBaiduMap!!.isMyLocationEnabled = true
-        mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(mCurrentMode, true, null))
-        val builder = MapStatus.Builder()
-        builder.overlook(0f)
-        mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
-        val child = mMapView!!.getChildAt(1)
-        if (child != null && (child is ImageView || child is ZoomControls)) {
-            child.visibility = View.INVISIBLE
-        }
 
-        mMapView!!.showScaleControl(false)
-        mMapView!!.showZoomControls(false)
-        val mUiSettings = mBaiduMap!!.uiSettings
-        mUiSettings.isScrollGesturesEnabled = true
-        mUiSettings.isOverlookingGesturesEnabled = true
-        mUiSettings.isZoomGesturesEnabled = true
+
+
+
         mLocClient = LocationClient(activity)
         mLocClient!!.registerLocationListener(myListener)
         val option = LocationClientOption()
@@ -170,6 +164,22 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         mLocClient!!.locOption = option
         mLocClient!!.start()
 
+        mBaiduMap = mMapView!!.map
+        mBaiduMap!!.isMyLocationEnabled = true
+        mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(mCurrentMode, true, null))
+        val builder = MapStatus.Builder()
+        builder.overlook(0f)
+//        mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
+        val child = mMapView!!.getChildAt(1)
+        if (child != null && (child is ImageView || child is ZoomControls)) {
+            child.visibility = View.INVISIBLE
+        }
+        mMapView!!.showScaleControl(false)
+        mMapView!!.showZoomControls(false)
+        val mUiSettings = mBaiduMap!!.uiSettings
+        mUiSettings.isScrollGesturesEnabled = true
+        mUiSettings.isOverlookingGesturesEnabled = true
+        mUiSettings.isZoomGesturesEnabled = true
     }
 
     inner class MyLocationListenner : BDLocationListener {
@@ -201,7 +211,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 val ll = LatLng(location.latitude,
                         location.longitude)
                 val builder = MapStatus.Builder()
-                builder.target(ll).zoom(18.0f)
+                builder.target(ll).zoom(1.0f)
                 mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
             }
         }
@@ -240,7 +250,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
     }
 
     override fun onPause() {
-        mMapView!!.onPause()
+//        mMapView!!.onPause()
         super.onPause()
     }
 
@@ -252,11 +262,11 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
     }
 
     override fun onDestroy() {
-        mLocClient!!.stop()
-        mBaiduMap!!.isMyLocationEnabled = false
-        mMapView!!.onDestroy()
-        mMapView = null
-        mSensorManager!!.unregisterListener(this)
+//        mLocClient!!.stop()
+//        mBaiduMap!!.isMyLocationEnabled = false
+//        mMapView!!.onDestroy()
+//        mMapView = null
+//        mSensorManager!!.unregisterListener(this)
         super.onDestroy()
     }
 }
