@@ -273,6 +273,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         (activity as AppCompatActivity).setSupportActionBar(video_goods_detail_toolbar)
         video_goods_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
         val mTitles = arrayOf("预览图", " 参数", "位置 ")
+        video_detail_original_price_tv.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
+        scene_detail_original_price_tv.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
         val mIconUnselectIds = intArrayOf(R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect, R.mipmap.tab_contact_unselect)
         val mIconSelectIds = intArrayOf(R.mipmap.tab_home_select, R.mipmap.tab_speech_select, R.mipmap.tab_contact_select)
         val mTabEntities: ArrayList<CustomTabEntity>? = ArrayList()
@@ -372,8 +374,4 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         return DefaultHorizontalAnimator()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 }

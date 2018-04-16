@@ -36,8 +36,11 @@ class FillOrderDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(fill_order_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         EmallLogger.d(arguments.getString("title"))
-
+        fill_order_toolbar.setNavigationOnClickListener {
+            pop()
+        }
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
+        EmallLogger.d(arguments.getString("demandId"))
         viewDemandParams!!["type"] = "1"
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/viewDemand")
@@ -71,14 +74,15 @@ class FillOrderDelegate : BottomItemDelegate() {
                 .post()
 
         bill_rl.setOnClickListener {
-            if (!isChecked){
+            if (!isChecked) {
                 cb.isChecked = true
                 isChecked = true
                 val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
                 val bundle: Bundle? = Bundle()
+                bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
                 delegate.arguments = bundle
                 start(delegate)
-            }else{
+            } else {
                 cb.isChecked = false
                 isChecked = false
             }
@@ -98,9 +102,10 @@ class FillOrderDelegate : BottomItemDelegate() {
                 .into(fill_order_iv)
         fill_order_title_tv.text = arguments.getString("title")
         fill_order_time_tv.text = String.format("拍摄于 %s（北京时间）", arguments.getString("time"))
-        fill_order_op_tv.text = viewDemandBean.data.demands[0].originalPrice
-        fill_order_cp_tv.text = viewDemandBean.data.demands[0].salePrice
-        fill_order_dp_tv.text = "0"
-        fill_order_out_tv.text = viewDemandBean.data.demands[0].salePrice
+        fill_order_op_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].originalPrice)
+        fill_order_cp_tv.text = String.format("¥%s",viewDemandBean.data.demands[0].salePrice)
+        fill_order_dp_tv.text = String.format("-¥%s",viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble())
+        fill_order_out_tv.text = String.format("-¥%s",viewDemandBean.data.demands[0].salePrice)
+        fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
     }
 }

@@ -248,6 +248,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2">
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/fill_order_sale_price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
