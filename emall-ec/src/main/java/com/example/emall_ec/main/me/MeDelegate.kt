@@ -3,7 +3,6 @@ package com.example.emall_ec.main.me
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -13,14 +12,12 @@ import com.example.emall_ec.main.order.OrderListDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
-import com.example.emall_core.app.Emall
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.database.UserProfile
+import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
-import me.yokeyword.fragmentation.ISupportFragment
 
 
 /**
@@ -121,7 +118,7 @@ class MeDelegate : BottomItemDelegate() {
         me_function_lv.setOnItemClickListener { adapterView, view, i, l ->
             when (i) {
                 0 -> {
-
+                    (DELEGATE as EcBottomDelegate).start(CollectionDelegate().create())
                 }
                 1 -> {
 

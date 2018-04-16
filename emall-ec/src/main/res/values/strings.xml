@@ -172,4 +172,7 @@
     <string name="no_cache">0K</string>
     <string name="play_times">次播放</string>
     <string name="input_right_time">请输入正确的时间区间</string>
+    <string name="my_collection">我的收藏</string>
+    <string name="goods">宝贝</string>
+    <string name="content">内容</string>
 </resources>
