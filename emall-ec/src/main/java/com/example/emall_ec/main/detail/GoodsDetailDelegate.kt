@@ -17,6 +17,7 @@ import com.example.emall_ec.R
 import com.flyco.tablayout.listener.CustomTabEntity
 import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import android.view.MotionEvent
+import android.widget.Toast
 import com.baidu.mapapi.map.*
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.detail.data.VideoDetailBean
@@ -28,11 +29,15 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
+import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
+import com.example.emall_ec.main.index.dailypic.data.CommonBean
+import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
 import retrofit2.Retrofit
 
@@ -53,9 +58,15 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var sceneData = SceneDetailBean().data
     var latitude = Double
     var longitude = Double
+    var productId = String()
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
-
+    var getCollectionMarkParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var getCollectionMarkBean = GetCollectionMarkBean()
+    var flag = false
+    var addCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var cancelCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var commonBean = CommonBean()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -73,6 +84,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         initViews()
         resolveConflict()
         sceneDetailParams!!["productId"] = arguments.getString("productId")
+        productId = arguments.getString("productId")
         sceneDetailParams!!["type"] = arguments.getString("type")
         EmallLogger.d(sceneDetailParams!!["productId"]!!)
         getData(sceneDetailParams!!)
@@ -93,10 +105,96 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             }
         }
 
+        video_detail_star_iv.setOnClickListener {
+            if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "DETAIL")
+                delegate.arguments = bundle
+                start(delegate)
+            }else{
+                EmallLogger.d(flag)
+                if (flag){
+                    /**
+                     * signed in
+                     */
+                    cancelCollection(productId, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+                    video_detail_star_iv.setBackgroundResource(R.drawable.collection)
+                }else{
+                    /**
+                     * no signed in
+                     */
+                    addCollection(productId, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "1")
+                    video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
+                }
+            }
+        }
+
         video_detail_tablayout_ctl.setOnTabSelectListener(this)
         video_goods_detail_toolbar.setNavigationOnClickListener {
             supportDelegate.pop()
         }
+    }
+
+    private fun cancelCollection(pid: String?, uid: String?) {
+        cancelCollectionParams!!["productId"] = pid
+        cancelCollectionParams!!["userId"] = uid
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/mobile/cancelCollection")
+                .params(cancelCollectionParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if(commonBean.message == "success"){
+                            flag = false
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
+
+    }
+
+    private fun addCollection(pId: String, uId: String, t: String) {
+        addCollectionParams!!["productId"] = pId
+        addCollectionParams!!["userId"] = uId
+        addCollectionParams!!["productType"] = t
+
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/mobile/addCollection")
+                .params(addCollectionParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if(commonBean.message == "success"){
+                            flag = true
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
     }
 
     private fun commoditySubmitDemand() {
@@ -149,15 +247,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     private fun setSceneData(sceneDetail: SceneDetailBean) {
         sceneData = sceneDetail.data
-//        var geoList = dealWithPosition(sceneData.geo)
-//        var geo1  = listOf(geoList[0],geoList[1])
-//        var geo2 =  listOf(geoList[2],geoList[3])
-//        var geo3  = listOf(geoList[4],geoList[5])
-//        var geo4  = listOf(geoList[6],geoList[7])
-//
-//        map(geoList)
-
-
         detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), sceneData.centerTime)
         detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), sceneData.swingSatelliteAngle)
 
@@ -177,27 +266,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         judgeLati_longi(sceneData.latitude, sceneData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), sceneData.longitude, longi, sceneData.latitude, lati)
         detail_coordinate_tv.text = sceneData.sensor
-    }
-
-    private fun map(geoList : List<String>) {
-        var pt1 = LatLng(geoList[0].toDouble(), geoList[1].toDouble())
-        var pt2 = LatLng(geoList[2].toDouble(), geoList[3].toDouble())
-        var pt3 = LatLng(geoList[4].toDouble(), geoList[5].toDouble())
-        var pt4 = LatLng(geoList[6].toDouble(), geoList[7].toDouble())
-        var pts : MutableList<LatLng> = mutableListOf()
-        pts.add(pt1)
-        pts.add(pt2)
-        pts.add(pt3)
-        pts.add(pt4)
-        pts.add(pt1)
-
-        var polygonOptions : OverlayOptions = PolygonOptions().points(pts).stroke(Stroke(5, Color.parseColor("#B4A078"))).fillColor(Color.GREEN)
-        mBaiduMap!!.addOverlay(polygonOptions)
-
-    }
-
-    fun dealWithPosition(s: String): List<String> {
-        return s.substring(s.indexOf("[[[") + 2, s.indexOf("]]]") + 1 ).replace("[","").replace("]","").split(",")
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
@@ -295,7 +363,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     private fun initViews() {
         video_goods_detail_toolbar.title = ""
-        video_detail_star_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/star.ttf")
         video_detail_head_set_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/headset.ttf")
         video_detail_original_price_tv.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
         (activity as AppCompatActivity).setSupportActionBar(video_goods_detail_toolbar)
@@ -315,30 +382,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         EmallLogger.d(sceneDetailParams["type"]!!)
         if (sceneDetailParams["type"] == "1") {
-//            RestClient().builder()
-//                    .url(String.format("http://59.110.164.214:8024/global/sceneDetail?productId=%s&type=%s",
-//                            arguments.getString("productId"),
-//                            arguments.getString("type")))
-//                    .success(object : ISuccess {
-//                        override fun onSuccess(response: String) {
-//                            EmallLogger.d(response)
-//                            sceneDetail = Gson().fromJson(response, SceneDetailBean::class.java)
-//                            EmallLogger.d(sceneDetail)
-//                            setSceneData(sceneDetail)
-//                        }
-//                    })
-//                    .failure(object : IFailure {
-//                        override fun onFailure() {
-//                            EmallLogger.d("fail")
-//                        }
-//                    })
-//                    .error(object : IError {
-//                        override fun onError(code: Int, msg: String) {
-//                            EmallLogger.d(code)
-//                        }
-//                    })
-//                    .build()
-//                    .get()
             retrofit = NetUtils.getRetrofit()
             apiService = retrofit!!.create(ApiService::class.java)
             val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
@@ -401,4 +444,44 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         return DefaultHorizontalAnimator()
     }
 
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+            getCollectionMark(productId, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+        }
+    }
+
+    private fun getCollectionMark(pid: String, uid: String?) {
+        getCollectionMarkParams!!["productId"] = pid
+        getCollectionMarkParams!!["userId"] = uid
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/mobile/getCollectionMark")
+                .params(getCollectionMarkParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        getCollectionMarkBean = Gson().fromJson(response, GetCollectionMarkBean::class.java)
+                        if (getCollectionMarkBean.message == "success") {
+                            EmallLogger.d(response)
+                            if(getCollectionMarkBean.data.collectionMark == 1){
+                                video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
+                                flag = true
+                            }else{
+                                video_detail_star_iv.setBackgroundResource(R.drawable.collection)
+                                flag = false
+                            }
+                        } else {
+                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+    }
 }
