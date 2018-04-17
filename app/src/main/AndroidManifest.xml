@@ -27,7 +27,7 @@
             android:process=":remote" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx" />
+            android:value="Bah0Yvywj9ARG8YCaSKpwqaZqITdr7Qx" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

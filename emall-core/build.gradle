@@ -101,11 +101,8 @@ dependencies {
     compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     //    compile 'androidx.core:core-ktx:0.3'
     compile files('libs/cordova-6.2.0-dev.jar')
-    compile files('libs/cordova-6.2.0-dev.jar')
-
-    compile 'com.github.chihane:JDAddressSelector:1.1.4'
     compile 'com.smartTop:jd-address:1.0.3'
-
+    compile 'me.biubiubiu.justifytext:library:1.1'
 }
 
 repositories {

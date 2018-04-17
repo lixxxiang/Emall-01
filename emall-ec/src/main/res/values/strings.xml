@@ -175,4 +175,13 @@
     <string name="my_collection">我的收藏</string>
     <string name="goods">宝贝</string>
     <string name="content">内容</string>
+    <string name="invoice_hint1">1. 单笔订单只支持开具一种类型的发票</string>
+    <string name="invoice_hint2">2. 增值税专用发票在支付后15-30个工作日单独寄出</string>
+    <string name="invoice_hint3">3. 开票金额为用户实际支付的金额(不含礼品卡与不支持该发票类型的商品实付金额)</string>
+
+    <string name="save">保存</string>
+    <string name="programming">编程摄影</string>
+    <string name="content_default">默认</string>
+    <string name="video_earth">脉动地球</string>
+    <string name="everyday_pic">每日一图</string>
 </resources>

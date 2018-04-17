@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.detail
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Build
@@ -8,7 +9,6 @@ import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.bumptech.glide.Glide
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -20,7 +20,6 @@ import android.view.MotionEvent
 import com.baidu.mapapi.map.*
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.detail.data.VideoDetailBean
-import com.example.emall_ec.main.order.OrderDelegate
 import com.google.gson.Gson
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -29,20 +28,12 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.classify.data.SceneDetail
-import com.example.emall_ec.main.classify.data.SceneSearch
-import com.example.emall_ec.main.classify.data.VideoSearch
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
-import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
-import com.example.emall_ec.main.index.dailypic.data.BannerBean
-import com.example.emall_ec.main.index.dailypic.data.HomePageBean
 import com.flyco.tablayout.listener.OnTabSelectListener
-import kotlinx.android.synthetic.main.delegate_daily_pic.*
 import retrofit2.Retrofit
 
 
@@ -60,8 +51,11 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var commoditySubmitDemandParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commoditySubmitDemandBean = CommoditySubmitDemandBean()
     var sceneData = SceneDetailBean().data
+    var latitude = Double
+    var longitude = Double
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
+
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -155,8 +149,15 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     private fun setSceneData(sceneDetail: SceneDetailBean) {
         sceneData = sceneDetail.data
+//        var geoList = dealWithPosition(sceneData.geo)
+//        var geo1  = listOf(geoList[0],geoList[1])
+//        var geo2 =  listOf(geoList[2],geoList[3])
+//        var geo3  = listOf(geoList[4],geoList[5])
+//        var geo4  = listOf(geoList[6],geoList[7])
+//
+//        map(geoList)
 
-        EmallLogger.d(sceneData)
+
         detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), sceneData.centerTime)
         detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), sceneData.swingSatelliteAngle)
 
@@ -176,6 +177,27 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         judgeLati_longi(sceneData.latitude, sceneData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), sceneData.longitude, longi, sceneData.latitude, lati)
         detail_coordinate_tv.text = sceneData.sensor
+    }
+
+    private fun map(geoList : List<String>) {
+        var pt1 = LatLng(geoList[0].toDouble(), geoList[1].toDouble())
+        var pt2 = LatLng(geoList[2].toDouble(), geoList[3].toDouble())
+        var pt3 = LatLng(geoList[4].toDouble(), geoList[5].toDouble())
+        var pt4 = LatLng(geoList[6].toDouble(), geoList[7].toDouble())
+        var pts : MutableList<LatLng> = mutableListOf()
+        pts.add(pt1)
+        pts.add(pt2)
+        pts.add(pt3)
+        pts.add(pt4)
+        pts.add(pt1)
+
+        var polygonOptions : OverlayOptions = PolygonOptions().points(pts).stroke(Stroke(5, Color.parseColor("#B4A078"))).fillColor(Color.GREEN)
+        mBaiduMap!!.addOverlay(polygonOptions)
+
+    }
+
+    fun dealWithPosition(s: String): List<String> {
+        return s.substring(s.indexOf("[[[") + 2, s.indexOf("]]]") + 1 ).replace("[","").replace("]","").split(",")
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
@@ -204,10 +226,10 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun drawMap(geo: MutableList<Array<String>>) {
-        val pt1 = LatLng(java.lang.Double.parseDouble(geo[0][0]), java.lang.Double.parseDouble(geo[0][1]))
-        val pt2 = LatLng(java.lang.Double.parseDouble(geo[1][0]), java.lang.Double.parseDouble(geo[1][1]))
-        val pt3 = LatLng(java.lang.Double.parseDouble(geo[2][0]), java.lang.Double.parseDouble(geo[2][1]))
-        val pt4 = LatLng(java.lang.Double.parseDouble(geo[3][0]), java.lang.Double.parseDouble(geo[3][1]))
+        val pt1 = LatLng(java.lang.Double.parseDouble(geo[0][1]), java.lang.Double.parseDouble(geo[0][0]))
+        val pt2 = LatLng(java.lang.Double.parseDouble(geo[1][1]), java.lang.Double.parseDouble(geo[1][0]))
+        val pt3 = LatLng(java.lang.Double.parseDouble(geo[2][1]), java.lang.Double.parseDouble(geo[2][0]))
+        val pt4 = LatLng(java.lang.Double.parseDouble(geo[3][1]), java.lang.Double.parseDouble(geo[3][0]))
         val pts = ArrayList<LatLng>()
         pts.add(pt1)
         pts.add(pt2)
@@ -216,10 +238,16 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
         val polygonOption = PolygonOptions()
                 .points(pts)
-                .stroke(Stroke(5, -0x55ff0100))
-                .fillColor(-0x55000100)
+                .stroke(Stroke(1, Color.parseColor("#F56161")))
+                .fillColor(Color.parseColor("#BFF56161"))
 
         mBaiduMap!!.addOverlay(polygonOption)
+
+
+        val latlng = LatLng( (java.lang.Double.parseDouble(geo[1][1]) + java.lang.Double.parseDouble(geo[2][1]))/2,(java.lang.Double.parseDouble(geo[3][0]) + java.lang.Double.parseDouble(geo[2][0]))/2)
+        val mMapStatus: MapStatus = MapStatus.Builder().target(latlng).zoom(12F).build()
+        val mapStatusUpdate: MapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+        mBaiduMap!!.setMapStatus(mapStatusUpdate)
     }
 
     private fun getGeo(geo: String): MutableList<Array<String>> {
@@ -315,7 +343,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             apiService = retrofit!!.create(ApiService::class.java)
             val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
             call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
-
                 override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
                     if (response.body() != null) {
                         EmallLogger.d(response.body()!!.data.imageDetailUrl)
