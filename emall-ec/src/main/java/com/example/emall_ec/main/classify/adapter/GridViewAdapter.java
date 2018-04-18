@@ -2,6 +2,7 @@ package com.example.emall_ec.main.classify.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,9 @@ public class GridViewAdapter extends BaseAdapter {
 
         convertView = layoutInflater.inflate(R.layout.item_grid, null);
         mImageView = convertView.findViewById(R.id.item);
+        if (position == 0){
+            mImageView.setTextColor(Color.parseColor("#B80017"));
+        }
         mImageView.setText(list.get(position));
         return convertView;
     }

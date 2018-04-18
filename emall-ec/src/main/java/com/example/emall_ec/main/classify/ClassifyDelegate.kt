@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import android.os.Handler
+import android.support.v4.view.ViewCompat.setNestedScrollingEnabled
 import android.support.v7.widget.AppCompatTextView
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -44,7 +45,6 @@ import retrofit2.Retrofit
  * Created by lixiang on 15/02/2018.
  */
 class ClassifyDelegate : EmallDelegate() {
-
     var ssp: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
@@ -74,9 +74,9 @@ class ClassifyDelegate : EmallDelegate() {
 
     private var adapter: GridViewAdapter? = null
 
-    var sceneGlm : GridLayoutManager ?= null
-    var videoGlm : GridLayoutManager ?= null
-
+    var sceneGlm: GridLayoutManager? = null
+    var videoGlm: GridLayoutManager? = null
+    var isExpanded = false
 
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
@@ -89,13 +89,27 @@ class ClassifyDelegate : EmallDelegate() {
     override fun initial() {
         if (arguments.getString("TYPE") == "SCENE") {
             initSceneGlm()
+            if (classify_horizontal_scrollview_ll.visibility == View.GONE) {
+                classify_horizontal_scrollview_ll.visibility = View.VISIBLE
+            }
             getData("",
-                    "","",
-                    "","",
-                    "","",
-                    "0","10","1")
+                    "", "",
+                    "", "",
+                    "", "",
+                    "0", "10", "1")
+
+        } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
+            classify_horizontal_scrollview_ll.visibility = View.GONE
+            initSceneGlm()
+            getData("",
+                    "", "",
+                    "", "",
+                    "", "",
+                    "2", "10", "1")
         } else if (arguments.getString("TYPE") == "VIDEO") {
+            classify_horizontal_scrollview_ll.visibility = View.GONE
             initVideoGlm()
+            getVData("0")
         }
 
 
@@ -103,7 +117,6 @@ class ClassifyDelegate : EmallDelegate() {
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
         classify_ctl.isTitleEnabled = false
-        classify_down_btn.typeface = Typeface.createFromAsset(activity.assets, "iconfont/down.ttf")
 
         initRecommendCities()
         val observer = classify_introduction_rl.viewTreeObserver
@@ -116,11 +129,35 @@ class ClassifyDelegate : EmallDelegate() {
             }
         })
         classify_down_btn.setOnClickListener {
-            classify_appbar.setExpanded(false)
-            classify_sv.scrollTo(0, viewHeight + DimenUtil().dip2px(context, 6F))
-            adapter = GridViewAdapter(activity, cityName)
-            classify_gv.adapter = adapter
-            classify_mask_rl.visibility = View.VISIBLE
+            if (!isExpanded) {
+                classify_appbar.setExpanded(false)
+                classify_sv.scrollTo(0, viewHeight + DimenUtil().dip2px(context, 6F))
+                classify_down_btn.setBackgroundResource(R.drawable.up)
+
+                adapter = GridViewAdapter(activity, cityName)
+                classify_gv.adapter = adapter
+                classify_mask_rl.visibility = View.VISIBLE
+                classify_recommand_tv.text = getString(R.string.all)
+                classify_hsv.visibility = View.INVISIBLE
+                isScroll(false)
+                isExpanded = true
+            } else {
+                closeScreen()
+            }
+
+        }
+
+        classify_gv.setOnItemClickListener { parent, view, position, id ->
+            if (!data!!.isEmpty())
+                data!!.clear()
+            closeScreen()
+
+            getData(getRecommendCitiesBean.data[position].geo,
+                    "", "",
+                    "", "",
+                    "", "",
+                    "0", "10", "1")
+
         }
 
         classify_toolbar.setNavigationOnClickListener {
@@ -160,9 +197,11 @@ class ClassifyDelegate : EmallDelegate() {
                 } else if (state == State.COLLAPSED) {
                     activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                     if (arguments.getString("TYPE") == "SCENE") {
-                        classify_toolbar.title = "光学1级"
+                        classify_toolbar.title = getString(R.string.optics_1)
                     } else if (arguments.getString("TYPE") == "VIDEO") {
-                        classify_toolbar.title = "视频1A+1B"
+                        classify_toolbar.title = getString(R.string.video1A_1B)
+                    } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
+                        classify_toolbar.title = getString(R.string.noctilucence)
                     }
                     classify_toolbar.setTitleTextColor(Color.parseColor("#5C5C5C"))
                     classify_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
@@ -174,17 +213,32 @@ class ClassifyDelegate : EmallDelegate() {
             }
         })
 
-        classify_recommand_rl.setOnClickListener{
+        classify_recommand_rl.setOnClickListener {
             classify_recommand_tv.text = getString(R.string.recommand)
-            if(!data!!.isEmpty())
+            if (!data!!.isEmpty())
                 data!!.clear()
             getData("",
-                    "","",
-                    "","",
-                    "","",
-                    "0","10","1")
+                    "", "",
+                    "", "",
+                    "", "",
+                    "0", "10", "1")
         }
 
+    }
+
+    private fun closeScreen() {
+        classify_down_btn.setBackgroundResource(R.drawable.down)
+        classify_mask_rl.visibility = View.INVISIBLE
+        classify_recommand_tv.text = getString(R.string.recommand)
+        classify_hsv.visibility = View.VISIBLE
+        isScroll(true)
+        isExpanded = false
+    }
+
+    fun isScroll(bool: Boolean) {
+        classify_sv.setOnTouchListener { v, event ->
+            !bool
+        }
     }
 
     private fun initVideoGlm() {
@@ -224,17 +278,12 @@ class ClassifyDelegate : EmallDelegate() {
                 if (response.body() != null) {
                     EmallLogger.d(response.body()!!.data.searchReturnDtoList[0].thumbnailUrl)
                     sceneSearch = response.body()!!
-//                    bundle!!.putString("TYPE","SCENE")
-//                    bundle.putSerializable("SCENE_DATA", sceneSearch)
-//                    delegate.arguments = bundle
-//                    (DELEGATE as EcBottomDelegate).start(delegate)
-                    if (arguments.getString("TYPE") == "SCENE") {
-                        getSceneData()
+                    if (arguments.getString("TYPE") == "SCENE")
                         classify_title_tv.text = resources.getString(R.string.optics_1)
-                    } else if (arguments.getString("TYPE") == "VIDEO") {
-                        getVideoData()
-                        classify_title_tv.text = resources.getString(R.string.video1A_1B)
-                    }
+                    else if (arguments.getString("TYPE") == "NOCTILUCENCE")
+                        classify_title_tv.text = resources.getString(R.string.noctilucence)
+                    getSceneData()
+
                 } else {
                     EmallLogger.d("error")
                 }
@@ -244,7 +293,36 @@ class ClassifyDelegate : EmallDelegate() {
         })
     }
 
+    private fun getVData(param_type: String) {
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.videoHome(param_type)
+        call.enqueue(object : retrofit2.Callback<VideoHomeBean> {
+            override fun onResponse(call: retrofit2.Call<VideoHomeBean>, response: retrofit2.Response<VideoHomeBean>) {
+                if (response.body() != null) {
+                    videoHomeBean = response.body()!!
+//                    bundle!!.putString("TYPE","SCENE")
+//                    bundle.putSerializable("SCENE_DATA", sceneSearch)
+//                    delegate.arguments = bundle
+//                    (DELEGATE as EcBottomDelegate).start(delegate)
+//                    if (arguments.getString("TYPE") == "SCENE") {
+//                        getSceneData()
+//                        classify_title_tv.text = resources.getString(R.string.optics_1)
+//                    } else if (arguments.getString("TYPE") == "VIDEO") {
+                    getVideoData()
+                    classify_title_tv.text = resources.getString(R.string.video1A_1B)
+//                    }
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<VideoHomeBean>, throwable: Throwable) {}
+        })
+    }
+
     private fun initRecommendCities() {
+        cityName!!.add(getString(R.string.recommand))
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/getRecommendCities")
                 .success(object : ISuccess {
@@ -264,13 +342,13 @@ class ClassifyDelegate : EmallDelegate() {
                                 topRl.isFocusable = true
                                 topRl.setOnClickListener {
                                     classify_recommand_tv.text = getRecommendCitiesBean.data[i].cityName
-                                    if(!data!!.isEmpty())
+                                    if (!data!!.isEmpty())
                                         data!!.clear()
                                     getData(getRecommendCitiesBean.data[i].geo,
-                                            "","",
-                                            "","",
-                                            "","",
-                                            "0","10","1")
+                                            "", "",
+                                            "", "",
+                                            "", "",
+                                            "0", "10", "1")
                                 }
                                 classify_ll.addView(topRl, topRlParams)
                                 val tv = AppCompatTextView(activity)
@@ -301,7 +379,6 @@ class ClassifyDelegate : EmallDelegate() {
     private fun getSceneData() {
         EmallLogger.d(sceneSearch.data.searchReturnDtoList[0].thumbnailUrl)
         val size = sceneSearch.data.searchReturnDtoList.size
-//        ssp!!.clear()
         for (i in 0 until size) {
             val model = Model()
             model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
@@ -316,7 +393,6 @@ class ClassifyDelegate : EmallDelegate() {
 
 
     private fun getVideoData() {
-        videoHomeBean = arguments.getSerializable("VIDEO_DATA") as VideoHomeBean
         EmallLogger.d(videoHomeBean.data[0].detailPath)
 
         val size = videoHomeBean.data.size
@@ -341,8 +417,6 @@ class ClassifyDelegate : EmallDelegate() {
             sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
             classify_rv.adapter = sceneAdapter
         }
-
-//        classify_rv.addOnItemTouchListener(ClassifyItemClickListener(this))
     }
 
 

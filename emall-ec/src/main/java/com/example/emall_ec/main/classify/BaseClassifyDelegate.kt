@@ -37,39 +37,17 @@ class BaseClassifyDelegate : BottomItemDelegate() {
         base_classify_optics_siv.setOnClickListener {
             val delegate: ClassifyDelegate = ClassifyDelegate().create()!!
             val bundle: Bundle? = Bundle()
-
-//            retrofit = NetUtils.getRetrofit()
-//            apiService = retrofit!!.create(ApiService::class.java)
-//            val call = apiService!!.sceneSearch("",
-//                    "","",
-//                    "","",
-//                    "","",
-//                    "0","10","1")
-//            call.enqueue(object : retrofit2.Callback<SceneSearch> {
-//
-//                override fun onResponse(call: retrofit2.Call<SceneSearch>, response: retrofit2.Response<SceneSearch>) {
-//                    if (response.body() != null) {
-//                        EmallLogger.d(response.body()!!.data.searchReturnDtoList[0].thumbnailUrl)
-//                        sceneSearch = response.body()!!
-//                        bundle!!.putString("TYPE","SCENE")
-//                        bundle.putSerializable("SCENE_DATA", sceneSearch)
-//                        delegate.arguments = bundle
-//                        (DELEGATE as EcBottomDelegate).start(delegate)
-//                    } else {
-//                        EmallLogger.d("error")
-//                    }
-//                }
-//
-//                override fun onFailure(call: retrofit2.Call<SceneSearch>, throwable: Throwable) {}
-//            })
-
             bundle!!.putString("TYPE", "SCENE")
             delegate.arguments = bundle
             (DELEGATE as EcBottomDelegate).start(delegate)
         }
 
         base_classify_noctilucence_siv.setOnClickListener {
-
+            val delegate: ClassifyDelegate = ClassifyDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("TYPE", "NOCTILUCENCE")
+            delegate.arguments = bundle
+            (DELEGATE as EcBottomDelegate).start(delegate)
         }
 
         base_classify_program_siv.setOnClickListener {
@@ -80,27 +58,9 @@ class BaseClassifyDelegate : BottomItemDelegate() {
         base_classify_video_siv.setOnClickListener {
             val delegate: ClassifyDelegate = ClassifyDelegate().create()!!
             val bundle: Bundle? = Bundle()
-
-            retrofit = NetUtils.getRetrofit()
-            apiService = retrofit!!.create(ApiService::class.java)
-            val call = apiService!!.videoHome("0")
-            call.enqueue(object : retrofit2.Callback<VideoHomeBean> {
-
-                override fun onResponse(call: retrofit2.Call<VideoHomeBean>, response: retrofit2.Response<VideoHomeBean>) {
-                    if (response.body() != null) {
-                        EmallLogger.d(response.body()!!.data[0].detailPath)
-                        videoHome = response.body()!!
-                        bundle!!.putString("TYPE","VIDEO")
-                        bundle.putSerializable("VIDEO_DATA", videoHome)
-                        delegate.arguments = bundle
-                        (DELEGATE as EcBottomDelegate).start(delegate)
-                    } else {
-                        EmallLogger.d("errpr")
-                    }
-                }
-
-                override fun onFailure(call: retrofit2.Call<VideoHomeBean>, throwable: Throwable) {}
-            })
+            bundle!!.putString("TYPE", "VIDEO")
+            delegate.arguments = bundle
+            (DELEGATE as EcBottomDelegate).start(delegate)
         }
 
     }

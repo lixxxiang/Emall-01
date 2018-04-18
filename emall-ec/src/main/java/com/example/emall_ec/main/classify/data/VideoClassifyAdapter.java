@@ -30,8 +30,8 @@ public class VideoClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
         ViewGroup.LayoutParams parm = helper.getView(R.id.classify_video_image_iv).getLayoutParams();
         parm.height = glm.getWidth() / 2 - helper.getView(R.id.classify_video_image_iv).getPaddingLeft();
         helper.setText(R.id.classify_video_title, item.getTitle());
-        helper.setText(R.id.classify_video_time, item.getTime());
-        helper.setText(R.id.classify_video_price, item.getPrice());
+        helper.setText(R.id.classify_video_time, "拍摄时间：" + item.getTime());
+        helper.setText(R.id.classify_video_price, "¥" + item.getPrice());
 
 
         Glide.with(this.mContext)
