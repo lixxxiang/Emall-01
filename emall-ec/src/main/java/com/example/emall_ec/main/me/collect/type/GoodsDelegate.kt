@@ -36,6 +36,7 @@ class GoodsDelegate : EmallDelegate() {
     private var myAllCollectionList: MutableList<MyAllCollectionBean.DataBean.CollectionBean> = mutableListOf()
     private var data: MutableList<Model>? = mutableListOf()
     private var glm: GridLayoutManager? = null
+
     fun create(): GoodsDelegate? {
         return GoodsDelegate()
     }

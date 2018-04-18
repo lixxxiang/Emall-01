@@ -124,6 +124,9 @@
                 tools:ignore="NotSibling">
 
                 <RelativeLayout
+                    android:id="@+id/classify_recommand_rl"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:background="#FFFFFF"
@@ -153,7 +156,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
-
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -186,6 +188,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/classify_horizontal_scrollview_ll" />
+
+            <RelativeLayout
+                android:id="@+id/classify_mask_rl"
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/classify_horizontal_scrollview_ll"
+                android:clickable="true"
+                android:focusable="true">
+                <GridView
+                    android:background="#FFFFFF"
+                    android:id="@+id/classify_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:numColumns="6"/>
+                <RelativeLayout
+                    android:layout_below="@+id/classify_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="#80000000" />
+            </RelativeLayout>
+
 
         </RelativeLayout>
 

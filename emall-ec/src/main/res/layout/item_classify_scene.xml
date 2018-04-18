@@ -12,7 +12,6 @@
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/classify_1"
             android:id="@+id/item_classify_iv"/>
 
         <RelativeLayout

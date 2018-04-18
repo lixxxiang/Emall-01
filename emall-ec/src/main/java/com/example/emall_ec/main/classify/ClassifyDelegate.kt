@@ -30,6 +30,7 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.classify.adapter.GridViewAdapter
 import com.example.emall_ec.main.classify.data.*
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
@@ -70,6 +71,13 @@ class ClassifyDelegate : EmallDelegate() {
     var param_type = String()
     var param_pageSize = String()
     var param_pageNum = String()
+
+    private var adapter: GridViewAdapter? = null
+
+    var sceneGlm : GridLayoutManager ?= null
+    var videoGlm : GridLayoutManager ?= null
+
+
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
     }
@@ -79,7 +87,17 @@ class ClassifyDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        getData()
+        if (arguments.getString("TYPE") == "SCENE") {
+            initSceneGlm()
+            getData("",
+                    "","",
+                    "","",
+                    "","",
+                    "0","10","1")
+        } else if (arguments.getString("TYPE") == "VIDEO") {
+            initVideoGlm()
+        }
+
 
 
         classify_toolbar.title = ""
@@ -100,6 +118,9 @@ class ClassifyDelegate : EmallDelegate() {
         classify_down_btn.setOnClickListener {
             classify_appbar.setExpanded(false)
             classify_sv.scrollTo(0, viewHeight + DimenUtil().dip2px(context, 6F))
+            adapter = GridViewAdapter(activity, cityName)
+            classify_gv.adapter = adapter
+            classify_mask_rl.visibility = View.VISIBLE
         }
 
         classify_toolbar.setNavigationOnClickListener {
@@ -152,18 +173,53 @@ class ClassifyDelegate : EmallDelegate() {
                 }
             }
         })
+
+        classify_recommand_rl.setOnClickListener{
+            classify_recommand_tv.text = getString(R.string.recommand)
+            if(!data!!.isEmpty())
+                data!!.clear()
+            getData("",
+                    "","",
+                    "","",
+                    "","",
+                    "0","10","1")
+        }
+
     }
 
-    private fun getData() {
+    private fun initVideoGlm() {
+        videoGlm = GridLayoutManager(context, 1)
+        videoGlm!!.isSmoothScrollbarEnabled = true
+        videoGlm!!.isAutoMeasureEnabled = true
+        classify_rv.addItemDecoration(GridSpacingItemDecoration(1, DimenUtil().dip2px(context, 14F), true))
+        classify_rv.layoutManager = videoGlm
+        classify_rv.setHasFixedSize(true)
+        classify_rv.isNestedScrollingEnabled = false
+    }
+
+    private fun initSceneGlm() {
+        sceneGlm = GridLayoutManager(context, 2)
+        sceneGlm!!.isSmoothScrollbarEnabled = true
+        sceneGlm!!.isAutoMeasureEnabled = true
+        classify_rv.addItemDecoration(GridSpacingItemDecoration(2, DimenUtil().dip2px(context, 14F), true))
+        classify_rv.layoutManager = sceneGlm
+        classify_rv.setHasFixedSize(true)
+        classify_rv.isNestedScrollingEnabled = false
+    }
+
+    private fun getData(param_scopeGeo: String,
+                        param_productType: String, param_resolution: String,
+                        param_satelliteId: String, param_startTime: String,
+                        param_endTime: String, param_cloud: String,
+                        param_type: String, param_pageSize: String, param_pageNum: String) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.sceneSearch("",
-                "","",
-                "","",
-                "","",
-                "0","10","1")
+        val call = apiService!!.sceneSearch(param_scopeGeo,
+                param_productType, param_resolution,
+                param_satelliteId, param_startTime,
+                param_endTime, param_cloud,
+                param_type, param_pageSize, param_pageNum)
         call.enqueue(object : retrofit2.Callback<SceneSearch> {
-
             override fun onResponse(call: retrofit2.Call<SceneSearch>, response: retrofit2.Response<SceneSearch>) {
                 if (response.body() != null) {
                     EmallLogger.d(response.body()!!.data.searchReturnDtoList[0].thumbnailUrl)
@@ -198,7 +254,7 @@ class ClassifyDelegate : EmallDelegate() {
                             EmallLogger.d(response)
                             val size = getRecommendCitiesBean.data.size
                             for (i in 0 until size) {
-//                                cityName!!.add(getRecommendCitiesBean.data[i].cityName)
+                                cityName!!.add(getRecommendCitiesBean.data[i].cityName)
                                 val topRl = RelativeLayout(activity)
                                 topRl.id = i
                                 val topRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT)
@@ -208,7 +264,13 @@ class ClassifyDelegate : EmallDelegate() {
                                 topRl.isFocusable = true
                                 topRl.setOnClickListener {
                                     classify_recommand_tv.text = getRecommendCitiesBean.data[i].cityName
-                                    getData()
+                                    if(!data!!.isEmpty())
+                                        data!!.clear()
+                                    getData(getRecommendCitiesBean.data[i].geo,
+                                            "","",
+                                            "","",
+                                            "","",
+                                            "0","10","1")
                                 }
                                 classify_ll.addView(topRl, topRlParams)
                                 val tv = AppCompatTextView(activity)
@@ -234,8 +296,6 @@ class ClassifyDelegate : EmallDelegate() {
                 })
                 .build()
                 .get()
-
-
     }
 
     private fun getSceneData() {
@@ -275,24 +335,10 @@ class ClassifyDelegate : EmallDelegate() {
 
     private fun initRecyclerView(type: String) {
         if (type == "VIDEO") {
-            val glm = GridLayoutManager(context, 1)
-            glm.isSmoothScrollbarEnabled = true
-            glm.isAutoMeasureEnabled = true
-            classify_rv.addItemDecoration(GridSpacingItemDecoration(1, DimenUtil().dip2px(context, 14F), true))
-            classify_rv.layoutManager = glm
-            classify_rv.setHasFixedSize(true)
-            classify_rv.isNestedScrollingEnabled = false
-            videoAdapter = VideoClassifyAdapter(R.layout.item_classify_video, data, glm)
+            videoAdapter = VideoClassifyAdapter(R.layout.item_classify_video, data, videoGlm)
             classify_rv.adapter = videoAdapter
         } else if (type == "SCENE") {
-            val glm = GridLayoutManager(context, 2)
-            glm.isSmoothScrollbarEnabled = true
-            glm.isAutoMeasureEnabled = true
-            classify_rv.addItemDecoration(GridSpacingItemDecoration(2, DimenUtil().dip2px(context, 14F), true))
-            classify_rv.layoutManager = glm
-            classify_rv.setHasFixedSize(true)
-            classify_rv.isNestedScrollingEnabled = false
-            sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, glm)
+            sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
             classify_rv.adapter = sceneAdapter
         }
 
