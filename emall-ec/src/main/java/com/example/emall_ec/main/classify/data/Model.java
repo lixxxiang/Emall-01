@@ -10,6 +10,15 @@ public class Model {
     private String time;
     private String title;
     private String productId;
+    private String productType;
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
 
     public String getProductId() {
         return productId;

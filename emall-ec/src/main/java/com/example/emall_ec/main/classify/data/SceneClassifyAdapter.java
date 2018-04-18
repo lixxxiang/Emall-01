@@ -3,6 +3,7 @@ package com.example.emall_ec.main.classify.data;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -32,9 +33,25 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
     protected void convert(BaseViewHolder helper, Model item) {
         ViewGroup.LayoutParams parm = helper.getView(R.id.item_classify_iv).getLayoutParams();
         parm.height = glm.getWidth() / 2 - helper.getView(R.id.item_classify_iv).getPaddingLeft();
-        helper.setText(R.id.item_classify_price_tv, item.getPrice());
+
         helper.setText(R.id.item_classify_time_tv, item.getTime());
 
+        if (!item.getProductType().equals("3")){
+            helper.setText(R.id.item_classify_price_tv, item.getPrice());
+            helper.getView(R.id.item_classify_video_mask_rl).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.item_classify_video_playbtn_rl).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.item_classify_video_title_tv).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.item_classify_video_price_tv).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.item_classify_price_tv).setVisibility(View.VISIBLE);
+        }else{
+            helper.setText(R.id.item_classify_video_title_tv, item.getTitle());
+            helper.setText(R.id.item_classify_video_price_tv, item.getPrice());
+            helper.getView(R.id.item_classify_video_mask_rl).setVisibility(View.VISIBLE);
+            helper.getView(R.id.item_classify_video_playbtn_rl).setVisibility(View.VISIBLE);
+            helper.getView(R.id.item_classify_price_tv).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.item_classify_video_price_tv).setVisibility(View.VISIBLE);
+            helper.getView(R.id.item_classify_video_title_tv).setVisibility(View.VISIBLE);
+        }
         Glide.with(this.mContext)
                 .load(item.getImageUrl())
                 .into((ImageView) helper.getView(R.id.item_classify_iv));

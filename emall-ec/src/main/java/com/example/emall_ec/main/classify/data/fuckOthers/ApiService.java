@@ -3,8 +3,10 @@ package com.example.emall_ec.main.classify.data.fuckOthers;
 
 import com.example.emall_ec.main.classify.data.SceneDetail;
 import com.example.emall_ec.main.classify.data.SceneSearch;
+import com.example.emall_ec.main.classify.data.VideoHomeBean;
 import com.example.emall_ec.main.classify.data.VideoSearch;
 import com.example.emall_ec.main.detail.data.SceneDetailBean;
+import com.example.emall_ec.main.detail.data.VideoDetailBean;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -24,6 +26,10 @@ public interface ApiService {
     Call<SceneDetailBean> sceneDetail(@Query("productId") String targetSentence,
                                       @Query("type") String targetSentence2);
 
+    @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
+    @GET("global/videoDetail")
+    Call<VideoDetailBean> videoDetail(@Query("productId") String targetSentence);
+
     @POST("/global/mobile/sceneSearch")
     @FormUrlEncoded
     Call<SceneSearch> sceneSearch(@Field("scopeGeo") String targetSentence,
@@ -41,4 +47,8 @@ public interface ApiService {
     @FormUrlEncoded
     Call<VideoSearch> videoSearch(@Field("geo") String targetSentence,
                                   @Field("type") String targetSentence2);
+
+    @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
+    @GET("global/videoHome")
+    Call<VideoHomeBean> videoHome(@Query("type") String targetSentence);
 }

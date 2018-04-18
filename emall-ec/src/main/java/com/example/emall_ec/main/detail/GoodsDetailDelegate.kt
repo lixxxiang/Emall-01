@@ -29,6 +29,7 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.R.id.*
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
@@ -48,7 +49,9 @@ import retrofit2.Retrofit
 class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     var sceneDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var videoDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var sceneDetail = SceneDetailBean()
+    var videoDetail = VideoDetailBean()
     var lati = "S"
     var longi = "W"
     var mMapView: MapView? = null
@@ -67,6 +70,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var addCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var cancelCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commonBean = CommonBean()
+    var type = String()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -83,11 +87,21 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         mBaiduMap = mMapView!!.map
         initViews()
         resolveConflict()
-        sceneDetailParams!!["productId"] = arguments.getString("productId")
-        productId = arguments.getString("productId")
-        sceneDetailParams!!["type"] = arguments.getString("type")
-        EmallLogger.d(sceneDetailParams!!["productId"]!!)
-        getData(sceneDetailParams!!)
+        type = arguments.getString("type")
+        if (type == "1") {
+            sceneDetailParams!!["productId"] = arguments.getString("productId")
+            productId = arguments.getString("productId")
+            sceneDetailParams!!["type"] = "1"
+            EmallLogger.d(sceneDetailParams!!["productId"]!!)
+            getData(sceneDetailParams!!)
+        } else if (type == "3") {
+            videoDetailParams!!["productId"] = arguments.getString("productId")
+            productId = arguments.getString("productId")
+            videoDetailParams!!["type"] = "0"
+            EmallLogger.d(videoDetailParams!!["productId"]!!)
+            getVideoData(videoDetailParams!!)
+        }
+
         video_goods_buy_now_btn.setOnClickListener {
             commoditySubmitDemand()
         }
@@ -106,21 +120,21 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_detail_star_iv.setOnClickListener {
-            if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+            if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                 val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                 val bundle = Bundle()
                 bundle.putString("PAGE_FROM", "DETAIL")
                 delegate.arguments = bundle
                 start(delegate)
-            }else{
+            } else {
                 EmallLogger.d(flag)
-                if (flag){
+                if (flag) {
                     /**
                      * signed in
                      */
                     cancelCollection(productId, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
                     video_detail_star_iv.setBackgroundResource(R.drawable.collection)
-                }else{
+                } else {
                     /**
                      * no signed in
                      */
@@ -136,6 +150,85 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
     }
 
+    private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
+        EmallLogger.d(sceneDetailParams["type"]!!)
+
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
+        call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
+            override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
+                if (response.body() != null) {
+                    EmallLogger.d(response.body()!!.data.imageDetailUrl)
+                    sceneDetail = response.body()!!
+                    EmallLogger.d(sceneDetail)
+                    setSceneData(sceneDetail)
+//                        videoSearch = response.body()!!
+//                        bundle!!.putString("type","0")
+//                        bundle.putSerializable("videoData", videoSearch)
+//                        delegate.arguments = bundle
+//                        (DELEGATE as EcBottomDelegate).start(delegate)
+                } else {
+                    EmallLogger.d("errpr")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<SceneDetailBean>, throwable: Throwable) {}
+        })
+        if (scene_mark.visibility == View.INVISIBLE)
+            scene_mark.visibility = View.VISIBLE
+        if (scene_goods_detail_mask_iv.visibility == View.INVISIBLE)
+            scene_goods_detail_mask_iv.visibility = View.VISIBLE
+        if (scene_rl.visibility == View.GONE)
+            scene_rl.visibility = View.VISIBLE
+        video_mark.visibility = View.INVISIBLE
+        video_goods_detail_mask_iv.visibility = View.INVISIBLE
+        play_btn.visibility = View.INVISIBLE
+        video_rl.visibility = View.GONE
+
+
+    }
+
+
+    private fun getVideoData(videoDetailParams: WeakHashMap<String, Any>) {
+        EmallLogger.d(videoDetailParams["type"]!!)
+
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.videoDetail(arguments.getString("productId"))
+        call.enqueue(object : retrofit2.Callback<VideoDetailBean> {
+            override fun onResponse(call: retrofit2.Call<VideoDetailBean>, response: retrofit2.Response<VideoDetailBean>) {
+                if (response.body() != null) {
+                    EmallLogger.d(response.body()!!.data.imageDetailUrl)
+                    videoDetail = response.body()!!
+                    EmallLogger.d(videoDetail)
+                    setVideoData(videoDetail)
+//                        videoSearch = response.body()!!
+//                        bundle!!.putString("type","0")
+//                        bundle.putSerializable("videoData", videoSearch)
+//                        delegate.arguments = bundle
+//                        (DELEGATE as EcBottomDelegate).start(delegate)
+                } else {
+                    EmallLogger.d("errpr")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<VideoDetailBean>, throwable: Throwable) {}
+        })
+        if (video_mark.visibility == View.INVISIBLE)
+            video_mark.visibility = View.VISIBLE
+        if (video_goods_detail_mask_iv.visibility == View.INVISIBLE)
+            video_goods_detail_mask_iv.visibility = View.VISIBLE
+        if (play_btn.visibility == View.INVISIBLE)
+            play_btn.visibility = View.VISIBLE
+        if (video_rl.visibility == View.GONE)
+            video_rl.visibility = View.VISIBLE
+        scene_mark.visibility = View.INVISIBLE
+        scene_goods_detail_mask_iv.visibility = View.INVISIBLE
+        scene_rl.visibility = View.GONE
+
+    }
+
     private fun cancelCollection(pid: String?, uid: String?) {
         cancelCollectionParams!!["productId"] = pid
         cancelCollectionParams!!["userId"] = uid
@@ -146,7 +239,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
-                        if(commonBean.message == "success"){
+                        if (commonBean.message == "success") {
                             flag = false
                         }
                     }
@@ -178,7 +271,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
-                        if(commonBean.message == "success"){
+                        if (commonBean.message == "success") {
                             flag = true
                         }
                     }
@@ -312,7 +405,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         mBaiduMap!!.addOverlay(polygonOption)
 
 
-        val latlng = LatLng( (java.lang.Double.parseDouble(geo[1][1]) + java.lang.Double.parseDouble(geo[2][1]))/2,(java.lang.Double.parseDouble(geo[3][0]) + java.lang.Double.parseDouble(geo[2][0]))/2)
+        val latlng = LatLng((java.lang.Double.parseDouble(geo[1][1]) + java.lang.Double.parseDouble(geo[2][1])) / 2, (java.lang.Double.parseDouble(geo[3][0]) + java.lang.Double.parseDouble(geo[2][0])) / 2)
         val mMapStatus: MapStatus = MapStatus.Builder().target(latlng).zoom(12F).build()
         val mapStatusUpdate: MapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
         mBaiduMap!!.setMapStatus(mapStatusUpdate)
@@ -379,38 +472,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
     }
 
-    private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
-        EmallLogger.d(sceneDetailParams["type"]!!)
-        if (sceneDetailParams["type"] == "1") {
-            retrofit = NetUtils.getRetrofit()
-            apiService = retrofit!!.create(ApiService::class.java)
-            val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
-            call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
-                override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
-                    if (response.body() != null) {
-                        EmallLogger.d(response.body()!!.data.imageDetailUrl)
-                        sceneDetail = response.body()!!
-                        EmallLogger.d(sceneDetail)
-                        setSceneData(sceneDetail)
-//                        videoSearch = response.body()!!
-//                        bundle!!.putString("type","0")
-//                        bundle.putSerializable("videoData", videoSearch)
-//                        delegate.arguments = bundle
-//                        (DELEGATE as EcBottomDelegate).start(delegate)
-                    } else {
-                        EmallLogger.d("errpr")
-                    }
-                }
-
-                override fun onFailure(call: retrofit2.Call<SceneDetailBean>, throwable: Throwable) {}
-            })
-            video_mark.visibility = View.INVISIBLE
-            video_goods_detail_mask_iv.visibility = View.INVISIBLE
-            play_btn.visibility = View.INVISIBLE
-            video_rl.visibility = View.GONE
-        }
-
-    }
 
     private fun resolveConflict() {
 
@@ -447,7 +508,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
             getCollectionMark(productId, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
         }
     }
@@ -463,10 +524,10 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         getCollectionMarkBean = Gson().fromJson(response, GetCollectionMarkBean::class.java)
                         if (getCollectionMarkBean.message == "success") {
                             EmallLogger.d(response)
-                            if(getCollectionMarkBean.data.collectionMark == 1){
+                            if (getCollectionMarkBean.data.collectionMark == 1) {
                                 video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
                                 flag = true
-                            }else{
+                            } else {
                                 video_detail_star_iv.setBackgroundResource(R.drawable.collection)
                                 flag = false
                             }

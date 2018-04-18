@@ -18,6 +18,7 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.collect.data.MyAllCollectionBean
 import com.example.emall_ec.main.search.SearchResultDelegate
 import com.example.emall_ec.main.sign.SignHandler
@@ -27,32 +28,33 @@ import kotlinx.android.synthetic.main.delegate_goods.*
 import kotlinx.android.synthetic.main.delegate_optics1.*
 import java.util.*
 
-class GoodsDelegate :EmallDelegate() {
+class GoodsDelegate : EmallDelegate() {
 
     private var flag = false
-    var myAllCollectionParams : WeakHashMap<String, Any> ?= WeakHashMap()
+    var myAllCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var myAllCollectionBean = MyAllCollectionBean()
     private var myAllCollectionList: MutableList<MyAllCollectionBean.DataBean.CollectionBean> = mutableListOf()
     private var data: MutableList<Model>? = mutableListOf()
-
-    fun create(): GoodsDelegate?{
+    private var glm: GridLayoutManager? = null
+    fun create(): GoodsDelegate? {
         return GoodsDelegate()
     }
+
     override fun setLayout(): Any? {
         return R.layout.delegate_goods
     }
 
     override fun initial() {
         goods_gray_tv.setOnClickListener {
-            if (!flag){
-                goods_top_ll.visibility = View.VISIBLE
-                goods_mask_rl.visibility = View.VISIBLE
+            if (!flag) {
+//                goods_top_ll.visibility = View.VISIBLE
+                goods_screen_rl.visibility = View.VISIBLE
                 goods_gray_tv.setTextColor(Color.parseColor("#B80017"))
                 goods_gray_iv.setBackgroundResource(R.drawable.ic_up_red)
                 flag = true
-            }else{
-                goods_top_ll.visibility = View.INVISIBLE
-                goods_mask_rl.visibility = View.INVISIBLE
+            } else {
+//                goods_top_ll.visibility = View.INVISIBLE
+                goods_screen_rl.visibility = View.INVISIBLE
                 goods_gray_tv.setTextColor(Color.parseColor("#9B9B9B"))
                 goods_gray_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 flag = false
@@ -60,6 +62,13 @@ class GoodsDelegate :EmallDelegate() {
 
         }
 
+        glm = GridLayoutManager(context, 2)
+        glm!!.isSmoothScrollbarEnabled = true
+        glm!!.isAutoMeasureEnabled = true
+        goods_rv.addItemDecoration(GridSpacingItemDecoration(2, 30, true))
+        goods_rv.layoutManager = glm
+        goods_rv.setHasFixedSize(true)
+        goods_rv.isNestedScrollingEnabled = false
         getData()
     }
 
@@ -81,12 +90,14 @@ class GoodsDelegate :EmallDelegate() {
                             EmallLogger.d(response)
                             myAllCollectionList = myAllCollectionBean.data.collection
                             val size = myAllCollectionBean.data.collection.size
-                            for (i in 0 until size){
+                            for (i in 0 until size) {
                                 val model = Model()
                                 model.imageUrl = myAllCollectionBean.data.collection[i].thumbnailUrl
                                 model.price = myAllCollectionBean.data.collection[i].originalPrice
                                 model.time = myAllCollectionBean.data.collection[i].shootingTime
                                 model.productId = myAllCollectionBean.data.collection[i].productId
+                                model.productType = myAllCollectionBean.data.collection[i].productType
+                                model.title = myAllCollectionBean.data.collection[i].title
                                 data!!.add(model)
                             }
                             initRecyclerView(data!!)
@@ -106,23 +117,26 @@ class GoodsDelegate :EmallDelegate() {
     }
 
     private fun initRecyclerView(data: MutableList<Model>) {
-        val glm = GridLayoutManager(context, 2)
-        glm.isSmoothScrollbarEnabled = true
-        glm.isAutoMeasureEnabled = true
-        goods_rv.addItemDecoration(GridSpacingItemDecoration(2, 30, true))
-        goods_rv.layoutManager = glm
-        goods_rv.setHasFixedSize(true)
-        goods_rv.isNestedScrollingEnabled = false
+
         val mAdapter: SceneClassifyAdapter? = SceneClassifyAdapter(R.layout.item_classify_scene, data, glm)
         goods_rv.adapter = mAdapter
-
+        mAdapter!!.notifyDataSetChanged()
         mAdapter!!.setOnItemClickListener { adapter, view, position ->
             val delegate = GoodsDetailDelegate().create()
             val bundle: Bundle? = Bundle()
             bundle!!.putString("productId", data[position].productId)
-            bundle.putString("type", "1")
+            bundle.putString("type", data[position].productType)
             delegate!!.arguments = bundle
-            getParentDelegate<SearchResultDelegate>().start(delegate)
+            getParentDelegate<CollectionDelegate>().start(delegate)
         }
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        if (!data!!.isEmpty()) {
+            data!!.clear()
+        }
+        getData()
+
     }
 }

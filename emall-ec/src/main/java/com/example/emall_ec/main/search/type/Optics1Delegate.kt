@@ -339,6 +339,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                                 model.price = sceneSearch.data.searchReturnDtoList[i].price
                                 model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
                                 model.productId = sceneSearch.data.searchReturnDtoList[i].productId
+                                model.productType = "1"
                                 data!!.add(model)
                             }
                             initRecyclerView(data!!)

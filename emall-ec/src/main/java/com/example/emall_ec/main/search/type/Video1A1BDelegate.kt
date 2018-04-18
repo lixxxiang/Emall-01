@@ -58,6 +58,7 @@ class Video1A1BDelegate : EmallDelegate(){
                                 model.price = videoSearchBean.data[i].price
                                 model.time = videoSearchBean.data[i].startTime
                                 model.title = videoSearchBean.data[i].title
+                                model.productType = "3"
                                 data!!.add(model)
                             }
                             initRecyclerView(context, data!!, video1a1b_rv)
