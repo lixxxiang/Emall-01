@@ -29,6 +29,8 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_ec.R.id.classify_toolbar
+import com.example.emall_ec.R.id.classify_toolbar_search_iv
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.classify.adapter.GridViewAdapter
@@ -164,27 +166,13 @@ class ClassifyDelegate : EmallDelegate() {
             _mActivity.onBackPressed()
         }
 
-        if (sceneAdapter != null) {
-            sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-                val delegate = GoodsDetailDelegate().create()
-                val bundle: Bundle? = Bundle()
-                bundle!!.putString("productId", productId!![position])
-                bundle.putString("type", "1")
-                delegate!!.arguments = bundle
-                start(delegate)
-            }
-        }
+//        if (sceneAdapter != null) {
 
-        if (videoAdapter != null) {
-            videoAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-                val delegate = GoodsDetailDelegate().create()
-                val bundle: Bundle? = Bundle()
-                bundle!!.putString("productId", productId!![position])
-                bundle.putString("type", "3")
-                delegate!!.arguments = bundle
-                start(delegate)
-            }
-        }
+//        }
+
+//        if (videoAdapter != null) {
+
+//        }
 
         classify_appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             @RequiresApi(Build.VERSION_CODES.M)
@@ -413,9 +401,29 @@ class ClassifyDelegate : EmallDelegate() {
         if (type == "VIDEO") {
             videoAdapter = VideoClassifyAdapter(R.layout.item_classify_video, data, videoGlm)
             classify_rv.adapter = videoAdapter
+            videoAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+                val delegate = GoodsDetailDelegate().create()
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("productId", productId!![position])
+                bundle.putString("type", "3")
+                delegate!!.arguments = bundle
+                start(delegate)
+            }
         } else if (type == "SCENE") {
             sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
             classify_rv.adapter = sceneAdapter
+            sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+                val delegate = GoodsDetailDelegate().create()
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("productId", productId!![position])
+
+                if (arguments.getString("TYPE") == "NOCTILUCENCE"){
+                    bundle.putString("type", "2")
+                }else
+                    bundle.putString("type", "1")
+                delegate!!.arguments = bundle
+                start(delegate)
+            }
         }
     }
 

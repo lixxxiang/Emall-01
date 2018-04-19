@@ -52,6 +52,9 @@
     <string name="service_time">服务时间</string>
     <string name="service_time_detail">工作日 08:30 - 17:30</string>
     <string name="service_time_detail_2">服务时间：工作日 08:30 - 17:30</string>
+    <string name="fake_satellite1">1JL103B卫星 遥测信号正常</string>
+    <string name="fake_satellite2">2JL103B卫星 遥测信号正常</string>
+    <string name="fake_satellite3">3JL103B卫星 遥测信号正常</string>
 
     <string name="to_download">前往下载</string>
     <string name="delete_order">删除订单</string>

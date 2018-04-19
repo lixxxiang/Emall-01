@@ -88,7 +88,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         initViews()
         resolveConflict()
         type = arguments.getString("type")
-        if (type == "1") {
+        if (type == "1" || type == "2") {
             sceneDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
             sceneDetailParams!!["type"] = "1"
@@ -155,11 +155,11 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
+        EmallLogger.d(String.format("%s %s",arguments.getString("productId"), arguments.getString("type")))
         val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
                 if (response.body() != null) {
-                    EmallLogger.d(response.body()!!.data.imageDetailUrl)
                     sceneDetail = response.body()!!
                     EmallLogger.d(sceneDetail)
                     setSceneData(sceneDetail)

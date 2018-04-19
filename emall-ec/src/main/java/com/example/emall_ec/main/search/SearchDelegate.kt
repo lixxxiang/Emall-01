@@ -106,6 +106,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 pt.x = 0
                 pt.y = 0
                 val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
+
                 lati_lt = ll.latitude
                 longi_lt = ll.longitude
 
