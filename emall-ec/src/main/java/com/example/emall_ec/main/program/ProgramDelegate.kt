@@ -16,6 +16,7 @@ import com.example.emall_core.util.view.TextSwitcherView
 import java.util.ArrayList
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.hardware.Sensor
@@ -24,6 +25,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.Image
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
@@ -78,17 +80,23 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     private var rightRl: RelativeLayout? = null
     private var bottomRl: RelativeLayout? = null
     private var satelliteImageView: ImageView? = null
+    private var move: ImageView? = null
     private var zoomImageView: ImageView? = null
     private var scrollTextView: TextSwitcherView? = null
-    private var title: TextView?= null
-    private var nextStep: TextView?= null
+    private var title: TextView? = null
+    private var nextStep: TextView? = null
     private var rulerRl: RelativeLayout? = null
     private var rular: RulerView? = null
     private var rular2: RulerView? = null
-    private var r1Tv: TextView?= null
-    private var r2Tv: TextView?= null
+    private var r1Tv: TextView? = null
+    private var r2Tv: TextView? = null
     private var zoomIn: AppCompatButton? = null
     private var zoomOut: AppCompatButton? = null
+    private var scopeGeo = String()
+    private var angle = "10"
+    private var cloud = "10"
+    private var center = String()
+
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
@@ -121,6 +129,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         program_back_btn_rl.setOnClickListener {
             if (level == 1) {
                 pop()
+                handler.removeCallbacks(task)
             } else if (level == 2) {
                 level = 1
                 program_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
@@ -145,12 +154,29 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 mUiSettings.isScrollGesturesEnabled = true
                 mUiSettings.isOverlookingGesturesEnabled = true
                 mUiSettings.isZoomGesturesEnabled = true
+                move!!.visibility = View.VISIBLE
+                zoomImageView!!.visibility = View.VISIBLE
+                zoomIn!!.visibility = View.VISIBLE
+                zoomOut!!.visibility = View.VISIBLE
             }
         }
         mSensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         initViews()
         handlePermisson()
         initMap()
+        task = object : Runnable {
+            override fun run() {
+                // TODO Auto-generated method stub
+                handler.postDelayed(this, 3 * 1000)
+                val curTranslationY = move!!.translationY
+                val animator: ObjectAnimator = ObjectAnimator.ofFloat(move!!, "translationY", curTranslationY, DimenUtil().dip2px(context, 236F).toFloat(), curTranslationY)
+                animator.duration = 3000
+                animator.start()
+            }
+        }
+
+        handler.post(task)
+
         mBaiduMap = program_mapview.map
         val listener: BaiduMap.OnMapStatusChangeListener = object : BaiduMap.OnMapStatusChangeListener {
             override fun onMapStatusChangeStart(p0: MapStatus?) {}
@@ -171,12 +197,15 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 lati_rb_screen = ll3.latitude
                 longi_rb_screen = ll3.longitude
 
-                var leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
-                var rightBottom = LatLng(lati_rb_screen!!, longi_rb_screen!!)
+                val geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
+                scopeGeo = geoFormat(geoString)
+                center = String.format("%s,%s", (longi_lt_screen!! + longi_rb_screen!!) / 2, (lati_lt_screen!! + lati_rb_screen!!) / 2)
+                val leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
+                val rightBottom = LatLng(lati_rb_screen!!, longi_rb_screen!!)
                 EmallLogger.d(DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000)
                 area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
-                var areaString = area.toString()
-                var temp = areaString.substring(0, areaString.indexOf(".") + 3)
+                val areaString = area.toString()
+                val temp = areaString.substring(0, areaString.indexOf(".") + 3)
                 if (areaString.contains("E")) {
                     areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
                 } else {
@@ -219,7 +248,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         mUiSettings.isZoomGesturesEnabled = true
     }
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "ApplySharedPref")
     private fun initViews() {
         topRl = RelativeLayout(activity)
         topRl!!.id = 1
@@ -269,7 +298,22 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         zoomIn!!.layoutParams = zoomInParams
         rightRl!!.addView(zoomIn, zoomInParams)
         zoomIn!!.setOnClickListener {
-            EmallLogger.d("zoomin")
+            val zoomIn: MapStatusUpdate? = MapStatusUpdateFactory.zoomIn()
+            mBaiduMap!!.animateMapStatus(zoomIn)
+        }
+
+        zoomOut = AppCompatButton(activity)
+        val zoomOutParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 28F), DimenUtil().dip2px(context, 30F))
+        zoomOutParams.addRule(RelativeLayout.BELOW, topRl!!.id)
+        zoomOutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        zoomOutParams.addRule(RelativeLayout.ALIGN_BOTTOM, zoomImageView!!.id)
+        zoomOutParams.addRule(RelativeLayout.ALIGN_LEFT, zoomImageView!!.id)
+        zoomOut!!.setBackgroundColor(Color.parseColor("#00000000"))
+        zoomOut!!.layoutParams = zoomOutParams
+        rightRl!!.addView(zoomOut, zoomOutParams)
+        zoomOut!!.setOnClickListener {
+            val zoomOut: MapStatusUpdate? = MapStatusUpdateFactory.zoomOut()
+            mBaiduMap!!.animateMapStatus(zoomOut)
         }
 
         bottomRl = RelativeLayout(activity)
@@ -357,13 +401,13 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         br.layoutParams = tlParams
         program_root_rl.addView(br, brParams)
 
-        val move = ImageView(activity)
+        move = ImageView(activity)
         val moveParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 230F), DimenUtil().dip2px(context, 2F))
         moveParams.addRule(RelativeLayout.BELOW, topRl!!.id)
         moveParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         moveParams.setMargins(DimenUtil().dip2px(context, 2F), DimenUtil().dip2px(context, 0F), 0, 0)
-        move.setImageResource(R.drawable.move)
-        move.layoutParams = moveParams
+        move!!.setImageResource(R.drawable.move)
+        move!!.layoutParams = moveParams
         program_root_rl.addView(move, moveParams)
 
         val fakeToolbarRl = RelativeLayout(activity)
@@ -398,18 +442,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
 
 
 
-        task = object : Runnable {
-            override fun run() {
-                // TODO Auto-generated method stub
-                handler.postDelayed(this, 3 * 1000)
-                val curTranslationY = move.translationY
-                val animator: ObjectAnimator = ObjectAnimator.ofFloat(move, "translationY", curTranslationY, DimenUtil().dip2px(context, 236F).toFloat(), curTranslationY)
-                animator.duration = 3000
-                animator.start()
-            }
-        }
 
-        handler.post(task)
 
 
         rulerRl = RelativeLayout(activity)
@@ -464,6 +497,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         rular!!.setScrollingListener(object : RulerView.OnRulerViewScrollListener<String> {
             override fun onChanged(rulerView: RulerView?, oldValue: String?, newValue: String?) {
                 r1Tv!!.text = String.format("侧摆角 < %s°", (rular!!.currentValue / 100).toString())
+                angle = (rular!!.currentValue / 100).toString()
             }
 
             override fun onScrollingStarted(rulerView: RulerView?) {
@@ -514,6 +548,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         rular2!!.setScrollingListener(object : RulerView.OnRulerViewScrollListener<String> {
             override fun onChanged(rulerView: RulerView?, oldValue: String?, newValue: String?) {
                 r2Tv!!.text = String.format("云量 < %s°", (rular2!!.currentValue / 100).toString())
+                cloud = (rular2!!.currentValue / 100).toString()
             }
 
             override fun onScrollingStarted(rulerView: RulerView?) {
@@ -548,12 +583,37 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
             mUiSettings.isScrollGesturesEnabled = false
             mUiSettings.isOverlookingGesturesEnabled = false
             mUiSettings.isZoomGesturesEnabled = false
+            move!!.visibility = View.INVISIBLE
+            zoomImageView!!.visibility = View.INVISIBLE
+            zoomIn!!.visibility = View.INVISIBLE
+            zoomOut!!.visibility = View.INVISIBLE
+
+
         }
 
         nextStep!!.setOnClickListener {
             val delegate: ProgramParamsDelegate = ProgramParamsDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("scopeGeo", scopeGeo)
+            bundle.putString("angle", angle)
+            bundle.putString("cloud", cloud)
+            bundle.putString("center", center)
+            delegate.arguments = bundle
             start(delegate)
         }
+    }
+
+    fun geoFormat(geo: String): String {
+        val prefix = "{\"type\":\"Polygon\",\"coordinates\":[["
+        val suffix = "]]}"
+        val geoArray = geo.split(",".toRegex())
+        val data = "[" + geoArray[0] + "," + geoArray[1] +
+                "],[" + geoArray[2] + "," + geoArray[1] +
+                "],[" + geoArray[2] + "," + geoArray[3] +
+                "],[" + geoArray[0] + "," + geoArray[3] +
+                "],[" + geoArray[0] + "," + geoArray[1] +
+                "]"
+        return String.format("%s%s%s", prefix, data, suffix)
     }
 
     override fun onSupportVisible() {
@@ -563,7 +623,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
 
     override fun onSupportInvisible() {
         super.onSupportInvisible()
-        handler.removeCallbacks(task)
+//        handler.removeCallbacks(task)
     }
 
     inner class MyLocationListenner : BDLocationListener {

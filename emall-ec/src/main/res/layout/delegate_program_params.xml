@@ -62,7 +62,17 @@
                 android:layout_height="31dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical">
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_next_step_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next_step"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14dp"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 

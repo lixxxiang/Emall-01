@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.program
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
@@ -8,6 +9,13 @@ import kotlinx.android.synthetic.main.delegate_program_params.*
 import kotlinx.android.synthetic.main.item_program_params.*
 import me.yokeyword.fragmentation.ISupportFragment
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
+import android.view.View
+import android.widget.Toast
+import com.example.emall_core.util.log.EmallLogger
+import kotlinx.android.synthetic.main.delegate_optics1.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -23,6 +31,14 @@ class ProgramParamsDelegate : BottomItemDelegate() {
     var adapter: ProgramParamsAdapter? = null
     var titleList: MutableList<Int>? = mutableListOf()
     var detailList: MutableList<String>? = mutableListOf()
+    var mSharedPreferences: SharedPreferences? = null
+    var productType = String()
+    var startTime = String()
+    var endTime = String()
+    private var scopeGeo = String()
+    private var angle = String()
+    private var cloud = String()
+    private var center = String()
 
     fun create(): ProgramParamsDelegate? {
         return ProgramParamsDelegate()
@@ -33,7 +49,14 @@ class ProgramParamsDelegate : BottomItemDelegate() {
     }
 
 
+    @SuppressLint("ApplySharedPref")
     override fun initial() {
+
+        EmallLogger.d(String.format("%s,%s, %s", arguments.getString("scopeGeo"), arguments.getString("angle"), arguments.getString("cloud")))
+        scopeGeo = arguments.getString("scopeGeo")
+        angle = arguments.getString("angle")
+        cloud = arguments.getString("cloud")
+        center = arguments.getString("center")
 
         titleList!!.add(R.string.image_type)
         titleList!!.add(R.string.start_time)
@@ -41,6 +64,8 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         detailList!!.add("")
         detailList!!.add("")
         detailList!!.add("")
+        mSharedPreferences = activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE)
+
         adapter = ProgramParamsAdapter(titleList, detailList, context)
         program_params_listview.adapter = adapter
         program_params_listview.setOnItemClickListener { adapterView, view, i, l ->
@@ -54,6 +79,29 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             }
 
         }
+
+        program_back_btn.setOnClickListener {
+            pop()
+        }
+
+        program_next_step_tv.setOnClickListener {
+            val editor = mSharedPreferences!!.edit()
+            editor.putString("productType", productType)
+            editor.putString("scopeGeo", scopeGeo)
+            /**
+             * 在哪里登陆？？？？？？？？？？？？？？？？？
+             * 在哪里登陆？？？？？？？？？？？？？？？？？
+             * 在哪里登陆？？？？？？？？？？？？？？？？？
+             */
+            editor.putString("startTime",startTime)
+            editor.putString("endTime",endTime)
+            editor.putString("cloud",cloud)
+            editor.putString("angle",angle)
+            editor.putString("center",center)
+            editor.commit()
+
+            start(ProgramDetailDelegate().create())
+        }
     }
 
     override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
@@ -63,17 +111,22 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             when (index) {
                 "0" -> {
                     detailList!![0] = resources.getString(R.string.optics_1)
+                    productType = "1"
                     adapter!!.notifyDataSetChanged()
                 }
                 "1" -> {
                     detailList!![0] = resources.getString(R.string.noctilucence)
+                    productType = "5"
                     adapter!!.notifyDataSetChanged()
                 }
                 "2" -> {
                     detailList!![0] = resources.getString(R.string.video1A_1B)
+                    productType = "3"
                     adapter!!.notifyDataSetChanged()
                 }
             }
+            showNextStep()
+
         }
     }
 
@@ -83,17 +136,29 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         mDay = dayOfMonth
         val days: String = if (mMonth + 1 < 10) {
             if (mDay < 10)
-                StringBuffer().append(mYear).append("年").append("0").append(mMonth + 1).append("月").append("0").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append("0").append(mMonth + 1).append("-").append("0").append(mDay).toString()
             else
-                StringBuffer().append(mYear).append("年").append("0").append(mMonth + 1).append("月").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append("0").append(mMonth + 1).append("-").append(mDay).toString()
         } else {
             if (mDay < 10)
-                StringBuffer().append(mYear).append("年").append(mMonth + 1).append("月").append("0").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append("0").append(mDay).toString()
             else
-                StringBuffer().append(mYear).append("年").append(mMonth + 1).append("月").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
         detailList!![1] = days
-        adapter!!.notifyDataSetChanged()
+        EmallLogger.d(detailList!![1])
+        if (compare_date(detailList!![1], detailList!![2]) == -1) {
+            adapter!!.notifyDataSetChanged()
+            startTime = days
+
+        } else {
+            if (!detailList!![2].isEmpty()) {
+                Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
+                detailList!![1] = ""
+            }
+            adapter!!.notifyDataSetChanged()
+        }
+        showNextStep()
     }
 
     private val onDateSetListener2 = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -102,16 +167,66 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         mDay = dayOfMonth
         val days: String = if (mMonth + 1 < 10) {
             if (mDay < 10)
-                StringBuffer().append(mYear).append("年").append("0").append(mMonth + 1).append("月").append("0").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append("0").append(mMonth + 1).append("-").append("0").append(mDay).toString()
             else
-                StringBuffer().append(mYear).append("年").append("0").append(mMonth + 1).append("月").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append("0").append(mMonth + 1).append("-").append(mDay).toString()
         } else {
             if (mDay < 10)
-                StringBuffer().append(mYear).append("年").append(mMonth + 1).append("月").append("0").append(mDay).append("日").toString()
-             else
-                StringBuffer().append(mYear).append("年").append(mMonth + 1).append("月").append(mDay).append("日").toString()
+                StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append("0").append(mDay).toString()
+            else
+                StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
+
         detailList!![2] = days
-        adapter!!.notifyDataSetChanged()
+        EmallLogger.d(detailList!![2])
+
+        if (compare_date(detailList!![1], detailList!![2]) == -1) {
+            adapter!!.notifyDataSetChanged()
+            endTime = days
+        } else {
+            if (!detailList!![1].isEmpty()) {
+                Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
+                detailList!![2] = ""
+            }
+            adapter!!.notifyDataSetChanged()
+        }
+        showNextStep()
+
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun compare_date(DATE1: String, DATE2: String): Int {
+        val df = SimpleDateFormat("yyyy-MM-dd")
+        try {
+            val dt1 = df.parse(DATE1)
+            val dt2 = df.parse(DATE2)
+            EmallLogger.d(String.format("%s %s", dt1.toString(), dt2.toString()))
+
+            return when {
+                dt1.time > dt2.time -> {
+                    1
+                }
+                dt1.time < dt2.time -> {
+                    -1
+                }
+                else -> 0
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+
+        return 0
+    }
+
+    private fun checkDone(): Boolean {
+        return !detailList!![0].isEmpty() && !detailList!![1].isEmpty() && !detailList!![2].isEmpty()
+    }
+
+    private fun showNextStep() {
+        if (checkDone()) {
+            program_next_step_tv.visibility = View.VISIBLE
+        } else
+            program_next_step_tv.visibility = View.INVISIBLE
+
     }
 }
