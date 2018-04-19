@@ -4,13 +4,11 @@
     android:layout_height="match_parent"
     android:background="#333333">
 
-    <LinearLayout
+    <View
         android:id="@+id/ll_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="10dp"
-        android:layout_alignParentTop="true"
-        android:background="#333333"
-        android:orientation="vertical" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#333333" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/program_params_type_toolbar"
@@ -18,7 +16,6 @@
         android:layout_height="?android:attr/actionBarSize"
         android:layout_below="@+id/ll_bar"
         android:background="#333333">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,13 +77,26 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/program_params_type_listview"
+    <com.example.emall_core.util.view.BounceScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/program_params_type_toolbar"
         android:layout_marginTop="40dp"
-        android:background="#4A4A4A"
-        android:divider="@drawable/list_item_divider_2"
-        android:dividerHeight="1dp" />
+        android:background="#333333">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#333333">
+
+            <com.example.emall_core.util.view.CommentListView
+                android:id="@+id/program_params_type_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#4A4A4A"
+                android:divider="@drawable/list_item_divider_2"
+                android:dividerHeight="2px"/>
+        </RelativeLayout>
+
+    </com.example.emall_core.util.view.BounceScrollView>
 </RelativeLayout>

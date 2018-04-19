@@ -29,6 +29,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityCompat.requestPermissions
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatButton
 import android.util.DisplayMetrics
 import android.widget.ZoomControls
 import com.baidu.location.*
@@ -77,6 +78,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     private var rightRl: RelativeLayout? = null
     private var bottomRl: RelativeLayout? = null
     private var satelliteImageView: ImageView? = null
+    private var zoomImageView: ImageView? = null
     private var scrollTextView: TextSwitcherView? = null
     private var title: TextView?= null
     private var nextStep: TextView?= null
@@ -85,6 +87,9 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     private var rular2: RulerView? = null
     private var r1Tv: TextView?= null
     private var r2Tv: TextView?= null
+    private var zoomIn: AppCompatButton? = null
+    private var zoomOut: AppCompatButton? = null
+
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -244,6 +249,28 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
         rightRl!!.layoutParams = rightRlParams
         program_root_rl.addView(rightRl, rightRlParams)
+
+        zoomImageView = ImageView(activity)
+        zoomImageView!!.id = 10
+        val zoomImageViewParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 28F), DimenUtil().dip2px(context, 59F))
+        zoomImageViewParams.addRule(RelativeLayout.BELOW, topRl!!.id)
+        zoomImageViewParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+        zoomImageView!!.setImageResource(R.drawable.zoom)
+        zoomImageView!!.layoutParams = zoomImageViewParams
+        rightRl!!.addView(zoomImageView, zoomImageViewParams)
+
+        zoomIn = AppCompatButton(activity)
+        val zoomInParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 28F), DimenUtil().dip2px(context, 30F))
+        zoomInParams.addRule(RelativeLayout.BELOW, topRl!!.id)
+        zoomInParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        zoomInParams.addRule(RelativeLayout.ALIGN_TOP, zoomImageView!!.id)
+        zoomInParams.addRule(RelativeLayout.ALIGN_LEFT, zoomImageView!!.id)
+        zoomIn!!.setBackgroundColor(Color.parseColor("#00000000"))
+        zoomIn!!.layoutParams = zoomInParams
+        rightRl!!.addView(zoomIn, zoomInParams)
+        zoomIn!!.setOnClickListener {
+            EmallLogger.d("zoomin")
+        }
 
         bottomRl = RelativeLayout(activity)
         bottomRl!!.id = 4
