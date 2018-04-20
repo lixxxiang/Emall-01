@@ -29,7 +29,6 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_ec.R.id.*
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
@@ -48,8 +47,8 @@ import retrofit2.Retrofit
  */
 class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var OPTICS = "1"
-    var NOCTILUCENCE = "3"
-    var VIDEO = "5"
+    var NOCTILUCENCE = "5"
+    var VIDEO = "3"
     var sceneDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var videoDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var sceneDetail = SceneDetailBean()
@@ -61,6 +60,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var commoditySubmitDemandParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commoditySubmitDemandBean = CommoditySubmitDemandBean()
     var sceneData = SceneDetailBean().data
+    var videoData = VideoDetailBean().data
     var latitude = Double
     var longitude = Double
     var productId = String()
@@ -73,6 +73,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var cancelCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commonBean = CommonBean()
     var type = String()
+    var type135 = String()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -93,22 +94,27 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         if (type == "1" || type == "2") {
             sceneDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
-            if (type == "1")
+            if (type == "1"){
                 sceneDetailParams!!["type"] = OPTICS
-            else
+                type135 = OPTICS
+            }
+            else{
                 sceneDetailParams!!["type"] = NOCTILUCENCE
+                type135 = NOCTILUCENCE
+            }
             EmallLogger.d(sceneDetailParams!!["productId"]!!)
             getData(sceneDetailParams!!)
         } else if (type == "3") {
             videoDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
             videoDetailParams!!["type"] = VIDEO
+            type135 = VIDEO
             EmallLogger.d(videoDetailParams!!["productId"]!!)
             getVideoData(videoDetailParams!!)
         }
 
         goods_buy_now_btn.setOnClickListener {
-            commoditySubmitDemand()
+            commoditySubmitDemand(type135)
         }
 
         goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
@@ -295,11 +301,12 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 .post()
     }
 
-    private fun commoditySubmitDemand() {
+    private fun commoditySubmitDemand(type135: String) {
+        EmallLogger.d(type135)
         commoditySubmitDemandParams!!["productId"] = arguments.getString("productId")
         commoditySubmitDemandParams!!["geo"] = ""
         commoditySubmitDemandParams!!["status"] = "0"
-        commoditySubmitDemandParams!!["type"] = "1"//1 3 5
+        commoditySubmitDemandParams!!["type"] = type135//1 3 5
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/commoditySubmitDemand")
                 .params(commoditySubmitDemandParams!!)
@@ -309,17 +316,28 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
                         val bundle: Bundle? = Bundle()
                         bundle!!.putString("demandId", commoditySubmitDemandBean.data)
-                        bundle.putString("imageUrl", sceneData.imageDetailUrl)
-                        bundle.putString("title", sceneData.productId)
+
                         if (type == "1") {
                             bundle.putString("type", "1")
-                        } else if (type == "2") {
-                            bundle.putString("type", "3")
+                            bundle.putString("imageUrl", sceneData.imageDetailUrl)
+                            bundle.putString("title", sceneData.productId)
+                            bundle.putString("time", sceneData.centerTime)
+
+
                         } else if (type == "3") {
+                            bundle.putString("type", "3")
+                            bundle.putString("imageUrl", videoData.imageDetailUrl)
+                            bundle.putString("title", videoData.productId)
+                            bundle.putString("time", videoData.startTime)
+
+                        } else if (type == "2") {
                             bundle.putString("type", "5")
+                            bundle.putString("imageUrl", sceneData.imageDetailUrl)
+                            bundle.putString("title", sceneData.productId)
+                            bundle.putString("time", sceneData.centerTime)
+
                         }
 
-                        bundle.putString("time", sceneData.centerTime)
                         delegate.arguments = bundle
                         start(delegate)
                     }
@@ -375,28 +393,28 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
-        val data = videoDetail.data
-        EmallLogger.d(data)
-        video_detail_title_tv.text = data.title
-        detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), data.startTime)
-        detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), data.rollSatelliteAngleMajor)
+        videoData = videoDetail.data
+        EmallLogger.d(videoData)
+        video_detail_title_tv.text = videoData.title
+        detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), videoData.startTime)
+        detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), videoData.rollSatelliteAngleMajor)
 
         Glide.with(context)
-                .load(data.imageDetailUrl)
+                .load(videoData.imageDetailUrl)
                 .into(video_goods_detail_title_image)
-        drawMap(getGeo(data.geo))
-        video_detail_promotion_description_tv.text = data.promotionDescription
-        video_detail_sale_price_tv.text = String.format(resources.getString(R.string.video_detail_sale_price), data.salePrice)
-        video_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), data.originalPrice)
-        changeColor(data.serviceDescription)
-        detail_product_id_tv.text = data.productId
-        detail_satellite_tv.text = data.satelliteId
-        detail_ratio_tv.text = data.resolution
-        detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), data.size)
-        detail_cloud_tv.text = String.format(resources.getString(R.string.video_detail_cloud), data.cloud)
-        judgeLati_longi(data.latitude, data.longitude)
-        detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), data.longitude, longi, data.latitude, lati)
-        detail_coordinate_tv.text = data.sensor
+        drawMap(getGeo(videoData.geo))
+        video_detail_promotion_description_tv.text = videoData.promotionDescription
+        video_detail_sale_price_tv.text = String.format(resources.getString(R.string.video_detail_sale_price), videoData.salePrice)
+        video_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), videoData.originalPrice)
+        changeColor(videoData.serviceDescription)
+        detail_product_id_tv.text = videoData.productId
+        detail_satellite_tv.text = videoData.satelliteId
+        detail_ratio_tv.text = videoData.resolution
+        detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), videoData.size)
+        detail_cloud_tv.text = String.format(resources.getString(R.string.video_detail_cloud), videoData.cloud)
+        judgeLati_longi(videoData.latitude, videoData.longitude)
+        detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), videoData.longitude, longi, videoData.latitude, lati)
+        detail_coordinate_tv.text = videoData.sensor
     }
 
     private fun drawMap(geo: MutableList<Array<String>>) {
