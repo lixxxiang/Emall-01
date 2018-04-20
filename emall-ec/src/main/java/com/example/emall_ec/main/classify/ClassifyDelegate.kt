@@ -47,6 +47,9 @@ import retrofit2.Retrofit
  * Created by lixiang on 15/02/2018.
  */
 class ClassifyDelegate : EmallDelegate() {
+    var OPTICS = "1"
+    var NOCTILUCENCE = "5"
+    var VIDEO = "3"
     var ssp: WeakHashMap<String, Any>? = WeakHashMap()
     var DELEGATE: EmallDelegate? = null
     var sceneSearch = SceneSearch()
@@ -98,7 +101,7 @@ class ClassifyDelegate : EmallDelegate() {
                     "", "",
                     "", "",
                     "", "",
-                    "0", "10", "1")
+                    "0", "10", "1")//0是标准景
 
         } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
             classify_horizontal_scrollview_ll.visibility = View.GONE
@@ -107,7 +110,7 @@ class ClassifyDelegate : EmallDelegate() {
                     "", "",
                     "", "",
                     "", "",
-                    "2", "10", "1")
+                    "2", "10", "1")//2是夜光
         } else if (arguments.getString("TYPE") == "VIDEO") {
             classify_horizontal_scrollview_ll.visibility = View.GONE
             initVideoGlm()
@@ -177,26 +180,28 @@ class ClassifyDelegate : EmallDelegate() {
         classify_appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
-                if (state == State.EXPANDED) {
-                    activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    classify_toolbar.title = ""
-                    classify_toolbar.setNavigationIcon(R.drawable.ic_back_small)
-                    classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search)
-                } else if (state == State.COLLAPSED) {
-                    activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    if (arguments.getString("TYPE") == "SCENE") {
-                        classify_toolbar.title = getString(R.string.optics_1)
-                    } else if (arguments.getString("TYPE") == "VIDEO") {
-                        classify_toolbar.title = getString(R.string.video1A_1B)
-                    } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
-                        classify_toolbar.title = getString(R.string.noctilucence)
+                when (state) {
+                    State.EXPANDED -> {
+                        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        classify_toolbar.title = ""
+                        classify_toolbar.setNavigationIcon(R.drawable.ic_back_small)
+                        classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search)
                     }
-                    classify_toolbar.setTitleTextColor(Color.parseColor("#5C5C5C"))
-                    classify_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
-                    classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search_small_dark)
+                    State.COLLAPSED -> {
+                        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        if (arguments.getString("TYPE") == "SCENE") {
+                            classify_toolbar.title = getString(R.string.optics_1)
+                        } else if (arguments.getString("TYPE") == "VIDEO") {
+                            classify_toolbar.title = getString(R.string.video1A_1B)
+                        } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
+                            classify_toolbar.title = getString(R.string.noctilucence)
+                        }
+                        classify_toolbar.setTitleTextColor(Color.parseColor("#5C5C5C"))
+                        classify_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
+                        classify_toolbar_search_iv.setBackgroundResource(R.drawable.ic_search_small_dark)
 
-                } else {
-                    classify_toolbar.title = ""
+                    }
+                    else -> classify_toolbar.title = ""
                 }
             }
         })
@@ -405,7 +410,7 @@ class ClassifyDelegate : EmallDelegate() {
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("productId", productId!![position])
-                bundle.putString("type", "3")
+                bundle.putString("type", VIDEO)
                 delegate!!.arguments = bundle
                 start(delegate)
             }
@@ -418,9 +423,9 @@ class ClassifyDelegate : EmallDelegate() {
                 bundle!!.putString("productId", productId!![position])
 
                 if (arguments.getString("TYPE") == "NOCTILUCENCE"){
-                    bundle.putString("type", "2")
+                    bundle.putString("type", NOCTILUCENCE)
                 }else
-                    bundle.putString("type", "1")
+                    bundle.putString("type", OPTICS)
                 delegate!!.arguments = bundle
                 start(delegate)
             }

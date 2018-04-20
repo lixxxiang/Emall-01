@@ -762,7 +762,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/video_goods_buy_now_btn"
+            android:id="@+id/goods_buy_now_btn"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="match_parent"

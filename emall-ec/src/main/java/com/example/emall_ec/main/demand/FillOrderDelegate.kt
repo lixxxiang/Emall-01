@@ -41,7 +41,7 @@ class FillOrderDelegate : BottomItemDelegate() {
         }
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
         EmallLogger.d(arguments.getString("demandId"))
-        viewDemandParams!!["type"] = "1"
+        viewDemandParams!!["type"] = arguments.getString("type")// 1 3 5
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/viewDemand")
                 .params(viewDemandParams!!)
@@ -105,7 +105,7 @@ class FillOrderDelegate : BottomItemDelegate() {
         fill_order_op_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].originalPrice)
         fill_order_cp_tv.text = String.format("¥%s",viewDemandBean.data.demands[0].salePrice)
         fill_order_dp_tv.text = String.format("-¥%s",viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble())
-        fill_order_out_tv.text = String.format("-¥%s",viewDemandBean.data.demands[0].salePrice)
+        fill_order_out_tv.text = String.format("¥%s",viewDemandBean.data.demands[0].salePrice)
         fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
     }
 }

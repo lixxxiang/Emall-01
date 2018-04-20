@@ -1,6 +1,484 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:ignore="NamespaceTypo">
 
-</LinearLayout>
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"
+        android:elevation="4dp" />
+
+    <com.example.emall_core.util.view.BounceScrollView
+        android:id="@+id/program_detail_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/program_detail_bottom_bar_ll"
+        android:layout_below="@+id/program_detail_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="259dp">
+                <com.baidu.mapapi.map.MapView
+                    android:id="@+id/program_detail_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="259dp"
+                    android:clickable="true" />
+                <RelativeLayout
+                    android:id="@+id/scene_mark"
+                    android:layout_width="63dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="#B4A078">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/programming"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+                </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/scene_rl"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="#FFFFFF">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="#B80017"
+                    android:textSize="14dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_promotion_description_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="47dp"
+                    android:text="@string/time_limit"
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_sale_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="28dp"
+                    android:layout_marginTop="17dp"
+                    android:text="@string/video_detail_sale_price"
+                    android:textColor="#B80017"
+                    android:textSize="18dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_original_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/program_detail_sale_price_tv"
+                    android:layout_marginTop="46dp"
+                    android:text="@string/video_detail_original_price"
+                    android:textColor="#9B9B9B"
+                    android:textSize="14dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#F0F0F0" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="143dp"
+                android:background="#FFFFFF">
+
+                <RelativeLayout
+                    android:id="@+id/program_detail_get_ticket_rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="13dp"
+                        android:text="@string/get_ticket"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:background="@drawable/ic_foward" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_below="@+id/program_detail_get_ticket_rl"
+                    android:background="#E0E0E0" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_service_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="11dp"
+                    android:text="@string/service"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:id="@+id/dot_1"
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:layout_alignTop="@+id/program_detail_service_tv"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toRightOf="@+id/program_detail_service_tv"
+                    android:background="@drawable/dot" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_service_1_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/program_detail_service_tv"
+                    android:layout_marginLeft="36dp"
+                    android:layout_toRightOf="@+id/program_detail_service_tv"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:id="@+id/dot_2"
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:layout_alignLeft="@+id/dot_1"
+                    android:layout_below="@+id/dot_1"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/dot" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/program_detail_service_2_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/program_detail_service_1_tv"
+                    android:layout_below="@+id/program_detail_service_1_tv"
+                    android:layout_marginTop="12dp"
+                    android:text="长光卫星星座数据支持"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:layout_alignLeft="@+id/dot_2"
+                    android:layout_below="@+id/dot_2"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/dot" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/program_detail_service_2_tv"
+                    android:layout_below="@+id/program_detail_service_2_tv"
+                    android:layout_marginTop="12dp"
+                    android:text="卫星回传数据10分钟快速上架"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#F0F0F0" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="#FFFFFF">
+
+                <RelativeLayout
+                    android:id="@+id/program_detail_params_rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_params_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="13dp"
+                        android:text="@string/params"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <RelativeLayout
+                        android:layout_width="2px"
+                        android:layout_height="12dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/program_detail_params_tv"
+                        android:background="#9B9B9B" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/detail_product_id_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="21dp"
+                        android:layout_toRightOf="@+id/program_detail_params_tv"
+                        android:textColor="#9B9B9B"
+                        android:textSize="10dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="13dp"
+                        android:background="#E0E0E0" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/program_detail_params_title_ll"
+                    android:layout_width="111dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/program_detail_params_rl"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_weight="1"
+                        android:text="产品类型"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_weight="1"
+                        android:text="分辨率"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_weight="1"
+                        android:text="选中面积"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_weight="1"
+                        android:text="采集时间"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_weight="1"
+                        android:text="云量"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_weight="1"
+                        android:text="侧摆角"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/program_detail_params_rl"
+                    android:layout_toRightOf="@+id/program_detail_params_title_ll"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_type_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_weight="1"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_ratio_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="L1"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_area_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_gather_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/video_detail_gather_time"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_cloud_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/video_detail_area"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/program_detail_angle_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/video_detail_cloud"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </com.example.emall_core.util.view.BounceScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:elevation="4dp"
+        android:layout_below="@+id/ll_bar"
+        android:id="@+id/program_detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/programming"
+            android:textColor="#686868"
+            android:textSize="16dp" />
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/program_detail_bottom_bar_ll"
+        android:background="#E0E0E0" />
+    <LinearLayout
+        android:id="@+id/program_detail_bottom_bar_ll"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/program_detail_head_set_rl"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:id="@+id/program_detail_head_set_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/headset"
+                android:textSize="18dp" />
+            <RelativeLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="#E0E0E0" />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:id="@+id/program_detail_star_rl"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/program_detail_head_set_rl">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/program_detail_star_iv"
+                android:layout_width="21dp"
+                android:layout_height="19dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/collection" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/program_goods_buy_now_btn"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/program_detail_star_rl"
+            android:background="#B4A078"
+            android:text="@string/buy_now"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+</RelativeLayout>

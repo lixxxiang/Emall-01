@@ -4,12 +4,9 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
-import android.widget.ImageView
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_program.*
-import android.widget.RelativeLayout
-import android.widget.TextView
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.TextSwitcherView
@@ -18,6 +15,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -30,18 +28,25 @@ import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityCompat.requestPermissions
+import android.support.v4.content.res.TypedArrayUtils.getAttr
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatButton
 import android.util.DisplayMetrics
-import android.widget.ZoomControls
+import android.util.TypedValue
+import android.widget.*
 import com.baidu.location.*
 import com.baidu.mapapi.map.*
+import com.baidu.mapapi.model.CoordUtil
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
+import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.view.RulerView
 import com.example.emall_core.util.view.ScreenUtil.dip2px
 import com.example.emall_ec.R.id.mMapView
+import com.example.emall_ec.R.id.program_mapview
+import kotlinx.android.synthetic.main.delegate_reset_password.*
+import vi.com.gdi.bgl.android.java.EnvDrawText.bmp
 import vi.com.gdi.bgl.android.java.EnvDrawText.pt
 
 
@@ -96,6 +101,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     private var angle = "10"
     private var cloud = "10"
     private var center = String()
+    private var geoString = String()
 
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
@@ -138,7 +144,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
                 bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
                 program_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
-                ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
+                program_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
                 program_camera.visibility = View.VISIBLE
                 satelliteImageView!!.visibility = View.VISIBLE
                 scrollTextView!!.visibility = View.VISIBLE
@@ -164,6 +170,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         initViews()
         handlePermisson()
         initMap()
+        getAttr()
         task = object : Runnable {
             override fun run() {
                 // TODO Auto-generated method stub
@@ -184,20 +191,28 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
             override fun onMapStatusChange(p0: MapStatus?) {}
             override fun onMapStatusChangeFinish(p0: MapStatus?) {
                 val pt = Point()
-                pt.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5).toInt()
-                pt.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72).toInt())
+                pt.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt()
+                pt.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt())
+                val pt2 = Point()
+
+                pt2.x = 0
+                pt2.y = 0
+                EmallLogger.d(String.format("%s %s %s %s ", pt2.x, pt2.y, DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()),DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat())))
                 val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
                 lati_lt_screen = ll.latitude
                 longi_lt_screen = ll.longitude
 
                 val pt3 = Point()
-                pt3.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5).toInt() + DimenUtil().dip2px(context, 250F)
-                pt3.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72).toInt()) + DimenUtil().dip2px(context, 250F)
+                pt3.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5+ 200).toInt() + 250
+                pt3.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72+ 600).toInt()) + 250
+                EmallLogger.d(String.format("%s %s ", pt3.x, pt3.y))
+
                 val ll3 = mBaiduMap!!.projection.fromScreenLocation(pt3)
                 lati_rb_screen = ll3.latitude
                 longi_rb_screen = ll3.longitude
 
-                val geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
+                geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
+                EmallLogger.d(geoString)
                 scopeGeo = geoFormat(geoString)
                 center = String.format("%s,%s", (longi_lt_screen!! + longi_rb_screen!!) / 2, (lati_lt_screen!! + lati_rb_screen!!) / 2)
                 val leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
@@ -216,6 +231,11 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         mMapView!!.map.setOnMapStatusChangeListener(listener)
     }
 
+    private fun getAttr(){
+//        var typedValue = TypedValue()
+//        context.theme.resolveAttribute(R.attr.actionBarSize, typedValue, true)
+//        EmallLogger.d(typedValue.data.)
+    }
     private fun initMap() {
         val mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL
         mMapView = activity.findViewById<MapView>(R.id.program_mapview)
@@ -413,7 +433,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         val fakeToolbarRl = RelativeLayout(activity)
         fakeToolbarRl.id = 5
         val fakeToolbarParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DimenUtil().dip2px(context, 54F))
-        fakeToolbarParams.addRule(RelativeLayout.BELOW, R.id.ll_bar)
+        fakeToolbarParams.addRule(RelativeLayout.BELOW, R.id.program_ll_bar)
         fakeToolbarRl.layoutParams = fakeToolbarParams
         program_root_rl.addView(fakeToolbarRl, fakeToolbarParams)
 
@@ -567,7 +587,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
             rightRl!!.setBackgroundColor(Color.parseColor("#333333"))
             bottomRl!!.setBackgroundColor(Color.parseColor("#333333"))
             program_bottom_rl.setBackgroundColor(Color.parseColor("#333333"))
-            ll_bar.setBackgroundColor(Color.parseColor("#333333"))
+            program_ll_bar.setBackgroundColor(Color.parseColor("#333333"))
             program_camera.visibility = View.GONE
             satelliteImageView!!.visibility = View.GONE
             scrollTextView!!.visibility = View.GONE
@@ -594,13 +614,28 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         nextStep!!.setOnClickListener {
             val delegate: ProgramParamsDelegate = ProgramParamsDelegate().create()!!
             val bundle: Bundle? = Bundle()
+//            zoomImageView!!.visibility = View.VISIBLE
+//            zoomImageView!!.setImageBitmap(captureScreen())
             bundle!!.putString("scopeGeo", scopeGeo)
             bundle.putString("angle", angle)
             bundle.putString("cloud", cloud)
             bundle.putString("center", center)
+            bundle.putString("geoString", geoString)
+            if (area.toString().contains("E")) {
+                Toast.makeText(activity, "区域面积过大", Toast.LENGTH_SHORT).show()
+            } else {
+                bundle.putString("area", area.toString())
+            }
             delegate.arguments = bundle
             start(delegate)
         }
+    }
+
+
+    fun captureScreen():Bitmap{
+        activity.window.decorView.isDrawingCacheEnabled = true
+        var bmp = activity.window.decorView.drawingCache
+        return bmp
     }
 
     fun geoFormat(geo: String): String {
@@ -619,11 +654,6 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-    }
-
-    override fun onSupportInvisible() {
-        super.onSupportInvisible()
-//        handler.removeCallbacks(task)
     }
 
     inner class MyLocationListenner : BDLocationListener {
@@ -693,11 +723,6 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         }
     }
 
-    override fun onPause() {
-//        mMapView!!.onPause()
-        super.onPause()
-    }
-
     override fun onResume() {
         mMapView!!.onResume()
         super.onResume()
@@ -705,12 +730,4 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 SensorManager.SENSOR_DELAY_UI)
     }
 
-    override fun onDestroy() {
-//        mLocClient!!.stop()
-//        mBaiduMap!!.isMyLocationEnabled = false
-//        mMapView!!.onDestroy()
-//        mMapView = null
-//        mSensorManager!!.unregisterListener(this)
-        super.onDestroy()
-    }
 }

@@ -46,6 +46,9 @@ class ProgramParamsTypeDelegate : BottomItemDelegate() {
             setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             _mActivity.onBackPressed()
         }
+        program_back_btn.setOnClickListener{
+            pop()
+        }
     }
 
 }

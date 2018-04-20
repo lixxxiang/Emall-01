@@ -39,7 +39,8 @@ class ProgramParamsDelegate : BottomItemDelegate() {
     private var angle = String()
     private var cloud = String()
     private var center = String()
-
+    private var geoString = String()
+    private var area = String()
     fun create(): ProgramParamsDelegate? {
         return ProgramParamsDelegate()
     }
@@ -57,6 +58,8 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         angle = arguments.getString("angle")
         cloud = arguments.getString("cloud")
         center = arguments.getString("center")
+        geoString = arguments.getString("geoString")
+        area = arguments.getString("area")
 
         titleList!!.add(R.string.image_type)
         titleList!!.add(R.string.start_time)
@@ -93,11 +96,13 @@ class ProgramParamsDelegate : BottomItemDelegate() {
              * 在哪里登陆？？？？？？？？？？？？？？？？？
              * 在哪里登陆？？？？？？？？？？？？？？？？？
              */
-            editor.putString("startTime",startTime)
-            editor.putString("endTime",endTime)
-            editor.putString("cloud",cloud)
-            editor.putString("angle",angle)
-            editor.putString("center",center)
+            editor.putString("startTime", startTime)
+            editor.putString("endTime", endTime)
+            editor.putString("cloud", cloud)
+            editor.putString("angle", angle)
+            editor.putString("center", center)
+            editor.putString("geoString", geoString)
+            editor.putString("area", area)
             editor.commit()
 
             start(ProgramDetailDelegate().create())
@@ -116,7 +121,7 @@ class ProgramParamsDelegate : BottomItemDelegate() {
                 }
                 "1" -> {
                     detailList!![0] = resources.getString(R.string.noctilucence)
-                    productType = "5"
+                    productType = "2"
                     adapter!!.notifyDataSetChanged()
                 }
                 "2" -> {
@@ -146,18 +151,22 @@ class ProgramParamsDelegate : BottomItemDelegate() {
                 StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
         detailList!![1] = days
-        EmallLogger.d(detailList!![1])
-        if (compare_date(detailList!![1], detailList!![2]) == -1) {
+        if (detailList!![2].isEmpty()) {
             adapter!!.notifyDataSetChanged()
             startTime = days
-
         } else {
-            if (!detailList!![2].isEmpty()) {
-                Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-                detailList!![1] = ""
+            if (compare_date(detailList!![1], detailList!![2]) == -1) {
+                adapter!!.notifyDataSetChanged()
+                startTime = days
+            } else {
+                if (!detailList!![2].isEmpty()) {
+                    Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
+                    detailList!![1] = ""
+                }
+                adapter!!.notifyDataSetChanged()
             }
-            adapter!!.notifyDataSetChanged()
         }
+
         showNextStep()
     }
 
@@ -179,16 +188,20 @@ class ProgramParamsDelegate : BottomItemDelegate() {
 
         detailList!![2] = days
         EmallLogger.d(detailList!![2])
-
-        if (compare_date(detailList!![1], detailList!![2]) == -1) {
+        if (detailList!![1].isEmpty()) {
             adapter!!.notifyDataSetChanged()
             endTime = days
         } else {
-            if (!detailList!![1].isEmpty()) {
-                Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-                detailList!![2] = ""
+            if (compare_date(detailList!![1], detailList!![2]) == -1) {
+                adapter!!.notifyDataSetChanged()
+                endTime = days
+            } else {
+                if (!detailList!![1].isEmpty()) {
+                    Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
+                    detailList!![2] = ""
+                }
+                adapter!!.notifyDataSetChanged()
             }
-            adapter!!.notifyDataSetChanged()
         }
         showNextStep()
 

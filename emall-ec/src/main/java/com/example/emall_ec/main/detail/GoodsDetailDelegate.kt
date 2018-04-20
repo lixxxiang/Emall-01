@@ -47,7 +47,9 @@ import retrofit2.Retrofit
  * Created by lixiang on 2018/2/26.
  */
 class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
-
+    var OPTICS = "1"
+    var NOCTILUCENCE = "3"
+    var VIDEO = "5"
     var sceneDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var videoDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var sceneDetail = SceneDetailBean()
@@ -91,18 +93,21 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         if (type == "1" || type == "2") {
             sceneDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
-            sceneDetailParams!!["type"] = "1"
+            if (type == "1")
+                sceneDetailParams!!["type"] = OPTICS
+            else
+                sceneDetailParams!!["type"] = NOCTILUCENCE
             EmallLogger.d(sceneDetailParams!!["productId"]!!)
             getData(sceneDetailParams!!)
         } else if (type == "3") {
             videoDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
-            videoDetailParams!!["type"] = "0"
+            videoDetailParams!!["type"] = VIDEO
             EmallLogger.d(videoDetailParams!!["productId"]!!)
             getVideoData(videoDetailParams!!)
         }
 
-        video_goods_buy_now_btn.setOnClickListener {
+        goods_buy_now_btn.setOnClickListener {
             commoditySubmitDemand()
         }
 
@@ -155,7 +160,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        EmallLogger.d(String.format("%s %s",arguments.getString("productId"), arguments.getString("type")))
+        EmallLogger.d(String.format("%s %s", arguments.getString("productId"), arguments.getString("type")))
         val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
@@ -294,7 +299,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         commoditySubmitDemandParams!!["productId"] = arguments.getString("productId")
         commoditySubmitDemandParams!!["geo"] = ""
         commoditySubmitDemandParams!!["status"] = "0"
-        commoditySubmitDemandParams!!["type"] = "1"
+        commoditySubmitDemandParams!!["type"] = "1"//1 3 5
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/commoditySubmitDemand")
                 .params(commoditySubmitDemandParams!!)
@@ -306,6 +311,14 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         bundle!!.putString("demandId", commoditySubmitDemandBean.data)
                         bundle.putString("imageUrl", sceneData.imageDetailUrl)
                         bundle.putString("title", sceneData.productId)
+                        if (type == "1") {
+                            bundle.putString("type", "1")
+                        } else if (type == "2") {
+                            bundle.putString("type", "3")
+                        } else if (type == "3") {
+                            bundle.putString("type", "5")
+                        }
+
                         bundle.putString("time", sceneData.centerTime)
                         delegate.arguments = bundle
                         start(delegate)

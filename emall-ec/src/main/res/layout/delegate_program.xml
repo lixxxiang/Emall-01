@@ -9,13 +9,13 @@
         android:layout_height="match_parent">
     </com.baidu.mapapi.map.MapView>
     <View
-        android:id="@+id/ll_bar"
+        android:id="@+id/program_ll_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#BF000000"
          />
     <android.support.v7.widget.Toolbar
-        android:layout_below="@+id/ll_bar"
+        android:layout_below="@+id/program_ll_bar"
         android:id="@+id/program_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
