@@ -72,6 +72,7 @@
                     android:id="@+id/fill_order_iv"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:scaleType="centerCrop"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="13dp"/>
                 <android.support.v7.widget.AppCompatTextView

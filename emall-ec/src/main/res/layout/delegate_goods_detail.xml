@@ -171,8 +171,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/scene_mark"
-                    android:layout_width="63dp"
+                    android:id="@+id/scene_mark_rl"
+                    android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
@@ -181,10 +181,12 @@
                     android:background="#B4A078">
 
                     <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/scene_mark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
                         android:text="@string/optics_1"
                         android:textColor="#FFFFFF"
                         android:textSize="10dp" />

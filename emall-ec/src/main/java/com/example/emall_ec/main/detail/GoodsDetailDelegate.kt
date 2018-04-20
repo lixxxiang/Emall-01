@@ -91,7 +91,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         initViews()
         resolveConflict()
         type = arguments.getString("type")
-        if (type == "1" || type == "2") {
+        if (type == "1" || type == "5") {
             sceneDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
             if (type == "1"){
@@ -99,7 +99,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 type135 = OPTICS
             }
             else{
-                sceneDetailParams!!["type"] = NOCTILUCENCE
+                sceneDetailParams!!["type"] = "2"
                 type135 = NOCTILUCENCE
             }
             EmallLogger.d(sceneDetailParams!!["productId"]!!)
@@ -167,12 +167,12 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         EmallLogger.d(String.format("%s %s", arguments.getString("productId"), arguments.getString("type")))
-        val call = apiService!!.sceneDetail(arguments.getString("productId"), arguments.getString("type"))
+        val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString())
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
                 if (response.body() != null) {
                     sceneDetail = response.body()!!
-                    EmallLogger.d(sceneDetail)
+                    EmallLogger.d(sceneDetail.data)
                     setSceneData(sceneDetail)
 //                        videoSearch = response.body()!!
 //                        bundle!!.putString("type","0")
@@ -186,8 +186,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
             override fun onFailure(call: retrofit2.Call<SceneDetailBean>, throwable: Throwable) {}
         })
-        if (scene_mark.visibility == View.INVISIBLE)
-            scene_mark.visibility = View.VISIBLE
+        if (scene_mark_rl.visibility == View.INVISIBLE)
+            scene_mark_rl.visibility = View.VISIBLE
         if (scene_goods_detail_mask_iv.visibility == View.INVISIBLE)
             scene_goods_detail_mask_iv.visibility = View.VISIBLE
         if (scene_rl.visibility == View.GONE)
@@ -234,7 +234,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             play_btn.visibility = View.VISIBLE
         if (video_rl.visibility == View.GONE)
             video_rl.visibility = View.VISIBLE
-        scene_mark.visibility = View.INVISIBLE
+        scene_mark_rl.visibility = View.INVISIBLE
         scene_goods_detail_mask_iv.visibility = View.INVISIBLE
         scene_rl.visibility = View.GONE
 
@@ -303,6 +303,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     private fun commoditySubmitDemand(type135: String) {
         EmallLogger.d(type135)
+        EmallLogger.d(type)
         commoditySubmitDemandParams!!["productId"] = arguments.getString("productId")
         commoditySubmitDemandParams!!["geo"] = ""
         commoditySubmitDemandParams!!["status"] = "0"
@@ -330,7 +331,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                             bundle.putString("title", videoData.productId)
                             bundle.putString("time", videoData.startTime)
 
-                        } else if (type == "2") {
+                        } else if (type == "5") {
                             bundle.putString("type", "5")
                             bundle.putString("imageUrl", sceneData.imageDetailUrl)
                             bundle.putString("title", sceneData.productId)
@@ -371,6 +372,11 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     private fun setSceneData(sceneDetail: SceneDetailBean) {
         sceneData = sceneDetail.data
+        if(type == "1"){
+            scene_mark.text = getString(R.string.optics_1)
+        }else if(type == "5"){
+            scene_mark.text = getString(R.string.noctilucence)
+        }
         detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), sceneData.centerTime)
         detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), sceneData.swingSatelliteAngle)
 
@@ -393,6 +399,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
+
         videoData = videoDetail.data
         EmallLogger.d(videoData)
         video_detail_title_tv.text = videoData.title

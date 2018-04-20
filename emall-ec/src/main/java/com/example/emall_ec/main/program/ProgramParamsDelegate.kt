@@ -15,6 +15,8 @@ import android.view.View
 import android.widget.Toast
 import com.example.emall_core.util.log.EmallLogger
 import kotlinx.android.synthetic.main.delegate_optics1.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -241,5 +243,9 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         } else
             program_next_step_tv.visibility = View.INVISIBLE
 
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

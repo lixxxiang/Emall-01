@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.delegate_program_params_type.*
 import kotlinx.android.synthetic.main.item_program_params_type.*
 import android.os.Bundle
 import me.yokeyword.fragmentation.ISupportFragment
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -49,6 +51,10 @@ class ProgramParamsTypeDelegate : BottomItemDelegate() {
         program_back_btn.setOnClickListener{
             pop()
         }
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
 }

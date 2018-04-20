@@ -36,6 +36,14 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/ic_back_small" />
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/program_toolbar_searchbar"
@@ -60,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="31dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center_vertical">
 
                 <android.support.v7.widget.AppCompatTextView

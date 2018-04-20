@@ -40,6 +40,8 @@ import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.collect.data.MyAllCollectionBean
 import com.google.gson.Gson
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import retrofit2.Retrofit
 
 
@@ -436,5 +438,9 @@ class ClassifyDelegate : EmallDelegate() {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

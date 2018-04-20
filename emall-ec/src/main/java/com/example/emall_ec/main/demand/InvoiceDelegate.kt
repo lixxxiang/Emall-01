@@ -10,6 +10,8 @@ import com.smarttop.library.utils.LogUtil
 import com.smarttop.library.widget.AddressSelector
 import com.smarttop.library.widget.BottomDialog
 import com.smarttop.library.widget.OnAddressSelectedListener
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -60,6 +62,10 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
         if(dialog!=null){
             dialog!!.dismiss()
         }
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
     override fun selectorAreaPosition(provincePosition: Int, cityPosition: Int, countyPosition: Int, streetPosition: Int) {

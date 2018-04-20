@@ -13,6 +13,8 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.demand.data.ViewDemandBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 /**
@@ -97,15 +99,22 @@ class FillOrderDelegate : BottomItemDelegate() {
     }
 
     fun initViews(viewDemandBean: ViewDemandBean) {
-        Glide.with(context)
-                .load(arguments.getString("imageUrl"))
-                .into(fill_order_iv)
+        if (arguments.getString("imageUrl") == "program") {
+            fill_order_iv.setBackgroundResource(R.drawable.program)
+        } else
+            Glide.with(context)
+                    .load(arguments.getString("imageUrl"))
+                    .into(fill_order_iv)
         fill_order_title_tv.text = arguments.getString("title")
         fill_order_time_tv.text = String.format("拍摄于 %s（北京时间）", arguments.getString("time"))
         fill_order_op_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].originalPrice)
-        fill_order_cp_tv.text = String.format("¥%s",viewDemandBean.data.demands[0].salePrice)
-        fill_order_dp_tv.text = String.format("-¥%s",viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble())
-        fill_order_out_tv.text = String.format("¥%s",viewDemandBean.data.demands[0].salePrice)
+        fill_order_cp_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
+        fill_order_dp_tv.text = String.format("-¥%s", viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble())
+        fill_order_out_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
         fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

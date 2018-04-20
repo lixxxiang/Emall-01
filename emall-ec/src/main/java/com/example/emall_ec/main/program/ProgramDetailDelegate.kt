@@ -28,6 +28,8 @@ import com.example.emall_ec.main.program.data.DetailBean
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_program_detail.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.lang.Double
 import java.util.*
 
@@ -237,7 +239,7 @@ class ProgramDetailDelegate : EmallDelegate() {
                             val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
                             val bundle: Bundle? = Bundle()
                             bundle!!.putString("demandId", demandBean.data.orderIdArray)
-                            bundle.putString("imageUrl", "")
+                            bundle.putString("imageUrl", "program")
                             bundle.putString("type", "2")
                             when {
                                 sp.getString("productType", "") == "1" -> bundle.putString("title", String.format("类型：%s", getString(R.string.optics_1)))
@@ -260,6 +262,10 @@ class ProgramDetailDelegate : EmallDelegate() {
                 })
                 .build()
                 .post()
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
 }

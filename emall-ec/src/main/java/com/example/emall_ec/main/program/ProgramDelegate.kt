@@ -46,6 +46,8 @@ import com.example.emall_core.util.view.ScreenUtil.dip2px
 import com.example.emall_ec.R.id.mMapView
 import com.example.emall_ec.R.id.program_mapview
 import kotlinx.android.synthetic.main.delegate_reset_password.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import vi.com.gdi.bgl.android.java.EnvDrawText.bmp
 import vi.com.gdi.bgl.android.java.EnvDrawText.pt
 
@@ -730,4 +732,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 SensorManager.SENSOR_DELAY_UI)
     }
 
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
 }

@@ -5,6 +5,8 @@ import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.R.id.pay_method_toolbar
 import kotlinx.android.synthetic.main.delegate_pay_method.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 /**
  * Created by lixiang on 2018/3/27.
@@ -30,5 +32,9 @@ class PayMethodDelegate : BottomItemDelegate() {
             radioButton2.isChecked = true
         }
 
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }
