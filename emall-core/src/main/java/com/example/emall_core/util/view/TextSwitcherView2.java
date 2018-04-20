@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextSwitcher;
@@ -93,6 +94,8 @@ public class TextSwitcherView2 extends TextSwitcher implements ViewSwitcher.View
         TextView tView = new TextView(getContext());
         tView.setTextSize(14);
         tView.setTextColor(Color.parseColor("#5C5C5C"));
+        tView.setSingleLine();
+        tView.setEllipsize(TextUtils.TruncateAt.END);
         return tView;
     }
 }

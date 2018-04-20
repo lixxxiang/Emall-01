@@ -34,6 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="35dp"
             android:layout_toRightOf="@+id/mep_title_tv"
+            android:layout_marginRight="16dp"
             android:lines="1" />
         <!--<TextView-->
         <!--android:id="@+id/mep_detail_tv"-->
