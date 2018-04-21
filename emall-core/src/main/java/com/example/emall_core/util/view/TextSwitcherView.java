@@ -91,7 +91,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     public View makeView() {
         // TODO Auto-generated method stub
         TextView tView = new TextView(getContext());
-        tView.setTextSize(12);
+        tView.setTextSize(12F);
         tView.setTextColor(Color.parseColor("#FFFFFF"));
         return tView;
     }

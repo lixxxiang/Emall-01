@@ -13,8 +13,8 @@
         android:layout_marginLeft="14dp"/>
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/foward_iv"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="8dp"
+        android:layout_height="14dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp" />

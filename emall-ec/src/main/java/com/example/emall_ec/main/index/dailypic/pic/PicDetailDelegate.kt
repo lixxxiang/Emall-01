@@ -37,6 +37,8 @@ import android.os.Bundle
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import kotlinx.android.synthetic.main.pic_detail_2.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import org.apache.cordova.*
 import org.apache.cordova.engine.SystemWebViewEngine
 import java.util.concurrent.ExecutorService
@@ -626,5 +628,9 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
     }
 
     override fun requestPermission(p0: CordovaPlugin?, p1: Int, p2: String?) {
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

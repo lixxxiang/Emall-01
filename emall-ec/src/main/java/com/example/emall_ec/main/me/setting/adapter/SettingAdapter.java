@@ -63,7 +63,7 @@ public class SettingAdapter extends BaseAdapter {
         TextView item_tv = view.findViewById(R.id.title);
         TextView detail_tv = view.findViewById(R.id.detail_tv);
         if (i == 0) {
-            item_iv.setImageResource(R.drawable.ic_foward);
+            item_iv.setImageResource(R.drawable.forward_gray);
 
         }else if(i ==1) {
             try {

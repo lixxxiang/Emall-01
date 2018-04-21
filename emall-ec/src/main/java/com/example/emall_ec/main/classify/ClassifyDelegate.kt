@@ -353,7 +353,7 @@ class ClassifyDelegate : EmallDelegate() {
                                 tv.layoutParams = topRlParams
                                 tv.text = getRecommendCitiesBean.data[i].cityName
                                 tv.setTextColor(Color.parseColor("#5C5C5C"))
-                                tv.textSize = 14F
+                                tv.textSize = 12F
                                 topRl.addView(tv, tvParams)
                             }
                         } else {

@@ -22,10 +22,10 @@
         android:layout_centerVertical="true"/>
     <ImageView
         android:id="@+id/program_params_params_tv"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+        android:layout_width="8dp"
+        android:layout_height="15dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
-        android:background="@drawable/ic_foward_white"/>
+        android:background="@drawable/foward_white"/>
 </RelativeLayout>

@@ -18,6 +18,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
 import android.widget.Toast
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -143,5 +145,9 @@ class ContactDelegate : EmallDelegate() {
             startActivity(intent)
 
         }
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

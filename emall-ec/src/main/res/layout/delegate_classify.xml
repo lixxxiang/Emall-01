@@ -114,7 +114,7 @@
                 android:background="#F0F0F0"
                 tools:ignore="NotSibling,UnknownId" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/classify_horizontal_scrollview_ll"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -128,28 +128,25 @@
                     android:id="@+id/classify_recommand_rl"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
                     android:background="#FFFFFF"
                     android:layout_height="match_parent">
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/classify_recommand_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_centerInParent="true"
                         android:text="@string/recommand"
                         android:textColor="#B80017"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 <HorizontalScrollView
+                    android:layout_toRightOf="@+id/classify_recommand_rl"
+                    android:layout_toLeftOf="@+id/classify_down_btn_rl"
                     android:id="@+id/classify_hsv"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="7"
                     android:background="#FFFFFF"
                     android:scrollbars="none">
 
@@ -162,21 +159,20 @@
                 </HorizontalScrollView>
 
                 <RelativeLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/classify_down_btn_rl"
+                    android:layout_width="47dp"
                     android:background="#FFFFFF"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_alignParentRight="true"
+                    android:layout_height="match_parent">
 
                     <android.support.v7.widget.AppCompatImageView
                         android:id="@+id/classify_down_btn"
                         android:layout_width="15dp"
                         android:layout_height="9dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_centerInParent="true"
                         android:background="@drawable/down" />
                 </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

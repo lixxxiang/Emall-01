@@ -40,6 +40,8 @@ import kotlinx.android.synthetic.main.delegate_video_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import kotlinx.android.synthetic.main.video_detail_1.*
 import kotlinx.android.synthetic.main.video_detail_2.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import org.apache.cordova.*
 import org.apache.cordova.engine.SystemWebViewEngine
 import java.util.*
@@ -546,5 +548,9 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
     override fun onSupportInvisible() {
         super.onSupportInvisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

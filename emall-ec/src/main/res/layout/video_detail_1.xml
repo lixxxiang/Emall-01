@@ -10,6 +10,7 @@
 
     <ScrollView
         android:id="@+id/scrollview_video"
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -44,7 +45,7 @@
                     android:layout_marginRight="17dp"
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="17dp"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imageView"

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#B4A078"
-        android:elevation="4dp" />
+        android:elevation="2dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/pic_detail_toolbar"
@@ -19,7 +19,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/ll_bar"
         android:background="#B4A078"
-        android:elevation="4dp">
+        android:elevation="2dp">
 
         <com.androidkun.xtablayout.XTabLayout
             android:id="@+id/xTablayout"
@@ -43,7 +43,7 @@
         android:layout_height="99dp"
         android:layout_below="@+id/pic_detail_toolbar"
         android:background="#B4A078"
-        android:elevation="4dp"/>
+        android:elevation="2dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="49dp"

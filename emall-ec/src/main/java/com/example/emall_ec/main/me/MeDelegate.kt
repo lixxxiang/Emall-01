@@ -1,7 +1,6 @@
 package com.example.emall_ec.main.me
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
@@ -15,6 +14,7 @@ import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.me.adapter.MeFunctionAdapter
 import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate

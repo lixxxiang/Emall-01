@@ -43,6 +43,8 @@ class ProgramParamsDelegate : BottomItemDelegate() {
     private var center = String()
     private var geoString = String()
     private var area = String()
+    private var bitmapByte: ByteArray? = null
+
     fun create(): ProgramParamsDelegate? {
         return ProgramParamsDelegate()
     }
@@ -107,7 +109,11 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             editor.putString("area", area)
             editor.commit()
 
-            start(ProgramDetailDelegate().create())
+            val delegate: ProgramDetailDelegate = ProgramDetailDelegate().create()!!
+            val bundle = Bundle()
+            bundle.putByteArray("image", arguments.getByteArray("image"))
+            delegate.arguments = bundle
+            start(delegate)
         }
     }
 
@@ -157,7 +163,7 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             adapter!!.notifyDataSetChanged()
             startTime = days
         } else {
-            if (compare_date(detailList!![1], detailList!![2]) == -1) {
+            if (compare_date(detailList!![1], detailList!![2]) != 1) {
                 adapter!!.notifyDataSetChanged()
                 startTime = days
             } else {
@@ -194,7 +200,7 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             adapter!!.notifyDataSetChanged()
             endTime = days
         } else {
-            if (compare_date(detailList!![1], detailList!![2]) == -1) {
+            if (compare_date(detailList!![1], detailList!![2]) != 1) {
                 adapter!!.notifyDataSetChanged()
                 endTime = days
             } else {
@@ -247,5 +253,10 @@ class ProgramParamsDelegate : BottomItemDelegate() {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 }

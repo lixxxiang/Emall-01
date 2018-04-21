@@ -61,4 +61,6 @@ public class ProgramParamsAdapter extends BaseAdapter {
         item_detail_tv.setText(detailList.get(position));
         return view;
     }
+
+
 }

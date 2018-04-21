@@ -22,6 +22,8 @@ import java.util.*
 import android.annotation.SuppressLint
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.main.index.dailypic.video.VideoDetailDelegate
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -148,5 +150,9 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
         }
         daily_pic_lv.addHeaderView(headerView)
         banner.startAutoPlay()
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

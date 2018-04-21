@@ -1,4 +1,4 @@
-package com.example.emall_ec.main.me;
+package com.example.emall_ec.main.me.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

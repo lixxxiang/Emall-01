@@ -10,6 +10,8 @@ import com.example.emall_ec.main.order.state.*
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.View
 import com.example.emall_core.util.log.EmallLogger
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -26,7 +28,6 @@ class OrderListDelegate : BottomItemDelegate() {
 
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-
         order_list_toolbar.title = ""
         userId = arguments.getString("USER_ID")
         EmallLogger.d(userId)
@@ -86,6 +87,10 @@ class OrderListDelegate : BottomItemDelegate() {
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager)
         vp_FindFragment_pager.currentItem = arguments.getInt("INDEX")
         //tab_FindFragment_title.set
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
 }

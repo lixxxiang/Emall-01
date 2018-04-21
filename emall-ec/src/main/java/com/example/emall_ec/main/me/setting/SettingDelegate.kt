@@ -21,6 +21,8 @@ import com.example.emall_ec.main.sign.ModifyPasswordDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import kotlinx.android.synthetic.main.delegate_all.*
 import kotlinx.android.synthetic.main.delegate_me.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -113,5 +115,9 @@ class SettingDelegate : BottomItemDelegate() {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

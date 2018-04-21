@@ -32,6 +32,10 @@ import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.lang.Double
 import java.util.*
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+
+
 
 class ProgramDetailDelegate : EmallDelegate() {
     private var demandParams: WeakHashMap<String, Any>? = WeakHashMap()
@@ -61,9 +65,12 @@ class ProgramDetailDelegate : EmallDelegate() {
         program_detail_toolbar.setNavigationOnClickListener {
             pop()
         }
+        val bis = arguments.getByteArray("image")
+        val bitmap = BitmapFactory.decodeByteArray(bis, 0, bis.size)
+        program_detail_map.setImageBitmap(bitmap)
         val sp = activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE)
-        initMap(sp)
-        resolveConflict()
+//        initMap(sp)
+//        resolveConflict()
 
         EmallLogger.d(sp.getString("scopeGeo", ""))
         getData(sp)
@@ -104,6 +111,8 @@ class ProgramDetailDelegate : EmallDelegate() {
     }
 
     private fun initMap(sp: SharedPreferences) {
+        mMapView = activity.findViewById(R.id.program_detail_map) as MapView
+        mBaiduMap = mMapView!!.map
         geoString = sp.getString("geoString", "")
         val geos: MutableList<Array<String>> = mutableListOf()
         val array = geoString.split(',')
@@ -112,8 +121,7 @@ class ProgramDetailDelegate : EmallDelegate() {
         geos.add(arrayOf(array[2], array[1]))
         geos.add(arrayOf(array[2], array[3]))
         geos.add(arrayOf(array[0], array[3]))
-        mMapView = activity.findViewById(R.id.program_detail_map) as MapView
-        mBaiduMap = mMapView!!.map
+
         val child = mMapView!!.getChildAt(1)
         if (child != null && (child is ImageView || child is ZoomControls)) {
             child.visibility = View.INVISIBLE
