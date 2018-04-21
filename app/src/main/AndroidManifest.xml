@@ -34,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.example.emall_ec.main.index.dailypic.pic.ShowImageNewActivity"/>
     </application>
 
     <!-- home fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx-->

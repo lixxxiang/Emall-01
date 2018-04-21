@@ -15,6 +15,7 @@ import com.example.emall_ec.main.EcBottomDelegate
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import com.facebook.drawee.backends.pipeline.Fresco
 
 
 class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
@@ -59,6 +60,7 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
         if (actionBar != null) {
             actionBar.hide()
         }
+        Fresco.initialize(this)
         Log.e("TAG", "android.R.id.content.getChildAt(0) = " + (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0))
     }
 

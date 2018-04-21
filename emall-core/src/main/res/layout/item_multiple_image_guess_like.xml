@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/guess_like_rv"
+        android:background="#FFFFFF"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"/>
+    <!--<RelativeLayout-->
+        <!--android:layout_below="@+id/guess_like_rv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="#FFFFFF"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:minHeight="50dp"/>-->
 </RelativeLayout>

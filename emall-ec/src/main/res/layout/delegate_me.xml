@@ -106,14 +106,14 @@
                         android:textColor="#5C5C5C"
                         android:textSize="14dp" />
 
-                    <TextView
+                    <android.support.v7.widget.AppCompatImageView
                         android:id="@+id/me_foward"
-                        android:layout_width="10dp"
+                        android:layout_width="8dp"
                         android:layout_height="14dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="21dp"
-                        android:text="@string/foward" />
+                        android:background="@drawable/forward_gray" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

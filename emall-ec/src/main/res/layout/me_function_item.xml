@@ -19,13 +19,13 @@
         android:layout_toRightOf="@+id/item_iv"
         android:layout_marginLeft="13dp"
         />
-    <TextView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/item_foward_tv"
-        android:layout_width="10dp"
+        android:layout_width="8dp"
         android:layout_height="14dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="21dp"
-        android:text="@string/foward"
+        android:background="@drawable/forward_gray"
         />
 </RelativeLayout>

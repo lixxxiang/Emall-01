@@ -58,10 +58,10 @@ public class MeFunctionAdapter extends BaseAdapter {
         View view = inflater.inflate(R.layout.me_function_item, null);
         ImageView item_iv = view.findViewById(R.id.item_iv);
         TextView item_tv = view.findViewById(R.id.item_tv);
-        TextView item_foward_tv = view.findViewById(R.id.item_foward_tv);
+//        ImageView item_foward_tv = view.findViewById(R.id.item_foward_tv);
         item_iv.setImageResource(iconList.get(position));
         item_tv.setText(titleList.get(position));
-        item_foward_tv.setTypeface(Typeface.createFromAsset(context.getAssets(), "iconfont/foward.ttf"));
+//        item_foward_tv.setTypeface(Typeface.createFromAsset(context.getAssets(), "iconfont/foward.ttf"));
         return view;
     }
 }

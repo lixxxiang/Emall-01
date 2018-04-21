@@ -121,7 +121,11 @@ class SignInByAccountDelegate : EmallDelegate() {
 
         sign_in_by_account_submit_btn.isClickable = false
         btn_sign_in_by_tel_submit.setOnClickListener {
-            startWithPop(SignInByTelDelegate())
+            val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+            val bundle = Bundle()
+            bundle.putString("PAGE_FROM", "SIGN_IN_BY_COUNT")
+            delegate.arguments = bundle
+            startWithPop(delegate)
         }
 
         sign_in_by_account_login_tv.setOnClickListener {
@@ -285,5 +289,10 @@ class SignInByAccountDelegate : EmallDelegate() {
                 sign_in_by_account_submit_btn.isClickable = true
             }
         }
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }

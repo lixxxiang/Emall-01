@@ -10,6 +10,8 @@ class ItemType {
     static final int SCROLL_HORIZIONTAL = 2;
     static final int THE_THREE = 3;
     static final int GUESS_LIKE = 4;
+    static final int BLANK = 5;
+
 
 }
 

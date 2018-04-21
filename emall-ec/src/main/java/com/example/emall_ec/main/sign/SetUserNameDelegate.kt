@@ -2,6 +2,7 @@ package com.example.emall_ec.main.sign
 
 import android.app.Activity
 import android.graphics.Typeface
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.example.emall_core.net.RestClient
@@ -20,16 +21,21 @@ import java.util.regex.Pattern
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.blankj.utilcode.util.EncryptUtils
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.blankj.utilcode.util.KeyboardUtils
+import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.sign.data.UserNameLoginBean
 
 
 /**
  * Created by lixiang on 14/02/2018.
  */
 class SetUserNameDelegate : BottomItemDelegate() {
+    var userNameLoginParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var userNameLoginBean = UserNameLoginBean()
 
     private var mISignListener: ISignListener? = null
     var userName = String()
@@ -140,10 +146,10 @@ class SetUserNameDelegate : BottomItemDelegate() {
                             Toast.makeText(activity, getString(R.string.username_taken), Toast.LENGTH_SHORT).show()
                         } else {
                             register(tel, pwd, string)
-                            Toast.makeText(activity, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
-                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
-                            KeyboardUtils.hideSoftInput(activity)
-                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            Toast.makeText(activity, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+//                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+//                            KeyboardUtils.hideSoftInput(activity)
+//                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         }
                     }
                 })
@@ -173,10 +179,7 @@ class SetUserNameDelegate : BottomItemDelegate() {
                     override fun onSuccess(response: String) {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         if (commonBean.meta == "success") {
-                            Toast.makeText(activity, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
-                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
-                            KeyboardUtils.hideSoftInput(activity)
-                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            login(tel, pwd)
                         }
                     }
                 })
@@ -191,7 +194,46 @@ class SetUserNameDelegate : BottomItemDelegate() {
                     }
                 })
                 .build()
-//                    .get()
+                .post()
+    }
+
+    private fun login(tel: String, pwd: String) {
+        userNameLoginParams!!["userTelephone"] = tel
+        userNameLoginParams!!["password"] = pwd.toLowerCase()
+        EmallLogger.d(String.format("%s %s",tel, pwd))
+
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/global/mall/UserNameLogin.do")
+                .params(userNameLoginParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        userNameLoginBean = Gson().fromJson(response, UserNameLoginBean::class.java)
+                        EmallLogger.d(response)
+                        if (userNameLoginBean.meta == "success") {
+                            /**
+                             * success
+                             */
+                            EmallLogger.d(response)
+                            /**
+                             * test------------------------------------
+                             */
+                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\""), mISignListener!!)
+                            Toast.makeText(activity, "注册成功", Toast.LENGTH_SHORT).show()
+                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                            KeyboardUtils.hideSoftInput(activity)
+                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        } else {
+                            Toast.makeText(activity, resources.getString(R.string.account_pwd_error), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
                 .post()
     }
 

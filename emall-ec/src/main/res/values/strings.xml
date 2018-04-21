@@ -191,4 +191,12 @@
     <string name="preview_duration">时长：31分32秒</string>
     <string name="recommand">推荐</string>
     <string name="default_ratio">0.72m</string>
+    <string name="payment">付款结果</string>
+    <string name="check_order">查看订单</string>
+    <string name="repay">重新付款</string>
+    <string name="pay_failed_hint">支付遇到问题，请重新支付</string>
+    <string name="pay_failed">支付失败</string>
+    <string name="pay_success">付款成功</string>
+
+
 </resources>

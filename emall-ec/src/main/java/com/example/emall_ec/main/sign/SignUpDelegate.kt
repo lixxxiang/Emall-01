@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.RegexUtils
+import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -57,6 +58,9 @@ class SignUpDelegate : BottomItemDelegate() {
         sign_up_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
         sign_up_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
 //        sign_up_tel_et.requestFocus()
+        sign_up_close.setOnClickListener {
+            pop()
+        }
 
         sign_up_tel_et.addTextChangedListener(mTelTextWatcher)
         sign_up_vcode_et.addTextChangedListener(mVcodeTextWatcher)
@@ -142,23 +146,17 @@ class SignUpDelegate : BottomItemDelegate() {
         }
 
         sign_up_login_tv.setOnClickListener {
-            if (tel.isEmpty()) {
-                if (emptyToast != null) {
-                    emptyToast!!.setText(getString(R.string.empty_tel))
-                    emptyToast!!.duration = Toast.LENGTH_SHORT
-                    emptyToast!!.show()
-                } else {
-                    emptyToast = Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT)
-                    emptyToast!!.show()
-                }
-            } else {
-
-            }
-            startWithPop(SignInByTelDelegate())
+            KeyboardUtils.hideSoftInput(activity)
+            val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+            val bundle = Bundle()
+            bundle.putString("PAGE_FROM", "SIGN_UP")
+            delegate.arguments = bundle
+            start(delegate)
         }
 
         sign_up_close.setOnClickListener {
-            startWithPop(EcBottomDelegate())
+            KeyboardUtils.hideSoftInput(activity)
+            pop()
         }
 
         /**
@@ -201,18 +199,23 @@ class SignUpDelegate : BottomItemDelegate() {
                              * success
                              */
                             EmallLogger.d("success")
-                            val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
-                            val bundle = Bundle()
-                            bundle.putString("MODIFY_PASSWORD_TELEPHONE", this@SignUpDelegate.tel)
-                            delegate.arguments = bundle
-                            start(delegate)
+                            if (checkMessageBean.register == "0") {
+                                val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
+                                val bundle = Bundle()
+                                bundle.putString("MODIFY_PASSWORD_TELEPHONE", this@SignUpDelegate.tel)
+                                delegate.arguments = bundle
+                                start(delegate)
 //            startForResult(delegate, REQ_MODIFY_FRAGMENT)
-                            EmallLogger.d(topFragment)
-                            EmallLogger.d(preFragment)
+                                EmallLogger.d(topFragment)
+                                EmallLogger.d(preFragment)
 //            start(EcBottomDelegate())
 //            supportDelegate.showHideFragment(MeDelegate(),IndexDelegate())
 
-                            KeyboardUtils.hideSoftInput(activity)
+                                KeyboardUtils.hideSoftInput(activity)
+                            } else {
+                                Toast.makeText(activity, "手机号已注册", Toast.LENGTH_SHORT).show()
+                            }
+
                         } else {
                             if (wrongVcodeToast != null) {
                                 wrongVcodeToast!!.setText(getString(R.string.wrong_vcode))
@@ -341,12 +344,13 @@ class SignUpDelegate : BottomItemDelegate() {
                             /**
                              * unregister
                              */
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            showHint()
+
                         } else {
                             /**
                              * registered
                              */
-                            showHint()
                         }
                     }
                 })

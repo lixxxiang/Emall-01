@@ -221,10 +221,27 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
             }
             false
         }
-
-
-
     }
+
+    private fun showImage(url: String, index: String, picAmount: String) {
+        EmallLogger.d(fullScreenImages)
+        var showImageIntent = Intent(activity, ShowImageNewActivity::class.java)
+        showImageIntent.putExtra("imageUrl", url)
+        showImageIntent.putExtra("images", fullScreenImages)
+        showImageIntent.putExtra("index", index)
+        showImageIntent.putExtra("picAmount", picAmount)
+        startActivity(showImageIntent)
+//        EmallLogger.d(String.format("%s,%s, %s", url, index, picAmount))
+//        val delegate: ShowImageDelegate = ShowImageDelegate().create()!!
+//        val bundle: Bundle? = Bundle()
+//        bundle!!.putString("imageUrl", url)
+//        bundle.putString("images", fullScreenImages)
+//        bundle.putString("index", index)
+//        bundle.putString("picAmount", picAmount)
+//        delegate.arguments = bundle
+//        start(delegate)
+    }
+
 
     private fun submitComment(uId: String, aId: String, type: String, s: String) {
         submitCommentParams!!["userId"] = uId
@@ -336,24 +353,37 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
             Glide.with(context)
                     .load(dailyPicDetailBean.data.image1FilePath)
                     .into(picture_1)
+            picture_1.setOnClickListener {
+                showImage(dailyPicDetailBean.data.image1FilePath, "0", imageCount.toString())
+            }
+
         }
         if (dailyPicDetailBean.data.image2FilePath.isNotEmpty()) {
             fullScreenImages.add(dailyPicDetailBean.data.image2FilePath)
+
             imageCount++
             picture_2.maxHeight = DimenUtil().getScreenHeight()
             Glide.with(context)
                     .load(dailyPicDetailBean.data.image2FilePath)
                     .into(picture_2)
+            picture_2.setOnClickListener {
+                showImage(dailyPicDetailBean.data.image2FilePath, "1", imageCount.toString())
+            }
         } else {
             picture_2.visibility = View.GONE
         }
         if (dailyPicDetailBean.data.image3FilePath.isNotEmpty()) {
             fullScreenImages.add(dailyPicDetailBean.data.image3FilePath)
+
+
             imageCount++
             picture_3.maxHeight = DimenUtil().getScreenHeight()
             Glide.with(context)
                     .load(dailyPicDetailBean.data.image3FilePath)
                     .into(picture_3)
+            picture_3.setOnClickListener {
+                showImage(dailyPicDetailBean.data.image3FilePath, "2", imageCount.toString())
+            }
         } else {
             picture_3.visibility = View.GONE
         }

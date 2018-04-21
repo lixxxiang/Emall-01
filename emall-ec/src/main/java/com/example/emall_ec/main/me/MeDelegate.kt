@@ -90,7 +90,6 @@ class MeDelegate : BottomItemDelegate() {
 
         DELEGATE = getParentDelegate()
 
-        me_foward.typeface = Typeface.createFromAsset(activity.assets, "iconfont/foward.ttf")
         me_function_lv.adapter = MeFunctionAdapter(iconList, titleList, context)
 
         me_order.setOnClickListener {
@@ -158,12 +157,20 @@ class MeDelegate : BottomItemDelegate() {
     }
 
     fun toOrderDelegate(index: Int){
-        val delegate: OrderListDelegate = OrderListDelegate().create()!!
-        val bundle: Bundle? = Bundle()
-        bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
-        bundle.putInt("INDEX", index)
-        delegate.arguments = bundle
-        (DELEGATE as EcBottomDelegate).start(delegate)
+        if(DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+            val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+            val bundle = Bundle()
+            bundle.putString("PAGE_FROM", "ME")
+            delegate.arguments = bundle
+            (DELEGATE as EcBottomDelegate).start(delegate)
+        }else{
+            val delegate: OrderListDelegate = OrderListDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+            bundle.putInt("INDEX", index)
+            delegate.arguments = bundle
+            (DELEGATE as EcBottomDelegate).start(delegate)
+        }
     }
 
 

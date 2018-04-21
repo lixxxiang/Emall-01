@@ -7,7 +7,8 @@
     <RelativeLayout
         android:id="@+id/mep_rl"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:elevation="4dp">
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/mep_title_tv"
@@ -20,7 +21,7 @@
             android:textSize="14dp" />
 
         <RelativeLayout
-            android:layout_width="1dp"
+            android:layout_width="2px"
             android:layout_height="27dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="17dp"
@@ -36,16 +37,7 @@
             android:layout_toRightOf="@+id/mep_title_tv"
             android:layout_marginRight="16dp"
             android:lines="1" />
-        <!--<TextView-->
-        <!--android:id="@+id/mep_detail_tv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_marginLeft="35dp"-->
-        <!--android:layout_toRightOf="@+id/mep_title_tv"-->
-        <!--android:lines="1"-->
-        <!--android:textColor="#5C5C5C"-->
-        <!--android:textSize="14dp" />-->
+
     </RelativeLayout>
 
     <RelativeLayout

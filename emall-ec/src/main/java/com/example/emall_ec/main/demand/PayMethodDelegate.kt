@@ -12,9 +12,11 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator
  * Created by lixiang on 2018/3/27.
  */
 class PayMethodDelegate : BottomItemDelegate() {
-    fun create(): PayMethodDelegate?{
+    var flag = 1
+    fun create(): PayMethodDelegate? {
         return PayMethodDelegate()
     }
+
     override fun setLayout(): Any? {
         return R.layout.delegate_pay_method
     }
@@ -23,13 +25,28 @@ class PayMethodDelegate : BottomItemDelegate() {
         pay_method_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(pay_method_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-        rl.setOnClickListener {
-            radioButton.isChecked = true
+        pay_method_toolbar.setNavigationOnClickListener {
+            pop()
         }
 
-        rl2.setOnClickListener {
-            radioButton2.isChecked = true
+        pay_method_pay_rl.setOnClickListener {
+            start(PaymentDelegate().create())
+        }
+
+        wechat_btn.setOnClickListener {
+            if (flag != 1) {
+                wechat_iv.setBackgroundResource(R.drawable.checked)
+                public_iv.setBackgroundResource(R.drawable.unchecked)
+                flag = 1
+            }
+        }
+
+        public_btn.setOnClickListener {
+            if (flag == 1) {
+                wechat_iv.setBackgroundResource(R.drawable.unchecked)
+                public_iv.setBackgroundResource(R.drawable.checked)
+                flag = 2
+            }
         }
 
     }

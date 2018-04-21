@@ -82,6 +82,7 @@ public class MultipleRecyclerAdapter extends
         addItemType(ItemType.SCROLL_HORIZIONTAL, R.layout.item_multiple_scroll_horiziontal);
         addItemType(ItemType.THE_THREE, R.layout.item_multiple_the_three);
         addItemType(ItemType.GUESS_LIKE, R.layout.item_multiple_image_guess_like);
+        addItemType(ItemType.BLANK, R.layout.item_multiple_blank);
 
         //设置宽度监听
         setSpanSizeLookup(this);
@@ -146,6 +147,8 @@ public class MultipleRecyclerAdapter extends
                 guessLikeRecyclerView.setLayoutManager(manager);
                 guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE), mContext));
                 break;
+            case ItemType.BLANK:
+
             default:
                 break;
         }
