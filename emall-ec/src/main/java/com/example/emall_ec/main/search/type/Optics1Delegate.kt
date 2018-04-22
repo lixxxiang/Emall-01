@@ -62,7 +62,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     private var pagesAmount = -1
     var mAdapter: SceneClassifyAdapter? = null
     var sceneGlm: GridLayoutManager? = null
-    val model = Model()
 
 
     override fun setLayout(): Any? {
@@ -88,6 +87,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
 
         all_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            mAdapter = null
+            data!!.clear()
             all_srl.isRefreshing = true
             Handler().postDelayed({
                 getData(ssp2!!, 1)
@@ -354,6 +355,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
                             val size = sceneSearch.data.searchReturnDtoList.size
                             for (i in 0 until size) {
+                                val model = Model()
+
                                 model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
                                 model.price = sceneSearch.data.searchReturnDtoList[i].price
                                 model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
@@ -380,9 +383,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .post()
     }
 
-    private fun loadMoreData(ssp2: WeakHashMap<String, Any>, pages: Int) {
-        EmallLogger.d(pages)
-        ssp2["pageNum"] = pages
+    private fun loadMoreData(ssp2: WeakHashMap<String, Any>, p: Int) {
+        EmallLogger.d(p)
+        ssp2["pageNum"] = p
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp2)
@@ -396,6 +399,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
                             val size = sceneSearch.data.searchReturnDtoList.size
                             for (i in 0 until size) {
+                                val model = Model()
 
                                 model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
                                 model.price = sceneSearch.data.searchReturnDtoList[i].price
@@ -403,9 +407,15 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                                 model.productId = sceneSearch.data.searchReturnDtoList[i].productId
                                 model.productType = "1"
                                 data!!.add(model)
-                                mAdapter!!.notifyDataSetChanged()
                             }
-                            initRecyclerView(data!!)
+                            mAdapter!!.notifyDataSetChanged()
+//                            mAdapter!!.setOnLoadMoreListener {
+//                                loadMoreData(ssp2, pages)
+//                            }
+                            mAdapter!!.loadMoreComplete()
+                            if (pages < pagesAmount)
+                                pages += 1
+//                            initRecyclerView(data!!)
                         }
                     }
                 })
