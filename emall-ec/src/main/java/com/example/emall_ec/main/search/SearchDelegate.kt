@@ -129,7 +129,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         }
 
         search_btn.setOnClickListener {
-            val geo = String.format("%s %s %s %s",longi_lt!!.toString(), lati_lt!!.toString(), longi_rb.toString(), lati_rb.toString())
+            val geo = String.format("%s %s %s %s", longi_lt!!.toString(), lati_lt!!.toString(), longi_rb.toString(), lati_rb.toString())
             val editor = mSharedPreferences!!.edit()
             editor.putString("GEO", geo)
             editor.commit()
@@ -144,6 +144,25 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
 
         search_back_iv.setOnClickListener {
             pop()
+        }
+
+        search_zoom_in_btn.setOnClickListener {
+            val zoomIn: MapStatusUpdate? = MapStatusUpdateFactory.zoomIn()
+            mBaiduMap!!.animateMapStatus(zoomIn)
+        }
+
+        search_zoom_out_btn.setOnClickListener {
+            val zoomOut: MapStatusUpdate? = MapStatusUpdateFactory.zoomOut()
+            mBaiduMap!!.animateMapStatus(zoomOut)
+        }
+
+        search_locate.setOnClickListener {
+            var mMapStatus = MapStatus.Builder()
+                    .target(LatLng(mCurrentLat, mCurrentLon))
+                    .zoom(8F)
+                    .build()
+            var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+            mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
         }
     }
 
@@ -170,7 +189,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(mCurrentMode, true, null))
         val builder = MapStatus.Builder()
         builder.overlook(0f)
-//        mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
+        mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
         val child = mMapView!!.getChildAt(1)
         if (child != null && (child is ImageView || child is ZoomControls)) {
             child.visibility = View.INVISIBLE
@@ -212,7 +231,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 val ll = LatLng(location.latitude,
                         location.longitude)
                 val builder = MapStatus.Builder()
-                builder.target(ll).zoom(1.0f)
+                builder.target(ll).zoom(8.0f)
                 mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))
             }
         }
@@ -250,11 +269,6 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         }
     }
 
-    override fun onPause() {
-//        mMapView!!.onPause()
-        super.onPause()
-    }
-
     override fun onResume() {
         mMapView!!.onResume()
         super.onResume()
@@ -262,12 +276,4 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 SensorManager.SENSOR_DELAY_UI)
     }
 
-    override fun onDestroy() {
-//        mLocClient!!.stop()
-//        mBaiduMap!!.isMyLocationEnabled = false
-//        mMapView!!.onDestroy()
-//        mMapView = null
-//        mSensorManager!!.unregisterListener(this)
-        super.onDestroy()
-    }
 }

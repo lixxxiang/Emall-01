@@ -40,8 +40,8 @@ import android.graphics.Bitmap
 class ProgramDetailDelegate : EmallDelegate() {
     private var demandParams: WeakHashMap<String, Any>? = WeakHashMap()
     var demandBean = DemandBean()
-    var mMapView: MapView? = null
-    var mBaiduMap: BaiduMap? = null
+//    var mMapView: MapView? = null
+//    var mBaiduMap: BaiduMap? = null
     var geoString = String()
     private var detailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var detailBean = DetailBean()
@@ -69,8 +69,6 @@ class ProgramDetailDelegate : EmallDelegate() {
         val bitmap = BitmapFactory.decodeByteArray(bis, 0, bis.size)
         program_detail_map.setImageBitmap(bitmap)
         val sp = activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE)
-//        initMap(sp)
-//        resolveConflict()
 
         EmallLogger.d(sp.getString("scopeGeo", ""))
         getData(sp)
@@ -110,52 +108,52 @@ class ProgramDetailDelegate : EmallDelegate() {
         program_detail_angle_tv.text = String.format("%s°", sp.getString("angle", ""))
     }
 
-    private fun initMap(sp: SharedPreferences) {
-        mMapView = activity.findViewById(R.id.program_detail_map) as MapView
-        mBaiduMap = mMapView!!.map
-        geoString = sp.getString("geoString", "")
-        val geos: MutableList<Array<String>> = mutableListOf()
-        val array = geoString.split(',')
-        EmallLogger.d(array)
-        geos.add(arrayOf(array[0], array[1]))
-        geos.add(arrayOf(array[2], array[1]))
-        geos.add(arrayOf(array[2], array[3]))
-        geos.add(arrayOf(array[0], array[3]))
-
-        val child = mMapView!!.getChildAt(1)
-        if (child != null && (child is ImageView || child is ZoomControls)) {
-            child.visibility = View.INVISIBLE
-        }
-        mMapView!!.showScaleControl(false)
-        mMapView!!.showZoomControls(false)
-        drawMap(geos)
-
-    }
-
-    private fun drawMap(geo: MutableList<Array<String>>) {
-        val pt1 = LatLng(Double.parseDouble(geo[0][1]), Double.parseDouble(geo[0][0]))
-        val pt2 = LatLng(Double.parseDouble(geo[1][1]), Double.parseDouble(geo[1][0]))
-        val pt3 = LatLng(Double.parseDouble(geo[2][1]), Double.parseDouble(geo[2][0]))
-        val pt4 = LatLng(Double.parseDouble(geo[3][1]), Double.parseDouble(geo[3][0]))
-        val pts = ArrayList<LatLng>()
-        pts.add(pt1)
-        pts.add(pt2)
-        pts.add(pt3)
-        pts.add(pt4)
-
-        val polygonOption = PolygonOptions()
-                .points(pts)
-                .stroke(Stroke(1, Color.parseColor("#F56161")))
-                .fillColor(Color.parseColor("#BFF56161"))
-
-        mBaiduMap!!.addOverlay(polygonOption)
-
-
-        val latlng = LatLng((Double.parseDouble(geo[1][1]) + Double.parseDouble(geo[2][1])) / 2, (Double.parseDouble(geo[3][0]) + Double.parseDouble(geo[2][0])) / 2)
-        val mMapStatus: MapStatus = MapStatus.Builder().target(latlng).zoom(12F).build()
-        val mapStatusUpdate: MapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
-        mBaiduMap!!.setMapStatus(mapStatusUpdate)
-    }
+//    private fun initMap(sp: SharedPreferences) {
+//        mMapView = activity.findViewById(R.id.program_detail_map) as MapView
+//        mBaiduMap = mMapView!!.map
+//        geoString = sp.getString("geoString", "")
+//        val geos: MutableList<Array<String>> = mutableListOf()
+//        val array = geoString.split(',')
+//        EmallLogger.d(array)
+//        geos.add(arrayOf(array[0], array[1]))
+//        geos.add(arrayOf(array[2], array[1]))
+//        geos.add(arrayOf(array[2], array[3]))
+//        geos.add(arrayOf(array[0], array[3]))
+//
+//        val child = mMapView!!.getChildAt(1)
+//        if (child != null && (child is ImageView || child is ZoomControls)) {
+//            child.visibility = View.INVISIBLE
+//        }
+//        mMapView!!.showScaleControl(false)
+//        mMapView!!.showZoomControls(false)
+//        drawMap(geos)
+//
+//    }
+//
+//    private fun drawMap(geo: MutableList<Array<String>>) {
+//        val pt1 = LatLng(Double.parseDouble(geo[0][1]), Double.parseDouble(geo[0][0]))
+//        val pt2 = LatLng(Double.parseDouble(geo[1][1]), Double.parseDouble(geo[1][0]))
+//        val pt3 = LatLng(Double.parseDouble(geo[2][1]), Double.parseDouble(geo[2][0]))
+//        val pt4 = LatLng(Double.parseDouble(geo[3][1]), Double.parseDouble(geo[3][0]))
+//        val pts = ArrayList<LatLng>()
+//        pts.add(pt1)
+//        pts.add(pt2)
+//        pts.add(pt3)
+//        pts.add(pt4)
+//
+//        val polygonOption = PolygonOptions()
+//                .points(pts)
+//                .stroke(Stroke(1, Color.parseColor("#F56161")))
+//                .fillColor(Color.parseColor("#BFF56161"))
+//
+//        mBaiduMap!!.addOverlay(polygonOption)
+//
+//
+//        val latlng = LatLng((Double.parseDouble(geo[1][1]) + Double.parseDouble(geo[2][1])) / 2, (Double.parseDouble(geo[3][0]) + Double.parseDouble(geo[2][0])) / 2)
+//        val mMapStatus: MapStatus = MapStatus.Builder().target(latlng).zoom(12F).build()
+//        val mapStatusUpdate: MapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+//        mBaiduMap!!.setMapStatus(mapStatusUpdate)
+//    }
 
     private fun getData(sp: SharedPreferences) {
 
@@ -194,18 +192,18 @@ class ProgramDetailDelegate : EmallDelegate() {
 
     }
 
-    private fun resolveConflict() {
-
-        val v = mMapView!!.getChildAt(0)
-        v.setOnTouchListener(View.OnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                program_detail_scrollview.requestDisallowInterceptTouchEvent(false)
-            } else {
-                program_detail_scrollview.requestDisallowInterceptTouchEvent(true)
-            }
-            false
-        })
-    }
+//    private fun resolveConflict() {
+//
+//        val v = mMapView!!.getChildAt(0)
+//        v.setOnTouchListener(View.OnTouchListener { v, event ->
+//            if (event.action == MotionEvent.ACTION_UP) {
+//                program_detail_scrollview.requestDisallowInterceptTouchEvent(false)
+//            } else {
+//                program_detail_scrollview.requestDisallowInterceptTouchEvent(true)
+//            }
+//            false
+//        })
+//    }
 
     override fun onSupportVisible() {
         super.onSupportVisible()
@@ -213,7 +211,6 @@ class ProgramDetailDelegate : EmallDelegate() {
         if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty() && isClicked) {
             getDemandId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE))
             isClicked = false
-
         }
     }
 

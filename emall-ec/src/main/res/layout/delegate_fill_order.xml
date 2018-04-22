@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
-        android:elevation="4dp" />
+        android:elevation="2dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/fill_order_toolbar"
@@ -16,7 +16,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/ll_bar"
         android:background="#FFFFFF"
-        android:elevation="4dp">
+        android:elevation="2dp">
 
         <TextView
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -51,9 +51,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="13dp"/>
                 <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="15dp"
+                    android:layout_width="8dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_foward"
+                    android:background="@drawable/forward_gray"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:layout_alignParentRight="true"/>
@@ -209,12 +209,12 @@
                 android:clickable="true"
                 android:layout_height="43dp"
                 android:focusable="true">
-                <CheckBox
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/cb"
-                    android:theme="@style/My_CheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="13dp"
+                    android:layout_width="16dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/invoice_unchecked"
                     android:layout_centerVertical="true" />
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -226,9 +226,9 @@
                     android:layout_centerVertical="true"
                     />
                 <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="15dp"
+                    android:layout_width="8dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_foward"
+                    android:background="@drawable/forward_gray"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:layout_alignParentRight="true"/>
@@ -254,8 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
                 android:layout_centerVertical="true"
-                android:textColor="#B80017"
-                android:text="f sf af sdf sd " />
+                android:textColor="#B80017" />
         </RelativeLayout>
 
         <RelativeLayout

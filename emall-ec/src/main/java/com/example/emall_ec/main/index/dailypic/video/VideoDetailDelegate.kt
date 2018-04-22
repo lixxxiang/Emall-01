@@ -7,7 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
@@ -21,6 +23,7 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
@@ -101,7 +104,18 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         return R.layout.delegate_video_detail
     }
 
+    override fun onEnterAnimationEnd(savedInstanceState: Bundle?) {
+        super.onEnterAnimationEnd(savedInstanceState)
+        getdata(videoId)
+
+    }
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        EmallProgressBar.showProgressbar(context)
+        imageView.visibility = View.INVISIBLE
+        mask.visibility = View.INVISIBLE
+        like_video.visibility = View.INVISIBLE
+
         videoId = arguments.getString("VIDEO_ID")
         isLogin = !DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()
         video_collect.setImageResource(R.drawable.collection)
@@ -112,16 +126,18 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         video_detail_2.visibility = View.INVISIBLE
         val parser = ConfigXmlParser()
         parser.parse(activity)
-        cordovaWebView = CordovaWebViewImpl(SystemWebViewEngine(webview2))
+        cordovaWebView = CordovaWebViewImpl(SystemWebViewEngine(webview2)) as CordovaWebView?
         cordovaWebView!!.init(this, parser.pluginEntries, parser.preferences)
         webview2.loadUrl("file:///android_asset/www/index.html")
-
+        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)
+        video_viewpager.adapter = adapter
+        setTabLayout()
+        video_xTablayout.setupWithViewPager(video_viewpager)
 
         val bottomDialog = Dialog(activity, R.style.BottomDialog)
         val contentView = LayoutInflater.from(activity).inflate(R.layout.comment, null)
 
         mSharedPreferences = activity.getSharedPreferences("VIDEO_DETAIL", Context.MODE_PRIVATE)
-        getdata(videoId)
         video_detail_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(video_detail_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -358,10 +374,7 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
                         editor.commit()
                         initViews(getPlanetEarthDetailBean)
                         initComments(videoId, userId, "2")
-                        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)
-                        video_viewpager.adapter = adapter
-                        setTabLayout()
-                        video_xTablayout.setupWithViewPager(video_viewpager)
+
                         video_xTablayout!!.setOnTabSelectedListener(object : XTabLayout.OnTabSelectedListener {
                             override fun onTabSelected(tab: XTabLayout.Tab) {
                                 video_viewpager.currentItem = tab.position
@@ -394,7 +407,13 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
 
                             override fun onTabReselected(tab: XTabLayout.Tab) {
                             }
+
                         })
+                        EmallProgressBar.hideProgressbar()
+                        comment_listview_video.visibility = View.VISIBLE
+                        imageView.visibility = View.VISIBLE
+                        mask.visibility = View.VISIBLE
+                        like_video.visibility = View.VISIBLE
                     }
                 })
                 .failure(object : IFailure {

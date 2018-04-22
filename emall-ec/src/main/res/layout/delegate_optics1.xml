@@ -110,6 +110,10 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#DADADA"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/all_srl"

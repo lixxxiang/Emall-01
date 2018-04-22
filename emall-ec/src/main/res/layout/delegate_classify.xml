@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
     android:layout_width="match_parent"
+    android:descendantFocusability="blocksDescendants"
+
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
@@ -64,6 +66,7 @@
             android:id="@+id/classify_introduction_root_rl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#FFFFFF"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -187,6 +190,45 @@
                 android:background="#FFFFFF"
                 android:layout_below="@+id/classify_horizontal_scrollview_ll" />
 
+            <RelativeLayout
+                android:id="@+id/bottom_rl"
+                android:visibility="gone"
+                android:layout_below="@+id/classify_rv"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#FFFFFF"
+                android:minHeight="50dp">
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+                <RelativeLayout
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <ProgressBar
+                        android:id="@+id/pull_to_refresh_load_progress"
+                        style="@style/CustomProgressStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="0dp"
+                        android:indeterminate="true" />
+                    <TextView
+                        android:id="@+id/item_load_tv"
+                        android:layout_toRightOf="@+id/pull_to_refresh_load_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/loading"
+                        android:textColor="#5C5C5C"
+                        android:textSize="14dp"/>
+
+
+                </RelativeLayout>
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/classify_mask_rl"
                 android:visibility="invisible"

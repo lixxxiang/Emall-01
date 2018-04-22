@@ -77,7 +77,7 @@ class FillOrderDelegate : BottomItemDelegate() {
 
         bill_rl.setOnClickListener {
             if (!isChecked) {
-                cb.isChecked = true
+                cb.setBackgroundResource(R.drawable.invoice_checked)
                 isChecked = true
                 val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
                 val bundle: Bundle? = Bundle()
@@ -85,7 +85,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                 delegate.arguments = bundle
                 start(delegate)
             } else {
-                cb.isChecked = false
+                cb.setBackgroundResource(R.drawable.invoice_unchecked)
                 isChecked = false
             }
         }

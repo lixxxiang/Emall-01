@@ -33,8 +33,7 @@
                     android:layout_below="@+id/videodetailpic"
                     android:layout_marginLeft="17dp"
                     android:layout_marginRight="17dp"
-                    android:layout_marginTop="24dp"
-                    android:text="TextView"/>
+                    android:layout_marginTop="24dp" />
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/videodetailpic"
@@ -134,6 +133,7 @@
                 <com.example.emall_core.util.view.CommentListView
                     android:id="@+id/comment_listview_video"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="match_parent"
                     android:divider="@drawable/list_item_divider_2"
                     android:dividerHeight="1dp"/>

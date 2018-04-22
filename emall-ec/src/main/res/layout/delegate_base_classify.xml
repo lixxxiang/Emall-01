@@ -20,6 +20,9 @@
         android:background="#FFFFFF"
         android:elevation="2dp">
         <RelativeLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/base_classify_search_rl"
             android:layout_width="match_parent"
             android:layout_height="31dp"
             android:layout_gravity="center"

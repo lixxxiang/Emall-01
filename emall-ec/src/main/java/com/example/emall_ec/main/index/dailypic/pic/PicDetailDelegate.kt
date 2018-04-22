@@ -33,7 +33,10 @@ import java.util.*
 import android.app.Activity
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import kotlinx.android.synthetic.main.pic_detail_2.*
@@ -105,8 +108,17 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         return R.layout.delegate_pic_detail
     }
 
+    override fun onEnterAnimationEnd(saveInstanceState: Bundle?) {
+        // 这里设置Listener、各种Adapter、请求数据等等
+        getdata(imageId)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("ApplySharedPref")
     override fun initial() {
+        EmallProgressBar.showProgressbar(context)
+        like.visibility = View.INVISIBLE
         imageId = arguments.getString("IMAGE_ID")
         isLogin = !DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()
         collect.setImageResource(R.drawable.collection)
@@ -120,7 +132,10 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         cordovaWebView = CordovaWebViewImpl(SystemWebViewEngine(webview1))
         cordovaWebView!!.init(this, parser.pluginEntries, parser.preferences)
         webview1.loadUrl("file:///android_asset/www/index.html")
-
+        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)
+        viewpager.adapter = adapter
+        setTabLayout()
+        xTablayout.setupWithViewPager(viewpager)
 
         val bottomDialog = Dialog(activity, R.style.BottomDialog)
         val contentView = LayoutInflater.from(activity).inflate(R.layout.comment, null)
@@ -128,7 +143,6 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         userParams!!["userId"] = userId
         userParams!!["type"] = "1"
         mSharedPreferences = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE)
-        getdata(imageId)
         pic_detail_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(pic_detail_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -216,13 +230,13 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
                 Toast.makeText(activity, "评论不能为空", Toast.LENGTH_SHORT).show()
         }
 
-        scrollview.setOnTouchListener { p0, p1 ->
-            if (scrollview.getChildAt(0).height - scrollview.height
-                    == scrollview.scrollY) {
-                comment_listview.visibility = View.VISIBLE
-            }
-            false
-        }
+//        scrollview.setOnTouchListener { p0, p1 ->
+//            if (scrollview.getChildAt(0).height - scrollview.height
+//                    == scrollview.scrollY) {
+//                comment_listview.visibility = View.VISIBLE
+//            }
+//            false
+//        }
     }
 
     private fun showImage(url: String, index: String, picAmount: String) {
@@ -290,10 +304,10 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
                         editor.commit()
                         initViews(getDailyPicDetailBean)
                         initComments(imageId, userId, "1")
-                        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)
-                        viewpager.adapter = adapter
-                        setTabLayout()
-                        xTablayout.setupWithViewPager(viewpager)
+//                        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)
+//                        viewpager.adapter = adapter
+//                        setTabLayout()
+//                        xTablayout.setupWithViewPager(viewpager)
                         xTablayout!!.setOnTabSelectedListener(object : XTabLayout.OnTabSelectedListener {
                             override fun onTabSelected(tab: XTabLayout.Tab) {
                                 viewpager.currentItem = tab.position
@@ -327,6 +341,10 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
                             override fun onTabReselected(tab: XTabLayout.Tab) {
                             }
                         })
+                        EmallProgressBar.hideProgressbar()
+                        comment_listview.visibility = View.VISIBLE
+                        like.visibility = View.VISIBLE
+
                     }
                 })
                 .failure(object : IFailure {

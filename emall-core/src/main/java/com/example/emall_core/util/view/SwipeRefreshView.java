@@ -5,9 +5,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.ListView;
+
+import com.example.emall_core.R;
 
 
 /**
@@ -19,7 +22,7 @@ public class SwipeRefreshView extends SwipeRefreshLayout {
 
     private static final String TAG = SwipeRefreshView.class.getSimpleName();
     private final int mScaledTouchSlop;
-//    private final View mFooterView;
+    private final View mFooterView;
     private ListView mListView;
     private OnLoadMoreListener mListener;
 
@@ -33,8 +36,7 @@ public class SwipeRefreshView extends SwipeRefreshLayout {
     public SwipeRefreshView(Context context, AttributeSet attrs) {
         super(context, attrs);
         // 填充底部加载布局
-//        mFooterView = View.inflate(context, R.layout.view_footer, null);
-
+        mFooterView = View.inflate(context, R.layout.load_more, null);
         // 表示控件移动的最小距离，手移动的距离大于这个距离才能拖动控件
         mScaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
@@ -50,13 +52,11 @@ public class SwipeRefreshView extends SwipeRefreshLayout {
                 if (getChildAt(0) instanceof ListView) {
                     // 创建ListView对象
                     mListView = (ListView) getChildAt(0);
-
                     // 设置ListView的滑动监听
                     setListViewOnScroll();
                 } else if (getChildAt(0) instanceof RecyclerView) {
                     // 创建ListView对象
                     mRecyclerView = (RecyclerView) getChildAt(0);
-
                     // 设置RecyclerView的滑动监听
                     setRecyclerViewOnScroll();
                 }
@@ -157,10 +157,10 @@ public class SwipeRefreshView extends SwipeRefreshLayout {
         isLoading = loading;
         if (isLoading) {
             // 显示布局
-//            mListView.addFooterView(mFooterView);
+            mListView.addFooterView(mFooterView);
         } else {
             // 隐藏布局
-//            mListView.removeFooterView(mFooterView);
+            mListView.removeFooterView(mFooterView);
 
             // 重置滑动的坐标
             mDownY = 0;

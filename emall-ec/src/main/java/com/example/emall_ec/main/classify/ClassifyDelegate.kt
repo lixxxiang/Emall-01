@@ -1,13 +1,11 @@
 package com.example.emall_ec.main.classify
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_classify.*
 import android.support.design.widget.AppBarLayout
@@ -19,7 +17,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import android.os.Handler
-import android.support.v4.view.ViewCompat.setNestedScrollingEnabled
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.AppCompatTextView
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -29,16 +27,11 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_ec.R.id.classify_toolbar
-import com.example.emall_ec.R.id.classify_toolbar_search_iv
-import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.classify.adapter.GridViewAdapter
 import com.example.emall_ec.main.classify.data.*
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
-import com.example.emall_ec.main.me.collect.data.MyAllCollectionBean
 import com.google.gson.Gson
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -67,23 +60,12 @@ class ClassifyDelegate : EmallDelegate() {
     var handler = Handler()
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
-
-    var param_scopeGeo = String()
-    var param_productType = String()
-    var param_resolution = String()
-    var param_satelliteId = String()
-    var param_startTime = String()
-    var param_endTime = String()
-    var param_cloud = String()
-    var param_type = String()
-    var param_pageSize = String()
-    var param_pageNum = String()
-
     private var adapter: GridViewAdapter? = null
-
     var sceneGlm: GridLayoutManager? = null
     var videoGlm: GridLayoutManager? = null
     var isExpanded = false
+    private var pages = 1
+    private var pagesAmount = -1
 
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
@@ -103,7 +85,7 @@ class ClassifyDelegate : EmallDelegate() {
                     "", "",
                     "", "",
                     "", "",
-                    "0", "10", "1")//0是标准景
+                    "0", "10", pages.toString())//0是标准景
 
         } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
             classify_horizontal_scrollview_ll.visibility = View.GONE
@@ -112,14 +94,12 @@ class ClassifyDelegate : EmallDelegate() {
                     "", "",
                     "", "",
                     "", "",
-                    "2", "10", "1")//2是夜光
+                    "2", "10", pages.toString())//2是夜光
         } else if (arguments.getString("TYPE") == "VIDEO") {
             classify_horizontal_scrollview_ll.visibility = View.GONE
             initVideoGlm()
             getVData("0")
         }
-
-
 
         classify_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
@@ -135,6 +115,7 @@ class ClassifyDelegate : EmallDelegate() {
                 }
             }
         })
+
         classify_down_btn.setOnClickListener {
             if (!isExpanded) {
                 classify_appbar.setExpanded(false)
@@ -170,14 +151,6 @@ class ClassifyDelegate : EmallDelegate() {
         classify_toolbar.setNavigationOnClickListener {
             _mActivity.onBackPressed()
         }
-
-//        if (sceneAdapter != null) {
-
-//        }
-
-//        if (videoAdapter != null) {
-
-//        }
 
         classify_appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             @RequiresApi(Build.VERSION_CODES.M)
@@ -218,6 +191,20 @@ class ClassifyDelegate : EmallDelegate() {
                     "", "",
                     "0", "10", "1")
         }
+
+        classify_sv.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+            if (scrollY == (v!!.getChildAt(0).measuredHeight - v.measuredHeight)) {
+
+                if (arguments.getString("TYPE") == "SCENE"){
+                    bottom_rl.visibility = View.VISIBLE
+                    getData("",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "0", "10", pages.toString())
+                }
+            }
+        })
 
     }
 
@@ -271,8 +258,10 @@ class ClassifyDelegate : EmallDelegate() {
         call.enqueue(object : retrofit2.Callback<SceneSearch> {
             override fun onResponse(call: retrofit2.Call<SceneSearch>, response: retrofit2.Response<SceneSearch>) {
                 if (response.body() != null) {
-                    EmallLogger.d(response.body()!!.data.searchReturnDtoList[0].thumbnailUrl)
+                    EmallLogger.d(response.body().data.searchReturnDtoList.size)
+                    bottom_rl.visibility = View.INVISIBLE
                     sceneSearch = response.body()!!
+                    pagesAmount = sceneSearch.data.pages
                     if (arguments.getString("TYPE") == "SCENE")
                         classify_title_tv.text = resources.getString(R.string.optics_1)
                     else if (arguments.getString("TYPE") == "NOCTILUCENCE")
@@ -372,7 +361,6 @@ class ClassifyDelegate : EmallDelegate() {
     }
 
     private fun getSceneData() {
-        EmallLogger.d(sceneSearch.data.searchReturnDtoList[0].thumbnailUrl)
         val size = sceneSearch.data.searchReturnDtoList.size
         for (i in 0 until size) {
             val model = Model()
@@ -419,21 +407,22 @@ class ClassifyDelegate : EmallDelegate() {
         } else if (type == "SCENE") {
             sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
             classify_rv.adapter = sceneAdapter
+            if (pages < pagesAmount)
+                pages += 1
             sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("productId", productId!![position])
 
-                if (arguments.getString("TYPE") == "NOCTILUCENCE"){
+                if (arguments.getString("TYPE") == "NOCTILUCENCE") {
                     bundle.putString("type", NOCTILUCENCE)
-                }else
+                } else
                     bundle.putString("type", OPTICS)
                 delegate!!.arguments = bundle
                 start(delegate)
             }
         }
     }
-
 
     override fun onSupportVisible() {
         super.onSupportVisible()

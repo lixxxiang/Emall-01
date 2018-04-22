@@ -5,15 +5,13 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
-import com.blankj.utilcode.util.TimeUtils
-import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -25,11 +23,11 @@ import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
-import com.example.emall_ec.main.net.CommonUrls
+import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
 import com.example.emall_ec.main.search.SearchResultDelegate
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_daily_pic.*
 import kotlinx.android.synthetic.main.delegate_optics1.*
-import kotlinx.android.synthetic.main.delegate_optics1.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,11 +58,16 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     var sceneSearch = SceneSearch()
     private var data: MutableList<Model>? = mutableListOf()
     private var productIdList: MutableList<SceneSearch.DataBean.SearchReturnDtoListBean> = mutableListOf()
+    private var pages = 1
+    private var pagesAmount = -1
+    var mAdapter: SceneClassifyAdapter? = null
+    var sceneGlm: GridLayoutManager? = null
+    val model = Model()
+
 
     override fun setLayout(): Any? {
         return R.layout.delegate_optics1
     }
-
 
 
     @SuppressLint("SimpleDateFormat")
@@ -80,10 +83,23 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         ssp2!!["cloud"] = ""
         ssp2!!["type"] = ""
         ssp2!!["pageSize"] = "10"
-        ssp2!!["pageNum"] = "1"
+        initSceneGlm()
+        getData(ssp2!!, pages)
 
-        getData(ssp2!!)
-//        initRecyclerView(context, CommonUrls().sceneSearch(context, ssp2, optics_rv, "OPTICS")!!, optics_rv)
+
+        all_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            all_srl.isRefreshing = true
+            Handler().postDelayed({
+                getData(ssp2!!, 1)
+                all_srl.isRefreshing = false
+            }, 1200)
+        })
+
+
+//        all_srl.setOnLoadMoreListener {
+//            loadMoreData(ssp2!!, pages)
+//            all_srl.setLoading(false)
+//        }
 
         optics_screen_tv.setOnClickListener {
             if (!screenIsShow) {
@@ -322,19 +338,22 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_btn_confirm.isClickable = false
     }
 
-    private fun getData(ssp2: WeakHashMap<String, Any>) {
+    private fun getData(ssp2: WeakHashMap<String, Any>, pages: Int) {
+        ssp2["pageNum"] = pages
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
-                .params(ssp2!!)
+                .params(ssp2)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         if (sceneSearch.status != 103) {
                             productIdList = sceneSearch.data.searchReturnDtoList
+                            pagesAmount = sceneSearch.data.pages
+
                             val size = sceneSearch.data.searchReturnDtoList.size
                             for (i in 0 until size) {
-                                val model = Model()
                                 model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
                                 model.price = sceneSearch.data.searchReturnDtoList[i].price
                                 model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
@@ -361,17 +380,68 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .post()
     }
 
-    private fun initRecyclerView(data: MutableList<Model>) {
-        val glm = GridLayoutManager(context, 2)
-        glm.isSmoothScrollbarEnabled = true
-        glm.isAutoMeasureEnabled = true
+    private fun loadMoreData(ssp2: WeakHashMap<String, Any>, pages: Int) {
+        EmallLogger.d(pages)
+        ssp2["pageNum"] = pages
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
+                .params(ssp2)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
+                        if (sceneSearch.status != 103) {
+                            productIdList = sceneSearch.data.searchReturnDtoList
+                            pagesAmount = sceneSearch.data.pages
+
+                            val size = sceneSearch.data.searchReturnDtoList.size
+                            for (i in 0 until size) {
+
+                                model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
+                                model.price = sceneSearch.data.searchReturnDtoList[i].price
+                                model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
+                                model.productId = sceneSearch.data.searchReturnDtoList[i].productId
+                                model.productType = "1"
+                                data!!.add(model)
+                                mAdapter!!.notifyDataSetChanged()
+                            }
+                            initRecyclerView(data!!)
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
+    }
+
+    private fun initSceneGlm() {
+        sceneGlm = GridLayoutManager(context, 2)
+        sceneGlm!!.isSmoothScrollbarEnabled = true
+        sceneGlm!!.isAutoMeasureEnabled = true
         optics_rv.addItemDecoration(GridSpacingItemDecoration(2, 30, true))
-        optics_rv.layoutManager = glm
+        optics_rv.layoutManager = sceneGlm
         optics_rv.setHasFixedSize(true)
         optics_rv.isNestedScrollingEnabled = false
-        val mAdapter: SceneClassifyAdapter? = SceneClassifyAdapter(R.layout.item_classify_scene, data, glm)
-        optics_rv.adapter = mAdapter
+    }
 
+    private fun initRecyclerView(data: MutableList<Model>) {
+
+        mAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
+        mAdapter!!.setOnLoadMoreListener {
+            loadMoreData(ssp2!!, pages)
+        }
+        optics_rv.adapter = mAdapter
+        if (pages < pagesAmount)
+            pages += 1
         mAdapter!!.setOnItemClickListener { adapter, view, position ->
             val delegate = GoodsDetailDelegate().create()
             val bundle: Bundle? = Bundle()

@@ -466,11 +466,6 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         nextStep!!.visibility = View.GONE
         fakeToolbarRl.addView(nextStep, nextStepParams)
 
-
-
-
-
-
         rulerRl = RelativeLayout(activity)
         rulerRl!!.id = 9
         val rulerRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)

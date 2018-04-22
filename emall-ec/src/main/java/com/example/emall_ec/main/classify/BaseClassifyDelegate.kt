@@ -14,6 +14,7 @@ import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.classify.data.VideoHomeBean
 import com.example.emall_ec.main.classify.data.VideoSearch
 import com.example.emall_ec.main.program.ProgramDelegate
+import com.example.emall_ec.main.search.SearchDelegate
 import kotlinx.android.synthetic.main.delegate_base_classify.*
 import retrofit2.Retrofit
 import java.util.*
@@ -65,6 +66,10 @@ class BaseClassifyDelegate : BottomItemDelegate() {
             (DELEGATE as EcBottomDelegate).start(delegate)
         }
 
+        base_classify_search_rl.setOnClickListener {
+            val delegate: SearchDelegate = SearchDelegate().create()!!
+            (DELEGATE as EcBottomDelegate).start(delegate)
+        }
     }
 
     override fun onSupportVisible() {

@@ -36,14 +36,12 @@ class SearchResultDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-        search_result_toolbar.title = ""
+        search_result_toolbar.title = resources.getString(R.string.search_result)
         (activity as AppCompatActivity).setSupportActionBar(search_result_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         search_result_toolbar.setNavigationOnClickListener {
             pop()
-
-
-        }
+         }
         delegate = this
         geo = arguments.getString("GEO")
         EmallLogger.d(geo)

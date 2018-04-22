@@ -33,4 +33,11 @@
         <!--修改AlertDialog按钮的颜色-->
         <item name="colorAccent">#B4A078</item>
     </style>
+
+    <style name="CustomProgressStyle" parent="@android:style/Widget.ProgressBar.Large">
+        <item name="android:minWidth">23dip</item>
+        <item name="android:maxWidth">23dip</item>
+        <item name="android:minHeight">23dip</item>
+        <item name="android:maxHeight">23dip</item>
+    </style>
 </resources>

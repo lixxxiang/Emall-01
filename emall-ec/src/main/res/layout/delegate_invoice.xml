@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
-        android:elevation="4dp" />
+        android:elevation="2dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/invoice_toolbar"
@@ -17,7 +17,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/ll_bar"
         android:background="#FFFFFF"
-        android:elevation="4dp">
+        android:elevation="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"

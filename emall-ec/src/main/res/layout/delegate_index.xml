@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <View
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:id="@+id/fake_status_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
@@ -26,7 +26,7 @@
         android:id="@+id/toolbar_index"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:background="#FFFFFF">
 
         <LinearLayout

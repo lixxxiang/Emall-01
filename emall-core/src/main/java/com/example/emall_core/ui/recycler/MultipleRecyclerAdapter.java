@@ -122,6 +122,7 @@ public class MultipleRecyclerAdapter extends
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
+                horiziontalRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, 20, true));
                 SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
                 snapHelperStart.attachToRecyclerView(horiziontalRecyclerView);
                 horiziontalRecyclerView.setAdapter(new ItemUnitAdapter((List<UnitBean>) entity.getField(MultipleFields.HORIZONTAL_SCROLL), mContext));

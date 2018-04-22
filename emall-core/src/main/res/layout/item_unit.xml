@@ -21,7 +21,7 @@
         android:layout_below="@+id/unit_title_tv"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="15dp"/>
-    
+
     <com.example.emall_core.util.view.RoundImageView
         android:layout_width="262dp"
         android:layout_height="185dp"
@@ -48,3 +48,61 @@
     <!---->
 
 </RelativeLayout>
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_width="278dp"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:background="#FFFFFF">-->
+<!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+    <!--<android.support.v7.widget.AppCompatTextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="14dp"-->
+        <!--android:textColor="#5C5C5C"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:id="@+id/unit_title_tv"-->
+        <!--android:text="dfssf"-->
+        <!--android:layout_marginLeft="0dp" />-->
+
+    <!--<android.support.v7.widget.AppCompatTextView-->
+        <!--android:id="@+id/unit_detail_tv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="12dp"-->
+        <!--android:textColor="#9B9B9B"-->
+        <!--android:layout_below="@+id/unit_title_tv"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="dfssf"-->
+
+        <!--android:layout_marginLeft="0dp"/>-->
+
+    <!--<com.example.emall_core.util.view.RoundImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="185dp"-->
+        <!--android:layout_below="@+id/unit_detail_tv"-->
+        <!--android:id="@+id/unit_image_iv"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:layout_marginBottom="0dp"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--/>-->
+
+    <!--<android.support.v7.widget.AppCompatTextView-->
+        <!--android:id="@+id/unit_description_tv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginRight="12dp"-->
+        <!--android:layout_alignTop="@+id/unit_image_iv"-->
+        <!--android:layout_marginTop="11dp"-->
+        <!--android:background="@drawable/index_horizontal_text_border"-->
+        <!--android:textSize="12dp" />-->
+<!--</RelativeLayout>-->
+
+<!--&lt;!&ndash;&ndash;&gt;-->
+
+<!--</android.support.v7.widget.CardView>-->
