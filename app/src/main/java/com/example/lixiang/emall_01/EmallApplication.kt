@@ -1,6 +1,9 @@
 package com.example.lixiang.emall_01
 
 import android.app.Application
+import android.content.Context
+import android.support.multidex.MultiDex
+import android.support.multidex.MultiDexApplication
 import android.webkit.WebIconDatabase
 import com.baidu.mapapi.SDKInitializer
 import com.blankj.utilcode.util.Utils
@@ -15,7 +18,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule
 /**
  * Created by lixiang on 2018/1/22.
  */
-class EmallApplication : Application() {
+class EmallApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         SDKInitializer.initialize(applicationContext)
@@ -41,5 +44,10 @@ class EmallApplication : Application() {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build())
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 }
