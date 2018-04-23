@@ -58,8 +58,6 @@ class MeDelegate : BottomItemDelegate() {
 //
     override fun onResume() {
         super.onResume()
-        EmallLogger.d("resume")
-
     }
 
     override fun initial() {

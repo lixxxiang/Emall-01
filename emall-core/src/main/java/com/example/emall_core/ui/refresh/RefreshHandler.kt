@@ -52,7 +52,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .params(fa!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
                         data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
                         data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])

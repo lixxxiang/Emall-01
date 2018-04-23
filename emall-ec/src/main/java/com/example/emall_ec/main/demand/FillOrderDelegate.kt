@@ -10,9 +10,12 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.demand.data.OrderBean
 import com.example.emall_ec.main.demand.data.ViewDemandBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
+import kotlinx.android.synthetic.main.me_function_item.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
@@ -25,6 +28,9 @@ class FillOrderDelegate : BottomItemDelegate() {
     var viewDemandParams: WeakHashMap<String, Any>? = WeakHashMap()
     var viewDemandBean = ViewDemandBean()
     var isChecked = false
+    var orderParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var productId = String()
+    var orderBean = OrderBean()
     fun create(): FillOrderDelegate? {
         return FillOrderDelegate()
     }
@@ -37,29 +43,22 @@ class FillOrderDelegate : BottomItemDelegate() {
         fill_order_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(fill_order_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        EmallLogger.d(arguments.getString("title"))
+
         fill_order_toolbar.setNavigationOnClickListener {
             pop()
         }
+
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
-        EmallLogger.d(arguments.getString("demandId"))
         viewDemandParams!!["type"] = arguments.getString("type")// 1 3 5
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/viewDemand")
                 .params(viewDemandParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         viewDemandBean = Gson().fromJson(response, ViewDemandBean::class.java)
+                        productId = viewDemandBean.data.demands[0].productId
                         initViews(viewDemandBean)
-//                        commoditySubmitDemandBean = Gson().fromJson(response, CommoditySubmitDemandBean::class.java)
-//                        val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
-//                        val bundle: Bundle? = Bundle()
-//                        bundle!!.putString("demandId", commoditySubmitDemandBean.data)
-//                        bundle.putString("imageUrl",sceneData.imageDetailUrl)
-//                        bundle.putString("title", sceneData.productId)
-//                        bundle.putString("time",sceneData.centerTime)
-//                        delegate.arguments = bundle
-//                        start(delegate)
                     }
                 })
                 .failure(object : IFailure {
@@ -91,11 +90,48 @@ class FillOrderDelegate : BottomItemDelegate() {
         }
 
         fill_order_to_pay.setOnClickListener {
-            val delegate: PayMethodDelegate = PayMethodDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            delegate.arguments = bundle
-            start(delegate)
+            insertOrderData()
         }
+    }
+
+    private fun insertOrderData() {
+        orderParams!!["type"] = arguments.getString("type")
+        orderParams!!["invoiceState"] = "0"
+        orderParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        orderParams!!["productId"] = productId
+        orderParams!!["parentOrderId"] = arguments.getString("demandId")
+        orderParams!!["userName"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
+        orderParams!!["userTelephone"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone
+
+        EmallLogger.d(orderParams!!)
+        RestClient().builder()
+                .url("http://59.110.164.214:8025/global/order/app/create/order")
+                .params(orderParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        orderBean = Gson().fromJson(response, OrderBean::class.java)
+                        EmallLogger.d(orderBean)
+                        if (orderBean.msg == "成功") {
+                            val delegate: PayMethodDelegate = PayMethodDelegate().create()!!
+                            val bundle: Bundle? = Bundle()
+                            bundle!!.putString("ORDER_ID",orderBean.data.parentOrderId)
+                            delegate.arguments = bundle
+                            start(delegate)
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
     }
 
     fun initViews(viewDemandBean: ViewDemandBean) {

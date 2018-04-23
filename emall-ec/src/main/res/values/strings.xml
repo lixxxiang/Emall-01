@@ -198,6 +198,7 @@
     <string name="pay_failed">支付失败</string>
     <string name="pay_success">付款成功</string>
     <string name="loading">加载中</string>
+    <string name="sorry_no_result">抱歉，暂无结果</string>
 
 
 </resources>

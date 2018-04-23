@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"
+        android:elevation="2dp" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/offline_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
+    </android.support.v7.widget.Toolbar>
+    <com.example.emall_core.util.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/offline_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/offline_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/index_horizontal_text_border_2"
+                    android:text="温馨提示：\n1、财务会在3个工作日内审核并查账，如到账将会在1小时之内对您的订单进行排产，受银行处理时间影响，付款到账可能有所延误\n2、如果线下汇款过程中遇到任何问题可随时联系客服"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:layout_below="@+id/offline_rl"
+                android:layout_marginTop="12dp"
+                android:background="#F0F0F0" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/offline_rl"
+                android:layout_marginTop="19dp">
+
+                <RelativeLayout
+                    android:id="@+id/offline_1_iv"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginTop="21dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:background="@drawable/oval" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="1"
+                        android:textColor="#D8D8D8" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="2px"
+                    android:layout_height="210dp"
+                    android:layout_below="@+id/offline_1_iv"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="7dp"
+                    android:background="#D8D8D8" />
+
+                <RelativeLayout
+                    android:id="@+id/offline_2_iv"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_below="@+id/offline_1_iv"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginTop="223dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:background="@drawable/oval" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="2"
+                        android:textColor="#D8D8D8" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="2px"
+                    android:layout_height="54dp"
+                    android:layout_below="@+id/offline_1_iv"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="251dp"
+                    android:background="#D8D8D8" />
+
+                <RelativeLayout
+                    android:id="@+id/offline_3_iv"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_below="@+id/offline_1_iv"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginTop="312dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:background="@drawable/oval" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="3"
+                        android:textColor="#D8D8D8" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/offline_1_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/offline_1_iv"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@+id/offline_1_iv"
+                    android:text="打款至长光卫星技术有限公司指定收款账号"
+                    android:textColor="#686868"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/offline_2_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/offline_2_iv"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@+id/offline_2_iv"
+                    android:text="提交汇款信息"
+                    android:textColor="#686868"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/offline_3_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/offline_3_iv"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@+id/offline_3_iv"
+                    android:text="汇款结果反馈"
+                    android:textColor="#686868"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignLeft="@id/offline_1_tv"
+                    android:layout_below="@+id/offline_1_tv"
+                    android:layout_marginTop="17dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="转账途径"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv1"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/tv1"
+                        android:text="银行柜台转账、网上银行"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tv1"
+                        android:layout_below="@+id/tv1"
+                        android:layout_marginTop="20dp"
+                        android:text="收款户名"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv2"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/tv2"
+                        android:text="长光卫星技术有限公司"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tv2"
+                        android:layout_below="@+id/tv2"
+                        android:layout_marginTop="20dp"
+                        android:text="收款账号"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv3"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/tv3"
+                        android:text="22001360300059599999"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tv3"
+                        android:layout_below="@+id/tv3"
+                        android:layout_marginTop="20dp"
+                        android:text="收款银行"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv4"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/tv4"
+                        android:text="建行长春朝阳支行"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tv4"
+                        android:layout_below="@+id/tv4"
+                        android:layout_marginTop="20dp"
+                        android:text="汇款备注"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tv5"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/tv5"
+                        android:text="遥感易购订单+遥感易购账户手机号"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tv5"
+                        android:layout_below="@+id/tv5"
+                        android:layout_marginTop="20dp"
+                        android:text="请妥善保管汇款底单"
+                        android:textColor="#D0021B"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offline_2_tv"
+                    android:layout_below="@id/offline_2_tv"
+                    android:layout_marginRight="42dp"
+                    android:layout_marginTop="17dp"
+                    android:text="打款至长光卫星技术有限公司指定银行账号后，联系客服提交您的汇款信息"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offline_3_tv"
+                    android:layout_below="@id/offline_3_tv"
+                    android:layout_marginRight="42dp"
+                    android:layout_marginTop="17dp"
+                    android:text="确定打款操作后，可以在订单列表页面查看生产进度"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </com.example.emall_core.util.view.BounceScrollView>
+</LinearLayout>

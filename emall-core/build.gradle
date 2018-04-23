@@ -108,6 +108,8 @@ dependencies {
     compile 'com.facebook.fresco:fresco:1.5.0'
     compile 'pub.devrel:easypermissions:1.0.1'
 
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
 }
 
 repositories {

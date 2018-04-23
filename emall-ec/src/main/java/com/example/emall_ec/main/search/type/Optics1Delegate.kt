@@ -23,10 +23,8 @@ import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
-import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
 import com.example.emall_ec.main.search.SearchResultDelegate
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_daily_pic.*
 import kotlinx.android.synthetic.main.delegate_optics1.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,7 +54,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     var mMonth = ca.get(Calendar.MONTH)
     var mDay = ca.get(Calendar.DAY_OF_MONTH)
     var sceneSearch = SceneSearch()
-    private var data: MutableList<Model>? = mutableListOf()
     private var productIdList: MutableList<SceneSearch.DataBean.SearchReturnDtoListBean> = mutableListOf()
     private var pages = 1
     private var pagesAmount = -1
@@ -88,7 +85,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         all_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             mAdapter = null
-            data!!.clear()
+//            data!!.clear()
             all_srl.isRefreshing = true
             Handler().postDelayed({
                 getData(ssp2!!, 1)
@@ -339,24 +336,28 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_btn_confirm.isClickable = false
     }
 
-    private fun getData(ssp2: WeakHashMap<String, Any>, pages: Int) {
-        ssp2["pageNum"] = pages
+    private fun getData(ssp2: WeakHashMap<String, Any>, p: Int) {
+        ssp2["pageNum"] = p
 
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp2)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         if (sceneSearch.status != 103) {
-                            productIdList = sceneSearch.data.searchReturnDtoList
+                            if (optics_rv_rl.visibility == View.GONE){
+                                optics_rv_rl.visibility = View.VISIBLE
+                                optics_no_result.visibility = View.GONE
+                                optics_top_bar.visibility = View.VISIBLE
+                            }
+                                productIdList = sceneSearch.data.searchReturnDtoList
                             pagesAmount = sceneSearch.data.pages
-
+                            val data: MutableList<Model>? = mutableListOf()
+                            pages = 1
                             val size = sceneSearch.data.searchReturnDtoList.size
                             for (i in 0 until size) {
                                 val model = Model()
-
                                 model.imageUrl = sceneSearch.data.searchReturnDtoList[i].thumbnailUrl
                                 model.price = sceneSearch.data.searchReturnDtoList[i].price
                                 model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
@@ -365,7 +366,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                                 data!!.add(model)
                             }
                             initRecyclerView(data!!)
-
+                        } else {
+                            optics_rv_rl.visibility = View.GONE
+                            optics_no_result.visibility = View.VISIBLE
+                            optics_top_bar.visibility = View.GONE
                         }
                     }
                 })
@@ -383,7 +387,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .post()
     }
 
-    private fun loadMoreData(ssp2: WeakHashMap<String, Any>, p: Int) {
+    private fun loadMoreData(ssp2: WeakHashMap<String, Any>, p: Int, data: MutableList<Model>) {
         EmallLogger.d(p)
         ssp2["pageNum"] = p
         RestClient().builder()
@@ -391,7 +395,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .params(ssp2)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         if (sceneSearch.status != 103) {
                             productIdList = sceneSearch.data.searchReturnDtoList
@@ -406,7 +409,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                                 model.time = sceneSearch.data.searchReturnDtoList[i].centerTime
                                 model.productId = sceneSearch.data.searchReturnDtoList[i].productId
                                 model.productType = "1"
-                                data!!.add(model)
+                                data.add(model)
                             }
                             mAdapter!!.notifyDataSetChanged()
 //                            mAdapter!!.setOnLoadMoreListener {
@@ -447,7 +450,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         mAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
         mAdapter!!.setOnLoadMoreListener {
-            loadMoreData(ssp2!!, pages)
+            loadMoreData(ssp2!!, pages, data)
         }
         optics_rv.adapter = mAdapter
         if (pages < pagesAmount)

@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/optics_top_bar"
         android:layout_width="match_parent"
         android:background="#FFFFFF"
         android:layout_height="44dp">
@@ -113,8 +114,10 @@
         android:layout_height="2px"
         android:background="#DADADA"/>
     <RelativeLayout
+        android:id="@+id/optics_rv_rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/all_srl"
             android:layout_width="match_parent"
@@ -136,6 +139,7 @@
                 android:layout_height="2px"
                 android:background="#EFEFEF"
                 android:layout_alignParentTop="true"/>
+            <!--筛选-->
             <RelativeLayout
                 android:id="@+id/optics_screen_top_rl"
                 android:layout_width="match_parent"
@@ -424,5 +428,31 @@
             </RelativeLayout>
         </RelativeLayout>
 
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/optics_no_result"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_marginTop="70dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="150dp"
+            android:layout_height="110dp">
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/no_result"
+                />
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="#9B9B9B"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:text="@string/sorry_no_result"/>
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

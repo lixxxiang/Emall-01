@@ -302,8 +302,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun commoditySubmitDemand(type135: String) {
-        EmallLogger.d(type135)
-        EmallLogger.d(type)
         commoditySubmitDemandParams!!["productId"] = arguments.getString("productId")
         commoditySubmitDemandParams!!["geo"] = ""
         commoditySubmitDemandParams!!["status"] = "0"
@@ -561,7 +559,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     override fun onSuccess(response: String) {
                         getCollectionMarkBean = Gson().fromJson(response, GetCollectionMarkBean::class.java)
                         if (getCollectionMarkBean.message == "success") {
-                            EmallLogger.d(response)
                             if (getCollectionMarkBean.data.collectionMark == 1) {
                                 video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
                                 flag = true

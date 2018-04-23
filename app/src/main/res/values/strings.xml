@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">遥感易购</string>
     <string name="dd">dd</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
 </resources>

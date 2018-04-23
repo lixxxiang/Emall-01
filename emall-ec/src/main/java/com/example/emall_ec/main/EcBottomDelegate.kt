@@ -10,6 +10,7 @@ import com.example.emall_ec.main.classify.BaseClassifyDelegate
 import com.example.emall_ec.main.discover.DiscoverDelegate
 import com.example.emall_ec.main.index.IndexDelegate
 import com.example.emall_ec.main.classify.ClassifyDelegate
+import com.example.emall_ec.main.demand.OfflinePaymentDelegate
 import com.example.emall_ec.main.demand.PayMethodDelegate
 import com.example.emall_ec.main.me.MeDelegate
 import com.example.emall_ec.main.program.ProgramDelegate
@@ -24,7 +25,7 @@ open class EcBottomDelegate : BaseBottomDelegate(){
         val items : LinkedHashMap<BottomTabBean, BottomItemDelegate> ?= LinkedHashMap()
         items!!.put(BottomTabBean(R.drawable.home_h, "首页"), IndexDelegate())
         items.put(BottomTabBean(R.drawable.classify_n, "分类"), BaseClassifyDelegate())
-        items.put(BottomTabBean(R.drawable.center, "发现"), PayMethodDelegate())
+        items.put(BottomTabBean(R.drawable.center, "发现"), OfflinePaymentDelegate())
         items.put(BottomTabBean(R.drawable.special_n, "专题"), SpecialDelegate())
         items.put(BottomTabBean(R.drawable.me_n, "我的"), MeDelegate())
         return builder.addItems(items)!!.build()!!
