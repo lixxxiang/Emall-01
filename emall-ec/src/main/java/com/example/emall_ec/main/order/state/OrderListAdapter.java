@@ -47,7 +47,6 @@ public class OrderListAdapter extends BaseAdapter {
         for (int i = 0; i < dataList.get(0).getData().size(); i++) {
             imageList.add(dataList.get(0).getData().get(i).getDetails().getImageDetailUrl());
         }
-        System.out.println(imageList);
     }
 
     @Override
@@ -85,6 +84,9 @@ public class OrderListAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     EmallLogger.INSTANCE.d(i + "clicked");
+                    if (dataList.get(i).getStatus() == 2){
+                        
+                    }
                 }
             });
             util.btn.setTag(i);
@@ -124,10 +126,10 @@ public class OrderListAdapter extends BaseAdapter {
     }
 
     private String stateFormat(int state, String planCommitTime) {
-        if (state != 4) {
+        if (state == 3) {
             return String.format("%s：预计 %s 交付", stateArray[state], planCommitTime);
         } else {
-            return String.format("%s：已交付", stateArray[state]);
+            return String.format("%s", stateArray[state]);
         }
     }
 

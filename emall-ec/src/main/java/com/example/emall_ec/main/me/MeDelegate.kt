@@ -1,7 +1,9 @@
 package com.example.emall_ec.main.me
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -11,6 +13,7 @@ import com.example.emall_ec.main.order.OrderListDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
+import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
@@ -60,6 +63,7 @@ class MeDelegate : BottomItemDelegate() {
         super.onResume()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(activity, null)
         iconList!!.add(R.drawable.me_favorite)
@@ -154,6 +158,7 @@ class MeDelegate : BottomItemDelegate() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun toOrderDelegate(index: Int){
         if(DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
             val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
@@ -168,6 +173,7 @@ class MeDelegate : BottomItemDelegate() {
             bundle.putInt("INDEX", index)
             delegate.arguments = bundle
             (DELEGATE as EcBottomDelegate).start(delegate)
+
         }
     }
 

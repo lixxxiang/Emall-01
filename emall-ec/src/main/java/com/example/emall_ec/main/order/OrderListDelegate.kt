@@ -30,7 +30,6 @@ class OrderListDelegate : BottomItemDelegate() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         order_list_toolbar.title = ""
         userId = arguments.getString("USER_ID")
-        EmallLogger.d(userId)
         (activity as AppCompatActivity).setSupportActionBar(order_list_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -85,6 +84,7 @@ class OrderListDelegate : BottomItemDelegate() {
         //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
         //TabLayout加载viewpager
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager)
+        vp_FindFragment_pager.offscreenPageLimit = 5
         vp_FindFragment_pager.currentItem = arguments.getInt("INDEX")
         //tab_FindFragment_title.set
     }

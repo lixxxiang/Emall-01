@@ -6,12 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     signingConfigs {
-        release {
-            keyAlias 'key0'
-            keyPassword '432874'
-            storeFile file('/Users/lixiang/AndroidStudioProjects/Emall_01/emall0424.jks')
-            storePassword '432874'
-        }
     }
     compileSdkVersion 26
     defaultConfig {
@@ -31,7 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.release
         }
     }
 }

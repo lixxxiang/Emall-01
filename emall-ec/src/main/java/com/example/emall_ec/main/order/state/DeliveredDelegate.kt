@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.view.View
+import android.widget.AbsListView
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
@@ -18,6 +19,7 @@ import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
+import kotlinx.android.synthetic.main.delegate_check_pending.*
 import kotlinx.android.synthetic.main.delegate_delivered.*
 import java.util.*
 
@@ -28,6 +30,7 @@ class DeliveredDelegate : EmallDelegate() {
     private var orderDetail = OrderDetail()
     private var data: MutableList<OrderDetail>? = mutableListOf()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var inited = false
 
     override fun setLayout(): Any? {
         return R.layout.delegate_delivered
@@ -35,8 +38,8 @@ class DeliveredDelegate : EmallDelegate() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
-        EmallProgressBar.showProgressbar(context)
-
+        val head = View.inflate(activity, R.layout.orderlist_head_view, null)
+        delivered_lv.addHeaderView(head)
         data()
         delivered_lv.setOnItemClickListener { adapterView, view, i, l ->
 
@@ -51,6 +54,17 @@ class DeliveredDelegate : EmallDelegate() {
             (parentFragment as BottomItemDelegate).start(delegate)
 
         }
+
+        delivered_lv.setOnScrollListener(object : AbsListView.OnScrollListener {
+            override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+
+            }
+
+            override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                val firstView = view.getChildAt(firstVisibleItem)
+                delivered_srl.isEnabled = firstVisibleItem == 0 && (firstView == null || firstView.top == 0)
+            }
+        })
     }
 
     fun data() {
@@ -58,7 +72,6 @@ class DeliveredDelegate : EmallDelegate() {
         findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         findOrderListByUserIdParams!!["state"] = "4"
         findOrderListByUserIdParams!!["type"] = ""
-        EmallLogger.d(findOrderListByUserIdParams!!["userId"]!!)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
                 .params(findOrderListByUserIdParams!!)
@@ -68,12 +81,15 @@ class DeliveredDelegate : EmallDelegate() {
                         if (orderDetail.data.isEmpty()) {
                             delivered_lv.visibility = View.INVISIBLE
                             delivered_rl.visibility = View.VISIBLE
+                            EmallProgressBar.hideProgressbar()
+
                         } else {
                             data!!.add(orderDetail)
                             initRefreshLayout()
-                            val head = View.inflate(activity, R.layout.orderlist_head_view, null)
-                            delivered_lv.addHeaderView(head)
+
                             delivered_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                            EmallProgressBar.hideProgressbar()
+
                         }
                     }
                 })

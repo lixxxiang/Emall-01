@@ -83,13 +83,13 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         getData(ssp2!!, pages)
 
 
-        all_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        optics_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             mAdapter = null
 //            data!!.clear()
-            all_srl.isRefreshing = true
+            optics_srl.isRefreshing = true
             Handler().postDelayed({
                 getData(ssp2!!, 1)
-                all_srl.isRefreshing = false
+                optics_srl.isRefreshing = false
             }, 1200)
         })
 
@@ -346,12 +346,12 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         if (sceneSearch.status != 103) {
-                            if (optics_rv_rl.visibility == View.GONE){
+                            if (optics_rv_rl.visibility == View.GONE) {
                                 optics_rv_rl.visibility = View.VISIBLE
                                 optics_no_result.visibility = View.GONE
                                 optics_top_bar.visibility = View.VISIBLE
                             }
-                                productIdList = sceneSearch.data.searchReturnDtoList
+                            productIdList = sceneSearch.data.searchReturnDtoList
                             pagesAmount = sceneSearch.data.pages
                             val data: MutableList<Model>? = mutableListOf()
                             pages = 1
