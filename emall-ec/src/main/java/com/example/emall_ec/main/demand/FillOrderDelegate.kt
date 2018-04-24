@@ -115,6 +115,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                             val delegate: PayMethodDelegate = PayMethodDelegate().create()!!
                             val bundle: Bundle? = Bundle()
                             bundle!!.putString("ORDER_ID",orderBean.data.parentOrderId)
+                            bundle.putString("DEMAND_ID", arguments.getString("demandId"))
                             delegate.arguments = bundle
                             start(delegate)
                         }

@@ -1,13 +1,16 @@
 package com.example.emall_ec.main.order.state
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
@@ -30,7 +33,10 @@ class DeliveredDelegate : EmallDelegate() {
         return R.layout.delegate_delivered
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        EmallProgressBar.showProgressbar(context)
+
         data()
         delivered_lv.setOnItemClickListener { adapterView, view, i, l ->
 

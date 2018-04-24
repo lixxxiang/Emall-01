@@ -31,7 +31,7 @@ public class EmallProgressBar {
     public static void showProgressbar(Context context) {
 
         ProgressBar progressBar = new ProgressbarCreator().creator(context);
-        progressBar.setIndeterminateDrawable(context.getDrawable(R.drawable.progressbar));
+//        progressBar.setIndeterminateDrawable(context.getDrawable(R.drawable.progressbar));
         dialog = new AppCompatDialog(context, R.style.dialog);
         dialog.setContentView(progressBar);
 

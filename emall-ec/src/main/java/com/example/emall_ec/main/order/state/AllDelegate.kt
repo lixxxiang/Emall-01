@@ -2,13 +2,16 @@ package com.example.emall_ec.main.order.state
 
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.view.View
 import android.widget.AdapterView
 import com.example.emall_core.delegates.bottom.BaseBottomDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
@@ -38,7 +41,9 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         return R.layout.delegate_all
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        EmallProgressBar.showProgressbar(context)
         data()
         all_lv.setOnItemClickListener { adapterView, view, i, l ->
 
@@ -68,11 +73,14 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         if (orderDetail.data.isEmpty()){
                             all_lv.visibility = View.INVISIBLE
                             all_rl.visibility = View.VISIBLE
+                            EmallProgressBar.hideProgressbar()
+
                         }else{
                             data!!.add(orderDetail)
                             initRefreshLayout()
                             all_lv.addHeaderView(View.inflate(activity, R.layout.orderlist_head_view, null))
                             all_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                            EmallProgressBar.hideProgressbar()
                         }
                     }
                 })
