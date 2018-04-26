@@ -28,7 +28,7 @@ class OrderListDelegate : BottomItemDelegate() {
 
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        order_list_toolbar.title = ""
+        order_list_toolbar.title = getString(R.string.my_order)
         userId = arguments.getString("USER_ID")
         (activity as AppCompatActivity).setSupportActionBar(order_list_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)

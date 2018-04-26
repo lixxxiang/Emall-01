@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import java.util.*
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
@@ -108,6 +109,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         return R.layout.delegate_pic_detail
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onEnterAnimationEnd(saveInstanceState: Bundle?) {
         // 这里设置Listener、各种Adapter、请求数据等等
         getdata(imageId)
@@ -239,6 +241,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
 //        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun showImage(url: String, index: String, picAmount: String) {
         EmallLogger.d(fullScreenImages)
         var showImageIntent = Intent(activity, ShowImageNewActivity::class.java)
@@ -246,16 +249,14 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         showImageIntent.putExtra("images", fullScreenImages)
         showImageIntent.putExtra("index", index)
         showImageIntent.putExtra("picAmount", picAmount)
+//        when(index){
+//            "0" ->  startActivity(showImageIntent, ActivityOptions.makeSceneTransitionAnimation(activity, picture_1,"P1").toBundle())
+////            "1" ->  startActivity(showImageIntent, ActivityOptions.makeSceneTransitionAnimation(activity, picture_2,"P1").toBundle())
+////            "2" ->  startActivity(showImageIntent, ActivityOptions.makeSceneTransitionAnimation(activity, picture_3,"shareNames").toBundle())
+//        }
+        showImageIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         startActivity(showImageIntent)
-//        EmallLogger.d(String.format("%s,%s, %s", url, index, picAmount))
-//        val delegate: ShowImageDelegate = ShowImageDelegate().create()!!
-//        val bundle: Bundle? = Bundle()
-//        bundle!!.putString("imageUrl", url)
-//        bundle.putString("images", fullScreenImages)
-//        bundle.putString("index", index)
-//        bundle.putString("picAmount", picAmount)
-//        delegate.arguments = bundle
-//        start(delegate)
+        activity.overridePendingTransition(0, 0)
     }
 
 
@@ -287,6 +288,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
                 .post()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun getdata(id: String?) {
         getDailyPicDetailParams!!["imageId"] = id
         RestClient().builder()
@@ -357,6 +359,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
                 .post()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun initViews(dailyPicDetailBean: GetDailyPicDetailBean) {
         if (dailyPicDetailBean.data.richText1 != null)
             description_1.text = dailyPicDetailBean.data.richText1
@@ -648,7 +651,5 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
     override fun requestPermission(p0: CordovaPlugin?, p1: Int, p2: String?) {
     }
 
-    override fun onCreateFragmentAnimator(): FragmentAnimator {
-        return DefaultHorizontalAnimator()
-    }
+
 }

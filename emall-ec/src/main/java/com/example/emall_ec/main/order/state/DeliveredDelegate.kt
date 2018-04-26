@@ -16,6 +16,8 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter
+import com.example.emall_ec.main.order.state.adapter.DeliveredListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
@@ -31,6 +33,8 @@ class DeliveredDelegate : EmallDelegate() {
     private var data: MutableList<OrderDetail>? = mutableListOf()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
     var inited = false
+    var adapter: DeliveredListAdapter? = null
+    var delegate: DeliveredDelegate? = null
 
     override fun setLayout(): Any? {
         return R.layout.delegate_delivered
@@ -40,13 +44,15 @@ class DeliveredDelegate : EmallDelegate() {
     override fun initial() {
         val head = View.inflate(activity, R.layout.orderlist_head_view, null)
         delivered_lv.addHeaderView(head)
+        delegate = this
+
         data()
         delivered_lv.setOnItemClickListener { adapterView, view, i, l ->
 
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("KEY", "ID")
-            bundle!!.putParcelable("KEy", orderDetail)
+            bundle.putParcelable("KEy", orderDetail)
             delegate.arguments = bundle
 //            start(delegate)
 //            showHideFragment(OrderDetailDelegate(), getParentDelegate())
@@ -86,8 +92,7 @@ class DeliveredDelegate : EmallDelegate() {
                         } else {
                             data!!.add(orderDetail)
                             initRefreshLayout()
-
-                            delivered_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                            delivered_lv.adapter = DeliveredListAdapter(delegate, data, R.layout.item_order, activity)
                             EmallProgressBar.hideProgressbar()
 
                         }

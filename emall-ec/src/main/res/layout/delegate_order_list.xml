@@ -17,16 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFFFFF"
+        app:titleTextAppearance="@style/Toolbar.TitleText2"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         android:elevation="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/my_order"
-            android:textSize="14dp"
-            android:textColor="#686868"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/my_order"-->
+            <!--android:textSize="14dp"-->
+            <!--android:textColor="#686868"-->
+            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>-->
     </android.support.v7.widget.Toolbar>
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_FindFragment_title"
@@ -35,6 +39,7 @@
         android:background="#FFFFFF"
         app:tabIndicatorColor="#B80017"
         app:tabSelectedTextColor="#B80017"
+
         app:tabTextColor="#5C5C5C"
         android:elevation="2dp"/>
 

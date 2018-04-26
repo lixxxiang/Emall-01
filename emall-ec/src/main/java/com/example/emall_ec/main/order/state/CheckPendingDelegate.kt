@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
-import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AbsListView
@@ -13,14 +12,13 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_core.ui.progressbar.EmallProgressBar
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter
+import com.example.emall_ec.main.order.state.adapter.CheckPendingListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_all.*
 import kotlinx.android.synthetic.main.delegate_check_pending.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
 import java.util.*
@@ -28,11 +26,12 @@ import java.util.*
 /**
  * Created by lixiang on 2018/3/5.
  */
-class CheckPendingDelegate: EmallDelegate(){
+class CheckPendingDelegate : EmallDelegate() {
     private var orderDetail = OrderDetail()
     private var data: MutableList<OrderDetail>? = mutableListOf()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
-    var adapter: OrderListAdapter? = null
+    var adapter: CheckPendingListAdapter? = null
+    var delegate: CheckPendingDelegate? = null
 
     override fun setLayout(): Any? {
         return R.layout.delegate_check_pending
@@ -40,6 +39,7 @@ class CheckPendingDelegate: EmallDelegate(){
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        delegate = this
         val head = View.inflate(activity, R.layout.orderlist_head_view, null)
         check_pending_lv.addHeaderView(head)
         data()
@@ -86,13 +86,13 @@ class CheckPendingDelegate: EmallDelegate(){
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         orderDetail = Gson().fromJson(response, OrderDetail::class.java)
-                        if (orderDetail.data.isEmpty()){
+                        if (orderDetail.data.isEmpty()) {
                             check_pending_lv.visibility = View.INVISIBLE
                             check_pending_rl.visibility = View.VISIBLE
-                        }else {
+                        } else {
                             data!!.add(orderDetail)
                             initRefreshLayout()
-                            adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                            adapter = CheckPendingListAdapter(delegate, data, R.layout.item_order, context)
                             check_pending_lv.adapter = adapter
                         }
                     }

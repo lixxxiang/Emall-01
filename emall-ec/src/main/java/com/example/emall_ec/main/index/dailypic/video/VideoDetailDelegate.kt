@@ -225,6 +225,15 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
             } else
                 Toast.makeText(activity, "评论不能为空", Toast.LENGTH_SHORT).show()
         }
+
+        videodetailpic.setOnClickListener {
+            val intent = Intent(activity, VitamioPlayerActivity::class.java)
+            if (getPlanetEarthDetailBean.data.mp4FilePath != null) {
+                intent.putExtra("url", getPlanetEarthDetailBean.data.mp4FilePath)
+                intent.putExtra("title",getPlanetEarthDetailBean.data.videoName)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun submitComment(uId: String, aId: String, type: String, s: String) {

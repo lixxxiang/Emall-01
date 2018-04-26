@@ -1,6 +1,5 @@
 package com.example.emall_ec.main.order.state
 
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -9,26 +8,20 @@ import android.support.annotation.RequiresApi
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AdapterView
-import com.example.emall_core.app.Emall
-import com.example.emall_core.delegates.bottom.BaseBottomDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.progressbar.EmallProgressBar
-import com.example.emall_core.util.file.FileUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
-import com.example.emall_ec.main.order.OrderListDelegate
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
-import me.yokeyword.fragmentation.SupportFragment
 import java.util.*
 import android.widget.AbsListView
-import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
-import kotlinx.android.synthetic.main.delegate_optics1.*
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 
 
 /**
@@ -37,8 +30,9 @@ import kotlinx.android.synthetic.main.delegate_optics1.*
 class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     private var orderDetail = OrderDetail()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
-    var adapter: OrderListAdapter? = null
     var inited = false
+    var adapter: AllListAdapter? = null
+    var delegate : AllDelegate? = null
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
     }
@@ -51,7 +45,9 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         all_lv.addHeaderView(View.inflate(activity, R.layout.orderlist_head_view, null))
+        delegate = this
         data()
+
         all_lv.setOnItemClickListener { adapterView, view, i, l ->
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
             val bundle: Bundle? = Bundle()
@@ -108,10 +104,13 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         } else {
                             data!!.add(orderDetail)
                             initRefreshLayout()
-                            adapter = OrderListAdapter(activity, data, R.layout.item_order)
+                            EmallLogger.d(data)
+                            adapter = AllListAdapter(delegate, data, R.layout.item_order, context)
                             all_lv.adapter = adapter
                             EmallProgressBar.hideProgressbar()
-
+//                            all_lv.getChildAt(1).findViewById<AppCompatButton>(R.id.item_order_btn).setOnClickListener {
+//                                start(PayMethodDelegate().create())
+//                            }
                         }
                     }
                 })

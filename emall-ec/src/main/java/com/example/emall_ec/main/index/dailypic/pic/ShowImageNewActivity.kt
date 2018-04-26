@@ -51,12 +51,12 @@ class ShowImageNewActivity : AppCompatActivity() {
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build())
         setContentView(R.layout.delegate_show_image)
-        string_array = arrayOf("0","1","2")
-        EmallLogger.d( intent.getStringArrayListExtra("images"))
+        string_array = arrayOf("0", "1", "2")
+        EmallLogger.d(intent.getStringArrayListExtra("images"))
         string_array[0] = intent.getStringArrayListExtra("images").elementAt(0)
         if (intent.getStringExtra("picAmount").toInt() >= 2 && !intent.getStringArrayListExtra("images").elementAt(1).isEmpty())
             string_array[1] = intent.getStringArrayListExtra("images").elementAt(1)
-        if (intent.getStringExtra("picAmount").toInt() == 3 &&!intent.getStringArrayListExtra("images").elementAt(2).isEmpty())
+        if (intent.getStringExtra("picAmount").toInt() == 3 && !intent.getStringArrayListExtra("images").elementAt(2).isEmpty())
             string_array[2] = intent.getStringArrayListExtra("images").elementAt(2)
 
 //        setSupportActionBar(toolbar)
@@ -167,14 +167,12 @@ class ShowImageNewActivity : AppCompatActivity() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.show_image_fragment, container, false)
-
-            println("url---->$url")
             rootView.image.setPhotoUri(Uri.parse(url[arguments.getInt(ARG_SECTION_NUMBER)]))
             urlString = url[arguments.getInt(ARG_SECTION_NUMBER)]
             rootView.image.onPhotoTapListener = OnPhotoTapListener { _, _, _ ->
                 activity.finish()
+                activity.overridePendingTransition(0, 0)
             }
-
             return rootView
         }
 
@@ -185,7 +183,7 @@ class ShowImageNewActivity : AppCompatActivity() {
              * fragment.
              */
             private val ARG_SECTION_NUMBER = "section_number"
-            var url: Array<String> = arrayOf("0","1","2")
+            var url: Array<String> = arrayOf("0", "1", "2")
             var urlString = ""
             /**
              * Returns a new instance of this fragment for the given section

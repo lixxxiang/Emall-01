@@ -20,6 +20,7 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.me.adapter.MeFunctionAdapter
 import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
+import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 
 
@@ -155,7 +156,9 @@ class MeDelegate : BottomItemDelegate() {
             toOrderDelegate(4)
         }
 
-
+        me_to_computer_iv.setOnClickListener {
+            start(ProductDeliveryDelegate().create())
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

@@ -16,6 +16,8 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter
+import com.example.emall_ec.main.order.state.adapter.InProductionListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_delivered.*
@@ -32,7 +34,8 @@ class InProductionDelegate  : EmallDelegate(){
     private var data: MutableList<OrderDetail>? = mutableListOf()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
     var inited = false
-
+    var adapter: InProductionListAdapter? = null
+    var delegate : InProductionDelegate? = null
 
     override fun setLayout(): Any? {
         return R.layout.delegate_in_production
@@ -40,7 +43,7 @@ class InProductionDelegate  : EmallDelegate(){
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
-
+        delegate = this
         data()
         in_production_lv.setOnItemClickListener { adapterView, view, i, l ->
 
@@ -88,8 +91,7 @@ class InProductionDelegate  : EmallDelegate(){
                             initRefreshLayout()
                             val head = View.inflate(activity, R.layout.orderlist_head_view, null)
                             in_production_lv.addHeaderView(head)
-                            in_production_lv.adapter = OrderListAdapter(activity, data, R.layout.item_order)
-
+                            in_production_lv.adapter = InProductionListAdapter(delegate, data, R.layout.item_order, activity)
                         }
                     }
                 })

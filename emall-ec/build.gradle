@@ -14,7 +14,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
     }
 
     buildTypes {
@@ -31,10 +33,13 @@ android {
             universalApk true
         }
     }
+
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     api project(':emall-core')
+    compile project(path: ':vitamio')
 }

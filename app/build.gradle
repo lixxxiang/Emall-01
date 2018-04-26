@@ -11,12 +11,14 @@ android {
     defaultConfig {
         applicationId "com.example.lixiang.emall_01"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
 
     }
     buildTypes {
@@ -33,4 +35,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     api project(':emall-ec')
+    implementation project(':vitamio')
 }

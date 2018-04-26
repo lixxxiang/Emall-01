@@ -103,15 +103,12 @@ dependencies {
     compile files('libs/cordova-6.2.0-dev.jar')
     compile 'com.smartTop:jd-address:1.0.3'
     compile 'me.biubiubiu.justifytext:library:1.1'
-
     compile 'me.relex:photodraweeview:1.1.0'
     compile 'com.facebook.fresco:fresco:1.5.0'
     compile 'pub.devrel:easypermissions:1.0.1'
-
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-
     compile 'com.android.support:multidex:1.0.0'
-
+    implementation project(':vitamio')
 }
 
 repositories {

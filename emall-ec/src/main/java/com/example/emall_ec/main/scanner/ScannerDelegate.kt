@@ -2,15 +2,23 @@ package com.example.emall_ec.main.scanner
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_scanner.*
 import android.widget.Toast
+import com.example.emall_core.app.Emall
+import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
-
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -19,6 +27,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class ScannerDelegate : BottomItemDelegate() {
 
+    private var uuid = String()
+    private var flag = false
     fun create(): ScannerDelegate?{
         return ScannerDelegate()
     }
@@ -26,16 +36,46 @@ class ScannerDelegate : BottomItemDelegate() {
     override fun setLayout(): Any? {
         return R.layout.delegate_scanner
     }
-    override fun initial() {
+
+    override fun onEnterAnimationEnd(savedInstanceState: Bundle?) {
+        super.onEnterAnimationEnd(savedInstanceState)
+        Handler().post({
+            scannerView.visibility = View.VISIBLE
+        })
         handlePermisson()
         scannerView.setResultHandler(mResultHandler)
     }
 
+    override fun initial() {
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        flag = true
+        scan_toolbar.title = getString(R.string.scan_loggin)
+        (activity as AppCompatActivity).setSupportActionBar(scan_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        scan_toolbar.setNavigationOnClickListener {
+            pop()
+        }
+
+    }
+
     private val mResultHandler = object : ZXingScannerView.ResultHandler {
         override fun handleResult(result: Result) {
-            scannerView.resumeCameraPreview(this) //重新进入扫描二维码
-            Toast.makeText(context, "内容=" + result.text + ",格式=" + result.barcodeFormat.toString(), Toast.LENGTH_SHORT).show()
+            scannerView.resumeCameraPreview(this)
+            uuid = getUuid(result.text)
+            if (!uuid.isEmpty() && flag){
+                flag = false
+                val delegate: ConfirmLoginDelegate = ConfirmLoginDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("UUID", uuid)
+                delegate.arguments = bundle
+                start(delegate)
+            }
         }
+    }
+
+    private fun getUuid(text: String): String {
+        val temp = text.split("uuid\":\"")[1]
+        return temp.substring(0, temp.length - 2)
     }
 
     override fun onResume() {
@@ -75,5 +115,13 @@ class ScannerDelegate : BottomItemDelegate() {
         }
     }
 
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        flag = true
+    }
 
 }

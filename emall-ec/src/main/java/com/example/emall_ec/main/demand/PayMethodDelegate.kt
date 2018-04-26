@@ -55,7 +55,7 @@ class PayMethodDelegate : BottomItemDelegate() {
         pay_method_pay_rl.setOnClickListener {
             if (flag == 1) {
                 appPayParams!!["orderId"] = arguments.getString("ORDER_ID")
-                appPayParams!!["type"] = "1"
+                appPayParams!!["type"] = arguments.getString("TYPE")
                 EmallLogger.d(appPayParams!!)
                 RestClient().builder()
                         .url("http://59.110.164.214:8024/global/wxpay/appPay")

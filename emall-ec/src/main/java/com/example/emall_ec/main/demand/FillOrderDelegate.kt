@@ -40,7 +40,7 @@ class FillOrderDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-        fill_order_toolbar.title = ""
+        fill_order_toolbar.title = getString(R.string.fill_order)
         (activity as AppCompatActivity).setSupportActionBar(fill_order_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -116,6 +116,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                             val bundle: Bundle? = Bundle()
                             bundle!!.putString("ORDER_ID",orderBean.data.parentOrderId)
                             bundle.putString("DEMAND_ID", arguments.getString("demandId"))
+                            bundle.putString("TYPE", "1")
                             delegate.arguments = bundle
                             start(delegate)
                         }

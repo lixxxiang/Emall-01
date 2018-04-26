@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -16,6 +17,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".EmallApplication"
@@ -33,7 +35,9 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Bah0Yvywj9ARG8YCaSKpwqaZqITdr7Qx" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -43,13 +47,16 @@
         <activity
             android:name="com.example.lixiang.emall_01.wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="wxd12cdf5edf0f42fd"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wxd12cdf5edf0f42fd" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity"
+            android:screenOrientation="landscape" />
     </application>
 
     <!-- home fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx-->

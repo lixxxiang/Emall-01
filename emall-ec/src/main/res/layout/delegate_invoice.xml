@@ -1,548 +1,567 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/invoice_cl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/ll_bar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/statusbar_view_height"
-        android:background="#FFFFFF"
-        android:elevation="2dp" />
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/invoice_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_below="@+id/ll_bar"
-        android:background="#FFFFFF"
-        android:elevation="2dp">
-
-        <LinearLayout
+        <View
+            android:id="@+id/ll_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center_vertical">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/invoice_back_iv"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/ic_back_dark"
-                    android:textSize="25dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/index_search_rl"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_weight="6"
-                android:gravity="center_vertical">
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:text="@string/invoice_title"
-                    android:textColor="#686868"
-                    android:textSize="14dp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="31dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center_vertical">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/invoice_save_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/save"
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.Toolbar>
-
-    <com.example.emall_core.util.view.BounceScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/invoice_toolbar"
-        android:background="#F0F0F0">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/statusbar_view_height"
             android:background="#FFFFFF"
-            android:orientation="vertical">
+            android:elevation="2dp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/invoice_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_below="@+id/ll_bar"
+            android:background="#FFFFFF"
+            android:elevation="2dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp">
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="发票信息（增值税专用发票）"
-                    android:textColor="#B80017"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/invoice_save_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="14dp"
+                android:text="@string/save"
+                android:textSize="14dp" />
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
+            <!--<RelativeLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
+            <!--<android.support.v7.widget.AppCompatImageView-->
+            <!--android:id="@+id/invoice_back_iv"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:background="@drawable/ic_back_dark"-->
+            <!--android:textSize="25dp" />-->
+            <!--</RelativeLayout>-->
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="发票抬头："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/index_search_rl"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="6"-->
+            <!--android:gravity="center_vertical">-->
 
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:hint="请输入单位名称"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
+            <!--<TextView-->
+            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/invoice_title"-->
+            <!--android:textColor="#686868"-->
+            <!--android:textSize="14dp" />-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
+            <!--<RelativeLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="31dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical">-->
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="纳税人识别号："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
+            <!--<android.support.v7.widget.AppCompatTextView-->
+            <!--android:id="@+id/invoice_save_tv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:text="@string/save"-->
+            <!--android:textColor="#4A4A4A"-->
+            <!--android:textSize="14dp" />-->
+            <!--</RelativeLayout>-->
 
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="116dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:hint="请输入纳税人识别号"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
+            <!--</LinearLayout>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
+        </android.support.v7.widget.Toolbar>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="注册地址："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:hint="请输入注册地址"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="注册电话："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/tel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:digits="1234567890"
-                    android:hint="请输入注册电话"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="开户银行："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/bank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:hint="请输入开户银行"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="开户账号："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/account"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:digits="1234567890"
-
-                    android:hint="请输入开户账号"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="发票金额："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/invoice_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:textColor="#D0021B"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:background="#F0F0F0" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="收票地址"
-                    android:textColor="#B80017"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="收货人："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:hint="必填"
-
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="手机号码："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:hint="必填"
-
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:id="@+id/invoice_cities_picker"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:clickable="true"
-                android:focusable="true">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="所在地区："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/invoice_cities_picker_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:textColor="#D0021B"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="详细地址："
-                    android:textColor="#4A4A4A"
-                    android:textSize="14dp" />
-
-                <com.example.emall_core.util.view.EditTextWithDeleteButton
-                    android:id="@+id/address_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="88dp"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-
-                    android:hint="必填"
-                    android:singleLine="true"
-                    android:textColor="#9B9B9B"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/bottom_line"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginLeft="14dp"
-                android:background="#DCDCDC" />
+        <com.example.emall_core.util.view.BounceScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/invoice_toolbar"
+            android:background="#F0F0F0">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatTextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:text="@string/invoice_hint1"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp" />
+                    android:layout_height="50dp">
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:text="@string/invoice_hint2"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="发票信息（增值税专用发票）"
+                        android:textColor="#B80017"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/hint_3"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="发票抬头："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:hint="请输入单位名称"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="纳税人识别号："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/invoice_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="116dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:hint="请输入纳税人识别号"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="注册地址："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:hint="请输入注册地址"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="注册电话："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/tel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:digits="1234567890"
+                        android:hint="请输入注册电话"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="开户银行："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/bank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:hint="请输入开户银行"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="开户账号："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:digits="1234567890"
+
+                        android:hint="请输入开户账号"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="发票金额："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/invoice_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:textColor="#D0021B"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="#F0F0F0" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="收票地址"
+                        android:textColor="#B80017"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="收货人："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:hint="必填"
+
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="手机号码："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:hint="必填"
+
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:id="@+id/invoice_cities_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="所在地区："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/invoice_cities_picker_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:textColor="#9B9B9B"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="详细地址："
+                        android:textColor="#4A4A4A"
+                        android:textSize="14dp" />
+
+                    <com.example.emall_core.util.view.EditTextWithDeleteButton
+                        android:id="@+id/address_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+
+                        android:hint="必填"
+                        android:singleLine="true"
+                        android:textColor="#9B9B9B"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bottom_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginLeft="14dp"
+                    android:background="#DCDCDC" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:text="@string/invoice_hint3"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp" />
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:text="@string/invoice_hint1"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:text="@string/invoice_hint2"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/hint_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:text="@string/invoice_hint3"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-    </com.example.emall_core.util.view.BounceScrollView>
-</RelativeLayout>
+        </com.example.emall_core.util.view.BounceScrollView>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
