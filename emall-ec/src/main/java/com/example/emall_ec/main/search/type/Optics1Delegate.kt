@@ -436,6 +436,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             if (flag_1_5) {
                 ssp2!!["satelliteId"] = "JL101A"
             }
+            if (!flag_1_1 && !flag_1_2 && !flag_1_3 && !flag_1_4 && !flag_1_5) {
+                ssp2!!["resolution"] = ""
+                ssp2!!["satelliteId"] = ""
+            }
             if (flag_2_1) {
                 ssp2!!["cloud"] = "10"
             }
@@ -448,6 +452,11 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             if (flag_2_4) {
                 ssp2!!["cloud"] = "40"
             }
+            if (!flag_2_1 && !flag_2_2 && !flag_2_3 && !flag_2_4 ) {
+                ssp2!!["resolution"] = ""
+                ssp2!!["satelliteId"] = ""
+            }
+
             if (flag_3_1) {
                 ssp2!!["startTime"] = startTime
             }
@@ -624,8 +633,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         mAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
         mAdapter!!.setOnLoadMoreListener {
-            EmallLogger.d("In le me ")
-            loadMoreData(ssp2!!, pages, data)
+            if (pages != 1) {
+                EmallLogger.d("In le me ")
+                loadMoreData(ssp2!!, pages, data)
+            }
         }
         optics_rv.adapter = mAdapter
 //        mAdapter!!.disableLoadMoreIfNotFullPage()
