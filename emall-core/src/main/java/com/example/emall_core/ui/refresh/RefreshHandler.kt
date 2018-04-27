@@ -2,17 +2,19 @@ package com.example.emall_core.ui.refresh
 
 import android.support.v4.widget.SwipeRefreshLayout
 import com.example.emall_core.app.Emall
-import com.alibaba.fastjson.JSON
 import com.example.emall_core.util.log.EmallLogger
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.net.RestClient
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.example.emall_core.app.ApiService
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
+import com.example.emall_core.ui.HomePageUnitsBean
+import com.example.emall_core.ui.NetUtils
 import com.example.emall_core.ui.recycler.*
-import com.google.gson.Gson
+import retrofit2.Callback
+import retrofit2.Retrofit
 import java.util.*
 
 
@@ -32,7 +34,8 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     private var bannerResponse = String()
     var homePageParams: WeakHashMap<String, Any>? = WeakHashMap()
     private var data: MutableList<MultipleItemEntity>? = mutableListOf()
-
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     init {
         REFRESH_LAYOUT.setOnRefreshListener(this)
     }
@@ -45,13 +48,14 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun getUnit(unitUrl: String, dailyPicUrl: String){
+    fun getUnit(unitUrl: String){
         var fa: WeakHashMap<String, Any>? = WeakHashMap()
         RestClient().builder()
                 .url(unitUrl)
                 .params(fa!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
                         data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
                         data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
                         data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
@@ -75,7 +79,32 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .get()
     }
 
-    fun getDailyPicTitle(url : String){
+    fun getUnit2(unitUrl: String){
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.homePageUnits()
+        call.enqueue(object : Callback<String> {
+//            override fun onResponse(call: retrofit2.Call<HomePageUnitsBean>, response: retrofit2.Response<String> ) {
+//                if (response.body() != null) {
+//                    EmallLogger.d(response.body().toString())
+//                    data!!.add(THE_THREE_CONVERTER.setJsonData(response.body().toString()).theThreeConvert()[0])
+//                    data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response.body().toString()).horizontalScrollConvert()[0])
+//                    data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response.body().toString()).guessLikeConvert()[0])
+////                        getDailyPicTitle(dailyPicUrl)
+//                    mAdapter = MultipleRecyclerAdapter.create(data)
+//                    RECYCLERVIEW.adapter = mAdapter
+//                    BEAN.addIndex()
+//
+//                } else {
+//                    EmallLogger.d("error")
+//                }
+//            }
+//
+//            override fun onFailure(call: retrofit2.Call<HomePageUnitsBean>, throwable: Throwable) {}
+        })
+    }
+
+    fun getDailyPicTitle(url: String, unitUrl: String){
         homePageParams!!["pageSize"] = "10"
         homePageParams!!["pageNum"] = "1"
         RestClient().builder()
@@ -84,6 +113,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         data!!.add(EVERY_DAY_PIC_CONVERTER.setJsonData(response).everyDayPicConvert()[0])
+                        getUnit2(unitUrl)
 
                     }
                 })
@@ -106,8 +136,8 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        getUnit(unitUrl, dailyPicUrl)
-                        getDailyPicTitle(dailyPicUrl)
+                        getUnit(unitUrl)
+                        getDailyPicTitle(dailyPicUrl, unitUrl)
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
                             data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])

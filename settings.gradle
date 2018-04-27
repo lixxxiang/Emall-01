@@ -1,1 +1,1 @@
-include ':app', ':emall-ec', ':emall-core', ":vitamio"
+include ':app', ':emall-ec', ':emall-core', ':vitamio'

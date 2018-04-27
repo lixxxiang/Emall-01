@@ -81,8 +81,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         ssp2!!["productType"] = ""
         ssp2!!["resolution"] = ""
         ssp2!!["satelliteId"] = ""
-        ssp2!!["startTime"] = "2015-04-30"
-        ssp2!!["endTime"] = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        ssp2!!["startTime"] = ""
+        ssp2!!["endTime"] = ""
         ssp2!!["cloud"] = ""
         ssp2!!["type"] = ""
         ssp2!!["pageSize"] = "10"

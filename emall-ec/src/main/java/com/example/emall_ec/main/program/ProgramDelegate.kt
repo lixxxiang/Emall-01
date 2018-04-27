@@ -46,6 +46,8 @@ import com.example.emall_core.util.view.RulerView
 import com.example.emall_core.util.view.ScreenUtil.dip2px
 import com.example.emall_ec.R.id.mMapView
 import com.example.emall_ec.R.id.program_mapview
+import com.example.emall_ec.main.search.SearchDelegate
+import com.example.emall_ec.main.search.SearchPoiDelegate
 import kotlinx.android.synthetic.main.delegate_reset_password.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -235,6 +237,33 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
             }
         }
         mMapView!!.map.setOnMapStatusChangeListener(listener)
+
+        program_toolbar_searchbar.setOnClickListener {
+            startForResult(SearchPoiDelegate().create(), 101)
+        }
+    }
+
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        EmallLogger.d(data.getString("LOCATION"))
+        mBaiduMap!!.clear()
+        var location = data.getString("LOCATION")
+        var latitude = location.split(",")[1]
+        var longitude = location.split(",")[0]
+        var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
+        var point = LatLng(gps.lat, gps.lon)
+        var bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.location_mark)
+        var option = MarkerOptions()
+                .position(point)
+                .icon(bitmap)
+        mBaiduMap!!.addOverlay(option)
+        var mMapStatus = MapStatus.Builder()
+                .target(LatLng(latitude.toDouble(), longitude.toDouble()))
+                .zoom(12F)
+                .build()
+        var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+        mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
     }
 
     private fun getAttr() {

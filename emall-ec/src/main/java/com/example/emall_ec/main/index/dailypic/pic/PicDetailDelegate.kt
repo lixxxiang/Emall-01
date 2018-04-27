@@ -77,7 +77,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
     var isCollected = false
     var mSharedPreferences: SharedPreferences? = null
     var isLogin: Boolean = false
-
+    var flag = false
     var cordovaWebView: CordovaWebView? = null
     private val threadPool = Executors.newCachedThreadPool()
     protected var activityResultRequestCode: Int = 0
@@ -304,6 +304,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
                         editor.putString("imageName", getDailyPicDetailBean.data.imageName)
                         editor.putString("imageDate", imageDate)
                         editor.commit()
+                        flag = true
                         initViews(getDailyPicDetailBean)
                         initComments(imageId, userId, "1")
 //                        adapter = DetailAdapter(childFragmentManager, titleList, fragmentList)

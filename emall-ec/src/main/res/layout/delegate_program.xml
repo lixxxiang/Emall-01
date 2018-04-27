@@ -48,6 +48,8 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_weight="6"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/style_home_pager_toolbar_search_view"
                 android:gravity="center_vertical">
 

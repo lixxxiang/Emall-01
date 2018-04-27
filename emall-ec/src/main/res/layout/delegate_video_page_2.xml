@@ -5,7 +5,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/video_brief"
+        android:id="@+id/video_brief2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="17dp"
@@ -15,7 +15,7 @@
         android:textSize="16dp" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/video_date"
+        android:id="@+id/video_date2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/video_brief"

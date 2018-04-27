@@ -1,7 +1,11 @@
 package com.example.emall_ec.main.index
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
+import android.support.v4.app.ActivityCompat
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
@@ -13,6 +17,7 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.search.SearchDelegate
+import pub.devrel.easypermissions.EasyPermissions
 
 
 /**
@@ -39,6 +44,7 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        getPermission()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
         DELEGATE = getParentDelegate()
@@ -59,13 +65,57 @@ class IndexDelegate : BottomItemDelegate() {
         initRecyclerView()
         refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide",
                 "http://192.168.1.36:3030/data",
-                "http://59.110.162.194:5201/global/homePageUnits","http://202.111.178.10:28085/mobile/homePage")
+                "http://59.110.162.194:5201/global/homePageUnits", "http://202.111.178.10:28085/mobile/homePage")
         index_search_rl.setOnClickListener {
             val delegate: SearchDelegate = SearchDelegate().create()!!
             (DELEGATE as EcBottomDelegate).start(delegate)
         }
     }
 
+    private fun getPermission() {
+        requestPermission()
+    }
+
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            val mPermissionList = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+            if (EasyPermissions.hasPermissions(activity, *mPermissionList)) {
+            } else {
+                EasyPermissions.requestPermissions(this, "保存图片需要读取sd卡的权限", 10, *mPermissionList)
+            }
+        } else {
+        }
+    }
+
+    //    fun handlePermisson(){
+//        val permission = Manifest.permission.CAMERA
+//        val checkSelfPermission = ActivityCompat.checkSelfPermission(context,permission)
+//        if (checkSelfPermission  == PackageManager.PERMISSION_GRANTED) {
+//        }else{
+//            if(ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)){
+//            }else{
+//                myRequestPermission()
+//            }
+//        }
+//    }
+//
+//    private fun myRequestPermission() {
+//        val permissions = arrayOf(Manifest.permission.CAMERA)
+//        requestPermissions(permissions,1)
+//    }
+//
+//    /***
+//     * 权限请求结果  在Activity 重新这个方法 得到获取权限的结果  可以返回多个结果
+//     */
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//        }
+//    }
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR

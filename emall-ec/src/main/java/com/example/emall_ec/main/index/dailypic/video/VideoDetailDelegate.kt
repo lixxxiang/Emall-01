@@ -227,11 +227,13 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         }
 
         videodetailpic.setOnClickListener {
-            val intent = Intent(activity, VitamioPlayerActivity::class.java)
             if (getPlanetEarthDetailBean.data.mp4FilePath != null) {
-                intent.putExtra("url", getPlanetEarthDetailBean.data.mp4FilePath)
-                intent.putExtra("title",getPlanetEarthDetailBean.data.videoName)
-                startActivity(intent)
+                val delegate: VideoPlayDelegate = VideoPlayDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("url", getPlanetEarthDetailBean.data.mp4FilePath)
+                bundle.putString("title", getPlanetEarthDetailBean.data.videoName)
+                delegate.arguments = bundle
+                start(delegate)
             }
         }
     }
