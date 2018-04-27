@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:minHeight="40dp"
+    android:layout_height="40dp"
     android:background="#FFFFFF"
-    android:layout_height="40dp">
+    android:minHeight="40dp">
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/search_poi_cities_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#4A4A4A"
-        android:textSize="12dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="20dp"
+        android:textColor="#4A4A4A"
+        android:textSize="12dp" />
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/search_poi_cities_detail_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/search_poi_cities_params_tv"
+        android:layout_centerVertical="true"
         android:layout_marginRight="18dp"
+        android:layout_toLeftOf="@+id/search_poi_cities_params_tv"
         android:textColor="#4A4A4A"
-        android:textSize="12dp"
-        android:layout_centerVertical="true"/>
+        android:textSize="12dp" />
+
     <ImageView
         android:id="@+id/search_poi_cities_params_tv"
-        android:layout_width="14dp"
+        android:layout_width="8dp"
         android:layout_height="14dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
-        android:background="@drawable/ic_foward"/>
+        android:background="@drawable/forward_gray" />
 </RelativeLayout>

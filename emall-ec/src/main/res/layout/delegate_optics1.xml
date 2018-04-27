@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--三项-->
     <RelativeLayout
         android:id="@+id/optics_top_bar"
         android:layout_width="match_parent"
@@ -17,9 +18,13 @@
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/optics_gather_time_rl"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <RelativeLayout
+
                     android:layout_width="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -33,6 +38,7 @@
                         android:layout_centerVertical="true"
                         android:textColor="#9B9B9B" />
                     <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/optics_gather_time_iv"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
                         android:layout_toRightOf="@+id/optics_gather_time_tv"
@@ -42,6 +48,9 @@
                 </RelativeLayout>
             </RelativeLayout>
             <RelativeLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/optics_price_rl"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -71,6 +80,7 @@
                             android:background="@drawable/ic_up_gray"/>
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_below="@+id/optics_price_up_iv"
+                            android:id="@+id/optics_price_down_iv"
                             android:layout_width="6dp"
                             android:layout_height="6dp"
                             android:layout_marginTop="-1dp"
@@ -80,10 +90,14 @@
                 </RelativeLayout>
             </RelativeLayout>
             <RelativeLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/optics_screen_rel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <RelativeLayout
+
                     android:layout_width="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
@@ -110,10 +124,13 @@
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
+        android:layout_below="@+id/optics_top_bar"
+        android:id="@+id/optics_top_line"
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="#DADADA"/>
     <RelativeLayout
+        android:layout_below="@+id/optics_top_line"
         android:id="@+id/optics_rv_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -127,6 +144,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.v4.widget.SwipeRefreshLayout>
+        <RelativeLayout
+            android:id="@+id/optics_no_result"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_marginTop="70dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="150dp"
+                android:layout_height="110dp">
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="69dp"
+                    android:layout_height="69dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/no_result"
+                    />
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="#9B9B9B"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="@string/sorry_no_result"/>
+            </RelativeLayout>
+        </RelativeLayout>
         <RelativeLayout
             android:clickable="true"
             android:id="@+id/optics_screen_rl"
@@ -399,7 +442,6 @@
                         android:layout_width="117dp"
                         android:textSize="12dp"
                         android:id="@+id/optics_btn_reset"
-
                         android:background="@drawable/sign_in_by_tel_btn_border_shape"
                         style="?android:attr/borderlessButtonStyle"
                         android:textColor="#B4A078"
@@ -424,35 +466,9 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/optics_screen_top_rl"
                 android:layout_alignParentBottom="true"
-                android:background="#73000000">
-            </RelativeLayout>
+                android:background="#73000000"/>
         </RelativeLayout>
 
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/optics_no_result"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_marginTop="70dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="150dp"
-            android:layout_height="110dp">
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="69dp"
-                android:layout_height="69dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/no_result"
-                />
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="#9B9B9B"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:text="@string/sorry_no_result"/>
-        </RelativeLayout>
-    </RelativeLayout>
-</LinearLayout>
+
+</RelativeLayout>

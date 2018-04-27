@@ -5,7 +5,6 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -13,7 +12,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.view.View
@@ -22,17 +20,14 @@ import android.widget.ZoomControls
 import com.baidu.location.*
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
-import com.example.emall_core.delegates.bottom.BaseBottomDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
-import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_search.*
-import com.baidu.platform.comapi.map.y
-import com.baidu.platform.comapi.map.x
 import android.util.DisplayMetrics
-import com.baidu.mapapi.BMapManager
 import com.example.emall_core.util.log.EmallLogger
-import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.index.dailypic.video.data.Gps
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -74,7 +69,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
     private var lati_rb = 0.0
     private var longi_rb = 0.0
     var mSharedPreferences: SharedPreferences? = null
-
+    var pi = 3.141592653589793 * 3000.0 / 180.0
     fun create(): SearchDelegate? {
         return SearchDelegate()
     }
@@ -125,7 +120,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
 
         mMapView!!.map.setOnMapStatusChangeListener(listener)
         search_searchbar_rl.setOnClickListener {
-            start(SearchPoiDelegate().create())
+            startForResult(SearchPoiDelegate().create(), 100)
         }
 
         search_btn.setOnClickListener {
@@ -166,12 +161,35 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         }
     }
 
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        EmallLogger.d(data.getString("LOCATION"))
+        mBaiduMap!!.clear()
+        var location = data.getString("LOCATION")
+        var latitude = location.split(",")[1]
+        var longitude = location.split(",")[0]
+        var gps = gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
+        var point = LatLng(gps.lat, gps.lon)
+        var bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.location_mark)
+        var option = MarkerOptions()
+                .position(point)
+                .icon(bitmap)
+        mBaiduMap!!.addOverlay(option)
+    }
+
+    fun gcj02_To_Bd09(gg_lon: Double, gg_lat: Double): Gps {
+        val z = Math.sqrt(gg_lon * gg_lon + gg_lat * gg_lat) + 0.00002 * Math.sin(gg_lat * pi)
+        val theta = Math.atan2(gg_lat, gg_lon) + 0.000003 * Math.cos(gg_lon * pi)
+        val bd_lon = z * Math.cos(theta) + 0.0065
+        val bd_lat = z * Math.sin(theta) + 0.006
+        return Gps(bd_lon, bd_lat)
+    }
+
+
     private fun initMap() {
         val mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL
         mMapView = activity.findViewById<MapView>(R.id.mMapView)
-
-
-
 
         mLocClient = LocationClient(activity)
         mLocClient!!.registerLocationListener(myListener)
@@ -274,6 +292,10 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         super.onResume()
         mSensorManager!!.registerListener(this, mSensorManager!!.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_UI)
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
 }

@@ -41,5 +41,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     api project(':emall-core')
-    compile project(path: ':vitamio')
+    implementation project(':vitamio')
 }

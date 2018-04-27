@@ -46,6 +46,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     var flag_2_3 = false
     var flag_2_4 = false
     var flag_3_1 = false
+    var flag_3_2 = false
+
     var flag1 = false
     var flag2 = false
     var flag3 = false
@@ -59,6 +61,11 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     private var pagesAmount = -1
     var mAdapter: SceneClassifyAdapter? = null
     var sceneGlm: GridLayoutManager? = null
+    var gatherTimeFlag = false
+    var priceFlag = false
+
+    var startTime = String()
+    var endTime = String()
 
 
     override fun setLayout(): Any? {
@@ -93,13 +100,61 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             }, 1200)
         })
 
+        optics_gather_time_rl.setOnClickListener {
+
+            optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+            optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+            gatherTimeFlag = if (!gatherTimeFlag) {
+                optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
+                optics_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
+                true
+            } else {
+                optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
+                optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                false
+            }
+        }
+
+        optics_price_rl.setOnClickListener {
+            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+            optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+
+            priceFlag = if (!priceFlag) {
+                optics_price_tv.setTextColor(Color.parseColor("#B80017"))
+                optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_red)
+                optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                true
+            } else {
+                optics_price_tv.setTextColor(Color.parseColor("#B80017"))
+                optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+                optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_red)
+                false
+            }
+        }
 
 //        all_srl.setOnLoadMoreListener {
 //            loadMoreData(ssp2!!, pages)
 //            all_srl.setLoading(false)
 //        }
 
-        optics_screen_tv.setOnClickListener {
+
+        optics_screen_rel.setOnClickListener {
+            optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+            optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+            optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
             if (!screenIsShow) {
                 optics_screen_rl.visibility = View.VISIBLE
                 optics_screen_iv.setBackgroundResource(R.drawable.ic_up_red)
@@ -114,6 +169,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_1_1.setOnClickListener {
+            flag_1_2 = false
+            flag_1_3 = false
+            flag_1_4 = false
+            flag_1_5 = false
             if (!flag_1_1) {
                 optics_btn_1_1.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_1_1.setTextColor(Color.parseColor("#B4A078"))
@@ -136,6 +195,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_1_2.setOnClickListener {
+            flag_1_1 = false
+            flag_1_3 = false
+            flag_1_4 = false
+            flag_1_5 = false
             if (!flag_1_2) {
                 optics_btn_1_2.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_1_2.setTextColor(Color.parseColor("#B4A078"))
@@ -160,6 +223,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_1_3.setOnClickListener {
+            flag_1_1 = false
+            flag_1_2 = false
+            flag_1_4 = false
+            flag_1_5 = false
             if (!flag_1_3) {
                 optics_btn_1_3.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_1_3.setTextColor(Color.parseColor("#B4A078"))
@@ -183,6 +250,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_1_4.setOnClickListener {
+            flag_1_1 = false
+            flag_1_2 = false
+            flag_1_3 = false
+            flag_1_5 = false
             if (!flag_1_4) {
                 optics_btn_1_4.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_1_4.setTextColor(Color.parseColor("#B4A078"))
@@ -208,6 +279,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_1_5.setOnClickListener {
+            flag_1_1 = false
+            flag_1_2 = false
+            flag_1_3 = false
+            flag_1_4 = false
             if (!flag_1_5) {
                 optics_btn_1_5.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_1_5.setTextColor(Color.parseColor("#B4A078"))
@@ -232,6 +307,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_2_1.setOnClickListener {
+            flag_2_2 = false
+            flag_2_3 = false
+            flag_2_4 = false
             if (!flag_2_1) {
                 optics_btn_2_1.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_2_1.setTextColor(Color.parseColor("#B4A078"))
@@ -254,6 +332,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_2_2.setOnClickListener {
+            flag_2_1 = false
+            flag_2_3 = false
+            flag_2_4 = false
             if (!flag_2_2) {
                 optics_btn_2_2.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_2_2.setTextColor(Color.parseColor("#B4A078"))
@@ -276,6 +357,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_2_3.setOnClickListener {
+            flag_2_1 = false
+            flag_2_2 = false
+            flag_2_4 = false
             if (!flag_2_3) {
                 optics_btn_2_3.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_2_3.setTextColor(Color.parseColor("#B4A078"))
@@ -298,6 +382,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_2_4.setOnClickListener {
+            flag_2_1 = false
+            flag_2_2 = false
+            flag_2_3 = false
             if (!flag_2_4) {
                 optics_btn_2_4.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
                 optics_btn_2_4.setTextColor(Color.parseColor("#B4A078"))
@@ -330,26 +417,110 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_confirm.setOnClickListener {
+            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+            screenIsShow = false
 
+            if (flag_1_1) {
+                ssp2!!["resolution"] = "1"
+            }
+            if (flag_1_2) {
+                ssp2!!["resolution"] = "3"
+            }
+            if (flag_1_3) {
+                ssp2!!["resolution"] = "8"
+            }
+            if (flag_1_4) {
+                ssp2!!["resolution"] = "16"
+            }
+            if (flag_1_5) {
+                ssp2!!["satelliteId"] = "JL101A"
+            }
+            if (flag_2_1) {
+                ssp2!!["cloud"] = "10"
+            }
+            if (flag_2_2) {
+                ssp2!!["cloud"] = "20"
+            }
+            if (flag_2_3) {
+                ssp2!!["cloud"] = "30"
+            }
+            if (flag_2_4) {
+                ssp2!!["cloud"] = "40"
+            }
+            if (flag_3_1) {
+                ssp2!!["startTime"] = startTime
+            }
+            if (flag_3_2) {
+                ssp2!!["endTime"] = endTime
+            }
+            optics_screen_rl.visibility = View.INVISIBLE
+            getData(ssp2!!, 1)
         }
 
         optics_btn_confirm.isClickable = false
+
+        optics_btn_reset.setOnClickListener {
+            flag_1_1 = false
+            flag_1_2 = false
+            flag_1_3 = false
+            flag_1_4 = false
+            flag_1_5 = false
+
+            flag_2_1 = false
+            flag_2_2 = false
+            flag_2_3 = false
+            flag_2_4 = false
+
+            flag_3_1 = false
+            flag_3_2 = false
+
+
+            optics_btn_1_5.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_1_5.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_1_1.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_1_1.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_1_2.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_1_2.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_1_3.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_1_3.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_1_4.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_1_4.setTextColor(Color.parseColor("#4A4A4A"))
+
+            optics_btn_2_4.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_2_4.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_2_1.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_2_1.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_2_2.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_2_2.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_2_3.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_2_3.setTextColor(Color.parseColor("#4A4A4A"))
+
+            optics_btn_3_1.text = resources.getString(R.string.screen_date)
+            optics_btn_3_1.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_3_1.setTextColor(Color.parseColor("#4A4A4A"))
+            optics_btn_3_2.text = resources.getString(R.string.screen_date)
+            optics_btn_3_2.setBackgroundResource(R.drawable.screen_btn_shape)
+            optics_btn_3_2.setTextColor(Color.parseColor("#4A4A4A"))
+
+            confirmChangeColor()
+        }
     }
 
     private fun getData(ssp2: WeakHashMap<String, Any>, p: Int) {
         ssp2["pageNum"] = p
-
+        EmallLogger.d(ssp2)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp2)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
+                        EmallLogger.d(response)
                         if (sceneSearch.status != 103) {
                             if (optics_rv_rl.visibility == View.GONE) {
                                 optics_rv_rl.visibility = View.VISIBLE
                                 optics_no_result.visibility = View.GONE
-                                optics_top_bar.visibility = View.VISIBLE
                             }
                             productIdList = sceneSearch.data.searchReturnDtoList
                             pagesAmount = sceneSearch.data.pages
@@ -367,9 +538,12 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                             }
                             initRecyclerView(data!!)
                         } else {
-                            optics_rv_rl.visibility = View.GONE
+                            optics_rv.visibility = View.GONE
                             optics_no_result.visibility = View.VISIBLE
-                            optics_top_bar.visibility = View.GONE
+//                            optics_screen_top_rl.visibility = View.GONE
+                            screenIsShow = false
+                            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+                            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
                         }
                     }
                 })
@@ -450,9 +624,12 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         mAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
         mAdapter!!.setOnLoadMoreListener {
+            EmallLogger.d("In le me ")
             loadMoreData(ssp2!!, pages, data)
         }
         optics_rv.adapter = mAdapter
+//        mAdapter!!.disableLoadMoreIfNotFullPage()
+
         if (pages < pagesAmount)
             pages += 1
         mAdapter!!.setOnItemClickListener { adapter, view, position ->
@@ -498,6 +675,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
         EmallLogger.d(days)
         optics_btn_3_1.text = days
+        startTime = days
         optics_btn_3_1.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
         optics_btn_3_1.setTextColor(Color.parseColor("#B4A078"))
         if (compare_date(optics_btn_3_1.text.toString(), optics_btn_3_2.text.toString()) == 1) {
@@ -526,14 +704,15 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
         optics_btn_3_2.text = days
+        endTime = days
         optics_btn_3_2.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
         optics_btn_3_2.setTextColor(Color.parseColor("#B4A078"))
         if (compare_date(optics_btn_3_1.text.toString(), optics_btn_3_2.text.toString()) == 1) {
             Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-            flag_3_1 = false
+            flag_3_2 = false
             confirmChangeColor()
         } else {
-            flag_3_1 = true
+            flag_3_2 = true
         }
         confirmChangeColor()
 
@@ -562,17 +741,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     }
 
     fun confirmChangeColor() {
-        EmallLogger.d(String.format("%s %s %s %s %s", flag_1_1, flag_1_2, flag_1_3, flag_1_4, flag_1_5))
-        EmallLogger.d(String.format("%s %s %s %s", flag_2_1, flag_2_2, flag_2_3, flag_2_4))
-        EmallLogger.d(String.format("%s", flag_3_1))
-
         flag1 = flag_1_1 || flag_1_2 || flag_1_3 || flag_1_4 || flag_1_5
         flag2 = flag_2_1 || flag_2_2 || flag_2_3 || flag_2_4
-        flag3 = flag_3_1
-
-        EmallLogger.d(String.format("%s %s %s", flag1, flag2, flag3))
-
-        if (flag1 && flag2 && flag3) {
+        flag3 = flag_3_1 || flag_3_2
+        if (flag1 || flag2 || flag3) {
             optics_btn_confirm.isClickable = true
             optics_btn_confirm.setBackgroundResource(R.drawable.screen_btn_shape_confirm)
         } else {

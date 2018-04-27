@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/search_poi_pois_locate_iv"
         android:layout_marginLeft="17dp"
-        android:textColor="#4A4A4A"
+        android:textColor="#9B9B9B"
         android:textSize="12dp"
         android:layout_below="@+id/search_poi_pois_title_tv"
         android:layout_marginTop="4dp"/>

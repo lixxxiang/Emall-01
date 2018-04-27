@@ -16,6 +16,8 @@ import com.example.emall_ec.main.search.type.Optics1Delegate
 import com.example.emall_ec.main.search.type.Video1A1BDelegate
 import kotlinx.android.synthetic.main.delegate_optics1.*
 import kotlinx.android.synthetic.main.delegate_search_result.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 /**
  * Created by lixiang on 2018/3/20.
@@ -77,5 +79,9 @@ class SearchResultDelegate : BottomItemDelegate() {
 //        }
 
 
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

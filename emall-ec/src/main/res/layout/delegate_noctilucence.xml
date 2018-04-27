@@ -1,399 +1,499 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/noctilucence_top_bar"
         android:layout_width="match_parent"
-        android:background="#FFFFFF"
-        android:layout_height="44dp">
+        android:layout_height="44dp"
+        android:background="#FFFFFF">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:background="#FFFFFF"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="horizontal">
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_height="17dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_height="17dp">
+                    android:layout_centerVertical="true">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/noctilucence_gather_time_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/gather_time"
-                        android:textSize="12dp"
                         android:layout_centerVertical="true"
-                        android:textColor="#9B9B9B" />
+                        android:text="@string/gather_time"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/noctilucence_screen_iv"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
-                        android:layout_toRightOf="@+id/noctilucence_gather_time_tv"
-                        android:layout_marginLeft="6dp"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/ic_down_gray"/>
+                        android:layout_marginLeft="6dp"
+                        android:layout_toRightOf="@+id/noctilucence_gather_time_tv"
+                        android:background="@drawable/ic_down_gray" />
                 </RelativeLayout>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_height="17dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_height="17dp">
+                    android:layout_centerVertical="true">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/noctilucence_price_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/price"
-                        android:textSize="12dp"
                         android:layout_centerVertical="true"
-                        android:textColor="#9B9B9B" />
+                        android:text="@string/price"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <RelativeLayout
                         android:layout_width="6dp"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/noctilucence_price_tv"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="6dp"
-                        android:layout_centerVertical="true">
+                        android:layout_toRightOf="@+id/noctilucence_price_tv">
+
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/noctilucence_price_up_iv"
                             android:layout_width="6dp"
                             android:layout_height="6dp"
-                            android:background="@drawable/ic_up_gray"/>
+                            android:background="@drawable/ic_up_gray" />
+
                         <android.support.v7.widget.AppCompatImageView
-                            android:layout_below="@+id/noctilucence_price_up_iv"
                             android:layout_width="6dp"
                             android:layout_height="6dp"
+                            android:layout_below="@+id/noctilucence_price_up_iv"
                             android:layout_marginTop="1dp"
-                            android:background="@drawable/ic_down_gray"/>
+                            android:background="@drawable/ic_down_gray" />
                     </RelativeLayout>
 
                 </RelativeLayout>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_height="17dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_height="17dp">
+                    android:layout_centerVertical="true">
+
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/noctilucence_screen_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/screen"
-                        android:clickable="true"
-                        android:textSize="12dp"
                         android:layout_centerVertical="true"
-                        android:textColor="#9B9B9B" />
+                        android:clickable="true"
+                        android:text="@string/screen"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12dp" />
+
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="6dp"
                         android:layout_height="6dp"
-                        android:layout_toRightOf="@+id/noctilucence_screen_tv"
-                        android:layout_marginLeft="6dp"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/ic_down_red"/>
+                        android:layout_marginLeft="6dp"
+                        android:layout_toRightOf="@+id/noctilucence_screen_tv"
+                        android:background="@drawable/ic_down_red" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/noctilucence_rv_rl"
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:background="#DADADA"/>
+        android:background="#DADADA" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/all_srl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/noctilucence_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.v4.widget.SwipeRefreshLayout>
+
         <RelativeLayout
-            android:clickable="true"
             android:id="@+id/noctilucence_screen_rl"
             android:layout_width="match_parent"
-            android:visibility="invisible"
             android:layout_height="match_parent"
-            android:focusable="true">
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible">
+
             <RelativeLayout
                 android:id="@+id/noctilucence_screen_top_rl"
                 android:layout_width="match_parent"
                 android:layout_height="362dp"
                 android:background="#FFFFFF">
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:id="@+id/screen_1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/screen_title"
-                    android:textSize="12dp"
-                    android:textColor="#4A4A4A"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginLeft="9dp" />
-                <LinearLayout
-                    android:id="@+id/noctilucence_screen_top_ll1"
-                    android:layout_below="@+id/screen_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="25dp"
-                        android:layout_weight="1">
-                        <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:textSize="12dp"
-                            android:textColor="#4A4A4A"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/screen_btn_shape"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:text="@string/screen_1"/>
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="25dp"
-                        android:layout_weight="1">
-                        <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:textSize="12dp"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/screen_btn_shape"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="#4A4A4A"
-                            android:text="@string/screen_2"/>
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="25dp"
-                        android:layout_weight="1">
-                        <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:textSize="12dp"
-                            android:background="@drawable/screen_btn_shape"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="#4A4A4A"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_height="25dp"
-                            android:text="@string/screen_3"/>
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="25dp"
-                        android:layout_weight="1">
-                        <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:textSize="12dp"
-                            android:background="@drawable/screen_btn_shape"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="#4A4A4A"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_height="25dp"
-                            android:text="@string/screen_4"/>
-                    </RelativeLayout>
-                </LinearLayout>
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/noctilucence_screen_5"
-                    android:layout_width="206dp"
-                    android:textSize="12dp"
-                    android:background="@drawable/screen_btn_shape"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:textColor="#4A4A4A"
-                    android:layout_below="@+id/noctilucence_screen_top_ll1"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginLeft="9dp"
-                    android:layout_height="25dp"
-                    android:text="@string/screen_5"/>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/screen_1"
                     android:layout_width="wrap_content"
-                    android:id="@+id/screen_cloud"
                     android:layout_height="wrap_content"
-                    android:text="@string/screen_cloud"
-                    android:textSize="12dp"
-                    android:layout_below="@+id/noctilucence_screen_5"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="13dp"
+                    android:text="@string/screen_title"
                     android:textColor="#4A4A4A"
-                    android:layout_marginTop="26dp"
-                    android:layout_marginLeft="9dp" />
+                    android:textSize="12dp" />
+
                 <LinearLayout
-                    android:id="@+id/noctilucence_screen_top_ll2"
-                    android:layout_below="@+id/screen_cloud"
+                    android:id="@+id/noctilucence_screen_top_ll1"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_below="@+id/screen_1"
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal">
+
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="1">
+
                         <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/noctilucence_btn_1_1"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:textSize="12dp"
-                            android:textColor="#4A4A4A"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
                             android:background="@drawable/screen_btn_shape"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:text="@string/screen_c1"/>
+                            android:text="@string/screen_1"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="1">
+
                         <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/noctilucence_btn_1_2"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:textSize="12dp"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
                             android:background="@drawable/screen_btn_shape"
-                            style="?android:attr/borderlessButtonStyle"
+                            android:text="@string/screen_2"
                             android:textColor="#4A4A4A"
-                            android:text="@string/screen_c2"/>
+                            android:textSize="12dp" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="1">
+
                         <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:textSize="12dp"
-                            android:background="@drawable/screen_btn_shape"
+                            android:id="@+id/noctilucence_btn_1_3"
+
                             style="?android:attr/borderlessButtonStyle"
-                            android:textColor="#4A4A4A"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:layout_height="25dp"
-                            android:text="@string/screen_c3"/>
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
+                            android:background="@drawable/screen_btn_shape"
+                            android:text="@string/screen_3"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_weight="1">
+
                         <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:textSize="12dp"
-                            android:background="@drawable/screen_btn_shape"
+                            android:id="@+id/noctilucence_btn_1_4"
+
                             style="?android:attr/borderlessButtonStyle"
-                            android:textColor="#4A4A4A"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginRight="9dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:layout_height="25dp"
-                            android:text="@string/screen_c4"/>
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
+                            android:background="@drawable/screen_btn_shape"
+                            android:text="@string/screen_4"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
                     </RelativeLayout>
                 </LinearLayout>
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:id="@+id/screen_take"
-                    android:layout_height="wrap_content"
-                    android:text="@string/screen_take"
-                    android:textSize="12dp"
-                    android:layout_below="@+id/noctilucence_screen_top_ll2"
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/noctilucence_btn_1_5"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="206dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/noctilucence_screen_top_ll1"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/screen_btn_shape"
+                    android:text="@string/screen_5"
                     android:textColor="#4A4A4A"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/screen_cloud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/noctilucence_btn_1_5"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="26dp"
+                    android:text="@string/screen_cloud"
+                    android:textColor="#4A4A4A"
+                    android:textSize="12dp" />
+
+                <LinearLayout
+                    android:id="@+id/noctilucence_screen_top_ll2"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/screen_cloud"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_weight="1">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/noctilucence_btn_2_1"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
+                            android:background="@drawable/screen_btn_shape"
+                            android:text="@string/screen_c1"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_weight="1">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/noctilucence_btn_2_2"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
+                            android:background="@drawable/screen_btn_shape"
+                            android:text="@string/screen_c2"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_weight="1">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/noctilucence_btn_2_3"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
+                            android:background="@drawable/screen_btn_shape"
+                            android:text="@string/screen_c3"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="25dp"
+                        android:layout_weight="1">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/noctilucence_btn_2_4"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+
+                            android:layout_marginLeft="9dp"
+                            android:layout_marginRight="9dp"
+                            android:background="@drawable/screen_btn_shape"
+                            android:text="@string/screen_c4"
+                            android:textColor="#4A4A4A"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/screen_take"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/noctilucence_screen_top_ll2"
+                    android:layout_marginLeft="9dp"
                     android:layout_marginTop="27dp"
-                    android:layout_marginLeft="9dp" />
+                    android:text="@string/screen_take"
+                    android:textColor="#4A4A4A"
+                    android:textSize="12dp" />
+
                 <RelativeLayout
                     android:id="@+id/screen_date"
                     android:layout_width="309dp"
-                    android:layout_below="@+id/screen_take"
-                    android:layout_marginTop="11dp"
                     android:layout_height="25dp"
-                    android:layout_centerHorizontal="true">
+                    android:layout_below="@+id/screen_take"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="11dp">
+
                     <android.support.v7.widget.AppCompatButton
-                        android:layout_width="129dp"
-                        android:textSize="12dp"
-                        android:background="@drawable/screen_btn_shape"
+                        android:id="@+id/noctilucence_btn_3_1"
+
                         style="?android:attr/borderlessButtonStyle"
-                        android:textColor="#4A4A4A"
+                        android:layout_width="129dp"
                         android:layout_height="25dp"
-                        android:text="@string/screen_date"/>
+                        android:background="@drawable/screen_btn_shape"
+                        android:text="@string/screen_date"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+
                     <RelativeLayout
                         android:layout_width="15dp"
                         android:layout_height="1dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:background="#9B9B9B"/>
-                    <android.support.v7.widget.AppCompatButton
-                        android:layout_width="129dp"
-                        android:textSize="12dp"
-                        android:background="@drawable/screen_btn_shape"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_alignParentRight="true"
-                        android:textColor="#4A4A4A"
-                        android:layout_height="25dp"
-                        android:text="@string/screen_date"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="262dp"
-                    android:layout_below="@+id/screen_date"
-                    android:layout_marginTop="38dp"
-                    android:layout_height="29dp"
-                    android:layout_centerHorizontal="true">
-                    <android.support.v7.widget.AppCompatButton
-                        android:layout_width="117dp"
-                        android:textSize="12dp"
-                        android:background="@drawable/sign_in_by_tel_btn_border_shape"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:textColor="#B4A078"
-                        android:layout_height="29dp"
-                        android:text="@string/reset"/>
+                        android:background="#9B9B9B" />
 
                     <android.support.v7.widget.AppCompatButton
-                        android:layout_width="117dp"
-                        android:textSize="12dp"
-                        android:background="@drawable/sign_up_btn_shape"
+                        android:id="@+id/noctilucence_btn_3_2"
+
                         style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="129dp"
+                        android:layout_height="25dp"
                         android:layout_alignParentRight="true"
-                        android:textColor="#FFFFFF"
+                        android:background="@drawable/screen_btn_shape"
+                        android:text="@string/screen_date"
+                        android:textColor="#4A4A4A"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="262dp"
+                    android:layout_height="29dp"
+                    android:layout_below="@+id/screen_date"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="38dp">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/noctilucence_btn_reset"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="117dp"
                         android:layout_height="29dp"
-                        android:text="@string/confirm_2"/>
+                        android:background="@drawable/sign_in_by_tel_btn_border_shape"
+                        android:text="@string/reset"
+                        android:textColor="#B4A078"
+                        android:textSize="12dp" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/noctilucence_btn_confirm"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="117dp"
+                        android:layout_height="29dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/sign_up_btn_shape"
+                        android:text="@string/confirm_2"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/noctilucence_screen_top_rl"
                 android:layout_alignParentBottom="true"
-                android:background="#73000000">
-            </RelativeLayout>
+                android:layout_below="@+id/noctilucence_screen_top_rl"
+                android:background="#73000000"></RelativeLayout>
         </RelativeLayout>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noctilucence_no_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="110dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/no_result" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/sorry_no_result"
+                android:textColor="#9B9B9B"
+                android:textSize="14dp" />
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -14,7 +14,6 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.lixiang.emall_01.event.TestEvent
 import com.facebook.stetho.Stetho
 import com.joanzapata.iconify.fonts.FontAwesomeModule
-import io.vov.vitamio.Vitamio
 
 /**
  * Created by lixiang on 2018/1/22.
@@ -36,8 +35,6 @@ class EmallApplication : MultiDexApplication() {
         initStetho()
         Utils.init(this)
         DatabaseManager().getInstance()!!.init(this)
-        Vitamio.initialize(this)
-
     }
 
     private fun initStetho() {

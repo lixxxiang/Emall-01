@@ -56,7 +56,7 @@ public class SearchPoiCitiesAdapter extends BaseAdapter {
         TextView item_tv = view.findViewById(R.id.search_poi_cities_title_tv);
         TextView item_detail_tv = view.findViewById(R.id.search_poi_cities_detail_tv);
         item_tv.setText(citiesList.get(position));
-        item_detail_tv.setText(countList.get(position));
+        item_detail_tv.setText(countList.get(position) + "个");
         return view;
     }
 }

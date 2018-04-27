@@ -15,12 +15,18 @@ import com.example.emall_ec.main.search.adapter.SearchPoiCitiesAdapter
 import com.example.emall_ec.main.search.adapter.SearchPoiPoisAdapter
 import com.example.emall_ec.main.search.data.CitiesBean
 import com.example.emall_ec.main.search.data.PoiBean
+import android.os.Bundle
+import com.example.emall_core.app.Emall
+import com.example.emall_core.delegates.EmallDelegate
+import me.yokeyword.fragmentation.ISupportFragment
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
  * Created by lixiang on 2018/3/20.
  */
-class SearchPoiDelegate : BottomItemDelegate() {
+class SearchPoiDelegate : EmallDelegate() {
     var citiesList: MutableList<String>? = mutableListOf()
     var countList: MutableList<String>? = mutableListOf()
     var poiList: MutableList<String>? = mutableListOf()
@@ -28,7 +34,9 @@ class SearchPoiDelegate : BottomItemDelegate() {
 
     var searchPoiCitiesAdapter: SearchPoiCitiesAdapter? = null
     var searchPoiPoisAdapter: SearchPoiPoisAdapter? = null
+    var pages = 0
 
+    var poiInfo = PoiBean()
 
     fun create(): SearchPoiDelegate? {
         return SearchPoiDelegate()
@@ -44,6 +52,15 @@ class SearchPoiDelegate : BottomItemDelegate() {
         search_poi_et.requestFocus()
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
+        search_back_iv.setOnClickListener {
+            EmallLogger.d(pages)
+            if (pages == 2) {
+                search_poi_poi_listview.visibility = View.INVISIBLE
+                search_poi_cities_listview.visibility = View.VISIBLE
+                pages = 1
+            } else
+                pop()
+        }
         addHeadView()
 
         search_poi_cities_listview.setOnItemClickListener { adapterView, view, index, l ->
@@ -52,6 +69,7 @@ class SearchPoiDelegate : BottomItemDelegate() {
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
                             clearPois()
+                            pages = 2
                             showPois(response)
                         }
                     })
@@ -70,8 +88,14 @@ class SearchPoiDelegate : BottomItemDelegate() {
         }
 
         search_poi_poi_listview.setOnItemClickListener { adapterView, view, i, l ->
-            _mActivity.onBackPressed()
+            val bundle = Bundle()
+            EmallLogger.d(poiInfo.gdPois.poiList[i].location)
+            bundle.putString("LOCATION", poiInfo.gdPois.poiList[i].location)
+            this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+            pop()
+
         }
+
         search_poi_et.setOnEditorActionListener { v, actionId, event ->
             RestClient().builder()
                     .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s", search_poi_et.text))
@@ -82,10 +106,12 @@ class SearchPoiDelegate : BottomItemDelegate() {
                             val tempPois = Gson().fromJson(response, PoiBean::class.java)
 
                             if (tempPois.type == "0" || tempCities.type == "0") {//is cities
+                                pages = 1
                                 clearCities()
                                 showCities(response)
                             } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
                                 clearPois()
+                                pages = 3
                                 showPois(response)
                             } else {//no return
                                 clearCities()
@@ -161,12 +187,13 @@ class SearchPoiDelegate : BottomItemDelegate() {
     }
 
     fun showPois(response: String) {
+
         if (search_poi_poi_listview.visibility == View.INVISIBLE) {
             search_poi_cities_listview.visibility = View.INVISIBLE
             search_poi_poi_listview.visibility = View.VISIBLE
         }
 
-        val poiInfo = Gson().fromJson(response, PoiBean::class.java)
+        poiInfo = Gson().fromJson(response, PoiBean::class.java)
         for (i in 0 until poiInfo.gdPois.poiList.size) {
             println(i)
             poiList!!.add(poiInfo.gdPois.poiList[i].name)
@@ -180,5 +207,9 @@ class SearchPoiDelegate : BottomItemDelegate() {
 
         searchPoiPoisAdapter = SearchPoiPoisAdapter(poiList, poiAddressList, context)
         search_poi_poi_listview.adapter = searchPoiPoisAdapter
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }
