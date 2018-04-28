@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -19,6 +19,7 @@
             android:orientation="horizontal">
 
             <RelativeLayout
+                android:id="@+id/noctilucence_gather_time_rl"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -39,7 +40,7 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/noctilucence_screen_iv"
+                        android:id="@+id/noctilucence_gather_time_iv"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
                         android:layout_centerVertical="true"
@@ -50,6 +51,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/noctilucence_price_rl"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -83,6 +85,7 @@
                             android:background="@drawable/ic_up_gray" />
 
                         <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/noctilucence_price_down_iv"
                             android:layout_width="6dp"
                             android:layout_height="6dp"
                             android:layout_below="@+id/noctilucence_price_up_iv"
@@ -94,6 +97,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/noctilucence_screen_rel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -115,29 +119,33 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/noctilucence_screen_iv"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="6dp"
                         android:layout_toRightOf="@+id/noctilucence_screen_tv"
-                        android:background="@drawable/ic_down_red" />
+                        android:background="@drawable/ic_down_gray" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/noctilucence_rv_rl"
+        android:layout_below="@+id/noctilucence_top_bar"
+        android:id="@+id/noctilucence_top_line"
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="#DADADA" />
 
     <RelativeLayout
+        android:layout_below="@+id/noctilucence_top_line"
+        android:id="@+id/noctilucence_rv_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/all_srl"
+            android:id="@+id/noctilucence_srl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -146,7 +154,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.v4.widget.SwipeRefreshLayout>
+        <RelativeLayout
+            android:id="@+id/noctilucence_no_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="110dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="70dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="69dp"
+                    android:layout_height="69dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/no_result" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/sorry_no_result"
+                    android:textColor="#9B9B9B"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/noctilucence_screen_rl"
             android:layout_width="match_parent"
@@ -468,32 +503,5 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/noctilucence_no_result"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
 
-        <RelativeLayout
-            android:layout_width="150dp"
-            android:layout_height="110dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="69dp"
-                android:layout_height="69dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/no_result" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/sorry_no_result"
-                android:textColor="#9B9B9B"
-                android:textSize="14dp" />
-        </RelativeLayout>
-    </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -258,7 +258,7 @@ class ClassifyDelegate : EmallDelegate() {
         call.enqueue(object : retrofit2.Callback<SceneSearch> {
             override fun onResponse(call: retrofit2.Call<SceneSearch>, response: retrofit2.Response<SceneSearch>) {
                 if (response.body() != null) {
-                    EmallLogger.d(response.body().data.searchReturnDtoList.size)
+                    EmallLogger.d(response.body()!!.data.searchReturnDtoList.size)
                     bottom_rl.visibility = View.INVISIBLE
                     sceneSearch = response.body()!!
                     pagesAmount = sceneSearch.data.pages

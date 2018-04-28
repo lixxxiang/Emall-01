@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="0dp"
+                android:id="@+id/video1a1b_gather_time_rl"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <RelativeLayout
@@ -33,6 +34,7 @@
                         android:layout_centerVertical="true"
                         android:textColor="#9B9B9B" />
                     <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/video1a1b_gather_time_iv"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
                         android:layout_toRightOf="@+id/video1a1b_gather_time_tv"
@@ -42,6 +44,7 @@
                 </RelativeLayout>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/video1a1b_price_rl"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -71,6 +74,7 @@
                             android:background="@drawable/ic_up_gray"/>
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_below="@+id/video1a1b_price_up_iv"
+                            android:id="@+id/video1a1b_price_down_iv"
                             android:layout_width="6dp"
                             android:layout_height="6dp"
                             android:layout_marginTop="-1dp"

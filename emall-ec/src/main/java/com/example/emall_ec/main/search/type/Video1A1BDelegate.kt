@@ -2,6 +2,7 @@ package com.example.emall_ec.main.search.type
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
@@ -16,15 +17,10 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
 import com.example.emall_ec.main.classify.data.Model
-import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
-import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.classify.data.VideoClassifyAdapter
-import com.example.emall_ec.main.net.CommonUrls
 import com.example.emall_ec.main.search.data.VideoSearchBean
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_optics1.*
 import kotlinx.android.synthetic.main.delegate_video1a1b.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -36,7 +32,9 @@ class Video1A1BDelegate : EmallDelegate(){
     var screenIsShow = false
     var mAdapter: VideoClassifyAdapter? = null
     var glm: GridLayoutManager? = null
-
+    var gatherTimeFlag = false
+    var priceFlag = false
+    var itemSize = 0
     override fun setLayout(): Any? {
         return R.layout.delegate_video1a1b
     }
@@ -45,12 +43,45 @@ class Video1A1BDelegate : EmallDelegate(){
     override fun initial() {
         val sp = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         videoSearchParams!!["geo"] = Optics1Delegate().geoFormat(sp.getString("GEO", ""))
-        EmallLogger.d(Optics1Delegate().geoFormat(sp.getString("GEO", "")))
         videoSearchParams!!["type"] = "0"
+
+        video1a1b_gather_time_rl.setOnClickListener {
+
+            video1a1b_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            video1a1b_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+            video1a1b_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+            gatherTimeFlag = if (!gatherTimeFlag) {
+                video1a1b_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
+                video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
+                true
+            } else {
+                video1a1b_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
+                video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                false
+            }
+        }
+
+        video1a1b_price_rl.setOnClickListener {
+            video1a1b_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
+            video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
+
+            priceFlag = if (!priceFlag) {
+                video1a1b_price_tv.setTextColor(Color.parseColor("#B80017"))
+                video1a1b_price_up_iv.setBackgroundResource(R.drawable.ic_up_red)
+                video1a1b_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                true
+            } else {
+                video1a1b_price_tv.setTextColor(Color.parseColor("#B80017"))
+                video1a1b_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+                video1a1b_price_down_iv.setBackgroundResource(R.drawable.ic_down_red)
+                false
+            }
+        }
 
         video_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             mAdapter = null
-//            data!!.clear()
             video_srl.isRefreshing = true
             Handler().postDelayed({
                 getData()
@@ -60,16 +91,6 @@ class Video1A1BDelegate : EmallDelegate(){
 
         initVideoGlm()
         getData()
-
-//        video1a1b_screen_tv.setOnClickListener {
-//            if (!screenIsShow) {
-//                video1a1b_screen_rl.visibility = View.VISIBLE
-//                screenIsShow = true
-//            } else {
-//                video1a1b_screen_rl.visibility = View.INVISIBLE
-//                screenIsShow = false
-//            }
-//        }
     }
 
     private fun initVideoGlm() {
@@ -88,6 +109,8 @@ class Video1A1BDelegate : EmallDelegate(){
                 .params(videoSearchParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+
                         videoSearchBean = Gson().fromJson(response, VideoSearchBean::class.java)
                         if(videoSearchBean.status != 103) {
                             if (video_rv_rl.visibility == View.GONE){
@@ -106,7 +129,7 @@ class Video1A1BDelegate : EmallDelegate(){
                                 model.productType = "3"
                                 data!!.add(model)
                             }
-                            initRecyclerView(data!!, video1a1b_rv)
+                            initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.size)
                         }else{
                             video_rv_rl.visibility = View.GONE
                             video_no_result.visibility = View.VISIBLE
@@ -128,8 +151,22 @@ class Video1A1BDelegate : EmallDelegate(){
                 .post()
     }
 
-    private fun initRecyclerView(data: MutableList<Model>, recyclerView: RecyclerView) {
+    private fun initRecyclerView(data: MutableList<Model>, recyclerView: RecyclerView, size: Int) {
         val mAdapter: VideoClassifyAdapter? = VideoClassifyAdapter(R.layout.item_classify_video, data, glm)
+        mAdapter!!.setOnLoadMoreListener {
+            itemSize += 10
+            EmallLogger.d(size)
+            if (size > itemSize) {
+                EmallLogger.d("In le me ")
+                loadMoreData()
+            }else{
+//                mAdapter!!.loadMoreFail()
+            }
+        }
         recyclerView.adapter = mAdapter
+    }
+
+    private fun loadMoreData() {
+        EmallLogger.d("暂无")
     }
 }

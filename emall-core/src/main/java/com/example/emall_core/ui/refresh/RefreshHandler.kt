@@ -13,7 +13,9 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.ui.HomePageUnitsBean
 import com.example.emall_core.ui.NetUtils
 import com.example.emall_core.ui.recycler.*
+import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import java.util.*
 
@@ -36,6 +38,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     private var data: MutableList<MultipleItemEntity>? = mutableListOf()
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
+
     init {
         REFRESH_LAYOUT.setOnRefreshListener(this)
     }
@@ -48,7 +51,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun getUnit(unitUrl: String){
+    fun getUnit(unitUrl: String) {
         var fa: WeakHashMap<String, Any>? = WeakHashMap()
         RestClient().builder()
                 .url(unitUrl)
@@ -65,12 +68,12 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                         BEAN.addIndex()
                     }
                 })
-                .error(object : IError{
+                .error(object : IError {
                     override fun onError(code: Int, msg: String) {
                         println("error_")
                     }
                 })
-                .failure(object : IFailure{
+                .failure(object : IFailure {
                     override fun onFailure() {
                         println("failure_")
                     }
@@ -79,32 +82,39 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .get()
     }
 
-    fun getUnit2(unitUrl: String){
+    fun getUnit2(unitUrl: String) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         val call = apiService!!.homePageUnits()
         call.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>?, t: Throwable?) {
+
+            }
+
+            override fun onResponse(call: Call<String>?, response: Response<String>?) {
+                if (response!!.body() != null) {
+                    EmallLogger.d(response.body().toString())
+                    data!!.add(THE_THREE_CONVERTER.setJsonData(response.body().toString()).theThreeConvert()[0])
+                    data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response.body().toString()).horizontalScrollConvert()[0])
+                    data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response.body().toString()).guessLikeConvert()[0])
+//                        getDailyPicTitle(dailyPicUrl)
+                    mAdapter = MultipleRecyclerAdapter.create(data)
+                    RECYCLERVIEW.adapter = mAdapter
+                    BEAN.addIndex()
+
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
 //            override fun onResponse(call: retrofit2.Call<HomePageUnitsBean>, response: retrofit2.Response<String> ) {
-//                if (response.body() != null) {
-//                    EmallLogger.d(response.body().toString())
-//                    data!!.add(THE_THREE_CONVERTER.setJsonData(response.body().toString()).theThreeConvert()[0])
-//                    data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response.body().toString()).horizontalScrollConvert()[0])
-//                    data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response.body().toString()).guessLikeConvert()[0])
-////                        getDailyPicTitle(dailyPicUrl)
-//                    mAdapter = MultipleRecyclerAdapter.create(data)
-//                    RECYCLERVIEW.adapter = mAdapter
-//                    BEAN.addIndex()
-//
-//                } else {
-//                    EmallLogger.d("error")
-//                }
+
 //            }
 //
 //            override fun onFailure(call: retrofit2.Call<HomePageUnitsBean>, throwable: Throwable) {}
         })
     }
 
-    fun getDailyPicTitle(url: String, unitUrl: String){
+    fun getDailyPicTitle(url: String, unitUrl: String) {
         homePageParams!!["pageSize"] = "10"
         homePageParams!!["pageNum"] = "1"
         RestClient().builder()
@@ -129,14 +139,14 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .post()
     }
 
-    fun firstPage(bannerUrl: String, url: String, unitUrl: String, dailyPicUrl : String) {
+    fun firstPage(bannerUrl: String, url: String, unitUrl: String, dailyPicUrl: String) {
 //        BEAN.setDelayed(1000)
 
         RestClient().builder()
                 .url(bannerUrl)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
-                        getUnit(unitUrl)
+//                        getUnit(unitUrl)
                         getDailyPicTitle(dailyPicUrl, unitUrl)
                         val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
                         for (i in 0 until bannerSize) {
@@ -146,12 +156,12 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 //                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
                     }
                 })
-                .error(object : IError{
+                .error(object : IError {
                     override fun onError(code: Int, msg: String) {
                         println("error")
                     }
                 })
-                .failure(object : IFailure{
+                .failure(object : IFailure {
                     override fun onFailure() {
                         println("failure")
                     }
@@ -224,7 +234,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     }
 
     inner class GetIndexDataThread(bannerUrl: String, url: String) : Thread(bannerUrl) {
-            var bUrl = bannerUrl
+        var bUrl = bannerUrl
         override fun run() {
 
         }

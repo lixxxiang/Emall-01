@@ -66,6 +66,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
     var startTime = String()
     var endTime = String()
+    var itemSize = 0
 
 
     override fun setLayout(): Any? {
@@ -92,8 +93,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         optics_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             mAdapter = null
-//            data!!.clear()
             optics_srl.isRefreshing = true
+            itemSize = 0
             Handler().postDelayed({
                 getData(ssp2!!, 1)
                 optics_srl.isRefreshing = false
@@ -452,7 +453,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             if (flag_2_4) {
                 ssp2!!["cloud"] = "40"
             }
-            if (!flag_2_1 && !flag_2_2 && !flag_2_3 && !flag_2_4 ) {
+            if (!flag_2_1 && !flag_2_2 && !flag_2_3 && !flag_2_4) {
                 ssp2!!["resolution"] = ""
                 ssp2!!["satelliteId"] = ""
             }
@@ -518,7 +519,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
     private fun getData(ssp2: WeakHashMap<String, Any>, p: Int) {
         ssp2["pageNum"] = p
-        EmallLogger.d(ssp2)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp2)
@@ -526,6 +526,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         EmallLogger.d(response)
+                        itemSize = 0
                         if (sceneSearch.status != 103) {
                             if (optics_rv_rl.visibility == View.GONE) {
                                 optics_rv_rl.visibility = View.VISIBLE
@@ -545,7 +546,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                                 model.productType = "1"
                                 data!!.add(model)
                             }
-                            initRecyclerView(data!!)
+                            initRecyclerView(data!!, sceneSearch.data.count)
                         } else {
                             optics_rv.visibility = View.GONE
                             optics_no_result.visibility = View.VISIBLE
@@ -629,15 +630,20 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_rv.isNestedScrollingEnabled = false
     }
 
-    private fun initRecyclerView(data: MutableList<Model>) {
+    private fun initRecyclerView(data: MutableList<Model>, size: Int) {
 
         mAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
         mAdapter!!.setOnLoadMoreListener {
-            if (pages != 1) {
+            itemSize += 10
+            EmallLogger.d(size)
+            if (size > itemSize) {
                 EmallLogger.d("In le me ")
                 loadMoreData(ssp2!!, pages, data)
+            }else{
+//                mAdapter!!.loadMoreFail()
             }
         }
+//        mAdapter!!.setLoadMoreView(CustomLoadMoreView())
         optics_rv.adapter = mAdapter
 //        mAdapter!!.disableLoadMoreIfNotFullPage()
 
@@ -684,7 +690,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             else
                 StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
-        EmallLogger.d(days)
         optics_btn_3_1.text = days
         startTime = days
         optics_btn_3_1.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
