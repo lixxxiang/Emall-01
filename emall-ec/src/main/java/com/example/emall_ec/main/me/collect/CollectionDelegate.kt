@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.me.collect
 
+import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
@@ -15,6 +16,8 @@ import com.example.emall_ec.main.search.type.Optics1Delegate
 import com.example.emall_ec.main.search.type.Video1A1BDelegate
 import kotlinx.android.synthetic.main.delegate_collection.*
 import kotlinx.android.synthetic.main.delegate_search_result.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 class CollectionDelegate : EmallDelegate() {
     var listTitle: MutableList<String>? = mutableListOf()
@@ -27,25 +30,29 @@ class CollectionDelegate : EmallDelegate() {
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        collection_toolbar.title = ""
+        collection_toolbar.title = getString(R.string.my_collection)
         (activity as AppCompatActivity).setSupportActionBar(collection_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         collection_toolbar.setNavigationOnClickListener {
             pop()
         }
 
-        initControls()
     }
 
     override fun setLayout(): Any? {
         return R.layout.delegate_collection
     }
 
+    override fun onEnterAnimationEnd(savedInstanceState: Bundle?) {
+        super.onEnterAnimationEnd(savedInstanceState)
+        initControls()
+
+    }
+
     private fun initControls() {
 
         val goodsDelegate = GoodsDelegate()
         val contentDelegate = ContentDelegate()
-
         listFragment!!.add(goodsDelegate)
         listFragment!!.add(contentDelegate)
 
@@ -66,5 +73,9 @@ class CollectionDelegate : EmallDelegate() {
 //        }
 
 
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

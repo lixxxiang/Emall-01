@@ -461,6 +461,13 @@ class NoctilucenceDelegate : EmallDelegate() {
         noctilucence_btn_confirm.isClickable = false
 
         noctilucence_btn_reset.setOnClickListener {
+            ssp!!["productType"] = ""
+            ssp!!["resolution"] = ""
+            ssp!!["satelliteId"] = ""
+            ssp!!["startTime"] = ""
+            ssp!!["endTime"] = ""
+            ssp!!["cloud"] = ""
+
             flag_1_1 = false
             flag_1_2 = false
             flag_1_3 = false
@@ -509,19 +516,18 @@ class NoctilucenceDelegate : EmallDelegate() {
 
     private fun getData(ssp: WeakHashMap<String, Any>, p: Int) {
         ssp["pageNum"] = p
-
+        println(ssp)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
+                        println(response)
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         if (sceneSearch.status != 103) {
-                            if (noctilucence_rv_rl.visibility == View.GONE) {
-                                noctilucence_rv_rl.visibility = View.VISIBLE
-                                noctilucence_no_result.visibility = View.GONE
-                            }
+                            noctilucence_no_result.visibility = View.GONE
+                            noctilucence_rv.visibility = View.VISIBLE
                             productIdList = sceneSearch.data.searchReturnDtoList
                             pagesAmount = sceneSearch.data.pages
                             val data: MutableList<Model>? = mutableListOf()
@@ -540,7 +546,6 @@ class NoctilucenceDelegate : EmallDelegate() {
                         } else {
                             noctilucence_rv.visibility = View.GONE
                             noctilucence_no_result.visibility = View.VISIBLE
-//                            noctilucence_top_bar.visibility = View.GONE
                             noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
                             noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
                         }
@@ -605,6 +610,7 @@ class NoctilucenceDelegate : EmallDelegate() {
                 StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
         EmallLogger.d(days)
+        startTime = days
         noctilucence_btn_3_1.text = days
         noctilucence_btn_3_1.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
         noctilucence_btn_3_1.setTextColor(Color.parseColor("#B4A078"))
@@ -633,6 +639,7 @@ class NoctilucenceDelegate : EmallDelegate() {
             else
                 StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).toString()
         }
+        endTime = days
         noctilucence_btn_3_2.text = days
         noctilucence_btn_3_2.setBackgroundResource(R.drawable.sign_in_by_tel_btn_border_shape)
         noctilucence_btn_3_2.setTextColor(Color.parseColor("#B4A078"))

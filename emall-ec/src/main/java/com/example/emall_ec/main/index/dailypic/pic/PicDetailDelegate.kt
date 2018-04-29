@@ -33,14 +33,23 @@ import java.util.*
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import com.example.emall_core.ui.progressbar.EmallProgressBar
+import com.example.emall_core.util.view.ShareUtil
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.sign.SignInByTelDelegate
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
+import com.tencent.mm.opensdk.openapi.IWXAPI
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlinx.android.synthetic.main.pic_detail_2.*
+import kotlinx.android.synthetic.main.share.view.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import org.apache.cordova.*
@@ -149,6 +158,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         (activity as AppCompatActivity).setSupportActionBar(pic_detail_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         pic_detail_toolbar.setNavigationIcon(R.drawable.ic_back_small)
+        api = WXAPIFactory.createWXAPI(activity, "wxd12cdf5edf0f42fd")
         pic_detail_toolbar.setNavigationOnClickListener {
             _mActivity.onBackPressed()
         }
@@ -239,6 +249,26 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
 //            }
 //            false
 //        }
+
+        val contentView2 = LayoutInflater.from(activity).inflate(R.layout.share, null)
+
+        repost.setOnClickListener {
+            bottomDialog.setContentView(contentView2)
+            val layoutParams = contentView2.layoutParams
+            layoutParams.width = resources.displayMetrics.widthPixels
+            contentView2.layoutParams = layoutParams
+            bottomDialog.window!!.setGravity(Gravity.BOTTOM)
+            bottomDialog.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
+            bottomDialog.show()
+        }
+
+        contentView2.wechat.setOnClickListener {
+            shareToWechat(SendMessageToWX.Req.WXSceneSession, imageId, getDailyPicDetailBean.data.imageName, getDailyPicDetailBean.data.richText1)
+        }
+
+        contentView2.moment.setOnClickListener {
+            shareToWechat(SendMessageToWX.Req.WXSceneTimeline, imageId, getDailyPicDetailBean.data.imageName, getDailyPicDetailBean.data.richText1)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -652,5 +682,31 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
     override fun requestPermission(p0: CordovaPlugin?, p1: Int, p2: String?) {
     }
 
+    private var api: IWXAPI? = null
+
+    fun shareToWechat(scene: Int, articleId: String, title: String, description: String) {
+        val THUMB_SIZE = 150
+        val mTargetScene = scene
+
+        val webpage = WXWebpageObject()
+        webpage.webpageUrl = "http://10.10.90.3:8092?id=$articleId"
+        val msg = WXMediaMessage(webpage)
+        msg.title = title
+        msg.description = description
+        val bmp = BitmapFactory.decodeResource(resources, R.drawable.app_icon)
+        val thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true)
+        bmp.recycle()
+        msg.thumbData = ShareUtil.bmpToByteArray(thumbBmp, true)
+
+        val req = SendMessageToWX.Req()
+        req.transaction = buildTransaction("webpage")
+        req.message = msg
+        req.scene = mTargetScene
+        api!!.sendReq(req)
+    }
+
+    private fun buildTransaction(type: String?): String {
+        return if (type == null) System.currentTimeMillis().toString() else type + System.currentTimeMillis()
+    }
 
 }

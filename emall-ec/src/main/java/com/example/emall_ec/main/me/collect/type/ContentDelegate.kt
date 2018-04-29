@@ -30,6 +30,7 @@ class ContentDelegate : EmallDelegate() {
     var myCollectionData: MutableList<MyCollectionBean.DataBean.CollectionsBean>? = mutableListOf()
     var adapter = MyCollectionListViewAdapter()
 
+
     fun create(): ContentDelegate? {
         return ContentDelegate()
     }
@@ -88,5 +89,12 @@ class ContentDelegate : EmallDelegate() {
                 })
                 .build()
                 .post()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        myCollectionData!!.clear()
+        initContent()
+
     }
 }

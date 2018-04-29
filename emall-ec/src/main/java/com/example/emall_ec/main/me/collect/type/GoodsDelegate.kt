@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.widget.Toast
-import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -20,12 +19,8 @@ import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.collect.data.MyAllCollectionBean
-import com.example.emall_ec.main.search.SearchResultDelegate
-import com.example.emall_ec.main.sign.SignHandler
-import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_goods.*
-import kotlinx.android.synthetic.main.delegate_optics1.*
 import java.util.*
 
 class GoodsDelegate : EmallDelegate() {
@@ -34,7 +29,6 @@ class GoodsDelegate : EmallDelegate() {
     var myAllCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var myAllCollectionBean = MyAllCollectionBean()
     private var myAllCollectionList: MutableList<MyAllCollectionBean.DataBean.CollectionBean> = mutableListOf()
-    private var data: MutableList<Model>? = mutableListOf()
     private var glm: GridLayoutManager? = null
 
     fun create(): GoodsDelegate? {
@@ -48,19 +42,49 @@ class GoodsDelegate : EmallDelegate() {
     override fun initial() {
         goods_gray_tv.setOnClickListener {
             if (!flag) {
-//                goods_top_ll.visibility = View.VISIBLE
                 goods_screen_rl.visibility = View.VISIBLE
                 goods_gray_tv.setTextColor(Color.parseColor("#B80017"))
-                goods_gray_iv.setBackgroundResource(R.drawable.ic_up_red)
+                goods_gray_iv.setBackgroundResource(R.drawable.collection_up)
+                goods_all_tv.setTextColor(Color.parseColor("#4A4A4A"))
                 flag = true
             } else {
-//                goods_top_ll.visibility = View.INVISIBLE
                 goods_screen_rl.visibility = View.INVISIBLE
-                goods_gray_tv.setTextColor(Color.parseColor("#9B9B9B"))
-                goods_gray_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
+                goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
+                goods_all_tv.setTextColor(Color.parseColor("#4A4A4A"))
                 flag = false
             }
 
+        }
+        goods_all_tv.setOnClickListener {
+            goods_screen_rl.visibility = View.INVISIBLE
+            goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
+            goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
+            goods_all_tv.setTextColor(Color.parseColor("#B80017"))
+        }
+
+        goods_rl1.setOnClickListener {
+            getDataByType("1")
+            reset()
+        }
+
+        goods_rl2.setOnClickListener {
+            getDataByType("2")
+            reset()
+        }
+
+        goods_rl3.setOnClickListener {
+            getDataByType("3")
+            reset()
+        }
+
+        goods_rl4.setOnClickListener {
+            getDataByType("5")
+            reset()
+        }
+
+        collection_btn.setOnClickListener {
+            Toast.makeText(activity, "to what page", Toast.LENGTH_SHORT).show()
         }
 
         glm = GridLayoutManager(context, 2)
@@ -73,24 +97,32 @@ class GoodsDelegate : EmallDelegate() {
         getData()
     }
 
-    private fun getData() {
-        myAllCollectionParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-        myAllCollectionParams!!["PageNum"] = "1"
-        myAllCollectionParams!!["PageSize"] = "10"
+    private fun reset() {
+        goods_screen_rl.visibility = View.INVISIBLE
+        goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
+        goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
+    }
 
+    private fun getDataByType(s: String) {
+        myAllCollectionParams!!["productType"] = s
         RestClient().builder()
-                .url("http://59.110.164.214:8024/global/mobile/myAllCollection")
+                .url("http://59.110.164.214:8024/global/mobile/myCollectionByType")
                 .params(myAllCollectionParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        println(response)
                         myAllCollectionBean = Gson().fromJson(response, MyAllCollectionBean::class.java)
                         if (myAllCollectionBean.message == "success") {
                             /**
                              * success
                              */
+                            collection_no_result_rl.visibility = View.GONE
+                            collection_srl.visibility = View.VISIBLE
                             EmallLogger.d(response)
                             myAllCollectionList = myAllCollectionBean.data.collection
                             val size = myAllCollectionBean.data.collection.size
+                            val data: MutableList<Model>? = mutableListOf()
+
                             for (i in 0 until size) {
                                 val model = Model()
                                 model.imageUrl = myAllCollectionBean.data.collection[i].thumbnailUrl
@@ -102,8 +134,58 @@ class GoodsDelegate : EmallDelegate() {
                                 data!!.add(model)
                             }
                             initRecyclerView(data!!)
-                        } else {
-                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                        } else if (myAllCollectionBean.message == "方法返回为空") {
+                            collection_srl.visibility = View.GONE
+                            collection_no_result_rl.visibility = View.VISIBLE
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+    }
+
+    private fun getData() {
+        myAllCollectionParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        myAllCollectionParams!!["PageNum"] = "1"
+        myAllCollectionParams!!["PageSize"] = "10"
+        println(myAllCollectionParams)
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/mobile/myAllCollection")
+                .params(myAllCollectionParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        myAllCollectionBean = Gson().fromJson(response, MyAllCollectionBean::class.java)
+                        if (myAllCollectionBean.message == "success") {
+                            /**
+                             * success
+                             */
+                            collection_no_result_rl.visibility = View.GONE
+                            collection_srl.visibility = View.VISIBLE
+                            EmallLogger.d(response)
+                            myAllCollectionList = myAllCollectionBean.data.collection
+                            val size = myAllCollectionBean.data.collection.size
+                            var data: MutableList<Model>? = mutableListOf()
+
+                            for (i in 0 until size) {
+                                val model = Model()
+                                model.imageUrl = myAllCollectionBean.data.collection[i].thumbnailUrl
+                                model.price = myAllCollectionBean.data.collection[i].originalPrice
+                                model.time = myAllCollectionBean.data.collection[i].shootingTime
+                                model.productId = myAllCollectionBean.data.collection[i].productId
+                                model.productType = myAllCollectionBean.data.collection[i].productType
+                                model.title = myAllCollectionBean.data.collection[i].title
+                                data!!.add(model)
+                            }
+                            initRecyclerView(data!!)
+                        } else if (myAllCollectionBean.message == "方法返回为空") {
+                            collection_srl.visibility = View.GONE
+                            collection_no_result_rl.visibility = View.VISIBLE
                         }
                     }
                 })
@@ -122,7 +204,7 @@ class GoodsDelegate : EmallDelegate() {
         val mAdapter: SceneClassifyAdapter? = SceneClassifyAdapter(R.layout.item_classify_scene, data, glm)
         goods_rv.adapter = mAdapter
         mAdapter!!.notifyDataSetChanged()
-        mAdapter!!.setOnItemClickListener { adapter, view, position ->
+        mAdapter.setOnItemClickListener { adapter, view, position ->
             val delegate = GoodsDetailDelegate().create()
             val bundle: Bundle? = Bundle()
             bundle!!.putString("productId", data[position].productId)
@@ -134,9 +216,10 @@ class GoodsDelegate : EmallDelegate() {
 
     override fun onSupportVisible() {
         super.onSupportVisible()
-        if (!data!!.isEmpty()) {
-            data!!.clear()
-        }
+        goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
+        goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
+        goods_all_tv.setTextColor(Color.parseColor("#B80017"))
+
         getData()
 
     }

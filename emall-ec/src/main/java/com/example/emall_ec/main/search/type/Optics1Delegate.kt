@@ -418,6 +418,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_confirm.setOnClickListener {
+
             optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
             optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
             screenIsShow = false
@@ -471,6 +472,13 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_btn_confirm.isClickable = false
 
         optics_btn_reset.setOnClickListener {
+            ssp2!!["productType"] = ""
+            ssp2!!["resolution"] = ""
+            ssp2!!["satelliteId"] = ""
+            ssp2!!["startTime"] = ""
+            ssp2!!["endTime"] = ""
+            ssp2!!["cloud"] = ""
+
             flag_1_1 = false
             flag_1_2 = false
             flag_1_3 = false
@@ -528,10 +536,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                         EmallLogger.d(response)
                         itemSize = 0
                         if (sceneSearch.status != 103) {
-                            if (optics_rv_rl.visibility == View.GONE) {
-                                optics_rv_rl.visibility = View.VISIBLE
-                                optics_no_result.visibility = View.GONE
-                            }
+                            optics_rv.visibility = View.VISIBLE
+                            optics_no_result.visibility = View.GONE
                             productIdList = sceneSearch.data.searchReturnDtoList
                             pagesAmount = sceneSearch.data.pages
                             val data: MutableList<Model>? = mutableListOf()
@@ -550,7 +556,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                         } else {
                             optics_rv.visibility = View.GONE
                             optics_no_result.visibility = View.VISIBLE
-//                            optics_screen_top_rl.visibility = View.GONE
                             screenIsShow = false
                             optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
                             optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
@@ -639,7 +644,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             if (size > itemSize) {
                 EmallLogger.d("In le me ")
                 loadMoreData(ssp2!!, pages, data)
-            }else{
+            } else {
 //                mAdapter!!.loadMoreFail()
             }
         }

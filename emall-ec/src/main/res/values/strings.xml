@@ -207,6 +207,8 @@
     <string name="confirm_login">授权在电脑端登录</string>
     <string name="confirm_login_title">确认登陆</string>
     <string name="login_success">登录成功</string>
+    <string name="no_result_collection">抱歉，暂无结果</string>
+    <string name="go_buy">去逛逛</string>
 
 
 </resources>

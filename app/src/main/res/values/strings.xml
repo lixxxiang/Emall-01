@@ -2,4 +2,10 @@
     <string name="app_name">遥感易购</string>
     <string name="dd">dd</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+
+    <string name="errcode_success">发送成功</string>
+    <string name="errcode_cancel">发送取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unsupported">不支持错误</string>
+    <string name="errcode_unknown">发送返回</string>
 </resources>

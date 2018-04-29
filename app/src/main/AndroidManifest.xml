@@ -33,7 +33,7 @@
             android:process=":remote" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Bah0Yvywj9ARG8YCaSKpwqaZqITdr7Qx" />
+            android:value="fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx" />
 
         <activity
             android:name=".MainActivity"
@@ -54,6 +54,9 @@
                 <data android:scheme="wxd12cdf5edf0f42fd" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true" />
         <activity
             android:name="com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity"
             android:screenOrientation="landscape" />
