@@ -9,14 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
-        android:elevation="4dp"/>
-    <ScrollView
+        android:elevation="2dp"/>
+    <com.example.emall_core.util.view.BounceScrollView
         android:layout_below="@+id/order_detail_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF">
+        android:scrollbars="none"
+        android:background="#F0F0F0">
         <LinearLayout
             android:orientation="vertical"
+            android:background="#FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
@@ -325,23 +327,26 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.example.emall_core.util.view.BounceScrollView>
     <android.support.v7.widget.Toolbar
         android:layout_below="@+id/ll_bar"
         android:id="@+id/order_detail_list_toolbar"
         android:layout_width="match_parent"
-        android:elevation="4dp"
+        android:elevation="2dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFFFFF">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/order_detail"
-            android:textSize="14dp"
-            android:textColor="#686868"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/order_detail"-->
+            <!--android:textSize="14dp"-->
+            <!--android:textColor="#686868"-->
+            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>-->
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
         android:background="#FFFFFF"
@@ -357,9 +362,11 @@
             android:textSize="12dp"
             android:textColor="#B80017"
             android:text="@string/to_download"
+            android:id="@+id/order_detail_download_btn"
             android:background="@drawable/order_detail_btn_red_border_shape"
             />
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/order_detail_delete_btn"
             android:layout_width="80dp"
             android:layout_height="28dp"
             android:layout_centerVertical="true"

@@ -48,6 +48,7 @@ class ProgramDetailDelegate : EmallDelegate() {
     private var isClicked = false
     var originalPrice = String()
     var salePrice = String()
+    var pageFrom = ""
     fun create(): ProgramDetailDelegate? {
         return ProgramDetailDelegate()
     }
@@ -58,7 +59,7 @@ class ProgramDetailDelegate : EmallDelegate() {
 
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        program_detail_toolbar.title = ""
+        program_detail_toolbar.title = getString(R.string.programming)
         (activity as AppCompatActivity).setSupportActionBar(program_detail_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         program_detail_head_set_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/headset.ttf")
@@ -81,6 +82,7 @@ class ProgramDetailDelegate : EmallDelegate() {
                 bundle.putString("PAGE_FROM", "PROGRAM_DETAIL")
                 delegate.arguments = bundle
                 start(delegate)
+                pageFrom = "sign"
             } else {
                 getDemandId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, sp)
             }
@@ -208,7 +210,7 @@ class ProgramDetailDelegate : EmallDelegate() {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty() && isClicked) {
+        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty() && isClicked && pageFrom == "sign") {
             getDemandId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE))
             isClicked = false
         }
@@ -254,6 +256,7 @@ class ProgramDetailDelegate : EmallDelegate() {
                             bundle.putString("time", String.format("%s - %s", sp.getString("startTime", "").toString().replace("-", "."), sp.getString("endTime", "").toString().replace("-", ".")))
                             delegate.arguments = bundle
                             start(delegate)
+                            pageFrom = "next"
                         }
                     }
                 })

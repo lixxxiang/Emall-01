@@ -121,6 +121,7 @@ public class MultipleRecyclerAdapter extends
 //                textView.setText("df");
                 break;
             case ItemType.SCROLL_HORIZIONTAL:
+//                System.out.println(entity.getField(MultipleFields.HORIZONTAL_SCROLL).);
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
                 horiziontalRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, 20, true));
                 SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);

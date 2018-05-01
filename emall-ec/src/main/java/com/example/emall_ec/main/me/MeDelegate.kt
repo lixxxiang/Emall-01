@@ -157,7 +157,7 @@ class MeDelegate : BottomItemDelegate() {
         }
 
         me_to_computer_iv.setOnClickListener {
-            start(ProductDeliveryDelegate().create())
+            (DELEGATE as EcBottomDelegate).start(ProductDeliveryDelegate().create())
         }
     }
 

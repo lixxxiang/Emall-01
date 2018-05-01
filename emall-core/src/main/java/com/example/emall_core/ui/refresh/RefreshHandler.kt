@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.emall_core.app.ApiService
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
-import com.example.emall_core.ui.HomePageUnitsBean
 import com.example.emall_core.ui.NetUtils
 import com.example.emall_core.ui.recycler.*
 import retrofit2.Call
@@ -25,17 +24,14 @@ import java.util.*
  */
 class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefreshLayout,
                                          private val RECYCLERVIEW: RecyclerView,
-                                         private val BANNER_CONVERTER: DataConverter,
+                                         private var BANNER_CONVERTER: DataConverter,
                                          private val EVERY_DAY_PIC_CONVERTER: DataConverter,
                                          private val HORIZONTAL_SCROLL_CONVERTER: DataConverter,
                                          private val THE_THREE_CONVERTER: DataConverter,
                                          private val GUESS_LIKE_CONVERTER: DataConverter,
                                          private val CONVERTER: DataConverter,
                                          private val BEAN: PagingBean) : SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
-    private var mAdapter: MultipleRecyclerAdapter? = null
-    private var bannerResponse = String()
     var homePageParams: WeakHashMap<String, Any>? = WeakHashMap()
-    private var data: MutableList<MultipleItemEntity>? = mutableListOf()
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
 
@@ -51,38 +47,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
         }, 1000)
     }
 
-    fun getUnit(unitUrl: String) {
-        var fa: WeakHashMap<String, Any>? = WeakHashMap()
-        RestClient().builder()
-                .url(unitUrl)
-                .params(fa!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
-                        data!!.add(THE_THREE_CONVERTER.setJsonData(response).theThreeConvert()[0])
-                        data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response).horizontalScrollConvert()[0])
-                        data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response).guessLikeConvert()[0])
-//                        getDailyPicTitle(dailyPicUrl)
-                        mAdapter = MultipleRecyclerAdapter.create(data)
-                        RECYCLERVIEW.adapter = mAdapter
-                        BEAN.addIndex()
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-                        println("error_")
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
-                        println("failure_")
-                    }
-                })
-                .build()
-                .get()
-    }
-
-    fun getUnit2(unitUrl: String) {
+    fun getUnit2(data: MutableList<MultipleItemEntity>?) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         val call = apiService!!.homePageUnits()
@@ -93,28 +58,22 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
 
             override fun onResponse(call: Call<String>?, response: Response<String>?) {
                 if (response!!.body() != null) {
-                    EmallLogger.d(response.body().toString())
-                    data!!.add(THE_THREE_CONVERTER.setJsonData(response.body().toString()).theThreeConvert()[0])
-                    data!!.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response.body().toString()).horizontalScrollConvert()[0])
-                    data!!.add(GUESS_LIKE_CONVERTER.setJsonData(response.body().toString()).guessLikeConvert()[0])
-//                        getDailyPicTitle(dailyPicUrl)
-                    mAdapter = MultipleRecyclerAdapter.create(data)
-                    RECYCLERVIEW.adapter = mAdapter
-                    BEAN.addIndex()
+                    HORIZONTAL_SCROLL_CONVERTER.clearData()
 
+                    data!!.add(THE_THREE_CONVERTER.setJsonData(response.body().toString()).theThreeConvert()[0])
+                    data.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response.body().toString()).horizontalScrollConvert()[0])
+                    data.add(GUESS_LIKE_CONVERTER.setJsonData(response.body().toString()).guessLikeConvert()[0])
+                    var mAdapter: MultipleRecyclerAdapter? = MultipleRecyclerAdapter.create(data)
+                    RECYCLERVIEW.adapter = mAdapter
+                    println("3 " + data.size)
                 } else {
                     EmallLogger.d("error")
                 }
             }
-//            override fun onResponse(call: retrofit2.Call<HomePageUnitsBean>, response: retrofit2.Response<String> ) {
-
-//            }
-//
-//            override fun onFailure(call: retrofit2.Call<HomePageUnitsBean>, throwable: Throwable) {}
         })
     }
 
-    fun getDailyPicTitle(url: String, unitUrl: String) {
+    fun getDailyPicTitle(url: String, data: MutableList<MultipleItemEntity>?) {
         homePageParams!!["pageSize"] = "10"
         homePageParams!!["pageNum"] = "1"
         RestClient().builder()
@@ -123,7 +82,8 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         data!!.add(EVERY_DAY_PIC_CONVERTER.setJsonData(response).everyDayPicConvert()[0])
-                        getUnit2(unitUrl)
+                        println("2 " + data.size)
+                        getUnit2(data)
 
                     }
                 })
@@ -139,68 +99,77 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .post()
     }
 
-    fun firstPage(bannerUrl: String, url: String, unitUrl: String, dailyPicUrl: String) {
-//        BEAN.setDelayed(1000)
+    fun firstPage(bannerUrl: String, url: String, unitUrl: String, dailyPicUrl: String) =//        BEAN.setDelayed(1000)
 
-        RestClient().builder()
-                .url(bannerUrl)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-//                        getUnit(unitUrl)
-                        getDailyPicTitle(dailyPicUrl, unitUrl)
-                        val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
-                        for (i in 0 until bannerSize) {
-                            data!!.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
-                        }
-//                        EmallLogger.d("aiaiaia")
-//                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-                        println("error")
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
-                        println("failure")
-                    }
-                })
-                .build()
-                .get()
-
-
-    }
-
-    private fun paging(url: String) {
-        val pageSize = BEAN.getPageSize()
-        val currentCount = BEAN.getCurrentCount()
-        val total = BEAN.getTotal()
-        val index = BEAN.getPageIndex()
-
-        if (mAdapter!!.data.size < pageSize || currentCount >= total) {
-            mAdapter!!.loadMoreEnd(true)
-        } else {
-            Emall().getHandler()!!.postDelayed(Runnable {
-                RestClient().builder()
-                        .url(url + index)
-                        .success(object : ISuccess {
-                            override fun onSuccess(response: String) {
-                                EmallLogger.json("paging", response)
-                                CONVERTER.clearData()
-                                mAdapter!!.addData(CONVERTER.setJsonData(response).convert())
-                                //累加数量
-                                BEAN.setCurrentCount(mAdapter!!.data.size)
-                                mAdapter!!.loadMoreComplete()
-                                BEAN.addIndex()
-
+            RestClient().builder()
+                    .url(bannerUrl)
+                    .success(object : ISuccess {
+                        override fun onSuccess(response: String) {
+                            val data: MutableList<MultipleItemEntity>? = mutableListOf()
+                            if (!data!!.isEmpty()) {
+                                data.clear()
                             }
-                        })
-                        .build()
-                        .get()
-            }, 1000)
-        }
-    }
+                            BANNER_CONVERTER.clearData()
+                            EVERY_DAY_PIC_CONVERTER.clearData()
+                            THE_THREE_CONVERTER.clearData()
+                            HORIZONTAL_SCROLL_CONVERTER.clearData()
+                            GUESS_LIKE_CONVERTER.clearData()
+                            val bannerSize = BANNER_CONVERTER.setJsonData(response).bannerConvert().size
+                            for (i in 0 until bannerSize) {
+                                data.add(BANNER_CONVERTER.setJsonData(response).bannerConvert()[i])
+                            }
+//                            println(BANNER_CONVERTER.bannerConvert()[0].getField(MultipleFields.THE_THREE))
+
+                            getDailyPicTitle(dailyPicUrl, data)
+                            println("1 " + data.size)
+
+
+                            //                        EmallLogger.d("aiaiaia")
+                            //                        data!!.add(EVERY_DAY_PIC_CONVERTER.everyDayPicConvert()[0])
+                        }
+                    })
+                    .error(object : IError {
+                        override fun onError(code: Int, msg: String) {
+                            println("error")
+                        }
+                    })
+                    .failure(object : IFailure {
+                        override fun onFailure() {
+                            println("failure")
+                        }
+                    })
+                    .build()
+                    .get()
+
+//    private fun paging(url: String) {
+//        val pageSize = BEAN.getPageSize()
+//        val currentCount = BEAN.getCurrentCount()
+//        val total = BEAN.getTotal()
+//        val index = BEAN.getPageIndex()
+//
+//        if (mAdapter!!.data.size < pageSize || currentCount >= total) {
+//            mAdapter!!.loadMoreEnd(true)
+//        } else {
+//            Emall().getHandler()!!.postDelayed(Runnable {
+//                RestClient().builder()
+//                        .url(url + index)
+//                        .success(object : ISuccess {
+//                            override fun onSuccess(response: String) {
+//                                EmallLogger.json("paging", response)
+//                                CONVERTER.clearData()
+//                                mAdapter!!.addData(CONVERTER.setJsonData(response).convert())
+//                                //累加数量
+//                                BEAN.setCurrentCount(mAdapter!!.data.size)
+//                                mAdapter!!.loadMoreComplete()
+//                                BEAN.addIndex()
+//
+//                            }
+//                        })
+//                        .build()
+//                        .get()
+//            }, 1000)
+//        }
+//    }
 
     override fun onRefresh() {
         refresh()

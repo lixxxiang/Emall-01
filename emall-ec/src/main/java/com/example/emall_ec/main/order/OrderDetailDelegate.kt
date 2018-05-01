@@ -1,19 +1,32 @@
 package com.example.emall_ec.main.order
 
 import android.graphics.Typeface
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatTextView
 import com.bumptech.glide.Glide
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_ec.R
+import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_order_detail.*
+import kotlinx.android.synthetic.main.delegate_setting.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
+import java.util.*
 
 /**
  * Created by lixiang on 2018/3/6.
  */
 class OrderDetailDelegate : BottomItemDelegate() {
 
+    var deleteOrderParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var deleteOrderBean = CommonBean()
     fun create(): OrderDetailDelegate? {
         return OrderDetailDelegate()
     }
@@ -21,7 +34,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
     override fun initial() {
         order_detail_tel_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/tel.ttf")
         order_detail_qq_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/qq.ttf")
-        order_detail_list_toolbar.title = ""
+        order_detail_list_toolbar.title = getString(R.string.order_detail)
         (activity as AppCompatActivity).setSupportActionBar(order_detail_list_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val orderData = arguments.getParcelable<OrderDetail>("KEy")
@@ -31,6 +44,39 @@ class OrderDetailDelegate : BottomItemDelegate() {
             pop()
         }
 
+        order_detail_delete_btn.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("确认删除订单？")
+            builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
+                deleteOrderParams!!["orderId"] = orderData.data[index].orderId
+                RestClient().builder()
+                        .url("http://59.110.164.214:8024/global/order/deleteOrder")
+                        .params(deleteOrderParams!!)
+                        .success(object : ISuccess {
+                            override fun onSuccess(response: String) {
+                                deleteOrderBean = Gson().fromJson(response, CommonBean::class.java)
+                                if (deleteOrderBean.message == "success") {
+                                    pop()
+                                }
+                            }
+                        })
+                        .build()
+                        .get()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.create().show()
+
+        }
+
+        order_detail_download_btn.setOnClickListener {
+            start(ProductDeliveryDelegate().create())
+        }
+
     }
 
     private fun initViews(orderData: OrderDetail, index: Int) {
@@ -38,12 +84,12 @@ class OrderDetailDelegate : BottomItemDelegate() {
                 .load(orderData.data[index].details.imageDetailUrl)
                 .into(order_detail_image_iv)
 
-//        order_detail.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()))
         order_detail_title_tv.text = AllListAdapter.typeArray[orderData.data[index].type]
         order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.centerTime)
         order_detail_price_tv.text = String.format("¥%s", orderData.data.get(index).payment)
         order_detail_state_tv.text = stateFormat(orderData.data.get(index).state, orderData.data[index].planCommitTime)
         order_detail_id_tv.text = orderData.data[index].orderId
+        println(orderData.data[index].orderId)
         order_detail_order_time_tv.text = orderData.data[index].commitTime
         order_detail_pay_method_tv.text = AllListAdapter.payMethodArray[orderData.data[index].payMethod]
         order_detail_origional_price_tv.text = String.format("¥%s", orderData.data[index].details.originalPrice)
@@ -53,7 +99,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
     }
 
     private fun discount(salePrice: String, payment: Double): String {
-        return String.format("-¥%s",salePrice.toDouble() - payment)
+        return String.format("-¥%s", salePrice.toDouble() - payment)
     }
 
     private fun stateFormat(state: Int, planCommitTime: String): String {
@@ -68,4 +114,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
         return R.layout.delegate_order_detail
     }
 
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
 }

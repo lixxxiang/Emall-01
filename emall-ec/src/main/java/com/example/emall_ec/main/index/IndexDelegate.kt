@@ -5,7 +5,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
+import android.os.Handler
 import android.support.v4.app.ActivityCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
@@ -25,7 +27,6 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 class IndexDelegate : BottomItemDelegate() {
     var DELEGATE: EmallDelegate? = null
-
     var refreshHandler: RefreshHandler? = null
     override fun setLayout(): Any? {
         return R.layout.delegate_index
@@ -33,7 +34,6 @@ class IndexDelegate : BottomItemDelegate() {
 
     fun initRefreshLayout() {
         swipe_refresh_layout_index.setColorSchemeColors(Color.parseColor("#b4a078"))
-//        swipe_refresh_layout_index.setProgressViewOffset(true, 120, 300)
     }
 
     private fun initRecyclerView() {
@@ -63,13 +63,35 @@ class IndexDelegate : BottomItemDelegate() {
         }
         initRefreshLayout()
         initRecyclerView()
-        refreshHandler!!.firstPage("http://59.110.164.214:8024/global/homePageSlide",
+        refreshHandler!!.firstPage(
+                "http://59.110.164.214:8024/global/homePageSlide",
                 "http://192.168.1.36:3030/data",
-                "http://59.110.162.194:5201/global/homePageUnits", "http://202.111.178.10:28085/mobile/homePage")
+                "http://59.110.162.194:5201/global/homePageUnits",
+                "http://202.111.178.10:28085/mobile/homePage")
         index_search_rl.setOnClickListener {
             val delegate: SearchDelegate = SearchDelegate().create()!!
             (DELEGATE as EcBottomDelegate).start(delegate)
         }
+
+        swipe_refresh_layout_index.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            swipe_refresh_layout_index.isRefreshing = true
+            Handler().postDelayed({
+                refreshHandler = RefreshHandler.create(swipe_refresh_layout_index,
+                        recycler_view_index,
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter())
+                refreshHandler!!.firstPage(
+                        "http://59.110.164.214:8024/global/homePageSlide",
+                        "http://192.168.1.36:3030/data",
+                        "http://59.110.162.194:5201/global/homePageUnits",
+                        "http://202.111.178.10:28085/mobile/homePage")
+                swipe_refresh_layout_index.isRefreshing = false
+            }, 1200)
+        })
     }
 
     private fun getPermission() {

@@ -9,6 +9,8 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_product_delivery.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 class ProductDeliveryDelegate : EmallDelegate() {
 
@@ -36,5 +38,9 @@ class ProductDeliveryDelegate : EmallDelegate() {
             rl.setBackgroundColor(Color.parseColor("#FFFFFF"))
             delivery_ll.addView(rl, rlParams)
         }
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

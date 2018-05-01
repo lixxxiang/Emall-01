@@ -414,15 +414,18 @@
         android:id="@+id/program_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         android:background="#FFFFFF">
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:text="@string/programming"
-            android:textColor="#686868"
-            android:textSize="16dp" />
+        <!--<android.support.v7.widget.AppCompatTextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/programming"-->
+            <!--android:textColor="#686868"-->
+            <!--android:textSize="16dp" />-->
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"

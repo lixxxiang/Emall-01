@@ -31,10 +31,10 @@
 
                 <ImageView
                     android:id="@+id/program_back_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="10dp"
+                    android:layout_height="17dp"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/ic_back_small" />
+                    android:background="@drawable/back_from_sketch_white" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="0dp"

@@ -102,6 +102,7 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                             all_rl.visibility = View.VISIBLE
                             EmallProgressBar.hideProgressbar()
                         } else {
+                            all_lv.visibility = View.VISIBLE
                             data!!.add(orderDetail)
                             initRefreshLayout()
                             EmallLogger.d(data)
@@ -122,5 +123,12 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         all_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        EmallProgressBar.showProgressbar(context)
+        all_lv.visibility = View.INVISIBLE
+        data()
+    }
 
 }

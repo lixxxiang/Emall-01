@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.classify
 
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -17,6 +18,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.AppCompatTextView
 import android.widget.RelativeLayout
@@ -75,12 +77,11 @@ class ClassifyDelegate : EmallDelegate() {
         return ClassifyDelegate()
     }
 
-    override fun initial() {
+    override fun onEnterAnimationEnd(savedInstanceState: Bundle?) {
+        super.onEnterAnimationEnd(savedInstanceState)
         if (arguments.getString("TYPE") == "SCENE") {
             initSceneGlm()
-            if (classify_horizontal_scrollview_ll.visibility == View.GONE) {
-                classify_horizontal_scrollview_ll.visibility = View.VISIBLE
-            }
+            classify_progressBar.visibility = View.VISIBLE
             getData("",
                     "", "",
                     "", "",
@@ -88,7 +89,6 @@ class ClassifyDelegate : EmallDelegate() {
                     "0", "10", pages.toString())//0是标准景
 
         } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
-            classify_horizontal_scrollview_ll.visibility = View.GONE
             initSceneGlm()
             getData("",
                     "", "",
@@ -96,9 +96,28 @@ class ClassifyDelegate : EmallDelegate() {
                     "", "",
                     "2", "10", pages.toString())//2是夜光
         } else if (arguments.getString("TYPE") == "VIDEO") {
-            classify_horizontal_scrollview_ll.visibility = View.GONE
             initVideoGlm()
             getVData("0")
+        }
+    }
+
+    override fun initial() {
+        when {
+            arguments.getString("TYPE") == "SCENE" -> {
+                classify_title_tv.text = resources.getString(R.string.optics_1)
+                if (classify_horizontal_scrollview_ll.visibility == View.GONE) {
+                    classify_horizontal_scrollview_ll.visibility = View.VISIBLE
+                }
+            }
+
+            arguments.getString("TYPE") == "NOCTILUCENCE" -> {
+                classify_title_tv.text = resources.getString(R.string.noctilucence)
+                classify_horizontal_scrollview_ll.visibility = View.GONE
+            }
+            arguments.getString("TYPE") == "VIDEO" -> {
+                classify_title_tv.text = resources.getString(R.string.video1A_1B)
+                classify_horizontal_scrollview_ll.visibility = View.GONE
+            }
         }
 
         classify_toolbar.title = ""
@@ -195,7 +214,7 @@ class ClassifyDelegate : EmallDelegate() {
         classify_sv.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
             if (scrollY == (v!!.getChildAt(0).measuredHeight - v.measuredHeight)) {
 
-                if (arguments.getString("TYPE") == "SCENE"){
+                if (arguments.getString("TYPE") == "SCENE") {
                     bottom_rl.visibility = View.VISIBLE
                     getData("",
                             "", "",
@@ -259,13 +278,11 @@ class ClassifyDelegate : EmallDelegate() {
             override fun onResponse(call: retrofit2.Call<SceneSearch>, response: retrofit2.Response<SceneSearch>) {
                 if (response.body() != null) {
                     EmallLogger.d(response.body()!!.data.searchReturnDtoList.size)
-                    bottom_rl.visibility = View.INVISIBLE
+                    if (bottom_rl != null)
+                        bottom_rl.visibility = View.INVISIBLE
                     sceneSearch = response.body()!!
                     pagesAmount = sceneSearch.data.pages
-                    if (arguments.getString("TYPE") == "SCENE")
-                        classify_title_tv.text = resources.getString(R.string.optics_1)
-                    else if (arguments.getString("TYPE") == "NOCTILUCENCE")
-                        classify_title_tv.text = resources.getString(R.string.noctilucence)
+
                     getSceneData()
 
                 } else {
@@ -294,7 +311,6 @@ class ClassifyDelegate : EmallDelegate() {
 //                        classify_title_tv.text = resources.getString(R.string.optics_1)
 //                    } else if (arguments.getString("TYPE") == "VIDEO") {
                     getVideoData()
-                    classify_title_tv.text = resources.getString(R.string.video1A_1B)
 //                    }
                 } else {
                     EmallLogger.d("error")
@@ -395,7 +411,11 @@ class ClassifyDelegate : EmallDelegate() {
     private fun initRecyclerView(type: String) {
         if (type == "VIDEO") {
             videoAdapter = VideoClassifyAdapter(R.layout.item_classify_video, data, videoGlm)
-            classify_rv.adapter = videoAdapter
+            if (classify_rv != null)
+                classify_rv.adapter = videoAdapter
+            if (classify_progressBar != null)
+                classify_progressBar.visibility = View.GONE
+
             videoAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
@@ -406,9 +426,13 @@ class ClassifyDelegate : EmallDelegate() {
             }
         } else if (type == "SCENE") {
             sceneAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
-            classify_rv.adapter = sceneAdapter
+            if (classify_rv != null)
+                classify_rv.adapter = sceneAdapter
             if (pages < pagesAmount)
                 pages += 1
+            if (classify_progressBar != null)
+                classify_progressBar.visibility = View.GONE
+
             sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()

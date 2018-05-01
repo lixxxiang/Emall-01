@@ -109,8 +109,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     private var cloud = "10"
     private var center = String()
     private var geoString = String()
-    var bitmapByte: ByteArray ?= null
-
+//    var bitmapByte: ByteArray ?= vy
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -305,6 +304,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
 
     @SuppressLint("ResourceType", "ApplySharedPref")
     private fun initViews() {
+        val bundle: Bundle? = Bundle()
         topRl = RelativeLayout(activity)
         topRl!!.id = 1
         val topRlHeight = (DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4
@@ -644,14 +644,16 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 mBaiduMap!!.snapshot { p0 ->
                     var baos = ByteArrayOutputStream()
                     p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                    bitmapByte = baos.toByteArray()
+                    var bitmapByte = baos.toByteArray()
+                    println("~-~-~-~" + bitmapByte!!.size)
+                    bundle!!.putByteArray("image", bitmapByte)
                 }
             }, 1000)   //5秒
         }
 
         nextStep!!.setOnClickListener {
             val delegate: ProgramParamsDelegate = ProgramParamsDelegate().create()!!
-            val bundle: Bundle? = Bundle()
+
 //            zoomImageView!!.visibility = View.VISIBLE
 //            zoomImageView!!.setImageBitmap(captureScreen())
             bundle!!.putString("scopeGeo", scopeGeo)
@@ -659,7 +661,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
             bundle.putString("cloud", cloud)
             bundle.putString("center", center)
             bundle.putString("geoString", geoString)
-            bundle.putByteArray("image", bitmapByte)
+
             if (area.toString().contains("E")) {
                 Toast.makeText(activity, "区域面积过大", Toast.LENGTH_SHORT).show()
             } else {
@@ -668,6 +670,10 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
             delegate.arguments = bundle
             start(delegate)
         }
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
     }
 
     fun geoFormat(geo: String): String {

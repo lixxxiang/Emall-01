@@ -39,6 +39,9 @@
                 android:layout_height="?android:attr/actionBarSize"
                 android:layout_marginTop="20dp"
                 app:layout_collapseMode="pin"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:navigationIcon="@drawable/ic_back_small">
 
@@ -103,26 +106,26 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
-                    android:text="@string/long_text"
+                    android:text="introduction"
                     android:textColor="#9B9B9B"
                     android:textSize="12dp" />
-
+                <RelativeLayout
+                    android:id="@+id/classify_space_rl"
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="6dp"
+                    android:background="#F0F0F0" />
             </RelativeLayout>
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:layout_below="@+id/classify_introduction_rl"
-                android:background="#F0F0F0"
-                tools:ignore="NotSibling,UnknownId" />
 
+
+            <!--recommand-->
             <RelativeLayout
                 android:id="@+id/classify_horizontal_scrollview_ll"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@+id/classify_introduction_rl"
-                android:layout_marginTop="6dp"
                 android:background="#FFFFFF"
                 android:orientation="horizontal"
                 tools:ignore="NotSibling">
@@ -175,13 +178,15 @@
                         android:layout_centerInParent="true"
                         android:background="@drawable/down" />
                 </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#DADADA" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_below="@+id/classify_horizontal_scrollview_ll"
-                android:background="#DADADA" />
+
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/classify_rv"
@@ -189,7 +194,13 @@
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
                 android:layout_below="@+id/classify_horizontal_scrollview_ll" />
-
+            <ProgressBar
+                android:id="@+id/classify_progressBar"
+                android:layout_width="36dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/classify_horizontal_scrollview_ll"
+                android:layout_height="36dp" />
             <RelativeLayout
                 android:id="@+id/bottom_rl"
                 android:visibility="gone"
@@ -209,9 +220,8 @@
                     android:layout_height="match_parent">
                     <ProgressBar
                         android:id="@+id/pull_to_refresh_load_progress"
-                        style="@style/CustomProgressStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="0dp"
                         android:indeterminate="true" />

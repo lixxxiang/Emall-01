@@ -28,10 +28,10 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/search_back_iv"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="10dp"
+                    android:layout_height="17dp"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/ic_back_dark"
+                    android:background="@drawable/back_from_sketch"
                     />
             </RelativeLayout>
             <RelativeLayout

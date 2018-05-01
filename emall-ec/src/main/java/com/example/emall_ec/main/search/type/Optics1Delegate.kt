@@ -85,7 +85,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         ssp2!!["startTime"] = ""
         ssp2!!["endTime"] = ""
         ssp2!!["cloud"] = ""
-        ssp2!!["type"] = ""
+        ssp2!!["type"] = "0"
         ssp2!!["pageSize"] = "10"
         initSceneGlm()
         getData(ssp2!!, pages)
@@ -527,6 +527,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
     private fun getData(ssp2: WeakHashMap<String, Any>, p: Int) {
         ssp2["pageNum"] = p
+        println("~~~~$ssp2")
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp2)
