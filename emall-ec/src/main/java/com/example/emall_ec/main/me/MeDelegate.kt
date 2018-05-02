@@ -12,11 +12,14 @@ import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
 import kotlinx.android.synthetic.main.delegate_me.*
 import android.widget.RelativeLayout
+import android.widget.Toast
+import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.demand.InvoiceDelegate
 import com.example.emall_ec.main.me.adapter.MeFunctionAdapter
 import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
@@ -42,24 +45,6 @@ class MeDelegate : BottomItemDelegate() {
 
     }
 
-    //    override fun onStart() {
-//        super.onStart()
-//        EmallLogger.d("dfdfd")
-//        val userDao = DatabaseManager().getInstance()!!.getDao()!!
-//        val list: List<UserProfile>? = userDao.loadAll()
-//        for (i in list!!.indices) {
-//            EmallLogger.d("google_lenve", "search: " + list[i].username)
-//            userName = list[i].username
-//        }
-//
-//        if(userName != ""){
-//            me_user_name.text = userName
-//
-//            me_hint.text = getString(R.string.me_hint)
-//        }
-//
-//    }
-//
     override fun onResume() {
         super.onResume()
     }
@@ -96,22 +81,25 @@ class MeDelegate : BottomItemDelegate() {
         me_function_lv.adapter = MeFunctionAdapter(iconList, titleList, context)
 
         me_order.setOnClickListener {
-            toOrderDelegate(0)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else
+                toOrderDelegate(0)
         }
 
         me_avatar_iv.setOnClickListener {
-            //            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
-//            val bundle: Bundle? = Bundle()
-//            bundle!!.putString("KEY", "ID")
-//            delegate.arguments = bundle
-//            (DELEGATE as EcBottomDelegate).startForResult(SignInByTelDelegate().create()!!,ME_USERNAME_CODE)
-            if(DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
-                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
-                val bundle = Bundle()
-                bundle.putString("PAGE_FROM", "AVATAR")
-                delegate.arguments = bundle
-                DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else {
+                if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+                    val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                    val bundle = Bundle()
+                    bundle.putString("PAGE_FROM", "AVATAR")
+                    delegate.arguments = bundle
+                    DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
+                }
             }
+
         }
 
 
@@ -120,19 +108,53 @@ class MeDelegate : BottomItemDelegate() {
         me_function_lv.setOnItemClickListener { adapterView, view, i, l ->
             when (i) {
                 0 -> {
-                    (DELEGATE as EcBottomDelegate).start(CollectionDelegate().create())
+                    if (!NetworkUtils.isConnected())
+                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    else {
+                        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+                            (DELEGATE as EcBottomDelegate).start(CollectionDelegate().create())
+                        } else {
+                            val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                            val bundle = Bundle()
+                            bundle.putString("PAGE_FROM", "ME")
+                            delegate.arguments = bundle
+                            (DELEGATE as EcBottomDelegate).start(delegate)
+                        }
+                    }
                 }
                 1 -> {
 
                 }
                 2 -> {
-
+                    if (!NetworkUtils.isConnected())
+                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    else {
+                        if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+                            val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                            val bundle = Bundle()
+                            bundle.putString("PAGE_FROM", "ME")
+                            delegate.arguments = bundle
+                            (DELEGATE as EcBottomDelegate).start(delegate)
+                        } else {
+                            val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
+                            val bundle: Bundle? = Bundle()
+                            bundle!!.putString("INVOICE_PRICE", "-")
+                            delegate.arguments = bundle
+                            (DELEGATE as EcBottomDelegate).start(delegate)
+                        }
+                    }
                 }
                 3 -> {
-                    (DELEGATE as EcBottomDelegate).start(SettingDelegate().create())
+                    if (!NetworkUtils.isConnected())
+                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    else
+                        (DELEGATE as EcBottomDelegate).start(SettingDelegate().create())
                 }
                 4 -> {
-                    (DELEGATE as EcBottomDelegate).start(ContactDelegate().create())
+                    if (!NetworkUtils.isConnected())
+                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    else
+                        (DELEGATE as EcBottomDelegate).start(ContactDelegate().create())
                 }
                 5 -> {
 
@@ -141,35 +163,51 @@ class MeDelegate : BottomItemDelegate() {
         }
 
         btn1.setOnClickListener {
-            toOrderDelegate(1)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else
+
+                toOrderDelegate(1)
         }
 
         btn2.setOnClickListener {
-            toOrderDelegate(2)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else
+                toOrderDelegate(2)
         }
 
         btn3.setOnClickListener {
-            toOrderDelegate(3)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else
+                toOrderDelegate(3)
         }
 
         btn4.setOnClickListener {
-            toOrderDelegate(4)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else
+                toOrderDelegate(4)
         }
 
         me_to_computer_iv.setOnClickListener {
-            (DELEGATE as EcBottomDelegate).start(ProductDeliveryDelegate().create())
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else
+                (DELEGATE as EcBottomDelegate).start(ProductDeliveryDelegate().create())
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun toOrderDelegate(index: Int){
-        if(DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+    fun toOrderDelegate(index: Int) {
+        if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
             val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
             val bundle = Bundle()
             bundle.putString("PAGE_FROM", "ME")
             delegate.arguments = bundle
             (DELEGATE as EcBottomDelegate).start(delegate)
-        }else{
+        } else {
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
@@ -187,14 +225,14 @@ class MeDelegate : BottomItemDelegate() {
 //        EmallLogger.d("google_lenve", "search: " + list!![0].username)
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
-        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
             userName = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
 
             if (userName != "") {
                 me_user_name.text = userName
                 me_hint.text = getString(R.string.me_hint)
             }
-        }else{
+        } else {
             me_user_name.text = getString(R.string.sign_in)
             me_hint.text = getString(R.string.click_to_login)
         }

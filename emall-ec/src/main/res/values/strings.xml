@@ -209,6 +209,7 @@
     <string name="login_success">登录成功</string>
     <string name="no_result_collection">抱歉，暂无结果</string>
     <string name="go_buy">去逛逛</string>
+    <string name="no_internet">无网络</string>
 
 
 </resources>

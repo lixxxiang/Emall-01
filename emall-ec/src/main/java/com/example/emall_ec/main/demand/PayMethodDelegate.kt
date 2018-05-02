@@ -44,7 +44,7 @@ class PayMethodDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-        pay_method_toolbar.title = ""
+        pay_method_toolbar.title = getString(R.string.choose_pay_method)
         (activity as AppCompatActivity).setSupportActionBar(pay_method_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         pay_method_toolbar.setNavigationOnClickListener {

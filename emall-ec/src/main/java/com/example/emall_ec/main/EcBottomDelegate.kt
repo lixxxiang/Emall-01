@@ -25,7 +25,7 @@ open class EcBottomDelegate : BaseBottomDelegate(){
         val items : LinkedHashMap<BottomTabBean, BottomItemDelegate> ?= LinkedHashMap()
         items!!.put(BottomTabBean(R.drawable.home_h, "首页"), IndexDelegate())
         items.put(BottomTabBean(R.drawable.classify_n, "分类"), BaseClassifyDelegate())
-        items.put(BottomTabBean(R.drawable.center, "发现"), OfflinePaymentDelegate())
+        items.put(BottomTabBean(R.drawable.center, "发现"), SpecialDelegate())
         items.put(BottomTabBean(R.drawable.special_n, "专题"), SpecialDelegate())
         items.put(BottomTabBean(R.drawable.me_n, "我的"), MeDelegate())
         return builder.addItems(items)!!.build()!!
@@ -38,4 +38,6 @@ open class EcBottomDelegate : BaseBottomDelegate(){
     override fun setClickedColor(): Int {
         return Color.parseColor("#B4A078")
     }
+
+
 }

@@ -2,6 +2,8 @@ package com.example.emall_ec.main.classify
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
@@ -67,8 +69,27 @@ class BaseClassifyDelegate : BottomItemDelegate() {
         }
 
         base_classify_search_rl.setOnClickListener {
-            val delegate: SearchDelegate = SearchDelegate().create()!!
-            (DELEGATE as EcBottomDelegate).start(delegate)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else {
+                val delegate: SearchDelegate = SearchDelegate().create()!!
+                (DELEGATE as EcBottomDelegate).start(delegate)
+            }
+        }
+
+        if(!NetworkUtils.isConnected()){
+            classify_no_network_rl.visibility = View.VISIBLE
+            base_classify_images_on_top_ll.visibility = View.GONE
+            base_classify_images_on_bottom_ll.visibility = View.GONE
+            classify_line.visibility = View.GONE
+            classify_tv.visibility = View.GONE
+
+        }else{
+            classify_no_network_rl.visibility = View.GONE
+            base_classify_images_on_top_ll.visibility = View.VISIBLE
+            base_classify_images_on_bottom_ll.visibility = View.VISIBLE
+            classify_line.visibility = View.VISIBLE
+            classify_tv.visibility = View.VISIBLE
         }
     }
 

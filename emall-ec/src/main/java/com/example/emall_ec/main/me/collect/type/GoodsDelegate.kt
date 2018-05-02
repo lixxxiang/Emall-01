@@ -2,6 +2,8 @@ package com.example.emall_ec.main.me.collect.type
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.widget.Toast
@@ -95,6 +97,14 @@ class GoodsDelegate : EmallDelegate() {
         goods_rv.setHasFixedSize(true)
         goods_rv.isNestedScrollingEnabled = false
         getData()
+
+        goods_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            goods_srl.isRefreshing = true
+            Handler().postDelayed({
+                getData()
+                goods_srl.isRefreshing = false
+            }, 1200)
+        })
     }
 
     private fun reset() {
@@ -117,7 +127,7 @@ class GoodsDelegate : EmallDelegate() {
                              * success
                              */
                             collection_no_result_rl.visibility = View.GONE
-                            collection_srl.visibility = View.VISIBLE
+                            goods_srl.visibility = View.VISIBLE
                             EmallLogger.d(response)
                             myAllCollectionList = myAllCollectionBean.data.collection
                             val size = myAllCollectionBean.data.collection.size
@@ -135,7 +145,7 @@ class GoodsDelegate : EmallDelegate() {
                             }
                             initRecyclerView(data!!)
                         } else if (myAllCollectionBean.message == "方法返回为空") {
-                            collection_srl.visibility = View.GONE
+                            goods_srl.visibility = View.GONE
                             collection_no_result_rl.visibility = View.VISIBLE
                         }
                     }
@@ -166,7 +176,7 @@ class GoodsDelegate : EmallDelegate() {
                              * success
                              */
                             collection_no_result_rl.visibility = View.GONE
-                            collection_srl.visibility = View.VISIBLE
+                            goods_srl.visibility = View.VISIBLE
                             EmallLogger.d(response)
                             myAllCollectionList = myAllCollectionBean.data.collection
                             val size = myAllCollectionBean.data.collection.size
@@ -184,7 +194,7 @@ class GoodsDelegate : EmallDelegate() {
                             }
                             initRecyclerView(data!!)
                         } else if (myAllCollectionBean.message == "方法返回为空") {
-                            collection_srl.visibility = View.GONE
+                            goods_srl.visibility = View.GONE
                             collection_no_result_rl.visibility = View.VISIBLE
                         }
                     }

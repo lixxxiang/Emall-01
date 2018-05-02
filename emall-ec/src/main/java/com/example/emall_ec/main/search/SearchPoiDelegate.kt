@@ -16,6 +16,7 @@ import com.example.emall_ec.main.search.adapter.SearchPoiPoisAdapter
 import com.example.emall_ec.main.search.data.CitiesBean
 import com.example.emall_ec.main.search.data.PoiBean
 import android.os.Bundle
+import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import me.yokeyword.fragmentation.ISupportFragment
@@ -35,6 +36,7 @@ class SearchPoiDelegate : EmallDelegate() {
     var searchPoiCitiesAdapter: SearchPoiCitiesAdapter? = null
     var searchPoiPoisAdapter: SearchPoiPoisAdapter? = null
     var pages = 0
+    val bundle = Bundle()
 
     var poiInfo = PoiBean()
 
@@ -51,15 +53,20 @@ class SearchPoiDelegate : EmallDelegate() {
         search_poi_et.isFocusableInTouchMode = true
         search_poi_et.requestFocus()
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-
         search_back_iv.setOnClickListener {
             EmallLogger.d(pages)
             if (pages == 2) {
                 search_poi_poi_listview.visibility = View.INVISIBLE
                 search_poi_cities_listview.visibility = View.VISIBLE
                 pages = 1
-            } else
+            } else{
+                bundle.putString("LOCATION", "")
+                this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+
                 pop()
+
+            }
+
         }
         addHeadView()
 
@@ -88,7 +95,6 @@ class SearchPoiDelegate : EmallDelegate() {
         }
 
         search_poi_poi_listview.setOnItemClickListener { adapterView, view, i, l ->
-            val bundle = Bundle()
             EmallLogger.d(poiInfo.gdPois.poiList[i].location)
             bundle.putString("LOCATION", poiInfo.gdPois.poiList[i].location)
             this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
@@ -211,5 +217,17 @@ class SearchPoiDelegate : EmallDelegate() {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        KeyboardUtils.showSoftInput(activity)
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
+
     }
 }

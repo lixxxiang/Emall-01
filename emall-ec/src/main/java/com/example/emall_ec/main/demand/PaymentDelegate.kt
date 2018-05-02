@@ -1,10 +1,13 @@
 package com.example.emall_ec.main.demand
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.bumptech.glide.Glide
+import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -12,14 +15,21 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.demand.data.FindDetailByParentOrderIdBean
+import com.example.emall_ec.main.demand.data.FindOrderDetailByOrderIdBean
+import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_payment.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 class PaymentDelegate : EmallDelegate() {
 
     var findDetailByParentOrderIdParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var findOrderDetailByOrderIdParams: WeakHashMap<String, Any>? = WeakHashMap()
     var findDetailByParentOrderIdBean = FindDetailByParentOrderIdBean()
+    var findOrderDetailByOrderIdBean = FindOrderDetailByOrderIdBean()
+
     var payMethodArray = arrayOf("支付宝", "微信支付", "银行汇款", "线下支付")
 
     fun create(): PaymentDelegate? {
@@ -31,7 +41,7 @@ class PaymentDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        payment_toolbar.title = ""
+        payment_toolbar.title = getString(R.string.payment)
         (activity as AppCompatActivity).setSupportActionBar(payment_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         payment_toolbar.setNavigationOnClickListener {
@@ -40,6 +50,45 @@ class PaymentDelegate : EmallDelegate() {
 
         findDetailByParentOrderId()
 
+        payment_success_check_order_list_btn.setOnClickListener {
+            findOrderDetailByOrderId()
+        }
+    }
+
+    private fun findOrderDetailByOrderId() {
+        findOrderDetailByOrderIdParams!!["orderId"] = findDetailByParentOrderIdBean.data[0].orderId
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/order/findOrderDetailByOrderId")
+                .params(findOrderDetailByOrderIdParams!!)
+                .success(object : ISuccess {
+                    @SuppressLint("ApplySharedPref")
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        findOrderDetailByOrderIdBean = Gson().fromJson(response, FindOrderDetailByOrderIdBean::class.java)
+                        if (findOrderDetailByOrderIdBean.message == "success") {
+                            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
+                            val bundle: Bundle? = Bundle()
+                            bundle!!.putString("KEY", "ID")
+                            bundle.putParcelable("KEy", findOrderDetailByOrderIdBean)
+                            bundle.putInt("INDEX", 0)
+                            bundle.putString("FROM", "PAYMENT")
+                            delegate.arguments = bundle
+                            start(delegate)
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
     }
 
     private fun findDetailByParentOrderId() {
@@ -89,18 +138,24 @@ class PaymentDelegate : EmallDelegate() {
         payment_detail_origional_price_tv.text = String.format("¥%s", data[0].details.originalPrice)
         payment_detail_current_price_tv.text =String.format("¥%s", data[0].details.salePrice)
         payment_detail_final_price_tv.text = String.format("¥%s", data[0].payment)
-        payment_detail_discount_tv.text = discount(data[0].details.salePrice, data[0].payment)
+        payment_detail_discount_tv.text = discount(data[0].details.originalPrice, data[0].payment)
     }
 
     fun timeFormat(centerTime: String): String {
         return String.format("拍摄于 %s（北京时间）", centerTime.replace(" ", "，"))
     }
 
-    private fun discount(salePrice: String, payment: Double): String {
+    private fun discount(originalPrice: String, payment: Double): String {
         /**
          * 这里的算价有问题！！！
          */
-        return String.format("-¥%s",salePrice.toDouble() - payment)
+        EmallLogger.d(originalPrice.toDouble())
+        EmallLogger.d(payment)
+        return String.format("-¥%s",originalPrice.toDouble() - payment)
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
 }

@@ -43,7 +43,7 @@ class SettingDelegate : BottomItemDelegate() {
 
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        setting_toolbar.title = ""
+        setting_toolbar.title = getString(R.string.setting)
         (activity as AppCompatActivity).setSupportActionBar(setting_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         setting_toolbar.setNavigationOnClickListener {

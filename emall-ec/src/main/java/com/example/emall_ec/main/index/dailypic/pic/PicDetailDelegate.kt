@@ -39,6 +39,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.view.ShareUtil
 import com.example.emall_ec.database.DatabaseManager
@@ -61,7 +62,7 @@ import java.util.concurrent.Executors
 /**
  * Created by lixiang on 2018/3/29.
  */
-class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
+class PicDetailDelegate : EmallDelegate(), CordovaInterface {
 
 
     private var adapter: DetailAdapter? = null
@@ -93,6 +94,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
     protected var prefs = CordovaPreferences()
     protected var pluginEntries: ArrayList<PluginEntry>? = null
     protected var activityResultCallback1: CordovaPlugin? = null
+    var bottomDialog : Dialog ?= null
 
     private val titleList = object : ArrayList<String>() {
         init {
@@ -107,7 +109,6 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
             add(ImagePage2Delegate())
         }
     }
-
 
     fun create(): PicDetailDelegate? {
 
@@ -148,7 +149,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         setTabLayout()
         xTablayout.setupWithViewPager(viewpager)
 
-        val bottomDialog = Dialog(activity, R.style.BottomDialog)
+        bottomDialog = Dialog(activity, R.style.BottomDialog)
         val contentView = LayoutInflater.from(activity).inflate(R.layout.comment, null)
         userParams!!["articleId"] = imageId
         userParams!!["userId"] = userId
@@ -211,13 +212,13 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
 
         comment_rl.setOnClickListener {
             if (isLogin) {
-                bottomDialog.setContentView(contentView)
+                bottomDialog!!.setContentView(contentView)
                 val layoutParams = contentView.layoutParams
                 layoutParams.width = resources.displayMetrics.widthPixels
                 contentView.layoutParams = layoutParams
-                bottomDialog.window!!.setGravity(Gravity.BOTTOM)
-                bottomDialog.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
-                bottomDialog.show()
+                bottomDialog!!.window!!.setGravity(Gravity.BOTTOM)
+                bottomDialog!!.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
+                bottomDialog!!.show()
                 if (!contentView.comment_area.text.toString().isEmpty()) {
                     contentView.comment_area.setText("")
                 }
@@ -231,13 +232,13 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         }
 
         contentView.cancel.setOnClickListener {
-            bottomDialog.hide()
+            bottomDialog!!.hide()
         }
 
         contentView.release.setOnClickListener {
             if (!contentView.comment_area.text.toString().isEmpty()) {
                 submitComment(userId, imageId, "1", contentView.comment_area.text.toString())
-                bottomDialog.hide()
+                bottomDialog!!.hide()
             } else
                 Toast.makeText(activity, "评论不能为空", Toast.LENGTH_SHORT).show()
         }
@@ -253,13 +254,13 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
         val contentView2 = LayoutInflater.from(activity).inflate(R.layout.share, null)
 
         repost.setOnClickListener {
-            bottomDialog.setContentView(contentView2)
+            bottomDialog!!.setContentView(contentView2)
             val layoutParams = contentView2.layoutParams
             layoutParams.width = resources.displayMetrics.widthPixels
             contentView2.layoutParams = layoutParams
-            bottomDialog.window!!.setGravity(Gravity.BOTTOM)
-            bottomDialog.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
-            bottomDialog.show()
+            bottomDialog!!.window!!.setGravity(Gravity.BOTTOM)
+            bottomDialog!!.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
+            bottomDialog!!.show()
         }
 
         contentView2.wechat.setOnClickListener {
@@ -640,6 +641,7 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
     override fun onSupportInvisible() {
         super.onSupportInvisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        bottomDialog!!.dismiss()
     }
 
     override fun requestPermissions(p0: CordovaPlugin?, p1: Int, p2: Array<out String>?) {
@@ -707,6 +709,10 @@ class PicDetailDelegate : BottomItemDelegate(), CordovaInterface {
 
     private fun buildTransaction(type: String?): String {
         return if (type == null) System.currentTimeMillis().toString() else type + System.currentTimeMillis()
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 
 }

@@ -3,8 +3,10 @@ package com.example.emall_ec.main.order.state
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AbsListView
 import com.example.emall_core.delegates.EmallDelegate
@@ -66,6 +68,15 @@ class ObligationDelegate : EmallDelegate() {
                 val firstView = view.getChildAt(firstVisibleItem)
                 obligation_srl.isEnabled = firstVisibleItem == 0 && (firstView == null || firstView.top == 0)
             }
+        })
+
+        obligation_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            adapter = null
+            obligation_srl.isRefreshing = true
+            Handler().postDelayed({
+                data()
+                obligation_srl.isRefreshing = false
+            }, 1200)
         })
     }
 

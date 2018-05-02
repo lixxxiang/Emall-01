@@ -114,18 +114,31 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         goods_buy_now_btn.setOnClickListener {
-            commoditySubmitDemand(type135)
+            if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+                commoditySubmitDemand(type135)
+            }else{
+                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "GOODS_DETAIL")
+                delegate.arguments = bundle
+                start(delegate)
+            }
         }
 
         goods_detail_scrollview.viewTreeObserver.addOnScrollChangedListener {
             if (goods_detail_scrollview != null) {
-                val scrollY = ScreenUtil.px2dip(context, goods_detail_scrollview.scrollY.toFloat())
-                when {
-                    scrollY < 491 -> video_detail_tablayout_ctl.currentTab = 0
-                    scrollY in 491..848 -> {
-                        video_detail_tablayout_ctl.currentTab = 1
+                goods_detail_scrollview.setOnTouchListener { p0, p1 ->
+                    if (goods_detail_scrollview.getChildAt(0).height - goods_detail_scrollview.height != goods_detail_scrollview.scrollY) {
+                        val scrollY = ScreenUtil.px2dip(context, goods_detail_scrollview.scrollY.toFloat())
+                        when {
+                            scrollY < 491 -> video_detail_tablayout_ctl.currentTab = 0
+                            scrollY in 491..848 -> {
+                                video_detail_tablayout_ctl.currentTab = 1
+                            }
+                            scrollY > 844 -> video_detail_tablayout_ctl.currentTab = 2
+                        }
                     }
-                    scrollY > 844 -> video_detail_tablayout_ctl.currentTab = 2
+                    false
                 }
             }
         }

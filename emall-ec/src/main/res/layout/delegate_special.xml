@@ -2,21 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
-    <LinearLayout
-        android:layout_alignParentTop="true"
+
+    <View
         android:id="@+id/ll_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="10dp"
-        android:orientation="vertical"
-        android:background="#FFFFFF"/>
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"
+        android:elevation="2dp" />
+
     <android.support.v7.widget.Toolbar
-        android:layout_below="@+id/ll_bar"
         android:id="@+id/special_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="#FFFFFF" >
+        android:layout_below="@+id/ll_bar"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
+
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,19 +26,14 @@
             android:layout_gravity="center"
             android:text="@string/special"
             android:textColor="#686868"
-            android:textSize="14dp" />
+            android:textSize="18dp" />
     </android.support.v7.widget.Toolbar>
-    <RelativeLayout
-        android:layout_below="@+id/special_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#F6F6F6"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_below="@+id/special_toolbar"
-        android:layout_marginTop="1dp"
         android:id="@+id/special_srl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/special_toolbar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/special_rv"

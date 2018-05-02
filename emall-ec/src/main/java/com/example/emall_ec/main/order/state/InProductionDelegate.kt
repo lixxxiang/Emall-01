@@ -3,8 +3,10 @@ package com.example.emall_ec.main.order.state
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AbsListView
 import com.example.emall_core.delegates.EmallDelegate
@@ -20,6 +22,7 @@ import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.adapter.InProductionListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_all.*
 import kotlinx.android.synthetic.main.delegate_delivered.*
 import kotlinx.android.synthetic.main.delegate_in_production.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
@@ -68,6 +71,15 @@ class InProductionDelegate  : EmallDelegate(){
                 val firstView = view.getChildAt(firstVisibleItem)
                 in_production_srl.isEnabled = firstVisibleItem == 0 && (firstView == null || firstView.top == 0)
             }
+        })
+
+        in_production_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            adapter = null
+            in_production_srl.isRefreshing = true
+            Handler().postDelayed({
+                data()
+                in_production_srl.isRefreshing = false
+            }, 1200)
         })
     }
 

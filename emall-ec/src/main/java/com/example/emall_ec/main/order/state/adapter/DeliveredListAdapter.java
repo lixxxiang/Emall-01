@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.demand.PayMethodDelegate;
+import com.example.emall_ec.main.order.ProductDeliveryDelegate;
 import com.example.emall_ec.main.order.state.AllDelegate;
 import com.example.emall_ec.main.order.state.DeliveredDelegate;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
@@ -94,13 +95,11 @@ public class DeliveredListAdapter extends BaseAdapter {
                 public void onClick(View view) {
                     EmallLogger.INSTANCE.d(dataList.get(0).getData().get(i).getState());
                     if (dataList.get(0).getData().get(i).getState() == 2){
-//                        EmallLogger.INSTANCE.d("pay");
-//                        PayMethodDelegate delegate = new PayMethodDelegate().create();;
-//                        assert delegate1 != null;
-//                        delegate1.start(delegate);
-//                        btnListener.onBtnClick();
                         EmallLogger.INSTANCE.d("dfsf");
                         delegate.getParentDelegate().start(new PayMethodDelegate().create());
+                    }else if(dataList.get(0).getData().get(i).getState() == 4){
+                        ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
+                        delegate.getParentDelegate().start(productDeliveryDelegate);
                     }
                 }
             });

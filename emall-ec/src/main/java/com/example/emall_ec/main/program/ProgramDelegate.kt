@@ -407,7 +407,8 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         areaTvParams.setMargins(0, 0, 0, DimenUtil().dip2px(context, 16F))
 
         areaTv!!.setTextColor(Color.parseColor("#FFFFFF"))
-        areaTv!!.textSize = 14F
+        areaTv!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
+
         topRl!!.addView(areaTv, areaTvParams)
 
 
@@ -479,7 +480,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         titleParams.addRule(RelativeLayout.CENTER_VERTICAL)
         title!!.text = resources.getString(R.string.program_toolbar)
         title!!.setTextColor(Color.parseColor("#FFFFFF"))
-        title!!.textSize = 14F
+        title!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         title!!.visibility = View.GONE
         fakeToolbarRl.addView(title, titleParams)
 
@@ -491,7 +492,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         nextStep!!.layoutParams = titleParams
         nextStep!!.text = resources.getString(R.string.next_step)
         nextStep!!.setTextColor(Color.parseColor("#FFFFFF"))
-        nextStep!!.textSize = 14F
+        nextStep!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         nextStep!!.visibility = View.GONE
         fakeToolbarRl.addView(nextStep, nextStepParams)
 
@@ -540,7 +541,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         r1TvParams.setMargins(0, DimenUtil().dip2px(context, 10F), 0, 0)
         r1Tv!!.text = String.format("侧摆角 < %s°", (rular!!.currentValue / 100).toString())
         r1Tv!!.setTextColor(Color.parseColor("#FFFFFF"))
-        r1Tv!!.textSize = 12F
+        r1Tv!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
         r1Tv!!.visibility = View.INVISIBLE
         rulerRl!!.addView(r1Tv, r1TvParams)
 
@@ -591,7 +592,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         r2TvParams.setMargins(0, DimenUtil().dip2px(context, 90F), 0, 0)
         r2Tv!!.text = String.format("云量 < %s%%", (rular2!!.currentValue / 100).toString())
         r2Tv!!.setTextColor(Color.parseColor("#FFFFFF"))
-        r2Tv!!.textSize = 12F
+        r2Tv!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
         r2Tv!!.visibility = View.INVISIBLE
         rulerRl!!.addView(r2Tv, r2TvParams)
 
@@ -654,8 +655,6 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         nextStep!!.setOnClickListener {
             val delegate: ProgramParamsDelegate = ProgramParamsDelegate().create()!!
 
-//            zoomImageView!!.visibility = View.VISIBLE
-//            zoomImageView!!.setImageBitmap(captureScreen())
             bundle!!.putString("scopeGeo", scopeGeo)
             bundle.putString("angle", angle)
             bundle.putString("cloud", cloud)
@@ -780,6 +779,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
         mMapView!!.onDestroy()
         mMapView = null
         mSensorManager!!.unregisterListener(this)
+        handler.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
 

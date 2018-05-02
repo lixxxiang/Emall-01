@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.emall_core.activities.ProxyActivity
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment
+import me.yokeyword.fragmentation.SupportFragmentDelegate
+
+
 
 /**
  * Created by lixiang on 2018/1/25.
  */
-abstract class BaseDelegate : SwipeBackFragment(){
+abstract class BaseDelegate : SwipeBackFragment() {
     abstract fun setLayout(): Any?
     abstract fun initial()
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView : View? = null
+        var rootView: View? = null
         when {
             setLayout() is Int -> {
                 rootView = inflater!!.inflate(setLayout() as Int, container, false)
@@ -25,10 +28,10 @@ abstract class BaseDelegate : SwipeBackFragment(){
             }
             else -> println("the fuck")
         }
-         return rootView
+        return rootView
     }
 
-    fun getProxyActivity() : ProxyActivity?{
+    fun getProxyActivity(): ProxyActivity? {
         return _mActivity as ProxyActivity
     }
 
@@ -36,5 +39,4 @@ abstract class BaseDelegate : SwipeBackFragment(){
         super.onActivityCreated(savedInstanceState)
         initial()
     }
-
 }

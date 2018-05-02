@@ -4,378 +4,408 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0">
+
     <View
         android:id="@+id/ll_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
-        android:elevation="2dp"/>
+        android:elevation="2dp" />
+
     <com.example.emall_core.util.view.BounceScrollView
-        android:layout_below="@+id/order_detail_list_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:background="#F0F0F0">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/order_detail_list_toolbar"
+        android:background="#F0F0F0"
+        android:scrollbars="none">
+
         <LinearLayout
-            android:orientation="vertical"
-            android:background="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="164dp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="2px"
-                    android:background="#E0E0E0"
-                    android:layout_alignParentTop="true"/>
+                    android:layout_alignParentTop="true"
+                    android:background="#E0E0E0" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_state_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#B80017"
-                    android:textSize="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="14dp"
-                    android:layout_marginLeft="15dp"/>
+                    android:textColor="#B80017"
+                    android:textSize="12dp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="2px"
-                    android:background="#E0E0E0"
-                    android:layout_marginLeft="13dp"
                     android:layout_below="@+id/order_detail_state_tv"
-                    android:layout_marginTop="14dp"/>
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="14dp"
+                    android:background="#E0E0E0" />
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/order_detail_image_iv"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerCrop"
                     android:layout_below="@+id/order_detail_state_tv"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="34dp"
-                    android:layout_marginLeft="15dp"/>
+                    android:scaleType="centerCrop" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="#5C5C5C"
-                    android:layout_toRightOf="@+id/order_detail_image_iv"
-                    android:layout_marginLeft="14dp"
                     android:layout_below="@+id/order_detail_state_tv"
-                    android:layout_marginTop="34dp" />
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="34dp"
+                    android:layout_toRightOf="@+id/order_detail_image_iv"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="#9B9B9B"
                     android:layout_below="@+id/order_detail_state_tv"
+                    android:layout_marginLeft="14dp"
                     android:layout_marginTop="57dp"
                     android:layout_toRightOf="@+id/order_detail_image_iv"
-                    android:layout_marginLeft="14dp" />
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="#5C5C5C"
                     android:layout_below="@+id/order_detail_state_tv"
+                    android:layout_marginLeft="14dp"
                     android:layout_marginTop="97dp"
                     android:layout_toRightOf="@+id/order_detail_image_iv"
-                    android:layout_marginLeft="14dp"
-                    />
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="253dp">
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
-                    android:text="@string/order_id"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="11dp"/>
+                    android:layout_marginTop="11dp"
+                    android:text="@string/order_id"
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_id_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="11dp"/>
+                    android:layout_marginTop="11dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
-                    android:text="@string/order_time"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="40dp"/>
+                    android:layout_marginTop="40dp"
+                    android:text="@string/order_time"
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_order_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="40dp"/>
+                    android:layout_marginTop="40dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="2px"
-                    android:background="#E0E0E0"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginTop="71dp"/>
+                    android:layout_marginTop="71dp"
+                    android:background="#E0E0E0" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="88dp"
                     android:text="@string/pay_method"
-                    android:layout_marginLeft="15dp"/>
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_pay_method_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="88dp"/>
+                    android:layout_marginTop="88dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="117dp"
                     android:text="@string/original_price"
-                    android:layout_marginLeft="15dp"/>
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_origional_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="117dp"/>
+                    android:layout_marginTop="117dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="150dp"
                     android:text="@string/current_price"
-                    android:layout_marginLeft="15dp"/>
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_current_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="150dp"/>
+                    android:layout_marginTop="150dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="2px"
-                    android:background="#E0E0E0"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginTop="177dp"/>
+                    android:layout_marginTop="177dp"
+                    android:background="#E0E0E0" />
 
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="194dp"
                     android:text="@string/discount"
-                    android:layout_marginLeft="15dp"/>
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_discount_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="194dp"/>
+                    android:layout_marginTop="194dp"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#B80017"
-                    android:textSize="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="221dp"
                     android:text="@string/out_of_pocket"
-                    android:layout_marginLeft="15dp"/>
+                    android:textColor="#B80017"
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/order_detail_final_price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#B80017"
-                    android:textSize="12dp"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="221dp"/>
+                    android:layout_marginTop="221dp"
+                    android:textColor="#B80017"
+                    android:textSize="12dp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="93dp">
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#9B9B9B"
-                    android:textSize="12dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/service_time"
-                    android:layout_marginLeft="15dp"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp"
-                    android:text="@string/service_time_detail"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/service_time"
+                    android:textColor="#9B9B9B"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="85dp"
-                    android:layout_marginTop="15dp"/>
-                
+                    android:layout_marginTop="15dp"
+                    android:text="@string/service_time_detail"
+                    android:textColor="#5C5C5C"
+                    android:textSize="12dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
-                    android:layout_marginTop="45dp"
                     android:layout_marginLeft="13dp"
                     android:layout_marginRight="13dp"
+                    android:layout_marginTop="45dp"
                     android:orientation="horizontal">
+
                     <RelativeLayout
+                        android:id="@+id/order_detail_tel_rl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/order_detail_btn_border_shape" />
+                        android:layout_weight="1"
+                        android:background="@drawable/order_detail_btn_border_shape"
+                        android:clickable="true"
+                        android:focusable="true">
+
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="16dp"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true">
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true">
+
                             <TextView
                                 android:id="@+id/order_detail_tel_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:textSize="16dp"
-                                android:text="@string/tel"/>
+                                android:text="@string/tel"
+                                android:textSize="16dp" />
+
                             <TextView
-                                android:layout_toRightOf="@+id/order_detail_tel_tv"
-                                android:layout_marginLeft="8dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_toRightOf="@+id/order_detail_tel_tv"
+                                android:text="@string/tel_service"
                                 android:textColor="#666666"
-                                android:text="@string/tel_service" />
+                                android:textSize="12dp" />
                         </RelativeLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_marginLeft="9dp"
+                        android:id="@+id/order_detail_qq_rl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <android.support.v7.widget.AppCompatButton
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/order_detail_btn_border_shape" />
+                        android:layout_marginLeft="9dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/order_detail_btn_border_shape"
+                        android:clickable="true"
+                        android:focusable="true">
+
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="16dp"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true">
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true">
+
                             <TextView
                                 android:id="@+id/order_detail_qq_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:textSize="16dp"
-                                android:text="@string/qq"/>
+                                android:text="@string/qq"
+                                android:textSize="16dp" />
+
                             <TextView
-                                android:layout_toRightOf="@+id/order_detail_qq_tv"
-                                android:layout_marginLeft="8dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_toRightOf="@+id/order_detail_qq_tv"
+                                android:text="@string/qq_service"
                                 android:textColor="#666666"
-                                android:text="@string/qq_service" />
+                                android:textSize="12dp" />
                         </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </com.example.emall_core.util.view.BounceScrollView>
+
     <android.support.v7.widget.Toolbar
-        android:layout_below="@+id/ll_bar"
         android:id="@+id/order_detail_list_toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/ll_bar"
+        android:background="#FFFFFF"
         android:elevation="2dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF">
+        app:contentInsetStartWithNavigation="0dp">
 
         <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="@string/order_detail"-->
-            <!--android:textSize="14dp"-->
-            <!--android:textColor="#686868"-->
-            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="@string/order_detail"-->
+        <!--android:textSize="14dp"-->
+        <!--android:textColor="#686868"-->
+        <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>-->
     </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
-        android:background="#FFFFFF"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="51dp">
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF">
+
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/order_detail_download_btn"
             android:layout_width="80dp"
             android:layout_height="28dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="107dp"
-            android:textSize="12dp"
-            android:textColor="#B80017"
-            android:text="@string/to_download"
-            android:id="@+id/order_detail_download_btn"
             android:background="@drawable/order_detail_btn_red_border_shape"
-            />
+            android:text="@string/to_download"
+            android:textColor="#B80017"
+            android:textSize="12dp" />
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/order_detail_delete_btn"
             android:layout_width="80dp"
             android:layout_height="28dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="11dp"
-            android:textSize="12dp"
-            android:textColor="#666666"
-            android:text="@string/delete_order"
             android:background="@drawable/order_detail_btn_border_shape"
-            />
+            android:text="@string/delete_order"
+            android:textColor="#666666"
+            android:textSize="12dp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.me
 
 import android.Manifest
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.support.v7.app.AlertDialog
@@ -37,7 +38,7 @@ class ContactDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        contact_toolbar.title = ""
+        contact_toolbar.title = getString(R.string.contact_service)
         (activity as AppCompatActivity).setSupportActionBar(contact_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         contact_toolbar.setNavigationIcon(R.drawable.ic_back_small)
@@ -62,12 +63,12 @@ class ContactDelegate : EmallDelegate() {
             builder.setTitle("10010")
             builder.setPositiveButton(getString(R.string.call)) { dialog, _ ->
 
-                if (flag){
+                if (flag) {
                     val intent = Intent(Intent.ACTION_CALL)
                     val data = Uri.parse("tel:" + "10010")
                     intent.data = data
                     startActivity(intent)
-                }else
+                } else
                     handlePermisson()
 
                 dialog.dismiss()
@@ -82,29 +83,35 @@ class ContactDelegate : EmallDelegate() {
         }
 
         contact_qq.setOnClickListener {
-            Toast.makeText(activity, "TO DO", Toast.LENGTH_SHORT).show()
-//            val url = "mqqwpa://im/chat?chat_type=wpa&uin=123456"
-//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            if (isQQClientAvailable(activity)) {
+                // 跳转到客服的QQ
+                val url = "mqqwpa://im/chat?chat_type=wpa&uin=1548806494"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                // 跳转前先判断Uri是否存在，如果打开一个不存在的Uri，App可能会崩溃
+                if (isValidIntent(activity, intent)) {
+                    startActivity(intent)
+                }
+            }
         }
 
     }
 
-    fun handlePermisson(){
+    fun handlePermisson() {
 
         // 需要动态申请的权限
         val permission = Manifest.permission.CALL_PHONE
 
         //查看是否已有权限
-        val checkSelfPermission = ActivityCompat.checkSelfPermission(context,permission)
+        val checkSelfPermission = ActivityCompat.checkSelfPermission(context, permission)
 
-        if (checkSelfPermission  == PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {
             //已经获取到权限  获取用户媒体资源
 
-        }else{
+        } else {
 
             //没有拿到权限  是否需要在第二次请求权限的情况下
             // 先自定义弹框说明 同意后在请求系统权限(就是是否需要自定义DialogActivity)
-            if(ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
 
 //                ("安卓就是流氓的获取了你的私人信息","温馨提示"){
 //
@@ -118,7 +125,7 @@ class ContactDelegate : EmallDelegate() {
 //                    }
 //                }.show()
 
-            }else{
+            } else {
                 myRequestPermission()
             }
         }
@@ -127,7 +134,7 @@ class ContactDelegate : EmallDelegate() {
     private fun myRequestPermission() {
         //可以添加多个权限申请
         val permissions = arrayOf(Manifest.permission.CALL_PHONE)
-        requestPermissions(permissions,1)
+        requestPermissions(permissions, 1)
     }
 
     /***
@@ -136,7 +143,7 @@ class ContactDelegate : EmallDelegate() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //是否获取到权限
-        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //            TODO("你要实现的业务逻辑")
             flag = true
             val intent = Intent(Intent.ACTION_CALL)
@@ -149,5 +156,28 @@ class ContactDelegate : EmallDelegate() {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    fun isQQClientAvailable(context: Context): Boolean {
+        val packageManager = context.getPackageManager()
+        val pinfo = packageManager.getInstalledPackages(0)
+        if (pinfo != null) {
+            for (i in pinfo!!.indices) {
+                val pn = pinfo!!.get(i).packageName
+                if (pn.equals("com.tencent.qqlite", ignoreCase = true) || pn.equals("com.tencent.mobileqq", ignoreCase = true)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    /**
+     * 判断 Uri是否有效
+     */
+    fun isValidIntent(context: Context, intent: Intent): Boolean {
+        val packageManager = context.getPackageManager()
+        val activities = packageManager.queryIntentActivities(intent, 0)
+        return !activities.isEmpty()
     }
 }

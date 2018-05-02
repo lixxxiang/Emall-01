@@ -163,19 +163,29 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
 
     override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
         super.onFragmentResult(requestCode, resultCode, data)
-        EmallLogger.d(data.getString("LOCATION"))
-        mBaiduMap!!.clear()
-        var location = data.getString("LOCATION")
-        var latitude = location.split(",")[1]
-        var longitude = location.split(",")[0]
-        var gps = gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
-        var point = LatLng(gps.lat, gps.lon)
-        var bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.location_mark)
-        var option = MarkerOptions()
-                .position(point)
-                .icon(bitmap)
-        mBaiduMap!!.addOverlay(option)
+        if (!data.isEmpty){
+            mBaiduMap!!.clear()
+            var location = data.getString("LOCATION")
+            if(!location.isEmpty()){
+                var latitude = location.split(",")[1]
+                var longitude = location.split(",")[0]
+                var gps = gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
+                var point = LatLng(gps.lat, gps.lon)
+                var bitmap = BitmapDescriptorFactory
+                        .fromResource(R.drawable.location_mark)
+                var option = MarkerOptions()
+                        .position(point)
+                        .icon(bitmap)
+                mBaiduMap!!.addOverlay(option)
+                var mMapStatus = MapStatus.Builder()
+                        .target(LatLng(latitude.toDouble(), longitude.toDouble()))
+                        .zoom(8F)
+                        .build()
+                var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+                mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
+            }
+
+        }
     }
 
     fun gcj02_To_Bd09(gg_lon: Double, gg_lat: Double): Gps {

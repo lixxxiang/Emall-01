@@ -31,15 +31,11 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
     override fun onLauncherFinish(tag: OnLauncherFinishTag) {
         when (tag) {
             OnLauncherFinishTag.SIGNED -> {
-                Toast.makeText(this, "启动结束，用户登录了", Toast.LENGTH_LONG).show()
                 startWithPop(EcBottomDelegate())
             }
 
             OnLauncherFinishTag.NOT_SIGNED -> {
-                Toast.makeText(this, "启动结束，用户没登录", Toast.LENGTH_LONG).show()
-//                supportDelegate.startWithPop(SignUpDelegate())
                 startWithPop(EcBottomDelegate())
-
             }
 
             else -> {

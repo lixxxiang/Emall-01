@@ -3,6 +3,7 @@ package com.example.emall_ec.main.order
 import android.graphics.Color
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.delegates.EmallDelegate
@@ -27,7 +28,6 @@ class ProductDeliveryDelegate : EmallDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(delivery_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         delivery_toolbar.setNavigationIcon(R.drawable.ic_back_small)
-        delivery_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
         delivery_toolbar.setNavigationOnClickListener {
             pop()
         }
@@ -42,5 +42,10 @@ class ProductDeliveryDelegate : EmallDelegate() {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 }

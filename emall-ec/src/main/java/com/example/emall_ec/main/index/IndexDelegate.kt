@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Handler
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
@@ -15,6 +16,8 @@ import com.example.emall_core.ui.refresh.RefreshHandler
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
@@ -49,6 +52,11 @@ class IndexDelegate : BottomItemDelegate() {
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")
         DELEGATE = getParentDelegate()
 
+        if(!NetworkUtils.isConnected()){
+            index_no_network_rl.visibility = View.VISIBLE
+        }else{
+            index_no_network_rl.visibility = View.GONE
+        }
         refreshHandler = RefreshHandler.create(swipe_refresh_layout_index,
                 recycler_view_index,
                 IndexDataConverter(),
@@ -58,8 +66,12 @@ class IndexDelegate : BottomItemDelegate() {
                 IndexDataConverter(),
                 IndexDataConverter())
         index_scan_tv.setOnClickListener {
-            val delegate: ScannerDelegate = ScannerDelegate().create()!!
-            (DELEGATE as EcBottomDelegate).start(delegate)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else {
+                val delegate: ScannerDelegate = ScannerDelegate().create()!!
+                (DELEGATE as EcBottomDelegate).start(delegate)
+            }
         }
         initRefreshLayout()
         initRecyclerView()
@@ -69,8 +81,12 @@ class IndexDelegate : BottomItemDelegate() {
                 "http://59.110.162.194:5201/global/homePageUnits",
                 "http://202.111.178.10:28085/mobile/homePage")
         index_search_rl.setOnClickListener {
-            val delegate: SearchDelegate = SearchDelegate().create()!!
-            (DELEGATE as EcBottomDelegate).start(delegate)
+            if (!NetworkUtils.isConnected())
+                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+            else {
+                val delegate: SearchDelegate = SearchDelegate().create()!!
+                (DELEGATE as EcBottomDelegate).start(delegate)
+            }
         }
 
         swipe_refresh_layout_index.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {

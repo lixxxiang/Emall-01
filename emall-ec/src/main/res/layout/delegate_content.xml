@@ -41,7 +41,7 @@
         <!--</RelativeLayout>-->
     <!--</RelativeLayout>-->
     <com.example.emall_core.util.view.SwipeRefreshView
-        android:id="@+id/daily_pic_srv"
+        android:id="@+id/content_srv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ListView

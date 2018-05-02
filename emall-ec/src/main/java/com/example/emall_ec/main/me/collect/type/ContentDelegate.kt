@@ -2,6 +2,8 @@ package com.example.emall_ec.main.me.collect.type
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.support.v4.widget.SwipeRefreshLayout
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -57,6 +59,13 @@ class ContentDelegate : EmallDelegate() {
             }
         }
 
+        content_srv.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            content_srv.isRefreshing = true
+            Handler().postDelayed({
+                initContent()
+                content_srv.isRefreshing = false
+            }, 1200)
+        })
     }
 
     private fun initContent() {
@@ -71,6 +80,7 @@ class ContentDelegate : EmallDelegate() {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         myCollectionBean = Gson().fromJson(response, MyCollectionBean::class.java)
+                        myCollectionData!!.clear()
                         if (myCollectionBean.message == "success") {
                             for (i in 0 until myCollectionBean.data.collections.size) {
                                 myCollectionData!!.add(myCollectionBean.data.collections[i])

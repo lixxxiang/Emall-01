@@ -19,6 +19,7 @@ import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.demand.PayMethodDelegate;
 import com.example.emall_ec.main.order.OrderDetailDelegate;
+import com.example.emall_ec.main.order.ProductDeliveryDelegate;
 import com.example.emall_ec.main.order.state.AllDelegate;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
 
@@ -44,6 +45,7 @@ public class AllListAdapter extends BaseAdapter {
 
     public BtnListener btnListener;
     AllDelegate delegate;
+
     public AllListAdapter(AllDelegate delegate, List<OrderDetail> dataList,
                           int resource, Context context) {
         this.delegate = delegate;
@@ -76,7 +78,7 @@ public class AllListAdapter extends BaseAdapter {
         public void onBtnClick();
     }
 
-    public void setOnBtnClickListener (BtnListener  listener) {
+    public void setOnBtnClickListener(BtnListener listener) {
         this.btnListener = listener;
     }
 
@@ -100,20 +102,17 @@ public class AllListAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     EmallLogger.INSTANCE.d(dataList.get(0).getData().get(i).getState());
-                    if (dataList.get(0).getData().get(i).getState() == 2){
-//                        EmallLogger.INSTANCE.d("pay");
-//                        PayMethodDelegate delegate = new PayMethodDelegate().create();;
-//                        assert delegate1 != null;
-//                        delegate1.start(delegate);
-//                        btnListener.onBtnClick();
-                        EmallLogger.INSTANCE.d("dfsf");
+                    if (dataList.get(0).getData().get(i).getState() == 2) {
                         PayMethodDelegate payMethodDelegate = new PayMethodDelegate().create();
                         Bundle bundle = new Bundle();
-                        bundle.putString("ORDER_ID",dataList.get(0).getData().get(i).getOrderId());
+                        bundle.putString("ORDER_ID", dataList.get(0).getData().get(i).getOrderId());
                         bundle.putString("DEMAND_ID", dataList.get(0).getData().get(i).getParentOrderId());
                         bundle.putString("TYPE", "2");
                         payMethodDelegate.setArguments(bundle);
                         delegate.getParentDelegate().start(payMethodDelegate);
+                    }else if(dataList.get(0).getData().get(i).getState() == 4){
+                        ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
+                        delegate.getParentDelegate().start(productDeliveryDelegate);
                     }
                 }
             });
