@@ -47,6 +47,7 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
         getPermission()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         index_scan_tv.typeface = Typeface.createFromAsset(activity.assets, "iconfont/scan.ttf")

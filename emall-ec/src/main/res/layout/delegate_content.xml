@@ -41,7 +41,7 @@
         <!--</RelativeLayout>-->
     <!--</RelativeLayout>-->
     <com.example.emall_core.util.view.SwipeRefreshView
-        android:id="@+id/content_srv"
+        android:id="@+id/content_content_srv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ListView
@@ -52,4 +52,39 @@
             android:divider="@drawable/list_item_divider_5"
             android:layout_below="@+id/banner" />
     </com.example.emall_core.util.view.SwipeRefreshView>
+    <RelativeLayout
+        android:id="@+id/collection_content_no_result_rl"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F0F0F0">
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="61dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="115dp"
+            android:id="@+id/collection_content_iv"
+            android:background="@drawable/no_result"
+            android:layout_centerHorizontal="true" />
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_result_collection"
+            android:textSize="14dp"
+            android:id="@+id/collection_content_tv"
+            android:layout_below="@+id/collection_content_iv"
+            android:textColor="#9B9B9B"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="21dp"/>
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/confirm_login_fill_shape"
+            android:text="@string/go_buy"
+            android:textColor="#FFFFFF"
+            android:id="@+id/collection_content_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/collection_content_tv"
+            android:layout_marginTop="15dp"
+            android:textSize="12dp"/>
+    </RelativeLayout>
 </RelativeLayout>

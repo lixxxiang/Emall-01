@@ -58,7 +58,7 @@ public class AccountPrivacySettingsAdapter extends BaseAdapter {
         TextView item_tv = view.findViewById(R.id.title);
         TextView detail_tv = view.findViewById(R.id.detail_tv);
 
-        item_iv.setImageResource(R.drawable.ic_foward);
+        item_iv.setImageResource(R.drawable.forward_gray);
         item_tv.setText(titleList.get(i));
 
         if (i == 0) {

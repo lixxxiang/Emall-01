@@ -21,6 +21,7 @@ import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.AppCompatTextView
+import android.util.TypedValue
 import android.widget.RelativeLayout
 import android.widget.Toast
 import com.example.emall_core.util.dimen.DimenUtil
@@ -135,10 +136,10 @@ class ClassifyDelegate : EmallDelegate() {
             }
         })
 
-        classify_down_btn.setOnClickListener {
+        classify_down_btn_rl.setOnClickListener {
             if (!isExpanded) {
                 classify_appbar.setExpanded(false)
-                classify_sv.scrollTo(0, viewHeight + DimenUtil().dip2px(context, 6F))
+                classify_sv.scrollTo(0, viewHeight)
                 classify_down_btn.setBackgroundResource(R.drawable.up)
 
                 adapter = GridViewAdapter(activity, cityName)
@@ -155,16 +156,17 @@ class ClassifyDelegate : EmallDelegate() {
         }
 
         classify_gv.setOnItemClickListener { parent, view, position, id ->
-            if (!data!!.isEmpty())
-                data!!.clear()
-            closeScreen()
-
-            getData(getRecommendCitiesBean.data[position].geo,
-                    "", "",
-                    "", "",
-                    "", "",
-                    "0", "10", "1")
-
+            if(position != 0){
+                if (!data!!.isEmpty())
+                    data!!.clear()
+                closeScreen()
+                classify_recommand_tv.text = getRecommendCitiesBean.data[position - 1].cityName
+                getData(getRecommendCitiesBean.data[position].geo,
+                        "", "",
+                        "", "",
+                        "", "",
+                        "0", "10", "1")
+            }
         }
 
         classify_toolbar.setNavigationOnClickListener {
@@ -358,7 +360,7 @@ class ClassifyDelegate : EmallDelegate() {
                                 tv.layoutParams = topRlParams
                                 tv.text = getRecommendCitiesBean.data[i].cityName
                                 tv.setTextColor(Color.parseColor("#5C5C5C"))
-                                tv.textSize = 12F
+                                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
                                 topRl.addView(tv, tvParams)
                             }
                         } else {

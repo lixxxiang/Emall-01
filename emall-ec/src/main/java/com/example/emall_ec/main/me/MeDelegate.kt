@@ -52,6 +52,8 @@ class MeDelegate : BottomItemDelegate() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(activity, null)
+        setSwipeBackEnable(false)
+
         iconList!!.add(R.drawable.me_favorite)
         iconList!!.add(R.drawable.me_ticket)
         iconList!!.add(R.drawable.me_bill)

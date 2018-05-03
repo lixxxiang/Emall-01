@@ -31,8 +31,8 @@ class LauncherDelegate : EmallDelegate(), ITimerListener {
 
     private fun checkIsShowScroll() {
         if (!EmallPreference().getAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.toString())) {
-//            start(LauncherScrollDelegate(), ISupportFragment.SINGLETASK)
-            start(LauncherDelegate(), ISupportFragment.SINGLETASK)
+            start(LauncherScrollDelegate(), ISupportFragment.SINGLETASK)
+//            start(LauncherDelegate(), ISupportFragment.SINGLETASK)
 
         } else {
             //检查用户是否登录了APP

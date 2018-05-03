@@ -96,22 +96,23 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         inited = true
                         orderDetail = Gson().fromJson(response, OrderDetail::class.java)
                         val data: MutableList<OrderDetail>? = mutableListOf()
-
-                        if (orderDetail.data.isEmpty()) {
-                            all_lv.visibility = View.INVISIBLE
-                            all_rl.visibility = View.VISIBLE
-                            EmallProgressBar.hideProgressbar()
-                        } else {
-                            all_lv.visibility = View.VISIBLE
-                            data!!.add(orderDetail)
-                            initRefreshLayout()
-                            EmallLogger.d(data)
-                            adapter = AllListAdapter(delegate, data, R.layout.item_order, context)
-                            all_lv.adapter = adapter
-                            EmallProgressBar.hideProgressbar()
+                        if (all_lv != null && all_rl != null){
+                            if (orderDetail.data.isEmpty()) {
+                                all_lv.visibility = View.INVISIBLE
+                                all_rl.visibility = View.VISIBLE
+                                EmallProgressBar.hideProgressbar()
+                            } else {
+                                all_lv.visibility = View.VISIBLE
+                                data!!.add(orderDetail)
+                                initRefreshLayout()
+                                EmallLogger.d(data)
+                                adapter = AllListAdapter(delegate, data, R.layout.item_order, context)
+                                all_lv.adapter = adapter
+                                EmallProgressBar.hideProgressbar()
 //                            all_lv.getChildAt(1).findViewById<AppCompatButton>(R.id.item_order_btn).setOnClickListener {
 //                                start(PayMethodDelegate().create())
 //                            }
+                            }
                         }
                     }
                 })

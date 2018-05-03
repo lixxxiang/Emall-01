@@ -39,6 +39,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.view.KeyEvent
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.view.ShareUtil

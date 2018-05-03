@@ -28,7 +28,7 @@ abstract class BaseDelegate : SwipeBackFragment() {
             }
             else -> println("the fuck")
         }
-        return rootView
+        return attachToSwipeBack(rootView)
     }
 
     fun getProxyActivity(): ProxyActivity? {
@@ -37,6 +37,7 @@ abstract class BaseDelegate : SwipeBackFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setParallaxOffset(0.5f)
         initial()
     }
 }

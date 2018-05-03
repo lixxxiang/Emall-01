@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
+import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -59,11 +60,11 @@ class ContentDelegate : EmallDelegate() {
             }
         }
 
-        content_srv.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-            content_srv.isRefreshing = true
+        content_content_srv.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            content_content_srv.isRefreshing = true
             Handler().postDelayed({
                 initContent()
-                content_srv.isRefreshing = false
+                content_content_srv.isRefreshing = false
             }, 1200)
         })
     }
@@ -82,12 +83,17 @@ class ContentDelegate : EmallDelegate() {
                         myCollectionBean = Gson().fromJson(response, MyCollectionBean::class.java)
                         myCollectionData!!.clear()
                         if (myCollectionBean.message == "success") {
+                            content_lv.visibility = View.VISIBLE
+                            collection_content_no_result_rl.visibility = View.GONE
                             for (i in 0 until myCollectionBean.data.collections.size) {
                                 myCollectionData!!.add(myCollectionBean.data.collections[i])
                             }
                             adapter = MyCollectionListViewAdapter(context, myCollectionData)
                             adapter.notifyDataSetChanged()
                             content_lv.adapter = adapter
+                        }else{
+                            content_lv.visibility = View.GONE
+                            collection_content_no_result_rl.visibility = View.VISIBLE
                         }
                     }
                 })

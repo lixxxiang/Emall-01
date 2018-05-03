@@ -28,6 +28,8 @@ class SpecialDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
+
         initRecyclerView()
         getData()
 
@@ -43,19 +45,19 @@ class SpecialDelegate : BottomItemDelegate() {
     private fun getData() {
         val data: MutableList<SpecialItemEntity>? = mutableListOf()
 
-//        RestClient().builder()
-//                .url("http://59.110.162.194:5201/global/homePageUnits")
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        EmallLogger.d(response)
-//                        data!!.add(SpecialDataConverter().setJsonData(response).horizontalConvert()[0])
-//                        data.add(SpecialDataConverter().setJsonData(response).verticalConvert()[0])
-//                        mAdapter = SpecialAdapter.create(data)
-//                        special_rv.adapter = mAdapter
-//                    }
-//                })
-//                .build()
-//                .get()
+        RestClient().builder()
+                .url("http://59.110.162.194:5201/global/homePageUnits")
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
+                        data!!.add(SpecialDataConverter().setJsonData(response).horizontalConvert()[0])
+                        data.add(SpecialDataConverter().setJsonData(response).verticalConvert()[0])
+                        mAdapter = SpecialAdapter.create(data)
+                        special_rv.adapter = mAdapter
+                    }
+                })
+                .build()
+                .get()
     }
 
     private fun initRecyclerView() {

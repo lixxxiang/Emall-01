@@ -27,7 +27,7 @@ abstract class BottomItemDelegate : EmallDelegate(), View.OnKeyListener {
     }
 
     override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
-//        if (p1 == KeyEvent.KEYCODE_BACK && p2!!.action == KeyEvent.ACTION_DOWN) {
+        if (p1 == KeyEvent.KEYCODE_BACK && p2!!.action == KeyEvent.ACTION_DOWN) {
 //            if ((System.currentTimeMillis() - mExitTime) > mExitTime) {
 //                mExitTime = System.currentTimeMillis()
 //            } else {
@@ -36,8 +36,10 @@ abstract class BottomItemDelegate : EmallDelegate(), View.OnKeyListener {
 //                    mExitTime = 0
 //                }
 //            }
-//        }
-        _mActivity.onBackPressed()
+            _mActivity.onBackPressed()
+        }
+//        EmallLogger.d("fffff")
+
         return true
     }
 }

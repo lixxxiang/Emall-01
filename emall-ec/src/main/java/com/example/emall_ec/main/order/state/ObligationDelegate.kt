@@ -111,7 +111,9 @@ class ObligationDelegate : EmallDelegate() {
     }
 
     fun initRefreshLayout() {
-        obligation_srl.setColorSchemeColors(Color.parseColor("#b80017"))
+        if(obligation_srl != null){
+            obligation_srl.setColorSchemeColors(Color.parseColor("#b80017"))
+        }
     }
 
 }

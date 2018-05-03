@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatImageView
 import me.yokeyword.fragmentation.ISupportFragment
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.LinearLayoutCompat
+import android.view.KeyEvent
 import com.joanzapata.iconify.widget.IconTextView
 import android.widget.RelativeLayout
 import android.view.LayoutInflater
@@ -16,19 +17,21 @@ import android.view.View
 import kotlinx.android.synthetic.main.delegate_bottom.*
 import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.Toast
 import com.example.emall_core.util.log.EmallLogger
 
 
 /**
  * Created by lixiang on 15/02/2018.
  */
-abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
+abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
     private val TAB_BEANS: ArrayList<BottomTabBean> = ArrayList()//icon 和 文字
     private val ITEM_DELEGATES: ArrayList<BottomItemDelegate> = ArrayList()//每一页的内容
     private val ITEMS: LinkedHashMap<BottomTabBean, BottomItemDelegate> = LinkedHashMap()//关联
     private val ICONS_N: MutableList<Int> = mutableListOf()
     private val ICONS_H: MutableList<Int> = mutableListOf()
-
+    private val WAIT_TIME = 2000L
+    private var TOUCH_TIME: Long = 0
     private var mCurrentDelegate = 0
     private var mIndexDelegate = 0
     private var mClickedColor = Color.parseColor("#B4A078")
@@ -44,6 +47,15 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
     @ColorInt
     abstract fun setClickedColor(): Int
 
+//    override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
+//        if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
+//            _mActivity.finish()
+//        } else {
+//            TOUCH_TIME = System.currentTimeMillis()
+//            Toast.makeText(_mActivity, "Press again to exit", Toast.LENGTH_SHORT).show()
+//        }
+//        return true
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +87,8 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
         ICONS_N.add(R.drawable.me_n)
     }
     override fun initial() {
+        setSwipeBackEnable(false)
+
         setIcons()
 
         val size = ITEMS.size
@@ -150,5 +164,15 @@ abstract class BaseBottomDelegate : EmallDelegate(), View.OnClickListener {
         supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
         //注意先后顺序
         mCurrentDelegate = tag
+    }
+
+//    override fun onBackPressedSupport(): Boolean {
+//        return true
+//    }
+
+    override fun onBackPressedSupport(): Boolean {
+        activity.moveTaskToBack(false)
+        EmallLogger.d("main")
+        return true
     }
 }

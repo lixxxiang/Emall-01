@@ -38,6 +38,7 @@ class BaseClassifyDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
         DELEGATE = getParentDelegate()
         base_classify_optics_siv.setOnClickListener {
             val delegate: ClassifyDelegate = ClassifyDelegate().create()!!
