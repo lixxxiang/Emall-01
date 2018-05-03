@@ -24,6 +24,8 @@ import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
 import com.google.gson.Gson
 import me.yokeyword.fragmentation.ISupportFragment
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -390,5 +392,12 @@ class SignUpDelegate : BottomItemDelegate() {
         return String.format("%s****%s", tel.substring(0, 4), tel.substring(7, 11))
     }
 
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
 
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
+    }
 }

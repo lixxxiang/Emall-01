@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/ll_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
-        android:elevation="4dp" />
+        android:elevation="2dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/account_privacy_settings_toolbar"
@@ -17,37 +17,38 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/ll_bar"
         android:background="#FFFFFF"
+        android:elevation="2dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        android:elevation="4dp">
+        app:contentInsetStartWithNavigation="0dp">
 
         <!--<TextView-->
-            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="@string/account_privacy_settings"-->
-            <!--android:textColor="#686868"-->
-            <!--android:textSize="14dp" />-->
+        <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="@string/account_privacy_settings"-->
+        <!--android:textColor="#686868"-->
+        <!--android:textSize="14dp" />-->
     </android.support.v7.widget.Toolbar>
 
     <com.example.emall_core.util.view.BounceScrollView
-        android:layout_below="@+id/account_privacy_settings_toolbar"
         android:layout_width="match_parent"
-        android:background="#F0F0F0"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/account_privacy_settings_toolbar"
+        android:background="#F0F0F0">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="#FFFFFF">
+
             <com.example.emall_core.util.view.CommentListView
                 android:id="@+id/account_privacy_settings_lv"
-                android:divider="@drawable/list_item_divider"
-                android:dividerHeight="2px"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.example.emall_core.util.view.CommentListView>
+                android:layout_height="wrap_content"
+                android:divider="@drawable/list_item_divider"
+                android:dividerHeight="2px"/>
         </RelativeLayout>
 
     </com.example.emall_core.util.view.BounceScrollView>

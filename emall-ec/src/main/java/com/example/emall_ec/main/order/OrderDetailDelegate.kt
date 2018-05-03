@@ -165,7 +165,11 @@ class OrderDetailDelegate : BottomItemDelegate() {
                 .into(order_detail_image_iv)
 
         order_detail_title_tv.text = AllListAdapter.typeArray[orderData.data[index].type]
-        order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.centerTime)
+        if (orderData.data[index].details.centerTime == null)
+            order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.startTime)
+        else
+            order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.centerTime)
+
         order_detail_price_tv.text = String.format("¥%s", orderData.data.get(index).payment)
         order_detail_state_tv.text = stateFormat(orderData.data.get(index).state, orderData.data[index].planCommitTime)
         order_detail_id_tv.text = orderData.data[index].orderId

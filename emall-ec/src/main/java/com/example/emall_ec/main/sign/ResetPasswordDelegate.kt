@@ -27,6 +27,8 @@ import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 /**
@@ -54,7 +56,7 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         reset_pwd_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
-        reset_pwd_toolbar.title = ""
+        reset_pwd_toolbar.title = getString(R.string.modify_password)
         (activity as AppCompatActivity).setSupportActionBar(reset_pwd_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -246,5 +248,14 @@ class ResetPasswordDelegate : BottomItemDelegate() {
 
     fun checkMaxLength(string: String): Boolean {
         return string.length > 20
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
     }
 }

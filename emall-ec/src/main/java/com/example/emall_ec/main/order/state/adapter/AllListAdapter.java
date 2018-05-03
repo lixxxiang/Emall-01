@@ -39,7 +39,7 @@ public class AllListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    public static String[] typeArray = {"标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] typeArray = {"","标准景", "编程摄影",   "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
     public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
 
@@ -110,7 +110,7 @@ public class AllListAdapter extends BaseAdapter {
                         bundle.putString("TYPE", "2");
                         payMethodDelegate.setArguments(bundle);
                         delegate.getParentDelegate().start(payMethodDelegate);
-                    }else if(dataList.get(0).getData().get(i).getState() == 4){
+                    } else if (dataList.get(0).getData().get(i).getState() == 4) {
                         ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
                         delegate.getParentDelegate().start(productDeliveryDelegate);
                     }
@@ -123,7 +123,11 @@ public class AllListAdapter extends BaseAdapter {
         }
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
-        util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+        if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
+            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
+        else
+            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+
         util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);

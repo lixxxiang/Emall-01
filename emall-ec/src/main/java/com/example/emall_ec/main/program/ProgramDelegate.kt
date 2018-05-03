@@ -60,7 +60,7 @@ import java.io.FileOutputStream
 /**
  * Created by lixiang on 2018/3/16.
  */
-class ProgramDelegate : EmallDelegate(), SensorEventListener {
+class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
 
     val handler = Handler()
     var task: Runnable? = null
@@ -140,7 +140,8 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
     override fun initial() {
         program_back_btn_rl.setOnClickListener {
             if (level == 1) {
-                pop()
+//                pop()
+                _mActivity.onBackPressed()
                 handler.removeCallbacks(task)
             } else if (level == 2) {
                 level = 1
@@ -227,6 +228,7 @@ class ProgramDelegate : EmallDelegate(), SensorEventListener {
                 EmallLogger.d(DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000)
                 area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
                 val areaString = area.toString()
+                EmallLogger.d(areaString)
                 val temp = areaString.substring(0, areaString.indexOf(".") + 3)
                 if (areaString.contains("E")) {
                     areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)

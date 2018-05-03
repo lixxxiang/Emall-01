@@ -31,6 +31,8 @@ import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.view.SoftKeyboardListener
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import kotlinx.android.synthetic.main.forget_pwd_dialog.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -294,5 +296,14 @@ class SignInByAccountDelegate : EmallDelegate() {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

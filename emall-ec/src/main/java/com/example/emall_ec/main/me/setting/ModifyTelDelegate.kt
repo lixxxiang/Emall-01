@@ -21,6 +21,8 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_modify_tel.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 /**
@@ -49,13 +51,14 @@ class ModifyTelDelegate : BottomItemDelegate() {
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         modify_tel_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
-        modify_tel_toolbar.title = ""
+        modify_tel_toolbar.title = getString(R.string.new_tel)
         (activity as AppCompatActivity).setSupportActionBar(modify_tel_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         modify_tel_toolbar.setNavigationOnClickListener {
             pop()
         }
+
         modify_tel_old_tel_et.addTextChangedListener(mOldTextWatcher)
         modify_tel_new_tel_et.addTextChangedListener(mNewTextWatcher)
 
@@ -251,5 +254,12 @@ class ModifyTelDelegate : BottomItemDelegate() {
         }
     }
 
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
+    }
 
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
 }

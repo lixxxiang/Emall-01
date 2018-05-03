@@ -28,6 +28,8 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.sign.data.UserNameLoginBean
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -279,5 +281,14 @@ class SetUserNameDelegate : BottomItemDelegate() {
 
     fun checkMaxLength(string: String): Boolean {
         return string.length > 16
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
     }
 }

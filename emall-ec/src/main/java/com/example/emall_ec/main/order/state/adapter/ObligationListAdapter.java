@@ -110,7 +110,12 @@ public class ObligationListAdapter extends BaseAdapter {
         }
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
-        util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+
+        if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
+            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
+        else
+            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+
         util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);

@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.delegate_modify_tel_vcode.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 import kotlinx.android.synthetic.main.me_function_item.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 /**
@@ -278,5 +280,9 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
 
 
         }
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

@@ -15,6 +15,8 @@ import com.example.emall_ec.main.sign.ModifyPasswordDelegate
 import com.example.emall_ec.main.sign.ResetPasswordDelegate
 import kotlinx.android.synthetic.main.delegate_account_privacy_settings.*
 import kotlinx.android.synthetic.main.delegate_setting.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 /**
  * Created by lixiang on 2018/4/3.
@@ -75,5 +77,9 @@ class AccountPrivacySettingsDelegate : EmallDelegate() {
 
     private fun hideTel(s: String): String {
         return String.format("%s****%s", s.substring(0, 4), s.substring(7, 11))
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
     }
 }

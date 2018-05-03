@@ -95,6 +95,7 @@ abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
         for (i in 0 until size) {
             LayoutInflater.from(context).inflate(R.layout.bottom_item_icon_text_layout, bottom_bar)
             if (i != 2) {
+//                bottom_bar_ll.visibility = View.VISIBLE
                 val item: RelativeLayout = bottom_bar.getChildAt(i) as RelativeLayout
                 //设置每个item的点击事件
                 item.tag = i
@@ -109,11 +110,13 @@ abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
                     itemTitle.setTextColor(Color.parseColor("#B4A078"))
                 }
             } else {
+//                bottom_bar_ll.visibility = View.GONE
                 val item: RelativeLayout = bottom_bar.getChildAt(i) as RelativeLayout
                 //设置每个item的点击事件
                 item.tag = i
                 item.setOnClickListener {
                     val tag = item.tag as Int
+                    bottom_bar_ll.visibility = View.GONE
                     supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
                     //注意先后顺序
                     mCurrentDelegate = tag

@@ -25,6 +25,8 @@ import kotlinx.android.synthetic.main.delegate_sign_up.*
 import android.app.Activity
 import android.os.Bundle
 import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 
 /**
@@ -353,5 +355,14 @@ class SignInByTelDelegate : BottomItemDelegate() {
 
     private fun hideTel(): String {
         return String.format("%s****%s", tel.substring(0, 4), tel.substring(7, 11))
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
     }
 }

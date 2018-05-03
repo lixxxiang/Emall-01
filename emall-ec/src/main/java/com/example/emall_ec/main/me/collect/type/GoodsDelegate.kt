@@ -33,6 +33,7 @@ class GoodsDelegate : EmallDelegate() {
     private var myAllCollectionList: MutableList<MyAllCollectionBean.DataBean.CollectionBean> = mutableListOf()
     private var glm: GridLayoutManager? = null
 
+    private var type = -1
     fun create(): GoodsDelegate? {
         return GoodsDelegate()
     }
@@ -42,7 +43,7 @@ class GoodsDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        goods_gray_tv.setOnClickListener {
+        goods_all_btn2.setOnClickListener {
             if (!flag) {
                 goods_screen_rl.visibility = View.VISIBLE
                 goods_gray_tv.setTextColor(Color.parseColor("#B80017"))
@@ -58,7 +59,7 @@ class GoodsDelegate : EmallDelegate() {
             }
 
         }
-        goods_all_tv.setOnClickListener {
+        goods_all_btn1.setOnClickListener {
             goods_screen_rl.visibility = View.INVISIBLE
             goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
             goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
@@ -66,21 +67,25 @@ class GoodsDelegate : EmallDelegate() {
         }
 
         goods_rl1.setOnClickListener {
+            type = 1
             getDataByType("1")
             reset()
         }
 
-        goods_rl2.setOnClickListener {
-            getDataByType("2")
-            reset()
-        }
+//        goods_rl2.setOnClickListener {
+//            type = 2
+//            getDataByType("2")
+//            reset()
+//        }
 
         goods_rl3.setOnClickListener {
+            type = 3
             getDataByType("3")
             reset()
         }
 
         goods_rl4.setOnClickListener {
+            type = 5
             getDataByType("5")
             reset()
         }
@@ -230,7 +235,7 @@ class GoodsDelegate : EmallDelegate() {
         goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
         goods_all_tv.setTextColor(Color.parseColor("#B80017"))
 
-        getData()
+        getDataByType(type.toString())
 
     }
 }

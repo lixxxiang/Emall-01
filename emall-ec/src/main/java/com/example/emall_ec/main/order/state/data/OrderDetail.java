@@ -96,6 +96,8 @@ public class OrderDetail implements Parcelable{
             this.commitTime = commitTime;
         }
 
+
+
         public DetailsBean getDetails() {
             return details;
         }
@@ -242,7 +244,15 @@ public class OrderDetail implements Parcelable{
             private String serviceDescription;
             private String size;
             private String swingSatelliteAngle;
+            private String startTime;
 
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
             public String getCenterTime() {
                 return centerTime;
             }

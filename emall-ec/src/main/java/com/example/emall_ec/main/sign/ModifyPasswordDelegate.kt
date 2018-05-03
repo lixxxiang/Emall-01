@@ -24,6 +24,8 @@ import com.example.emall_ec.main.sign.data.CommonBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_modify_password.*
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 /**
@@ -60,7 +62,7 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         modify_pwd_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
-        modify_pwd_toolbar.title = ""
+        modify_pwd_toolbar.title = getString(R.string.modify_password)
         (activity as AppCompatActivity).setSupportActionBar(modify_pwd_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         EmallLogger.d(arguments.getString("PAGE_FROM"))
@@ -329,5 +331,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                 modify_pwd_submit_btn.isClickable = true
             }
         }
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
     }
 }

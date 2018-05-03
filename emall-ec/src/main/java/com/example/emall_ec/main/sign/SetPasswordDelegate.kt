@@ -27,6 +27,8 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_reset_password.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
 import me.yokeyword.fragmentation.ISupportFragment
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
 
 /**
@@ -255,5 +257,14 @@ class SetPasswordDelegate : BottomItemDelegate() {
 
     fun checkMaxLength(string: String): Boolean {
         return string.length > 20
+    }
+
+    override fun onCreateFragmentAnimator(): FragmentAnimator {
+        return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        KeyboardUtils.hideSoftInput(activity)
     }
 }
