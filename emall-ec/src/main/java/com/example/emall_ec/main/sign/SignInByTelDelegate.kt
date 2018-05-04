@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.RegexUtils
-import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
@@ -12,7 +11,6 @@ import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import java.util.*
 import android.text.Editable
 import android.text.TextWatcher
-import com.blankj.utilcode.util.EncryptUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -24,7 +22,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 import android.app.Activity
 import android.os.Bundle
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 

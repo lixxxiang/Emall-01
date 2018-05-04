@@ -7,14 +7,9 @@ import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_scanner.*
-import android.widget.Toast
-import com.example.emall_core.app.Emall
-import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.util.log.EmallLogger
-import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator

@@ -1,6 +1,6 @@
 package com.example.emall_ec.main.order
 
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure

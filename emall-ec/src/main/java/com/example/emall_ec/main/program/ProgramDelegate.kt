@@ -4,7 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_program.*
 import com.example.emall_core.util.dimen.DimenUtil
@@ -13,7 +13,6 @@ import com.example.emall_core.util.view.TextSwitcherView
 import java.util.ArrayList
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -22,38 +21,26 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityCompat.requestPermissions
-import android.support.v4.content.res.TypedArrayUtils.getAttr
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatButton
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.widget.*
 import com.baidu.location.*
 import com.baidu.mapapi.map.*
-import com.baidu.mapapi.model.CoordUtil
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
-import com.example.emall_core.app.Emall
-import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.view.RulerView
-import com.example.emall_core.util.view.ScreenUtil.dip2px
-import com.example.emall_ec.R.id.mMapView
-import com.example.emall_ec.R.id.program_mapview
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.search.SearchPoiDelegate
-import kotlinx.android.synthetic.main.delegate_reset_password.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
-import vi.com.gdi.bgl.android.java.EnvDrawText.bmp
-import vi.com.gdi.bgl.android.java.EnvDrawText.pt
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.FileOutputStream
 
 
@@ -109,7 +96,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
     private var cloud = "10"
     private var center = String()
     private var geoString = String()
-//    var bitmapByte: ByteArray ?= vy
+    //    var bitmapByte: ByteArray ?= vy
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -192,6 +179,74 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
 
         handler.post(task)
 
+
+
+        program_toolbar_searchbar.setOnClickListener {
+            startForResult(SearchPoiDelegate().create(), 101)
+        }
+    }
+
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        EmallLogger.d(data.getString("LOCATION"))
+        mBaiduMap!!.clear()
+        var location = data.getString("LOCATION")
+        var latitude = location.split(",")[1]
+        var longitude = location.split(",")[0]
+        var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
+        var point = LatLng(gps.lat, gps.lon)
+        var bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.location_mark)
+        var option = MarkerOptions()
+                .position(point)
+                .icon(bitmap)
+        mBaiduMap!!.addOverlay(option)
+        var mMapStatus = MapStatus.Builder()
+                .target(LatLng(latitude.toDouble(), longitude.toDouble()))
+                .zoom(12F)
+                .build()
+        var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+        mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
+    }
+
+    private fun getAttr() {
+//        var typedValue = TypedValue()
+//        context.theme.resolveAttribute(R.attr.actionBarSize, typedValue, true)
+//        EmallLogger.d(typedValue.data.)
+    }
+
+    private fun initMap() {
+        EmallLogger.d("initMap")
+        val mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL
+        mMapView = activity.findViewById<MapView>(R.id.program_mapview)
+        mLocClient = LocationClient(activity)
+        mLocClient!!.registerLocationListener(myListener)
+        val option = LocationClientOption()
+        option.isOpenGps = true
+        option.setCoorType("bd09ll")
+        option.setScanSpan(1000)
+        option.setAddrType("all")
+        option.setIsNeedLocationPoiList(true)
+        mLocClient!!.locOption = option
+        mLocClient!!.start()
+
+        mBaiduMap = mMapView!!.map
+        mBaiduMap!!.isMyLocationEnabled = true
+        mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(mCurrentMode, true, null))
+        val builder = MapStatus.Builder()
+        builder.overlook(0f)
+        val child = mMapView!!.getChildAt(1)
+        if (child != null && (child is ImageView || child is ZoomControls)) {
+            child.visibility = View.INVISIBLE
+        }
+        mMapView!!.showScaleControl(false)
+        mMapView!!.showZoomControls(false)
+        val mUiSettings = mBaiduMap!!.uiSettings
+        mUiSettings.isScrollGesturesEnabled = true
+        mUiSettings.isOverlookingGesturesEnabled = true
+        mUiSettings.isZoomGesturesEnabled = true
+
+
         mBaiduMap = program_mapview.map
         val listener: BaiduMap.OnMapStatusChangeListener = object : BaiduMap.OnMapStatusChangeListener {
             override fun onMapStatusChangeStart(p0: MapStatus?) {}
@@ -239,69 +294,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         }
         mMapView!!.map.setOnMapStatusChangeListener(listener)
 
-        program_toolbar_searchbar.setOnClickListener {
-            startForResult(SearchPoiDelegate().create(), 101)
-        }
-    }
 
-    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
-        super.onFragmentResult(requestCode, resultCode, data)
-        EmallLogger.d(data.getString("LOCATION"))
-        mBaiduMap!!.clear()
-        var location = data.getString("LOCATION")
-        var latitude = location.split(",")[1]
-        var longitude = location.split(",")[0]
-        var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
-        var point = LatLng(gps.lat, gps.lon)
-        var bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.location_mark)
-        var option = MarkerOptions()
-                .position(point)
-                .icon(bitmap)
-        mBaiduMap!!.addOverlay(option)
-        var mMapStatus = MapStatus.Builder()
-                .target(LatLng(latitude.toDouble(), longitude.toDouble()))
-                .zoom(12F)
-                .build()
-        var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
-        mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
-    }
-
-    private fun getAttr() {
-//        var typedValue = TypedValue()
-//        context.theme.resolveAttribute(R.attr.actionBarSize, typedValue, true)
-//        EmallLogger.d(typedValue.data.)
-    }
-
-    private fun initMap() {
-        val mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL
-        mMapView = activity.findViewById<MapView>(R.id.program_mapview)
-        mLocClient = LocationClient(activity)
-        mLocClient!!.registerLocationListener(myListener)
-        val option = LocationClientOption()
-        option.isOpenGps = true
-        option.setCoorType("bd09ll")
-        option.setScanSpan(1000)
-        option.setAddrType("all")
-        option.setIsNeedLocationPoiList(true)
-        mLocClient!!.locOption = option
-        mLocClient!!.start()
-
-        mBaiduMap = mMapView!!.map
-        mBaiduMap!!.isMyLocationEnabled = true
-        mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(mCurrentMode, true, null))
-        val builder = MapStatus.Builder()
-        builder.overlook(0f)
-        val child = mMapView!!.getChildAt(1)
-        if (child != null && (child is ImageView || child is ZoomControls)) {
-            child.visibility = View.INVISIBLE
-        }
-        mMapView!!.showScaleControl(false)
-        mMapView!!.showZoomControls(false)
-        val mUiSettings = mBaiduMap!!.uiSettings
-        mUiSettings.isScrollGesturesEnabled = true
-        mUiSettings.isOverlookingGesturesEnabled = true
-        mUiSettings.isZoomGesturesEnabled = true
     }
 
     @SuppressLint("ResourceType", "ApplySharedPref")
@@ -650,6 +643,8 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
                     var bitmapByte = baos.toByteArray()
                     println("~-~-~-~" + bitmapByte!!.size)
                     bundle!!.putByteArray("image", bitmapByte)
+
+//                    saveBitmapToLocal("test", p0)
                 }
             }, 1000)   //5秒
         }
@@ -787,5 +782,25 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    fun saveBitmapToLocal(fileName: String, bitmap: Bitmap) {
+        var FILE_PATH = File(Environment.getExternalStorageDirectory().absolutePath + "image")//设置保存路径
+        try {
+            // 创建文件流，指向该路径，文件名叫做fileName
+            val file = File(FILE_PATH, fileName)
+            // file其实是图片，它的父级File是文件夹，判断一下文件夹是否存在，如果不存在，创建文件夹
+            val fileParent = file.getParentFile()
+            if (!fileParent.exists()) {
+                // 文件夹不存在
+                fileParent.mkdirs()// 创建文件夹
+            }
+            // 将图片保存到本地
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,
+                    FileOutputStream(file))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 }

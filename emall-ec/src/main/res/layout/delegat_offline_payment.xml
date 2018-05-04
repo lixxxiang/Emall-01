@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <View
@@ -16,6 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#FFFFFF"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         android:elevation="2dp">
     </android.support.v7.widget.Toolbar>
     <com.example.emall_core.util.view.BounceScrollView
@@ -39,9 +43,9 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="14dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="22dp"
                     android:background="@drawable/index_horizontal_text_border_2"
-                    android:text="温馨提示：\n1、财务会在3个工作日内审核并查账，如到账将会在1小时之内对您的订单进行排产，受银行处理时间影响，付款到账可能有所延误\n2、如果线下汇款过程中遇到任何问题可随时联系客服"
+                    android:text="温馨提示：\n\n1、财务会在3个工作日内审核并查账，如到账将会在1小时之内对您的订单进行排产，受银行处理时间影响，付款到账可能有所延误\n\n2、如果线下汇款过程中遇到任何问题可随时联系客服XX"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp" />
 
@@ -296,24 +300,26 @@
                 </RelativeLayout>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/offline_tv2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/offline_2_tv"
                     android:layout_below="@id/offline_2_tv"
                     android:layout_marginRight="42dp"
                     android:layout_marginTop="17dp"
-                    android:text="打款至长光卫星技术有限公司指定银行账号后，联系客服提交您的汇款信息"
+                    android:text="打款至长光卫星技术有限公司指定银行账号后，联系客服XX提交您的汇款信息"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/offline_tv3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/offline_3_tv"
                     android:layout_below="@id/offline_3_tv"
                     android:layout_marginRight="42dp"
                     android:layout_marginTop="17dp"
-                    android:text="确定打款操作后，可以在订单列表页面查看生产进度"
+                    android:text="确定打款操作后，可以在订单列表XX页面查看生产进度"
                     android:textColor="#5C5C5C"
                     android:textSize="12dp" />
             </RelativeLayout>

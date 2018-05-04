@@ -9,8 +9,7 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.RegexUtils
-import com.example.emall_core.app.Emall
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure

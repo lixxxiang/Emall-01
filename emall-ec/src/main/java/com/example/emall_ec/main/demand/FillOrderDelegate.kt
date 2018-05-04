@@ -3,7 +3,7 @@ package com.example.emall_ec.main.demand
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -15,7 +15,6 @@ import com.example.emall_ec.main.demand.data.OrderBean
 import com.example.emall_ec.main.demand.data.ViewDemandBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
-import kotlinx.android.synthetic.main.me_function_item.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*

@@ -3,7 +3,7 @@ package com.example.emall_ec.main.demand
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_invoice.*
 import com.smarttop.library.widget.AddressSelector

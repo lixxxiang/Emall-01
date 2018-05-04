@@ -2,7 +2,6 @@ package com.example.emall_ec.main.sign
 
 import android.app.Activity
 import android.graphics.Typeface
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.example.emall_core.net.RestClient
@@ -21,11 +20,9 @@ import java.util.regex.Pattern
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import com.blankj.utilcode.util.EncryptUtils
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.blankj.utilcode.util.KeyboardUtils
-import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.sign.data.UserNameLoginBean
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator

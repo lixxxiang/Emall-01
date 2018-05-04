@@ -1,15 +1,12 @@
 package com.example.emall_ec.main.index
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Handler
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
 import com.example.emall_core.ui.refresh.RefreshHandler

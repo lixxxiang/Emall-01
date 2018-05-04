@@ -6,15 +6,11 @@ import android.support.v7.widget.AppCompatTextView
 import android.view.View
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.me.setting.adapter.AccountPrivacySettingsAdapter
-import com.example.emall_ec.main.me.setting.adapter.SettingAdapter
 import com.example.emall_ec.main.sign.ModifyPasswordDelegate
-import com.example.emall_ec.main.sign.ResetPasswordDelegate
 import kotlinx.android.synthetic.main.delegate_account_privacy_settings.*
-import kotlinx.android.synthetic.main.delegate_setting.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 

@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
@@ -15,13 +15,12 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.SizeUtils
-import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.dimen.DimenUtil
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.InvoiceDelegate
 import com.example.emall_ec.main.me.adapter.MeFunctionAdapter
 import com.example.emall_ec.main.me.collect.CollectionDelegate
+import com.example.emall_ec.main.me.feedback.FeedbackDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
@@ -159,7 +158,10 @@ class MeDelegate : BottomItemDelegate() {
                         (DELEGATE as EcBottomDelegate).start(ContactDelegate().create())
                 }
                 5 -> {
-
+                    if (!NetworkUtils.isConnected())
+                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    else
+                        (DELEGATE as EcBottomDelegate).start(FeedbackDelegate().create())
                 }
             }
         }
@@ -234,9 +236,11 @@ class MeDelegate : BottomItemDelegate() {
                 me_user_name.text = userName
                 me_hint.text = getString(R.string.me_hint)
             }
+            me_to_computer_iv.visibility = View.VISIBLE
         } else {
             me_user_name.text = getString(R.string.sign_in)
             me_hint.text = getString(R.string.click_to_login)
+            me_to_computer_iv.visibility = View.GONE
         }
     }
 }

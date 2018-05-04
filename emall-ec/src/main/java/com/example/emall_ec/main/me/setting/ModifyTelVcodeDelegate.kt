@@ -1,14 +1,13 @@
 package com.example.emall_ec.main.me.setting
 
 import android.graphics.Typeface
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.KeyboardUtils
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -17,15 +16,11 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.database.UserProfile
 import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_modify_tel_vcode.*
-import kotlinx.android.synthetic.main.delegate_set_password.*
-import kotlinx.android.synthetic.main.delegate_sign_up.*
-import kotlinx.android.synthetic.main.me_function_item.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*

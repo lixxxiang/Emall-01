@@ -2,11 +2,10 @@ package com.example.emall_ec.main.program
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.program.adapter.ProgramParamsAdapter
 import kotlinx.android.synthetic.main.delegate_program_params.*
-import kotlinx.android.synthetic.main.item_program_params.*
 import me.yokeyword.fragmentation.ISupportFragment
 import android.app.DatePickerDialog
 import android.content.Context
@@ -14,7 +13,6 @@ import android.content.SharedPreferences
 import android.view.View
 import android.widget.Toast
 import com.example.emall_core.util.log.EmallLogger
-import kotlinx.android.synthetic.main.delegate_optics1.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.text.SimpleDateFormat

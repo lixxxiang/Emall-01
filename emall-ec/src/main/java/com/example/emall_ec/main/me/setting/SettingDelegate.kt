@@ -2,25 +2,17 @@ package com.example.emall_ec.main.me.setting
 
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.me.setting.adapter.SettingAdapter
-import kotlinx.android.synthetic.main.delegate_invoice.*
 import kotlinx.android.synthetic.main.delegate_setting.*
 import android.widget.Toast
-import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatTextView
-import android.widget.TextView
 import com.example.emall_core.util.view.CacheUtil
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.main.program.adapter.ProgramParamsTypeAdapter
-import com.example.emall_ec.main.sign.ModifyPasswordDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
-import kotlinx.android.synthetic.main.delegate_all.*
-import kotlinx.android.synthetic.main.delegate_me.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 
@@ -100,6 +92,7 @@ class SettingDelegate : BottomItemDelegate() {
             builder.setTitle("确认登出吗？")
             builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
                 DatabaseManager().getInstance()!!.getDao()!!.deleteAll()
+                pop()
                 dialog.dismiss()
             }
 

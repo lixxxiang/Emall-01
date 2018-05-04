@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.Toast
 import com.androidkun.xtablayout.XTabLayout
 import com.bumptech.glide.Glide
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -31,7 +30,6 @@ import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import java.util.*
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -39,7 +37,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.view.KeyEvent
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.view.ShareUtil

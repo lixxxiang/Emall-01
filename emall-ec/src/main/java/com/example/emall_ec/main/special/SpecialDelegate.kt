@@ -3,17 +3,11 @@ package com.example.emall_ec.main.special
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_core.ui.recycler.MultipleItemEntity
-import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.index.IndexItemClickListener
-import com.example.emall_ec.main.special.beans.SpecialHorizontalBean
-import kotlinx.android.synthetic.main.delegate_index.*
 import kotlinx.android.synthetic.main.delegate_special.*
 
 /**

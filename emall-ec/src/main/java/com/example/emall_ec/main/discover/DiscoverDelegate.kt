@@ -3,7 +3,7 @@ package com.example.emall_ec.main.discover
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import android.os.Bundle
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.delegates.web.WebDelegateImpl
 import com.example.emall_ec.R
 

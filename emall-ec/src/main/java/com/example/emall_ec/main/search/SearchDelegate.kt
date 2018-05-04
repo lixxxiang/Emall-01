@@ -20,11 +20,10 @@ import android.widget.ZoomControls
 import com.baidu.location.*
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_search.*
 import android.util.DisplayMetrics
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.index.dailypic.video.data.Gps
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator

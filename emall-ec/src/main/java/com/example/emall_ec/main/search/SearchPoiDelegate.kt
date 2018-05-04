@@ -2,7 +2,6 @@ package com.example.emall_ec.main.search
 
 import android.view.View
 import android.view.WindowManager
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -17,7 +16,6 @@ import com.example.emall_ec.main.search.data.CitiesBean
 import com.example.emall_ec.main.search.data.PoiBean
 import android.os.Bundle
 import com.blankj.utilcode.util.KeyboardUtils
-import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator

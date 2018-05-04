@@ -24,20 +24,14 @@ import android.os.Build
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.widget.SwipeRefreshLayout
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BaseBottomDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_ec.main.index.dailypic.video.VideoDetailDelegate
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
-import me.yokeyword.fragmentation_swipeback.SwipeBackFragment
 
 
 /**

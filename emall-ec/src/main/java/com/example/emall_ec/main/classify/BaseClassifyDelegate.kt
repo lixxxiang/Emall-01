@@ -5,13 +5,10 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
-import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
-import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.classify.data.VideoHomeBean
 import com.example.emall_ec.main.classify.data.VideoSearch

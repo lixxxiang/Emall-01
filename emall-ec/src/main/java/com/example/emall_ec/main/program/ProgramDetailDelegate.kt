@@ -34,7 +34,9 @@ import java.lang.Double
 import java.util.*
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-
+import com.example.emall_core.util.view.BitmapUtil
+import com.example.emall_ec.main.demand.ConfirmOrderDelegate
+import java.io.File
 
 
 class ProgramDetailDelegate : EmallDelegate() {
@@ -68,6 +70,11 @@ class ProgramDetailDelegate : EmallDelegate() {
         }
         val bis = arguments.getByteArray("image")
         val bitmap = BitmapFactory.decodeByteArray(bis, 0, bis.size)
+
+
+//        val bitmap = arguments.getParcelable<Bitmap>("image")
+
+//        val bitmap = BitmapUtil.getBitmapFromLocal("test")
         program_detail_map.setImageBitmap(bitmap)
         val sp = activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE)
 
@@ -243,7 +250,7 @@ class ProgramDetailDelegate : EmallDelegate() {
                         EmallLogger.d(response)
                         demandBean = Gson().fromJson(response, DemandBean::class.java)
                         if (demandBean.msg == "成功") {
-                            val delegate: FillOrderDelegate = FillOrderDelegate().create()!!
+                            val delegate: ConfirmOrderDelegate = ConfirmOrderDelegate().create()!!
                             val bundle: Bundle? = Bundle()
                             bundle!!.putString("demandId", demandBean.data.orderIdArray)
                             bundle.putString("imageUrl", "program")
@@ -276,4 +283,6 @@ class ProgramDetailDelegate : EmallDelegate() {
         return DefaultHorizontalAnimator()
     }
 
+
 }
+

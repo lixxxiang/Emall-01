@@ -9,13 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AbsListView
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
-import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.adapter.CheckPendingListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
@@ -85,6 +85,7 @@ class CheckPendingDelegate : EmallDelegate() {
                 .params(findOrderListByUserIdParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
                         orderDetail = Gson().fromJson(response, OrderDetail::class.java)
                         if (orderDetail.data.isEmpty()) {
                             check_pending_lv.visibility = View.INVISIBLE
@@ -102,7 +103,7 @@ class CheckPendingDelegate : EmallDelegate() {
     }
 
     fun initRefreshLayout() {
-        obligation_srl.setColorSchemeColors(Color.parseColor("#b80017"))
+        check_pending_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
 

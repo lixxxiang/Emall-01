@@ -5,25 +5,20 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
-import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AbsListView
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.progressbar.EmallProgressBar
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
-import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.adapter.DeliveredListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_all.*
-import kotlinx.android.synthetic.main.delegate_check_pending.*
 import kotlinx.android.synthetic.main.delegate_delivered.*
 import java.util.*
 

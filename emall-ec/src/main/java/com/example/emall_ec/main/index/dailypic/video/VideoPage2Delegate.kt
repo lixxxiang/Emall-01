@@ -5,11 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
-import kotlinx.android.synthetic.main.delegate_page_1.*
-import kotlinx.android.synthetic.main.delegate_video_page_1.*
 import kotlinx.android.synthetic.main.delegate_video_page_2.*
 import java.util.*
 

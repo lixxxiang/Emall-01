@@ -64,6 +64,8 @@ class GoodsDelegate : EmallDelegate() {
             goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
             goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
             goods_all_tv.setTextColor(Color.parseColor("#B80017"))
+            getData()
+            type = -1
         }
 
         goods_rl1.setOnClickListener {
@@ -114,8 +116,10 @@ class GoodsDelegate : EmallDelegate() {
 
     private fun reset() {
         goods_screen_rl.visibility = View.INVISIBLE
-        goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
-        goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
+//        goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
+        goods_gray_iv.setBackgroundResource(R.drawable.collection_down_red)
+        flag = false
+
     }
 
     private fun getDataByType(s: String) {
@@ -231,11 +235,14 @@ class GoodsDelegate : EmallDelegate() {
 
     override fun onSupportVisible() {
         super.onSupportVisible()
-        goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
-        goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
-        goods_all_tv.setTextColor(Color.parseColor("#B80017"))
+//        goods_gray_tv.setTextColor(Color.parseColor("#4A4A4A"))
+//        goods_gray_iv.setBackgroundResource(R.drawable.collection_down)
+//        goods_all_tv.setTextColor(Color.parseColor("#B80017"))
 
-        getDataByType(type.toString())
-
+        if (type != -1) {
+            getDataByType(type.toString())
+        }else{
+            getData()
+        }
     }
 }

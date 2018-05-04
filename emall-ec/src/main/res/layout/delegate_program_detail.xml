@@ -132,8 +132,8 @@
                         android:textSize="12dp" />
 
                     <android.support.v7.widget.AppCompatImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="8dp"
+                        android:layout_height="14dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="14dp"
@@ -463,29 +463,14 @@
 
 
 
-        <RelativeLayout
-            android:id="@+id/program_detail_star_rl"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/program_detail_head_set_rl">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/program_detail_star_iv"
-                android:layout_width="21dp"
-                android:layout_height="19dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/collection" />
-        </RelativeLayout>
-
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/program_goods_buy_now_btn"
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/program_detail_star_rl"
             android:background="#B4A078"
-            android:text="@string/buy_now"
+            android:text="@string/confirm_order"
             android:textColor="#FFFFFF"
             android:textSize="12dp" />
     </LinearLayout>

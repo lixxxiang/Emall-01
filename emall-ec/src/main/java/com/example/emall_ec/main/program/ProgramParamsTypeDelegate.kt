@@ -2,12 +2,10 @@ package com.example.emall_ec.main.program
 
 import android.view.View
 import android.widget.AbsListView
-import android.widget.AdapterView
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.program.adapter.ProgramParamsTypeAdapter
 import kotlinx.android.synthetic.main.delegate_program_params_type.*
-import kotlinx.android.synthetic.main.item_program_params_type.*
 import android.os.Bundle
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
@@ -46,7 +44,7 @@ class ProgramParamsTypeDelegate : BottomItemDelegate() {
             val bundle = Bundle()
             bundle.putString("index", index.toString())
             setFragmentResult(ISupportFragment.RESULT_OK, bundle)
-            _mActivity.onBackPressed()
+            pop()
         }
         program_back_btn.setOnClickListener{
             pop()

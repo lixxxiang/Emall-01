@@ -12,8 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.blankj.utilcode.util.EncryptUtils
 import com.blankj.utilcode.util.KeyboardUtils
-import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
@@ -24,7 +23,6 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.delegate_reset_password.*
 import kotlinx.android.synthetic.main.delegate_set_password.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator

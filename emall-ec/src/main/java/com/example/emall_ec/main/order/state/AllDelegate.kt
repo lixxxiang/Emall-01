@@ -8,7 +8,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AdapterView
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.progressbar.EmallProgressBar
@@ -93,6 +93,7 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                 .params(findOrderListByUserIdParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
                         inited = true
                         orderDetail = Gson().fromJson(response, OrderDetail::class.java)
                         val data: MutableList<OrderDetail>? = mutableListOf()

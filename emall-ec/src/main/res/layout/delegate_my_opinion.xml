@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0">
+
+    <com.example.emall_core.util.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/describe_problem"
+                android:textColor="#4A4A4A"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="12dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="#FFFFFF">
+
+                <EditText
+                    android:id="@+id/my_opinion_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:gravity="left|top"
+                    android:hint="@string/my_opinion_hint"
+                    android:inputType="textMultiLine"
+                    android:maxLength="800"
+                    android:minLines="7"
+                    android:padding="14dp"
+                    android:textColor="#4A4A4A"
+                    android:paddingLeft="14dp"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.example.emall_core.util.view.BounceScrollView>
+</RelativeLayout>

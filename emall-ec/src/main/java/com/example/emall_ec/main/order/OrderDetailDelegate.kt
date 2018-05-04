@@ -9,27 +9,21 @@ import android.net.Uri
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatTextView
 import android.view.View
 import com.bumptech.glide.Glide
-import com.example.emall_core.delegates.bottom.BottomItemDelegate
+import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_ec.R
-import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.data.FindOrderDetailByOrderIdBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_order_detail.*
-import kotlinx.android.synthetic.main.delegate_setting.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
-import android.content.pm.ResolveInfo
-import android.content.pm.PackageInfo
-
 
 
 /**
@@ -179,7 +173,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
         order_detail_origional_price_tv.text = String.format("¥%s", orderData.data[index].details.originalPrice)
         order_detail_current_price_tv.text = String.format("¥%s", orderData.data[index].details.salePrice)
         order_detail_final_price_tv.text = String.format("¥%s", orderData.data[index].payment)
-        order_detail_discount_tv.text = discount(orderData.data[index].details.originalPrice, orderData.data[index].payment)
+        order_detail_discount_tv.text = discount(orderData.data[index].details.originalPrice as String, orderData.data[index].payment)
     }
 
     private fun discount(salePrice: String, payment: Double): String {
