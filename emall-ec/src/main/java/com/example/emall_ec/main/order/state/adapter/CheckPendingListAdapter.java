@@ -118,9 +118,13 @@ public class CheckPendingListAdapter extends BaseAdapter {
         util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
-        Glide.with(context)
-                .load(imageList.get(i))
-                .into(util.imageView);
+        if (imageList.get(i) == null){
+            util.imageView.setBackgroundResource(R.drawable.program);
+        }else {
+            Glide.with(context)
+                    .load(imageList.get(i))
+                    .into(util.imageView);
+        }
         return view;
     }
 

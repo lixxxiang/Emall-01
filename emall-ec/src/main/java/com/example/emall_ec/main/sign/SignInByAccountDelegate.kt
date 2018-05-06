@@ -29,6 +29,7 @@ import android.view.View
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.view.SoftKeyboardListener
+import com.example.emall_ec.database.DatabaseManager
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import kotlinx.android.synthetic.main.forget_pwd_dialog.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
@@ -163,6 +164,7 @@ class SignInByAccountDelegate : EmallDelegate() {
             }
 
             dialog.forget_rl3.setOnClickListener {
+                dialog.dismiss()
             }
 
         }
@@ -218,7 +220,14 @@ class SignInByAccountDelegate : EmallDelegate() {
                             /**
                              * test------------------------------------
                              */
-                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\""), mISignListener!!)
+//                            val info = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0]
+//                            if (info != null) {
+//                                info.userPassword = passwordMD5
+//                                DatabaseManager().getInstance()!!.getDao()!!.update(info)
+//                            }
+                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\"").replaceFirst("null","\"" + passwordMD5 + "\""), mISignListener!!)
+//                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\""), mISignListener!!)
+
                             val bundle = Bundle()
                             bundle.putString("USER_NAME", userNameLoginBean.user.username)
                             KeyboardUtils.hideSoftInput(activity)

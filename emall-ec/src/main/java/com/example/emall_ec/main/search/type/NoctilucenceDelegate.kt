@@ -68,6 +68,7 @@ class NoctilucenceDelegate : EmallDelegate() {
 
     @SuppressLint("SimpleDateFormat")
     override fun initial() {
+        setSwipeBackEnable(false)
         val sp = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         ssp!!["scopeGeo"] = Optics1Delegate().geoFormat(sp.getString("GEO", ""))
         ssp!!["productType"] = ""

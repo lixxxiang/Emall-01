@@ -16,17 +16,25 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
+import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.VideoClassifyAdapter
+import com.example.emall_ec.main.classify.data.VideoSearch
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.main.order.state.adapter.ObligationListAdapter
+import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.example.emall_ec.main.search.data.VideoSearchBean
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_obligation.*
 import kotlinx.android.synthetic.main.delegate_video1a1b.*
+import retrofit2.Retrofit
 import java.util.*
 
 /**
  * Created by lixiang on 2018/3/20.
  */
-class Video1A1BDelegate : EmallDelegate(){
+class Video1A1BDelegate : EmallDelegate() {
     private var videoSearchParams: WeakHashMap<String, Any>? = WeakHashMap()
     private var videoSearchBean = VideoSearchBean()
     var screenIsShow = false
@@ -35,12 +43,15 @@ class Video1A1BDelegate : EmallDelegate(){
     var gatherTimeFlag = false
     var priceFlag = false
     var itemSize = 0
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     override fun setLayout(): Any? {
         return R.layout.delegate_video1a1b
     }
 
     @SuppressLint("SimpleDateFormat")
     override fun initial() {
+        setSwipeBackEnable(false)
         val sp = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         videoSearchParams!!["geo"] = Optics1Delegate().geoFormat(sp.getString("GEO", ""))
         videoSearchParams!!["type"] = "0"
@@ -104,51 +115,91 @@ class Video1A1BDelegate : EmallDelegate(){
     }
 
     private fun getData() {
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/videoSearch")
-                .params(videoSearchParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
+//        EmallLogger.d(videoSearchParams!!)
+//        RestClient().builder()
+//                .url("http://59.110.164.214:8024/global/videoSearch")
+//                .params(videoSearchParams!!)
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        EmallLogger.d(response)
+//                        videoSearchBean = Gson().fromJson(response, VideoSearchBean::class.java)
+//                        if(videoSearchBean.status != 103) {
+//                            if (video_rv_rl.visibility == View.GONE){
+//                                video_rv_rl.visibility = View.VISIBLE
+//                                video_no_result.visibility = View.GONE
+//                                video_top_bar.visibility = View.VISIBLE
+//                            }
+//                            val size = videoSearchBean.data.size
+//                            val data: MutableList<Model> ?= mutableListOf()
+//                            for (i in 0 until size) {
+//                                val model = Model()
+//                                model.imageUrl = videoSearchBean.data[i].detailPath
+//                                model.price = videoSearchBean.data[i].price
+//                                model.time = videoSearchBean.data[i].startTime
+//                                model.title = videoSearchBean.data[i].title
+//                                model.productType = "3"
+//                                data!!.add(model)
+//                            }
+//                            initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.size)
+//                        }else{
+//                            video_rv_rl.visibility = View.GONE
+//                            video_no_result.visibility = View.VISIBLE
+//                            video_top_bar.visibility = View.GONE
+//                        }
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//
+//                    }
+//                })
+//                .build()
+//                .post()
 
-                        videoSearchBean = Gson().fromJson(response, VideoSearchBean::class.java)
-                        if(videoSearchBean.status != 103) {
-                            if (video_rv_rl.visibility == View.GONE){
-                                video_rv_rl.visibility = View.VISIBLE
-                                video_no_result.visibility = View.GONE
-                                video_top_bar.visibility = View.VISIBLE
-                            }
-                            val size = videoSearchBean.data.size
-                            val data: MutableList<Model> ?= mutableListOf()
-                            for (i in 0 until size) {
-                                val model = Model()
-                                model.imageUrl = videoSearchBean.data[i].detailPath
-                                model.price = videoSearchBean.data[i].price
-                                model.time = videoSearchBean.data[i].startTime
-                                model.title = videoSearchBean.data[i].title
-                                model.productType = "3"
-                                data!!.add(model)
-                            }
-                            initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.size)
-                        }else{
-                            video_rv_rl.visibility = View.GONE
-                            video_no_result.visibility = View.VISIBLE
-                            video_top_bar.visibility = View.GONE
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", "1")
+        println("~~~~~~~~" + videoSearchParams!!["geo"].toString())
+        call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
+            override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
+                if (response.body() != null) {
+                    videoSearchBean = response.body()!!
+                    EmallLogger.d(response)
+                    if (videoSearchBean.status != 103) {
+                        if (video_rv_rl.visibility == View.GONE) {
+                            video_rv_rl.visibility = View.VISIBLE
+                            video_no_result.visibility = View.GONE
+                            video_top_bar.visibility = View.VISIBLE
                         }
+                        val size = videoSearchBean.data.searchReturnDtoList.size
+                        val data: MutableList<Model>? = mutableListOf()
+                        for (i in 0 until size) {
+                            val model = Model()
+                            model.imageUrl = videoSearchBean.data.searchReturnDtoList[i].detailPath
+                            model.price = videoSearchBean.data.searchReturnDtoList[i].price
+                            model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
+                            model.title = videoSearchBean.data.searchReturnDtoList[i].title
+                            model.productType = "3"
+                            data!!.add(model)
+                        }
+                        initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.searchReturnDtoList.size)
+                    } else {
+                        video_rv_rl.visibility = View.GONE
+                        video_no_result.visibility = View.VISIBLE
+                        video_top_bar.visibility = View.GONE
                     }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-
-                    }
-                })
-                .build()
-                .post()
+            override fun onFailure(call: retrofit2.Call<VideoSearchBean>, throwable: Throwable) {}
+        })
     }
 
     private fun initRecyclerView(data: MutableList<Model>, recyclerView: RecyclerView, size: Int) {
@@ -159,7 +210,7 @@ class Video1A1BDelegate : EmallDelegate(){
             if (size > itemSize) {
                 EmallLogger.d("In le me ")
                 loadMoreData()
-            }else{
+            } else {
 //                mAdapter!!.loadMoreFail()
             }
         }

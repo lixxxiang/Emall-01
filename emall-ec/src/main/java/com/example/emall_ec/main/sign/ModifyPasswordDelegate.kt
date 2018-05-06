@@ -88,6 +88,7 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
 
         modify_pwd_count_down.setCountDownMillis(60000)
         modify_pwd_count_down.setOnClickListener {
+
             tel = modify_pwd_tel_et.text.toString()
             if (tel.isEmpty()) {
                 /**
@@ -102,7 +103,8 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                     /**
                      * tel is valid
                      */
-                    findTelephone(tel)
+                    checkOldTel()
+
                 } else {
                     /**
                      * tel is invalid
@@ -121,6 +123,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
             } else {
                 Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun checkOldTel(){
+        if (tel != arguments.getString("OLD_TEL")){
+            Toast.makeText(activity, "当前绑定的手机号码输入有误", Toast.LENGTH_SHORT).show()
+        }else{
+            findTelephone(tel)
         }
     }
 

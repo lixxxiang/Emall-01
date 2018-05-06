@@ -26,6 +26,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
         <service
             android:name="com.baidu.location.f"
@@ -33,7 +35,7 @@
             android:process=":remote" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Y2Kb3AvhdaBYgkMID223GCj60GNvPGyz" />
+            android:value="fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx" />
 
         <activity
             android:name=".MainActivity"

@@ -23,6 +23,7 @@ import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.feedback.FeedbackDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.order.ProductDeliveryDelegate
+import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 
 
@@ -199,7 +200,7 @@ class MeDelegate : BottomItemDelegate() {
             if (!NetworkUtils.isConnected())
                 Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
             else
-                (DELEGATE as EcBottomDelegate).start(ProductDeliveryDelegate().create())
+                (DELEGATE as EcBottomDelegate).start(ScannerDelegate().create())
         }
     }
 

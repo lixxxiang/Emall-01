@@ -35,6 +35,8 @@ class ModifyTelDelegate : BottomItemDelegate() {
     var flag2 = false
     var wrongToast: Toast? = null
     var findTelephoneParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var findNewTelephoneParams: WeakHashMap<String, Any>? = WeakHashMap()
+
     var changeTelephoneParams: WeakHashMap<String, Any>? = WeakHashMap()
 
     var commonBean = CommonBean()
@@ -134,18 +136,7 @@ class ModifyTelDelegate : BottomItemDelegate() {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         EmallLogger.d(response)
                         if (commonBean.meta == "success") {
-                            /**
-                             * success
-                             */
-//                            changeTelephone(oldTel, newTel)
-                            KeyboardUtils.hideSoftInput(activity)
-
-                            val delegate = ModifyTelVcodeDelegate().create()
-                            val bundle = Bundle()
-                            bundle.putString("OLD_TELEPHONE", oldTel)
-                            bundle.putString("NEW_TELEPHONE", newTel)
-                            delegate.arguments = bundle
-                            start(delegate)
+                            checkOldTel()
                         } else {
                             Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
                         }
@@ -161,28 +152,34 @@ class ModifyTelDelegate : BottomItemDelegate() {
                 .post()
     }
 
-    private fun changeTelephone(oldTel: String, newTel: String) {
-        changeTelephoneParams!!["oldTelephone"] = oldTel
-        changeTelephoneParams!!["newTelephone"] = newTel
-        EmallLogger.d(oldTel + newTel)
+    private fun checkOldTel(){
+        if (oldTel == arguments.getString("OLD_TEL")){
+            checkNewTel(newTel)
+        }else{
+            Toast.makeText(activity, "当前绑定的手机号码输入有误", Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+    private fun checkNewTel(newTel : String){
+        findNewTelephoneParams!!["telephone"] = newTel
         RestClient().builder()
-                .url("http://59.110.161.48:8023/changeTelephone.do")
-                .params(changeTelephoneParams!!)
+                .url("http://59.110.161.48:8023/findTelephone.do")
+                .params(findNewTelephoneParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         EmallLogger.d(response)
-                        if (commonBean.meta == "success") {
-                            /**
-                             * success
-                             */
+                        if (commonBean.meta != "success") {
+                            KeyboardUtils.hideSoftInput(activity)
                             val delegate = ModifyTelVcodeDelegate().create()
                             val bundle = Bundle()
+                            bundle.putString("OLD_TELEPHONE", oldTel)
                             bundle.putString("NEW_TELEPHONE", newTel)
                             delegate.arguments = bundle
                             start(delegate)
                         } else {
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "cannot use this number because it is already signed up", Toast.LENGTH_SHORT).show()
                         }
                     }
                 })
@@ -194,7 +191,6 @@ class ModifyTelDelegate : BottomItemDelegate() {
                 })
                 .build()
                 .post()
-
     }
 
     private var mOldTextWatcher: TextWatcher = object : TextWatcher {

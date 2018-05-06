@@ -13,13 +13,19 @@ import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.progressbar.EmallProgressBar
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.state.adapter.CheckPendingListAdapter
 import com.example.emall_ec.main.order.state.adapter.DeliveredListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_check_pending.*
 import kotlinx.android.synthetic.main.delegate_delivered.*
+import retrofit2.Retrofit
 import java.util.*
 
 /**
@@ -32,13 +38,15 @@ class DeliveredDelegate : EmallDelegate() {
     var inited = false
     var adapter: DeliveredListAdapter? = null
     var delegate: DeliveredDelegate? = null
-
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     override fun setLayout(): Any? {
         return R.layout.delegate_delivered
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        setSwipeBackEnable(false)
         val head = View.inflate(activity, R.layout.orderlist_head_view, null)
         delivered_lv.addHeaderView(head)
         delegate = this
@@ -81,31 +89,60 @@ class DeliveredDelegate : EmallDelegate() {
 
     fun data() {
 
-        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-        findOrderListByUserIdParams!!["state"] = "4"
-        findOrderListByUserIdParams!!["type"] = ""
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
-                .params(findOrderListByUserIdParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
-                        if (orderDetail.data.isEmpty()) {
-                            delivered_lv.visibility = View.INVISIBLE
-                            delivered_rl.visibility = View.VISIBLE
-                            EmallProgressBar.hideProgressbar()
+//        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+//        findOrderListByUserIdParams!!["state"] = "4"
+//        findOrderListByUserIdParams!!["type"] = ""
+//        RestClient().builder()
+//                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
+//                .params(findOrderListByUserIdParams!!)
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
+//                        if (orderDetail.data.isEmpty()) {
+//                            delivered_lv.visibility = View.INVISIBLE
+//                            delivered_rl.visibility = View.VISIBLE
+//                            EmallProgressBar.hideProgressbar()
+//
+//                        } else {
+//                            data!!.add(orderDetail)
+//                            initRefreshLayout()
+//                            delivered_lv.adapter = DeliveredListAdapter(delegate, data, R.layout.item_order, activity)
+//                            EmallProgressBar.hideProgressbar()
+//
+//                        }
+//                    }
+//                })
+//                .build()
+//                .get()
 
-                        } else {
-                            data!!.add(orderDetail)
-                            initRefreshLayout()
-                            delivered_lv.adapter = DeliveredListAdapter(delegate, data, R.layout.item_order, activity)
-                            EmallProgressBar.hideProgressbar()
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "4", "")
+        call.enqueue(object : retrofit2.Callback<OrderDetail> {
+            override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
+                if (response.body() != null) {
+                    orderDetail = response.body()!!
+                    if (orderDetail.data.isEmpty()) {
+                        delivered_lv.visibility = View.INVISIBLE
+                        delivered_rl.visibility = View.VISIBLE
+                        EmallProgressBar.hideProgressbar()
 
-                        }
+                    } else {
+                        delivered_lv.visibility = View.VISIBLE
+                        delivered_rl.visibility = View.INVISIBLE
+                        data!!.add(orderDetail)
+                        initRefreshLayout()
+                        delivered_lv.adapter = DeliveredListAdapter(delegate, data, R.layout.item_order, activity)
+                        EmallProgressBar.hideProgressbar()
+
                     }
-                })
-                .build()
-                .get()
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<OrderDetail>, throwable: Throwable) {}
+        })
     }
 
     fun initRefreshLayout() {

@@ -76,6 +76,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
     @SuppressLint("SimpleDateFormat")
     override fun initial() {
+        setSwipeBackEnable(false)
         val sp = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         ssp2!!["scopeGeo"] = geoFormat(sp.getString("GEO", ""))
         EmallLogger.d(geoFormat(sp.getString("GEO", "")))
@@ -102,6 +103,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         })
 
         optics_gather_time_rl.setOnClickListener {
+            optics_screen_rl.visibility = View.INVISIBLE
 
             optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
             optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
@@ -111,10 +113,18 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             gatherTimeFlag = if (!gatherTimeFlag) {
+                //正序
+                ssp2!!["orderBy"] = "centerTime asc"
+                pages = 1
+                getData(ssp2!!,pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
                 true
             } else {
+                //倒序
+                ssp2!!["orderBy"] = "centerTime desc"
+                pages = 1
+                getData(ssp2!!,pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
                 optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 false
@@ -122,6 +132,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_price_rl.setOnClickListener {
+
+            optics_screen_rl.visibility = View.INVISIBLE
+
             optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
             optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
@@ -130,11 +143,17 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
 
             priceFlag = if (!priceFlag) {
+                ssp2!!["orderBy"] = "price asc"
+                pages = 1
+                getData(ssp2!!,pages)
                 optics_price_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_red)
                 optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 true
             } else {
+                ssp2!!["orderBy"] = "price desc"
+                pages = 1
+                getData(ssp2!!,pages)
                 optics_price_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
                 optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_red)

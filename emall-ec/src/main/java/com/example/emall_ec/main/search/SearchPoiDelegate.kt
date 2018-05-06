@@ -226,6 +226,5 @@ class SearchPoiDelegate : EmallDelegate() {
     override fun onSupportInvisible() {
         super.onSupportInvisible()
         KeyboardUtils.hideSoftInput(activity)
-
     }
 }

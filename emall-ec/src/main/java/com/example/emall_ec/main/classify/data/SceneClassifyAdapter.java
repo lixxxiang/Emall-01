@@ -37,7 +37,7 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
         helper.setText(R.id.item_classify_time_tv, item.getTime());
 
         if (!item.getProductType().equals("3")){
-            helper.setText(R.id.item_classify_price_tv, item.getPrice());
+            helper.setText(R.id.item_classify_price_tv, "¥"+ item.getPrice());
             helper.getView(R.id.item_classify_video_mask_rl).setVisibility(View.INVISIBLE);
             helper.getView(R.id.item_classify_video_playbtn_rl).setVisibility(View.INVISIBLE);
             helper.getView(R.id.item_classify_video_title_tv).setVisibility(View.INVISIBLE);
@@ -45,7 +45,7 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
             helper.getView(R.id.item_classify_price_tv).setVisibility(View.VISIBLE);
         }else{
             helper.setText(R.id.item_classify_video_title_tv, item.getTitle());
-            helper.setText(R.id.item_classify_video_price_tv, item.getPrice());
+            helper.setText(R.id.item_classify_video_price_tv, "¥"+ item.getPrice());
             helper.getView(R.id.item_classify_video_mask_rl).setVisibility(View.VISIBLE);
             helper.getView(R.id.item_classify_video_playbtn_rl).setVisibility(View.VISIBLE);
             helper.getView(R.id.item_classify_price_tv).setVisibility(View.INVISIBLE);

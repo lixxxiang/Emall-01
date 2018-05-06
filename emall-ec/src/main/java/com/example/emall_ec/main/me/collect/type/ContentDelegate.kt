@@ -32,7 +32,8 @@ class ContentDelegate : EmallDelegate() {
     private var myCollectionBean = MyCollectionBean()
     var myCollectionData: MutableList<MyCollectionBean.DataBean.CollectionsBean>? = mutableListOf()
     var adapter = MyCollectionListViewAdapter()
-
+    var tempCollectionData: MutableList<MyCollectionBean.DataBean.CollectionsBean>? = mutableListOf()
+    var firstIn = false
 
     fun create(): ContentDelegate? {
         return ContentDelegate()
@@ -43,6 +44,7 @@ class ContentDelegate : EmallDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
         initContent()
         content_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (myCollectionData!![i].type == "1") {
@@ -81,28 +83,39 @@ class ContentDelegate : EmallDelegate() {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         myCollectionBean = Gson().fromJson(response, MyCollectionBean::class.java)
+
+                        EmallLogger.d("refresh")
+
                         myCollectionData!!.clear()
+
+                        for (i in 0 until myCollectionBean.data.collections.size)
+                            myCollectionData!!.add(myCollectionBean.data.collections[i])
+
                         if (myCollectionBean.message == "success") {
-                            content_lv.visibility = View.VISIBLE
-                            collection_content_no_result_rl.visibility = View.GONE
-                            for (i in 0 until myCollectionBean.data.collections.size) {
-                                myCollectionData!!.add(myCollectionBean.data.collections[i])
+                            if (content_lv.visibility == View.GONE) {
+                                content_lv.visibility = View.VISIBLE
+                                collection_content_no_result_rl.visibility = View.GONE
                             }
+
                             adapter = MyCollectionListViewAdapter(context, myCollectionData)
                             adapter.notifyDataSetChanged()
                             content_lv.adapter = adapter
-                        }else{
+
+                        } else {
                             content_lv.visibility = View.GONE
                             collection_content_no_result_rl.visibility = View.VISIBLE
                         }
+
                     }
                 })
-                .failure(object : IFailure {
-                    override fun onFailure() {}
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {}
-                })
+                .failure(
+                        object : IFailure {
+                            override fun onFailure() {}
+                        })
+                .error(
+                        object : IError {
+                            override fun onError(code: Int, msg: String) {}
+                        })
                 .build()
                 .post()
     }

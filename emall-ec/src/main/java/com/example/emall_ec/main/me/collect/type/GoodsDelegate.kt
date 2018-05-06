@@ -43,6 +43,7 @@ class GoodsDelegate : EmallDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
         goods_all_btn2.setOnClickListener {
             if (!flag) {
                 goods_screen_rl.visibility = View.VISIBLE

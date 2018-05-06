@@ -51,11 +51,17 @@ class AccountPrivacySettingsDelegate : EmallDelegate() {
 
         account_privacy_settings_lv.setOnItemClickListener { adapterView, view, i, l ->
             if (i == 0) {
-                start(ModifyTelDelegate().create())
+                val delegate: ModifyTelDelegate = ModifyTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("OLD_TEL", tel)
+                delegate.arguments = bundle
+                start(delegate)
+                KeyboardUtils.hideSoftInput(activity)
             } else if (i == 1) {
                 val delegate: ModifyPasswordDelegate = ModifyPasswordDelegate().create()!!
                 val bundle = Bundle()
                 bundle.putString("PAGE_FROM", "ACCOUNT_PRIVACY_SETTINGS")
+                bundle.putString("OLD_TEL", tel)
                 delegate.arguments = bundle
                 start(delegate)
                 KeyboardUtils.hideSoftInput(activity)

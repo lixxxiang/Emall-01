@@ -7,6 +7,8 @@ import com.example.emall_ec.main.classify.data.VideoHomeBean;
 import com.example.emall_ec.main.classify.data.VideoSearch;
 import com.example.emall_ec.main.detail.data.SceneDetailBean;
 import com.example.emall_ec.main.detail.data.VideoDetailBean;
+import com.example.emall_ec.main.order.state.data.OrderDetail;
+import com.example.emall_ec.main.search.data.VideoSearchBean;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -52,10 +54,16 @@ public interface ApiService {
 
     @POST("/global/videoSearch")
     @FormUrlEncoded
-    Call<VideoSearch> videoSearch(@Field("geo") String targetSentence,
-                                  @Field("type") String targetSentence2);
+    Call<VideoSearchBean> videoSearch(@Field("geo") String targetSentence,
+                                      @Field("type") String targetSentence2, @Field("pageSize") String targetSentence3, @Field("pageNum") String targetSentence4);
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
     @GET("global/videoHome")
     Call<VideoHomeBean> videoHome(@Query("type") String targetSentence);
+
+    @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
+    @GET("global/order/findOrderListByUserId")
+    Call<OrderDetail> findOrderListByUserId(@Query("userId") String targetSentence,
+                                            @Query("state") String targetSentence2,
+                                            @Query("type") String targetSentence3);
 }

@@ -107,7 +107,6 @@ class PayMethodDelegate : BottomItemDelegate() {
     fun sendPayRequest(appPayBean: AppPayBean) {
         EmallLogger.d("in")
         val req = PayReq()
-        Toast.makeText(activity, appPayBean.data.packageX, Toast.LENGTH_SHORT).show()
         req.appId = appPayBean.data.appid
         req.partnerId = appPayBean.data.mch_id
         req.prepayId = appPayBean.data.prepayid
@@ -142,7 +141,7 @@ class PayMethodDelegate : BottomItemDelegate() {
 
             }
             "-2" -> {
-
+                Toast.makeText(activity, "取消支付", Toast.LENGTH_SHORT).show()
             }
         }
     }

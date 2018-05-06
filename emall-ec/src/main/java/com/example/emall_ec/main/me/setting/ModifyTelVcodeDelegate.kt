@@ -113,6 +113,8 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
         }
 
         modify_tel_vcode_submit_btn.isClickable = false
+        modify_tel_vcode_count_down.start()
+        getVCode()
     }
 
     private fun getVCode() {
@@ -235,6 +237,7 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
                                 info.userTelephone = newTel
                                 DatabaseManager().getInstance()!!.getDao()!!.update(info)
                             }
+                            Toast.makeText(activity, "手机号修改成功", Toast.LENGTH_SHORT).show()
                             popTo(findFragment(AccountPrivacySettingsDelegate().javaClass).javaClass, false)
                             KeyboardUtils.hideSoftInput(activity)
                         } else {

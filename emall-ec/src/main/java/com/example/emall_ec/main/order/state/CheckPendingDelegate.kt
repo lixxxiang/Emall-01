@@ -11,16 +11,23 @@ import android.widget.AbsListView
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.adapter.CheckPendingListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_all.*
 import kotlinx.android.synthetic.main.delegate_check_pending.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
+import retrofit2.Retrofit
 import java.util.*
 
 /**
@@ -32,13 +39,15 @@ class CheckPendingDelegate : EmallDelegate() {
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
     var adapter: CheckPendingListAdapter? = null
     var delegate: CheckPendingDelegate? = null
-
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     override fun setLayout(): Any? {
         return R.layout.delegate_check_pending
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        setSwipeBackEnable(false)
         delegate = this
         val head = View.inflate(activity, R.layout.orderlist_head_view, null)
         check_pending_lv.addHeaderView(head)
@@ -76,35 +85,77 @@ class CheckPendingDelegate : EmallDelegate() {
     }
 
     fun data() {
+//        EmallLogger.d("daishenhe")
+//        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+//        findOrderListByUserIdParams!!["state"] = "0"
+//        findOrderListByUserIdParams!!["type"] = ""
+//        RestClient().builder()
+//                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
+//                .params(findOrderListByUserIdParams!!)
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        EmallLogger.d(response)
+//                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
+//                        if (orderDetail.data.isEmpty()) {
+//                            check_pending_lv.visibility = View.INVISIBLE
+//                            check_pending_rl.visibility = View.VISIBLE
+//                        } else {
+//                            check_pending_lv.visibility = View.VISIBLE
+//                            check_pending_rl.visibility = View.INVISIBLE
+//                            data!!.add(orderDetail)
+//                            initRefreshLayout()
+//                            adapter = CheckPendingListAdapter(delegate, data, R.layout.item_order, context)
+//                            check_pending_lv.adapter = adapter
+//                        }
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//                        EmallLogger.d(msg)
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//                        EmallLogger.d("fail")
+//                    }
+//                })
+//                .build()
+//                .get()
 
-        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-        findOrderListByUserIdParams!!["state"] = "0"
-        findOrderListByUserIdParams!!["type"] = ""
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
-                .params(findOrderListByUserIdParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        EmallLogger.d(response)
-                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
-                        if (orderDetail.data.isEmpty()) {
-                            check_pending_lv.visibility = View.INVISIBLE
-                            check_pending_rl.visibility = View.VISIBLE
-                        } else {
-                            data!!.add(orderDetail)
-                            initRefreshLayout()
-                            adapter = CheckPendingListAdapter(delegate, data, R.layout.item_order, context)
-                            check_pending_lv.adapter = adapter
-                        }
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "0", "")
+        call.enqueue(object : retrofit2.Callback<OrderDetail> {
+            override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
+                if (response.body() != null) {
+                    orderDetail = response.body()!!
+                    if (orderDetail.data.isEmpty()) {
+                        check_pending_lv.visibility = View.INVISIBLE
+                        check_pending_rl.visibility = View.VISIBLE
+                    } else {
+                        check_pending_lv.visibility = View.VISIBLE
+                        check_pending_rl.visibility = View.INVISIBLE
+                        data!!.add(orderDetail)
+                        initRefreshLayout()
+                        adapter = CheckPendingListAdapter(delegate, data, R.layout.item_order, context)
+                        check_pending_lv.adapter = adapter
                     }
-                })
-                .build()
-                .get()
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<OrderDetail>, throwable: Throwable) {}
+        })
     }
 
     fun initRefreshLayout() {
         check_pending_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        data()
+    }
 
 }

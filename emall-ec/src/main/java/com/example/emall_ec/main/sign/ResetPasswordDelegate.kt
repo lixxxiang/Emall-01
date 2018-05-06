@@ -139,6 +139,11 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         if (commonBean.meta == "success") {
                             EmallLogger.d(arguments.getString("PAGE_FROM"))
+                            val info = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0]
+                            if (info != null) {
+                                info.userPassword = changePasswordParams!!["userPassword"].toString()
+                                DatabaseManager().getInstance()!!.getDao()!!.update(info)
+                            }
                             when {
                                 arguments.getString("PAGE_FROM") == "SETTING" -> {
                                     popTo(findFragment(SettingDelegate().javaClass).javaClass, false)

@@ -12,14 +12,20 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.order.OrderDetailDelegate
+import com.example.emall_ec.main.order.state.adapter.CheckPendingListAdapter
 import com.example.emall_ec.main.order.state.adapter.InProductionListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_check_pending.*
 import kotlinx.android.synthetic.main.delegate_in_production.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
+import retrofit2.Retrofit
 import java.util.*
 
 /**
@@ -33,13 +39,15 @@ class InProductionDelegate  : EmallDelegate(){
     var inited = false
     var adapter: InProductionListAdapter? = null
     var delegate : InProductionDelegate? = null
-
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     override fun setLayout(): Any? {
         return R.layout.delegate_in_production
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        setSwipeBackEnable(false)
         delegate = this
         data()
         in_production_lv.setOnItemClickListener { adapterView, view, i, l ->
@@ -79,30 +87,58 @@ class InProductionDelegate  : EmallDelegate(){
 
     fun data() {
 
-        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-        findOrderListByUserIdParams!!["state"] = "3"
-        findOrderListByUserIdParams!!["type"] = ""
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
-                .params(findOrderListByUserIdParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
-                        if (orderDetail.data.isEmpty()){
-                            in_production_lv.visibility = View.INVISIBLE
-                            in_production_rl.visibility = View.VISIBLE
+//        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+//        findOrderListByUserIdParams!!["state"] = "3"
+//        findOrderListByUserIdParams!!["type"] = ""
+//        RestClient().builder()
+//                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
+//                .params(findOrderListByUserIdParams!!)
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
+//                        if (orderDetail.data.isEmpty()){
+//                            in_production_lv.visibility = View.INVISIBLE
+//                            in_production_rl.visibility = View.VISIBLE
+//
+//                        }else {
+//                            data!!.add(orderDetail)
+//                            initRefreshLayout()
+//                            val head = View.inflate(activity, R.layout.orderlist_head_view, null)
+//                            in_production_lv.addHeaderView(head)
+//                            in_production_lv.adapter = InProductionListAdapter(delegate, data, R.layout.item_order, activity)
+//                        }
+//                    }
+//                })
+//                .build()
+//                .get()
 
-                        }else {
-                            data!!.add(orderDetail)
-                            initRefreshLayout()
-                            val head = View.inflate(activity, R.layout.orderlist_head_view, null)
-                            in_production_lv.addHeaderView(head)
-                            in_production_lv.adapter = InProductionListAdapter(delegate, data, R.layout.item_order, activity)
-                        }
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "3", "")
+        call.enqueue(object : retrofit2.Callback<OrderDetail> {
+            override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
+                if (response.body() != null) {
+                    orderDetail = response.body()!!
+                    if (orderDetail.data.isEmpty()){
+                        in_production_lv.visibility = View.INVISIBLE
+                        in_production_rl.visibility = View.VISIBLE
+
+                    }else {
+                        in_production_lv.visibility = View.VISIBLE
+                        in_production_rl.visibility = View.INVISIBLE
+                        data!!.add(orderDetail)
+                        initRefreshLayout()
+                        val head = View.inflate(activity, R.layout.orderlist_head_view, null)
+                        in_production_lv.addHeaderView(head)
+                        in_production_lv.adapter = InProductionListAdapter(delegate, data, R.layout.item_order, activity)
                     }
-                })
-                .build()
-                .get()
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<OrderDetail>, throwable: Throwable) {}
+        })
     }
 
     fun initRefreshLayout() {

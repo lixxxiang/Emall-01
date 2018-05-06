@@ -256,39 +256,38 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
                 val pt = Point()
                 pt.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt()
                 pt.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt())
-                val pt2 = Point()
+                if (mBaiduMap != null) {
+                    val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
+                    lati_lt_screen = ll.latitude
+                    longi_lt_screen = ll.longitude
 
-                pt2.x = 0
-                pt2.y = 0
-                EmallLogger.d(String.format("%s %s %s %s ", pt2.x, pt2.y, DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()), DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat())))
-                val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
-                lati_lt_screen = ll.latitude
-                longi_lt_screen = ll.longitude
+                    val pt3 = Point()
+                    pt3.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt() + 250
+                    pt3.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt()) + 250
+                    EmallLogger.d(String.format("%s %s ", pt3.x, pt3.y))
 
-                val pt3 = Point()
-                pt3.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt() + 250
-                pt3.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt()) + 250
-                EmallLogger.d(String.format("%s %s ", pt3.x, pt3.y))
+                    val ll3 = mBaiduMap!!.projection.fromScreenLocation(pt3)
+                    lati_rb_screen = ll3.latitude
+                    longi_rb_screen = ll3.longitude
 
-                val ll3 = mBaiduMap!!.projection.fromScreenLocation(pt3)
-                lati_rb_screen = ll3.latitude
-                longi_rb_screen = ll3.longitude
-
-                geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
-                EmallLogger.d(geoString)
-                scopeGeo = geoFormat(geoString)
-                center = String.format("%s,%s", (longi_lt_screen!! + longi_rb_screen!!) / 2, (lati_lt_screen!! + lati_rb_screen!!) / 2)
-                val leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
-                val rightBottom = LatLng(lati_rb_screen!!, longi_rb_screen!!)
-                EmallLogger.d(DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000)
-                area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
-                val areaString = area.toString()
-                EmallLogger.d(areaString)
-                val temp = areaString.substring(0, areaString.indexOf(".") + 3)
-                if (areaString.contains("E")) {
-                    areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
-                } else {
-                    areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
+                    geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
+                    EmallLogger.d(geoString)
+                    scopeGeo = geoFormat(geoString)
+                    if (longi_lt_screen != null && longi_rb_screen != null && lati_lt_screen != null && lati_rb_screen != null) {
+                        center = String.format("%s,%s", (longi_lt_screen!! + longi_rb_screen!!) / 2, (lati_lt_screen!! + lati_rb_screen!!) / 2)
+                        val leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
+                        val rightBottom = LatLng(lati_rb_screen!!, longi_rb_screen!!)
+                        EmallLogger.d(DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000)
+                        area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
+                        val areaString = area.toString()
+                        EmallLogger.d(areaString)
+                        val temp = areaString.substring(0, areaString.indexOf(".") + 3)
+                        if (areaString.contains("E")) {
+                            areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
+                        } else {
+                            areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
+                        }
+                    }
                 }
             }
         }

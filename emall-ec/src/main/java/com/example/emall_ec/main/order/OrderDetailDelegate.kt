@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.demand.data.FindOrderDetailByOrderIdBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
@@ -48,15 +49,15 @@ class OrderDetailDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        if(arguments.getString("FROM") != "PAYMENT"){
+        if (arguments.getString("FROM") != "PAYMENT") {
             val orderData = arguments.getParcelable<OrderDetail>("KEy")
             val index = arguments.getInt("INDEX")
             orderId = orderData.data[index].orderId
             initViews(orderData, index)
-        }else{
+        } else {
 //            val findOrderDetailByOrderIdBean = Gson().fromJson(response, FindOrderDetailByOrderIdBean::class.java)
             val orderData = arguments.getParcelable<FindOrderDetailByOrderIdBean>("KEy")
-            initViews(orderData, 0)
+            initViews(orderData)
             orderId = orderData.data.orderId
         }
 
@@ -97,17 +98,17 @@ class OrderDetailDelegate : BottomItemDelegate() {
             start(ProductDeliveryDelegate().create())
         }
 
-        order_detail_tel_rl.setOnClickListener{
+        order_detail_tel_rl.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("10010")
             builder.setPositiveButton(getString(R.string.call)) { dialog, _ ->
 
-                if (flag){
+                if (flag) {
                     val intent = Intent(Intent.ACTION_CALL)
                     val data = Uri.parse("tel:" + "10010")
                     intent.data = data
                     startActivity(intent)
-                }else
+                } else
                     handlePermisson()
 
                 dialog.dismiss()
@@ -121,7 +122,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
             builder.create().show()
         }
 
-        order_detail_qq_rl.setOnClickListener{
+        order_detail_qq_rl.setOnClickListener {
             if (isQQClientAvailable(activity)) {
                 // 跳转到客服的QQ
                 val url = "mqqwpa://im/chat?chat_type=wpa&uin=1548806494"
@@ -134,7 +135,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
         }
     }
 
-    private fun initViews(orderData: FindOrderDetailByOrderIdBean, index: Int) {
+    private fun initViews(orderData: FindOrderDetailByOrderIdBean) {
         Glide.with(context)
                 .load(orderData.data.details.imageDetailUrl)
                 .into(order_detail_image_iv)
@@ -154,9 +155,12 @@ class OrderDetailDelegate : BottomItemDelegate() {
     }
 
     private fun initViews(orderData: OrderDetail, index: Int) {
-        Glide.with(context)
-                .load(orderData.data[index].details.imageDetailUrl)
-                .into(order_detail_image_iv)
+        if (orderData.data[index].details.imageDetailUrl == null) {
+            order_detail_image_iv.setBackgroundResource(R.drawable.program)
+        } else
+            Glide.with(context)
+                    .load(orderData.data[index].details.imageDetailUrl)
+                    .into(order_detail_image_iv)
 
         order_detail_title_tv.text = AllListAdapter.typeArray[orderData.data[index].type]
         if (orderData.data[index].details.centerTime == null)
@@ -201,22 +205,22 @@ class OrderDetailDelegate : BottomItemDelegate() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 
-    fun handlePermisson(){
+    fun handlePermisson() {
 
         // 需要动态申请的权限
         val permission = Manifest.permission.CALL_PHONE
 
         //查看是否已有权限
-        val checkSelfPermission = ActivityCompat.checkSelfPermission(context,permission)
+        val checkSelfPermission = ActivityCompat.checkSelfPermission(context, permission)
 
-        if (checkSelfPermission  == PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {
             //已经获取到权限  获取用户媒体资源
 
-        }else{
+        } else {
 
             //没有拿到权限  是否需要在第二次请求权限的情况下
             // 先自定义弹框说明 同意后在请求系统权限(就是是否需要自定义DialogActivity)
-            if(ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
 
 //                ("安卓就是流氓的获取了你的私人信息","温馨提示"){
 //
@@ -230,7 +234,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
 //                    }
 //                }.show()
 
-            }else{
+            } else {
                 myRequestPermission()
             }
         }
@@ -239,7 +243,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
     private fun myRequestPermission() {
         //可以添加多个权限申请
         val permissions = arrayOf(Manifest.permission.CALL_PHONE)
-        requestPermissions(permissions,1)
+        requestPermissions(permissions, 1)
     }
 
     /***
@@ -248,7 +252,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //是否获取到权限
-        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //            TODO("你要实现的业务逻辑")
             flag = true
             val intent = Intent(Intent.ACTION_CALL)

@@ -12,11 +12,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.view.View
 import android.widget.Toast
+import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.util.log.EmallLogger
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.text.SimpleDateFormat
 import java.util.*
+import android.view.WindowManager
+import com.example.emall_core.util.view.MyDatePickerDialog
 
 
 /**
@@ -78,8 +81,13 @@ class ProgramParamsDelegate : BottomItemDelegate() {
                 val delegate: ProgramParamsTypeDelegate = ProgramParamsTypeDelegate().create()!!
                 startForResult(delegate, 1)
             } else if (i == 1) {
+                KeyboardUtils.hideSoftInput(activity)
+
                 DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener, mYear, mMonth, mDay).show()
+
             } else if (i == 2) {
+                KeyboardUtils.hideSoftInput(activity)
+
                 DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener2, mYear, mMonth, mDay).show()
             }
 
@@ -257,4 +265,5 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
+
 }
