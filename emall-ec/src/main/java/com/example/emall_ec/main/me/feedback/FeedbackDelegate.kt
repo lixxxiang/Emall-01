@@ -26,6 +26,7 @@ import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_feedback.*
+import kotlinx.android.synthetic.main.delegate_my_opinion.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
@@ -36,6 +37,7 @@ class FeedbackDelegate : EmallDelegate() {
     private var fAdapter: FragmentPagerAdapter? = null
     private var supportParams: WeakHashMap<String, Any> ?= WeakHashMap()
     var commonBean = CommonBean()
+    var toast: Toast ?= null
     fun create(): FeedbackDelegate? {
         return FeedbackDelegate()
     }
@@ -85,10 +87,20 @@ class FeedbackDelegate : EmallDelegate() {
                             /**
                              * success
                              */
+
                             val snackBar = Snackbar.make(view!!, "提交成功", Snackbar.LENGTH_SHORT)
                             snackBar.show()
+                            my_opinion_edt.setText("")
+
                         } else {
-                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.wrong_vcode))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })

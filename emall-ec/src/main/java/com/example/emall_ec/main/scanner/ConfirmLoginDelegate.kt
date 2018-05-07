@@ -14,6 +14,7 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.scanner.data.ScanCodeLoginBean
 import com.example.emall_ec.main.sign.SetPasswordDelegate
 import com.example.emall_ec.main.sign.data.CheckMessageBean
@@ -26,6 +27,7 @@ class ConfirmLoginDelegate : EmallDelegate() {
 
     private var scanCodeLoginParams : WeakHashMap<String, Any> ?= WeakHashMap()
     private var scanCodeLoginBean = ScanCodeLoginBean()
+    var toast : Toast?= null
     fun create(): ConfirmLoginDelegate? {
         return ConfirmLoginDelegate()
     }
@@ -55,7 +57,16 @@ class ConfirmLoginDelegate : EmallDelegate() {
                         override fun onSuccess(response: String) {
                             scanCodeLoginBean = Gson().fromJson(response, ScanCodeLoginBean::class.java)
                             if (scanCodeLoginBean.meta == "success") {
-                                Snackbar.make(view!!, getString(R.string.login_success), Snackbar.LENGTH_SHORT).show()
+                                if (toast != null) {
+                                    toast!!.setText(getString(R.string.login_success))
+                                    toast!!.duration = Toast.LENGTH_SHORT
+                                    toast!!.show()
+                                } else {
+                                    toast = Toast.makeText(activity, getString(R.string.login_success), Toast.LENGTH_SHORT)
+                                    toast!!.show()
+                                }
+                                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+
                             }
                         }
                     })

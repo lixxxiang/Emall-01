@@ -230,6 +230,7 @@
                             android:layout_marginRight="9dp"
                             android:background="@drawable/screen_btn_shape"
                             android:text="@string/screen_1"
+                            android:textAllCaps="false"
                             android:textColor="#4A4A4A"
                             android:textSize="12dp" />
                     </RelativeLayout>

@@ -22,6 +22,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 import android.app.Activity
 import android.os.Bundle
+import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -41,6 +42,8 @@ class SignInByTelDelegate : BottomItemDelegate() {
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var checkMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var emptyToast: Toast? = null
+    var toast: Toast? = null
+
     var wrongToast: Toast? = null
     var wrongVcodeToast: Toast? = null
     private var mISignListener: ISignListener? = null
@@ -106,18 +109,17 @@ class SignInByTelDelegate : BottomItemDelegate() {
                     /**
                      * tel is valid
                      */
-                    sign_in_by_tel_count_down.start()
                     getVCode(tel)
                 } else {
                     /**
                      * tel is invalid
                      */
                     if (wrongToast != null) {
-                        wrongToast!!.setText(getString(R.string.wrong_tel) + "1")
+                        wrongToast!!.setText(getString(R.string.wrong_tel))
                         wrongToast!!.duration = Toast.LENGTH_SHORT
                         wrongToast!!.show()
                     } else {
-                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "1", Toast.LENGTH_SHORT)
+                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                         wrongToast!!.show()
                     }
                 }
@@ -133,12 +135,12 @@ class SignInByTelDelegate : BottomItemDelegate() {
                      */
                     if (!RegexUtils.isMobileExact(tel)) {
                         if (wrongToast != null) {
-                            wrongToast!!.setText(getString(R.string.wrong_tel) + "2")
+                            wrongToast!!.setText(getString(R.string.wrong_tel))
                             wrongToast!!.duration = Toast.LENGTH_SHORT
                             wrongToast!!.show()
                         } else {
                             EmallLogger.d("shibushi")
-                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "2", Toast.LENGTH_SHORT)
+                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                             wrongToast!!.show()
                         }
                     }
@@ -158,11 +160,11 @@ class SignInByTelDelegate : BottomItemDelegate() {
                 checkMessage(tel, vCode)
             } else {
                 if (wrongToast != null) {
-                    wrongToast!!.setText(getString(R.string.wrong_tel) + "3")
+                    wrongToast!!.setText(getString(R.string.wrong_tel))
                     wrongToast!!.duration = Toast.LENGTH_SHORT
                     wrongToast!!.show()
                 } else {
-                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "3", Toast.LENGTH_SHORT)
+                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                     wrongToast!!.show()
                 }
             }
@@ -256,13 +258,24 @@ class SignInByTelDelegate : BottomItemDelegate() {
                             EmallLogger.d(response)
 
                             SignHandler().onSignIn(response, mISignListener!!)
-                            val bundle = Bundle()
-                            bundle.putString("USER_NAME", checkMessageBean.userInfo.username)
+//                            val bundle = Bundle()
+//                            bundle.putString("USER_NAME", checkMessageBean.userInfo.username)
                             KeyboardUtils.hideSoftInput(activity)
-                            pop()
+                            if(arguments.getString("PAGE_FROM") == "SIGN_IN_BY_ACCOUNT"){
+                                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                            }else{
+                                pop()
+                            }
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         } else {
-                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.wrong_vcode))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })
@@ -274,28 +287,6 @@ class SignInByTelDelegate : BottomItemDelegate() {
                 })
                 .build()
                 .post()
-
-//        /**
-//         * test
-//         */
-//        var i = "success"
-//        if (i == "success") {
-//            /**
-//             * success
-//             */
-//            val bundle = Bundle()
-//            bundle.putString("USER_NAME", "lixxx")
-//            KeyboardUtils.hideSoftInput(activity)
-//            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//            setFragmentResult(RESULT_OK, bundle)
-//            supportDelegate.pop()
-//
-////            popTo(preFragment.javaClass, false)
-////            pop()
-//
-//        } else {
-//            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
-//        }
     }
 
     private fun getVCode(t: String) {
@@ -310,11 +301,19 @@ class SignInByTelDelegate : BottomItemDelegate() {
                             /**
                              * unregister
                              */
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.not_register))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         } else {
                             /**
                              * registered
                              */
+                            sign_in_by_tel_count_down.start()
                             showHint()
                         }
                     }
@@ -328,22 +327,7 @@ class SignInByTelDelegate : BottomItemDelegate() {
                 .build()
                 .post()
 
-        /**
-         * test
-         */
-//        var i = "1"
-//        if (i == "0") {
-//            /**
-//             * unregister
-//             */
-//            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-//        } else {
-//            /**
-//             * registered
-//             */
-//            showHint()
-//
-//        }
+
     }
 
     private fun showHint() {

@@ -118,7 +118,14 @@ class ModifyTelDelegate : BottomItemDelegate() {
                 if (oldTel != newTel) {
                     checkAccount(oldTel)
                 } else {
-                    Toast.makeText(activity, "same tel?!", Toast.LENGTH_SHORT).show()
+                    if (wrongToast != null) {
+                        wrongToast!!.setText("请勿输入与原手机号相同的手机号")
+                        wrongToast!!.duration = Toast.LENGTH_SHORT
+                        wrongToast!!.show()
+                    } else {
+                        wrongToast = Toast.makeText(activity, "请勿输入与原手机号相同的手机号", Toast.LENGTH_SHORT)
+                        wrongToast!!.show()
+                    }
                 }
             }
         }
@@ -138,7 +145,14 @@ class ModifyTelDelegate : BottomItemDelegate() {
                         if (commonBean.meta == "success") {
                             checkOldTel()
                         } else {
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            if (wrongToast != null) {
+                                wrongToast!!.setText(getString(R.string.not_register))
+                                wrongToast!!.duration = Toast.LENGTH_SHORT
+                                wrongToast!!.show()
+                            } else {
+                                wrongToast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                wrongToast!!.show()
+                            }
                         }
                     }
                 })
@@ -156,7 +170,14 @@ class ModifyTelDelegate : BottomItemDelegate() {
         if (oldTel == arguments.getString("OLD_TEL")){
             checkNewTel(newTel)
         }else{
-            Toast.makeText(activity, "当前绑定的手机号码输入有误", Toast.LENGTH_SHORT).show()
+            if (wrongToast != null) {
+                wrongToast!!.setText("当前绑定的手机号码输入有误")
+                wrongToast!!.duration = Toast.LENGTH_SHORT
+                wrongToast!!.show()
+            } else {
+                wrongToast = Toast.makeText(activity, "当前绑定的手机号码输入有误", Toast.LENGTH_SHORT)
+                wrongToast!!.show()
+            }
 
         }
     }
@@ -179,7 +200,14 @@ class ModifyTelDelegate : BottomItemDelegate() {
                             delegate.arguments = bundle
                             start(delegate)
                         } else {
-                            Toast.makeText(activity, "cannot use this number because it is already signed up", Toast.LENGTH_SHORT).show()
+                            if (wrongToast != null) {
+                                wrongToast!!.setText("该手机号已被注册")
+                                wrongToast!!.duration = Toast.LENGTH_SHORT
+                                wrongToast!!.show()
+                            } else {
+                                wrongToast = Toast.makeText(activity, "该手机号已被注册", Toast.LENGTH_SHORT)
+                                wrongToast!!.show()
+                            }
                         }
                     }
                 })

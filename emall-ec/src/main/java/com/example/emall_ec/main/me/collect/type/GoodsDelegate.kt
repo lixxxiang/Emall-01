@@ -185,27 +185,32 @@ class GoodsDelegate : EmallDelegate() {
                             /**
                              * success
                              */
-                            collection_no_result_rl.visibility = View.GONE
-                            goods_srl.visibility = View.VISIBLE
-                            EmallLogger.d(response)
-                            myAllCollectionList = myAllCollectionBean.data.collection
-                            val size = myAllCollectionBean.data.collection.size
-                            var data: MutableList<Model>? = mutableListOf()
+                            if (collection_no_result_rl != null && goods_srl != null) {
+                                collection_no_result_rl.visibility = View.GONE
+                                goods_srl.visibility = View.VISIBLE
+                                EmallLogger.d(response)
+                                myAllCollectionList = myAllCollectionBean.data.collection
+                                val size = myAllCollectionBean.data.collection.size
+                                var data: MutableList<Model>? = mutableListOf()
 
-                            for (i in 0 until size) {
-                                val model = Model()
-                                model.imageUrl = myAllCollectionBean.data.collection[i].thumbnailUrl
-                                model.price = myAllCollectionBean.data.collection[i].originalPrice
-                                model.time = myAllCollectionBean.data.collection[i].shootingTime
-                                model.productId = myAllCollectionBean.data.collection[i].productId
-                                model.productType = myAllCollectionBean.data.collection[i].productType
-                                model.title = myAllCollectionBean.data.collection[i].title
-                                data!!.add(model)
+                                for (i in 0 until size) {
+                                    val model = Model()
+                                    model.imageUrl = myAllCollectionBean.data.collection[i].thumbnailUrl
+                                    model.price = myAllCollectionBean.data.collection[i].originalPrice
+                                    model.time = myAllCollectionBean.data.collection[i].shootingTime
+                                    model.productId = myAllCollectionBean.data.collection[i].productId
+                                    model.productType = myAllCollectionBean.data.collection[i].productType
+                                    model.title = myAllCollectionBean.data.collection[i].title
+                                    data!!.add(model)
+                                }
+                                initRecyclerView(data!!)
                             }
-                            initRecyclerView(data!!)
+
                         } else if (myAllCollectionBean.message == "方法返回为空") {
-                            goods_srl.visibility = View.GONE
-                            collection_no_result_rl.visibility = View.VISIBLE
+                            if (collection_no_result_rl != null && goods_srl != null) {
+                                goods_srl.visibility = View.GONE
+                                collection_no_result_rl.visibility = View.VISIBLE
+                            }
                         }
                     }
                 })
@@ -242,7 +247,7 @@ class GoodsDelegate : EmallDelegate() {
 
         if (type != -1) {
             getDataByType(type.toString())
-        }else{
+        } else {
             getData()
         }
     }

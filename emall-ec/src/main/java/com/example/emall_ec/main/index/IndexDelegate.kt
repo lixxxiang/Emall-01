@@ -4,6 +4,7 @@ import android.Manifest
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import com.example.emall_ec.main.bottom.BottomItemDelegate
@@ -16,9 +17,11 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.search.SearchDelegate
+import com.example.emall_ec.main.sign.SignInByTelDelegate
 import pub.devrel.easypermissions.EasyPermissions
 
 
@@ -28,6 +31,7 @@ import pub.devrel.easypermissions.EasyPermissions
 class IndexDelegate : BottomItemDelegate() {
     var DELEGATE: EmallDelegate? = null
     var refreshHandler: RefreshHandler? = null
+    var toast: Toast?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_index
     }
@@ -65,10 +69,26 @@ class IndexDelegate : BottomItemDelegate() {
                 IndexDataConverter())
         index_scan_tv.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else {
-                val delegate: ScannerDelegate = ScannerDelegate().create()!!
-                (DELEGATE as EcBottomDelegate).start(delegate)
+                if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+                    val delegate: ScannerDelegate = ScannerDelegate().create()!!
+                    (DELEGATE as EcBottomDelegate).start(delegate)
+                }else{
+                    val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                    val bundle = Bundle()
+                    bundle.putString("PAGE_FROM", "INDEX")
+                    delegate.arguments = bundle
+                    (DELEGATE as EcBottomDelegate).start(delegate)
+                }
+
             }
         }
         initRefreshLayout()
@@ -80,7 +100,14 @@ class IndexDelegate : BottomItemDelegate() {
                 "http://202.111.178.10:28085/mobile/homePage")
         index_search_rl.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else {
                 val delegate: SearchDelegate = SearchDelegate().create()!!
                 (DELEGATE as EcBottomDelegate).start(delegate)

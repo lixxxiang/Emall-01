@@ -41,6 +41,7 @@ class SignUpDelegate : BottomItemDelegate() {
     var emptyToast: Toast? = null
     var wrongToast: Toast? = null
     var wrongVcodeToast: Toast? = null
+    var alreadySignedToast: Toast? = null
     var checkMessageBean = CheckMessageBean()
     var sendMessageBean = SendMessageBean()
     private val REQ_MODIFY_FRAGMENT = 100
@@ -109,11 +110,11 @@ class SignUpDelegate : BottomItemDelegate() {
                      * tel is invalid
                      */
                     if (wrongToast != null) {
-                        wrongToast!!.setText(getString(R.string.wrong_tel) + "1")
+                        wrongToast!!.setText(getString(R.string.wrong_tel))
                         wrongToast!!.duration = Toast.LENGTH_SHORT
                         wrongToast!!.show()
                     } else {
-                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "1", Toast.LENGTH_SHORT)
+                        wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                         wrongToast!!.show()
                     }
                 }
@@ -133,11 +134,11 @@ class SignUpDelegate : BottomItemDelegate() {
                      */
                     if (!RegexUtils.isMobileExact(tel)) {
                         if (wrongToast != null) {
-                            wrongToast!!.setText(getString(R.string.wrong_tel) + "2")
+                            wrongToast!!.setText(getString(R.string.wrong_tel))
                             wrongToast!!.duration = Toast.LENGTH_SHORT
                             wrongToast!!.show()
                         } else {
-                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "2", Toast.LENGTH_SHORT)
+                            wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
                             wrongToast!!.show()
                         }
                     }
@@ -172,11 +173,11 @@ class SignUpDelegate : BottomItemDelegate() {
                 checkMessage(tel, vCode)
             } else {
                 if (wrongToast != null) {
-                    wrongToast!!.setText(getString(R.string.wrong_tel) + "3")
+                    wrongToast!!.setText(getString(R.string.wrong_tel) )
                     wrongToast!!.duration = Toast.LENGTH_SHORT
                     wrongToast!!.show()
                 } else {
-                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) + "3", Toast.LENGTH_SHORT)
+                    wrongToast = Toast.makeText(activity, getString(R.string.wrong_tel) , Toast.LENGTH_SHORT)
                     wrongToast!!.show()
                 }
             }
@@ -213,7 +214,14 @@ class SignUpDelegate : BottomItemDelegate() {
 
                                 KeyboardUtils.hideSoftInput(activity)
                             } else {
-                                Toast.makeText(activity, "手机号已注册", Toast.LENGTH_SHORT).show()
+                                if (alreadySignedToast != null) {
+                                    alreadySignedToast!!.setText("手机号已注册")
+                                    alreadySignedToast!!.duration = Toast.LENGTH_SHORT
+                                    alreadySignedToast!!.show()
+                                } else {
+                                    alreadySignedToast = Toast.makeText(activity, "手机号已注册", Toast.LENGTH_SHORT)
+                                    alreadySignedToast!!.show()
+                                }
                             }
 
                         } else {
@@ -236,38 +244,6 @@ class SignUpDelegate : BottomItemDelegate() {
                 })
                 .build()
                 .post()
-        /**
-         * test
-         */
-//        var i = "success"
-//        if (i == "success") {
-//            /**
-//             * success
-//             */
-//            EmallLogger.d("success")
-//            val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
-//            val bundle = Bundle()
-//            bundle.putString("MODIFY_PASSWORD_TELEPHONE", tel)
-//            delegate.arguments = bundle
-//            start(delegate)
-////            startForResult(delegate, REQ_MODIFY_FRAGMENT)
-//            EmallLogger.d(topFragment)
-//            EmallLogger.d(preFragment)
-////            start(EcBottomDelegate())
-////            supportDelegate.showHideFragment(MeDelegate(),IndexDelegate())
-//
-//            KeyboardUtils.hideSoftInput(activity)
-//        } else {
-//            if (wrongVcodeToast != null) {
-//                wrongVcodeToast!!.setText(getString(R.string.wrong_vcode))
-//                wrongVcodeToast!!.duration = Toast.LENGTH_SHORT
-//                wrongVcodeToast!!.show()
-//            } else {
-//                wrongVcodeToast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
-//                wrongVcodeToast!!.show()
-//            }
-////            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
-//        }
     }
 
     override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
@@ -344,7 +320,6 @@ class SignUpDelegate : BottomItemDelegate() {
                             /**
                              * unregister
                              */
-//                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
                             showHint()
 
                         } else {
@@ -362,23 +337,6 @@ class SignUpDelegate : BottomItemDelegate() {
                 })
                 .build()
                 .post()
-
-        /**
-         * test
-         */
-//        var i = "1"
-//        if (i == "0") {
-//            /**
-//             * unregister
-//             */
-//            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
-//        } else {
-//            /**
-//             * registered
-//             */
-//            showHint()
-//
-//        }
     }
 
     private fun showHint() {

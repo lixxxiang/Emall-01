@@ -42,6 +42,7 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
     var sendMessageBean = SendMessageBean()
     var checkMessageBean = CheckMessageBean()
     var commonBean = CommonBean()
+    var toast: Toast?= null
     private var mISignListener: ISignListener? = null
 
     override fun onAttach(activity: Activity?) {
@@ -94,7 +95,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                 /**
                  * empty tel
                  */
-                Toast.makeText(activity, getString(R.string.empty_tel) + tel, Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.empty_tel))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.empty_tel), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             } else {
                 /**
                  * tel ok
@@ -109,7 +117,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                     /**
                      * tel is invalid
                      */
-                    Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
+                    if (toast != null) {
+                        toast!!.setText(getString(R.string.wrong_tel))
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
                 }
             }
 //            sign_in_by_tel_vcode_tv.visibility = View.VISIBLE
@@ -121,14 +136,32 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
             if (RegexUtils.isMobileExact(tel)) {
                 checkMessage(tel, vCode)
             } else {
-                Toast.makeText(activity, getString(R.string.wrong_tel) + tel, Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.wrong_tel))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             }
         }
     }
 
     private fun checkOldTel(){
-        if (tel != arguments.getString("OLD_TEL")){
-            Toast.makeText(activity, "当前绑定的手机号码输入有误", Toast.LENGTH_SHORT).show()
+        if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+            if (tel != arguments.getString("OLD_TEL")){
+                if (toast != null) {
+                    toast!!.setText("当前绑定的手机号码输入有误")
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, "当前绑定的手机号码输入有误", Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
+            }else{
+                findTelephone(tel)
+            }
         }else{
             findTelephone(tel)
         }
@@ -150,7 +183,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                             modify_pwd_count_down.start()
 
                         }else{
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.not_register))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })
@@ -208,7 +248,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                             start(delegate)
                             KeyboardUtils.hideSoftInput(activity)
                         }else{
-                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.wrong_vcode))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })
@@ -248,7 +295,14 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
                             /**
                              * unregister
                              */
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.not_register))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         } else {
                             /**
                              * registered

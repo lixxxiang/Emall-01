@@ -10,6 +10,8 @@ import com.example.emall_ec.main.order.state.*
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.View
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.me.setting.SettingDelegate
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 
@@ -34,7 +36,10 @@ class OrderListDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         order_list_toolbar.setNavigationOnClickListener {
-            pop()
+            if (arguments.getString("FROM") == "PAYMENT")
+                popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            else
+                pop()
         }
         initControls()
     }

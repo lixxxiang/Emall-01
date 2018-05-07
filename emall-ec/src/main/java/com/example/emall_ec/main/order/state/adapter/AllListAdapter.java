@@ -105,8 +105,7 @@ public class AllListAdapter extends BaseAdapter {
                     if (dataList.get(0).getData().get(i).getState() == 2) {
                         PayMethodDelegate payMethodDelegate = new PayMethodDelegate().create();
                         Bundle bundle = new Bundle();
-                        bundle.putString("ORDER_ID", dataList.get(0).getData().get(i).getOrderId());
-                        bundle.putString("DEMAND_ID", dataList.get(0).getData().get(i).getParentOrderId());
+                        bundle.putString("PARENT_ORDER_ID", dataList.get(0).getData().get(i).getOrderId());
                         bundle.putString("TYPE", "2");
                         payMethodDelegate.setArguments(bundle);
                         delegate.getParentDelegate().start(payMethodDelegate);

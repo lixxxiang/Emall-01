@@ -51,6 +51,7 @@ class SignInByAccountDelegate : EmallDelegate() {
     var commonBean = CommonBean()
     var userNameLoginBean = UserNameLoginBean()
     private var mISignListener: ISignListener? = null
+    var toast: Toast?= null
 
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
@@ -118,7 +119,14 @@ class SignInByAccountDelegate : EmallDelegate() {
             if (RegexUtils.isMobileExact(tel)) {
                 checkAccount()
             } else {
-                Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.wrong_tel))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.wrong_tel), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             }
         }
 
@@ -151,7 +159,12 @@ class SignInByAccountDelegate : EmallDelegate() {
             dialog.window.attributes = params
 
             dialog.forget_rl1.setOnClickListener {
-                startWithPop(SignInByTelDelegate())
+                dialog.dismiss()
+                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "SIGN_IN_BY_ACCOUNT")
+                delegate.arguments = bundle
+                startWithPop(delegate)
             }
 
             dialog.forget_rl2.setOnClickListener {
@@ -186,7 +199,14 @@ class SignInByAccountDelegate : EmallDelegate() {
                              */
                             login()
                         } else {
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.not_register))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })
@@ -236,7 +256,15 @@ class SignInByAccountDelegate : EmallDelegate() {
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 //                            setFragmentResult(RESULT_OK, bundle)
                         } else {
-                            Toast.makeText(activity, getString(R.string.account_pwd_error), Toast.LENGTH_SHORT).show()
+
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.account_pwd_error))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.account_pwd_error), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })

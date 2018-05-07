@@ -36,6 +36,7 @@ class MeDelegate : BottomItemDelegate() {
     var titleList: MutableList<Int>? = mutableListOf()
     var userName = String()
     var ME_USERNAME_CODE = 100
+    var toast: Toast?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_me
     }
@@ -84,14 +85,28 @@ class MeDelegate : BottomItemDelegate() {
 
         me_order.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else
                 toOrderDelegate(0)
         }
 
         me_avatar_iv.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else {
                 if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                     val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
@@ -101,9 +116,28 @@ class MeDelegate : BottomItemDelegate() {
                     DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
                 }
             }
-
         }
 
+        me_fake_btn.setOnClickListener {
+            if (!NetworkUtils.isConnected())
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
+            else {
+                if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+                    val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                    val bundle = Bundle()
+                    bundle.putString("PAGE_FROM", "AVATAR")
+                    delegate.arguments = bundle
+                    DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
+                }
+            }
+        }
 
 
 
@@ -111,7 +145,14 @@ class MeDelegate : BottomItemDelegate() {
             when (i) {
                 0 -> {
                     if (!NetworkUtils.isConnected())
-                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.no_internet))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                     else {
                         if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                             (DELEGATE as EcBottomDelegate).start(CollectionDelegate().create())
@@ -129,7 +170,14 @@ class MeDelegate : BottomItemDelegate() {
                 }
                 2 -> {
                     if (!NetworkUtils.isConnected())
-                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.no_internet))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                     else {
                         if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                             val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
@@ -148,19 +196,40 @@ class MeDelegate : BottomItemDelegate() {
                 }
                 3 -> {
                     if (!NetworkUtils.isConnected())
-                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.no_internet))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                     else
                         (DELEGATE as EcBottomDelegate).start(SettingDelegate().create())
                 }
                 4 -> {
                     if (!NetworkUtils.isConnected())
-                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.no_internet))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                     else
                         (DELEGATE as EcBottomDelegate).start(ContactDelegate().create())
                 }
                 5 -> {
                     if (!NetworkUtils.isConnected())
-                        Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.no_internet))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                     else
                         (DELEGATE as EcBottomDelegate).start(FeedbackDelegate().create())
                 }
@@ -169,7 +238,14 @@ class MeDelegate : BottomItemDelegate() {
 
         btn1.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else
 
                 toOrderDelegate(1)
@@ -177,28 +253,56 @@ class MeDelegate : BottomItemDelegate() {
 
         btn2.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else
                 toOrderDelegate(2)
         }
 
         btn3.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else
                 toOrderDelegate(3)
         }
 
         btn4.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else
                 toOrderDelegate(4)
         }
 
         me_to_computer_iv.setOnClickListener {
             if (!NetworkUtils.isConnected())
-                Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.no_internet))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             else
                 (DELEGATE as EcBottomDelegate).start(ScannerDelegate().create())
         }

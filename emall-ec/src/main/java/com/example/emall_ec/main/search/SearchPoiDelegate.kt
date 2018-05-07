@@ -57,7 +57,7 @@ class SearchPoiDelegate : EmallDelegate() {
                 search_poi_poi_listview.visibility = View.INVISIBLE
                 search_poi_cities_listview.visibility = View.VISIBLE
                 pages = 1
-            } else{
+            } else {
                 bundle.putString("LOCATION", "")
                 this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
 
@@ -201,6 +201,17 @@ class SearchPoiDelegate : EmallDelegate() {
         for (i in 0 until poiInfo.gdPois.poiList.size) {
             println(i)
             poiList!!.add(poiInfo.gdPois.poiList[i].name)
+
+            if (poiInfo.gdPois.poiList[i].cityname == null) {
+                poiInfo.gdPois.poiList[i].cityname = poiInfo.gdPois.poiList[i].name
+            }
+            if (poiInfo.gdPois.poiList[i].adname == null) {
+                poiInfo.gdPois.poiList[i].adname = ""
+            }
+            if (poiInfo.gdPois.poiList[i].address == null) {
+                poiInfo.gdPois.poiList[i].address = ""
+            }
+
             poiAddressList!!.add(String.format("%s %s %s",
                     poiInfo.gdPois.poiList[i].cityname,
                     poiInfo.gdPois.poiList[i].adname,

@@ -5,6 +5,9 @@ import com.example.emall_core.ui.HomePageUnitsBean;
 import com.example.emall_ec.main.classify.data.SceneSearch;
 import com.example.emall_ec.main.classify.data.VideoHomeBean;
 import com.example.emall_ec.main.classify.data.VideoSearch;
+import com.example.emall_ec.main.demand.data.AppPayBean;
+import com.example.emall_ec.main.demand.data.QueryOrderBean;
+import com.example.emall_ec.main.demand.data.QueryOrderFailureBean;
 import com.example.emall_ec.main.detail.data.SceneDetailBean;
 import com.example.emall_ec.main.detail.data.VideoDetailBean;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
@@ -55,7 +58,8 @@ public interface ApiService {
     @POST("/global/videoSearch")
     @FormUrlEncoded
     Call<VideoSearchBean> videoSearch(@Field("geo") String targetSentence,
-                                      @Field("type") String targetSentence2, @Field("pageSize") String targetSentence3, @Field("pageNum") String targetSentence4);
+                                      @Field("type") String targetSentence2,
+                                      @Field("pageSize") String targetSentence3, @Field("pageNum") String targetSentence4);
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
     @GET("global/videoHome")
@@ -66,4 +70,19 @@ public interface ApiService {
     Call<OrderDetail> findOrderListByUserId(@Query("userId") String targetSentence,
                                             @Query("state") String targetSentence2,
                                             @Query("type") String targetSentence3);
+
+    @POST("/global/wxpay/appPay")
+    @FormUrlEncoded
+    Call<AppPayBean> appPay(@Field("orderId") String targetSentence,
+                            @Field("type") String targetSentence2);
+
+    @POST("/global/mobile/wxpay/queryOrder")
+    @FormUrlEncoded
+    Call<QueryOrderFailureBean> queryOrderFailure(@Field("parentOrderId") String targetSentence,
+                                           @Field("type") String targetSentence2);
+
+    @POST("/global/mobile/wxpay/queryOrder")
+    @FormUrlEncoded
+    Call<QueryOrderBean> queryOrder(@Field("parentOrderId") String targetSentence,
+                                    @Field("type") String targetSentence2);
 }

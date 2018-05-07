@@ -60,5 +60,22 @@ public class QueryOrderBean {
         public void setPlanCommitTime(String planCommitTime) {
             this.planCommitTime = planCommitTime;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "sumPrice=" + sumPrice +
+                    ", planCommitTime='" + planCommitTime + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "QueryOrderBean{" +
+                "data=" + data +
+                ", message='" + message + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

@@ -90,56 +90,6 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun data() {
-//        if (!inited)
-//            EmallProgressBar.showProgressbar(context)
-
-//        findOrderListByUserIdParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-//        findOrderListByUserIdParams!!["state"] = ""
-//        findOrderListByUserIdParams!!["type"] = ""
-//        EmallLogger.d(findOrderListByUserIdParams!!)
-//        RestClient().builder()
-//                .url("http://59.110.164.214:8024/global/order/findOrderListByUserId")
-//                .params(findOrderListByUserIdParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        EmallLogger.d(response)
-//                        inited = true
-//                        orderDetail = Gson().fromJson(response, OrderDetail::class.java)
-//                        val data: MutableList<OrderDetail>? = mutableListOf()
-//                        if (all_lv != null && all_rl != null){
-//                            if (orderDetail.data.isEmpty()) {
-//                                all_lv.visibility = View.INVISIBLE
-//                                all_rl.visibility = View.VISIBLE
-////                                EmallProgressBar.hideProgressbar()
-//                            } else {
-//                                all_lv.visibility = View.VISIBLE
-//                                data!!.add(orderDetail)
-//                                initRefreshLayout()
-//                                EmallLogger.d(data)
-//                                adapter = AllListAdapter(delegate, data, R.layout.item_order, context)
-//                                all_lv.adapter = adapter
-////                                EmallProgressBar.hideProgressbar()
-////                            all_lv.getChildAt(1).findViewById<AppCompatButton>(R.id.item_order_btn).setOnClickListener {
-////                                start(PayMethodDelegate().create())
-////                            }
-//                            }
-//                        }
-//                    }
-//
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {
-//                        EmallLogger.d(msg)
-//                    }
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {
-//                        EmallLogger.d("failure")
-//                    }
-//                })
-//                .build()
-//                .get()
-
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "", "")

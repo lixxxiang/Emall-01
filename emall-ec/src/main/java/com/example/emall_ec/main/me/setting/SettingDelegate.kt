@@ -25,6 +25,7 @@ class SettingDelegate : BottomItemDelegate() {
     var titleList: MutableList<Int>? = mutableListOf()
     var index = 0
     var tel = String()
+    var toast: Toast? = null
     fun create(): SettingDelegate? {
         return SettingDelegate()
     }
@@ -39,7 +40,6 @@ class SettingDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(setting_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         setting_toolbar.setNavigationOnClickListener {
-
             pop()
             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
@@ -81,9 +81,28 @@ class SettingDelegate : BottomItemDelegate() {
                     start(delegate)
                 }
             } else if (i == 1) {
-                CacheUtil.clearAllCache(context)
-                setting_lv.getChildAt(1).findViewById<AppCompatTextView>(R.id.detail_tv).text = getString(R.string.no_cache)
-                Toast.makeText(activity, "清理成功", Toast.LENGTH_SHORT).show()
+                val builder = AlertDialog.Builder(activity)
+                builder.setTitle("确认清理吗？")
+                builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
+                    CacheUtil.clearAllCache(context)
+                    setting_lv.getChildAt(1).findViewById<AppCompatTextView>(R.id.detail_tv).text = getString(R.string.no_cache)
+                    if (toast != null) {
+                        toast!!.setText("清理成功")
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, "清理成功", Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
+                    dialog.dismiss()
+                }
+
+                builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                builder.create().show()
+
             }
         }
 

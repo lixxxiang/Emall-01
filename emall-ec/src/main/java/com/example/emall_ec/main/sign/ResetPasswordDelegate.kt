@@ -40,7 +40,7 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     var tel = String()
     var flag1 = false
     var flag2 = false
-
+    var toast: Toast ?= null
     fun create(): ResetPasswordDelegate? {
         return ResetPasswordDelegate()
     }
@@ -90,11 +90,32 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                         if (!checkMaxLength(temp)) {
                             newPassword = reset_pwd_new_pwd_et.text.toString()
                         } else
-                            Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.pwd_max))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                     } else
-                        Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.pwd_min))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                 } else {
-                    Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
+                    if (toast != null) {
+                        toast!!.setText(getString(R.string.error_pwd_format))
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
                 }
             }
         }
@@ -112,15 +133,50 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                                 EmallLogger.d("old", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userPassword)
                                 changePassword()
                             } else
-                                Toast.makeText(activity, getString(R.string.check_pwd_repeat), Toast.LENGTH_SHORT).show()
+                                if (toast != null) {
+                                    toast!!.setText(getString(R.string.check_pwd_repeat))
+                                    toast!!.duration = Toast.LENGTH_SHORT
+                                    toast!!.show()
+                                } else {
+                                    toast = Toast.makeText(activity, getString(R.string.check_pwd_repeat), Toast.LENGTH_SHORT)
+                                    toast!!.show()
+                                }
                         } else
-                            Toast.makeText(activity, getString(R.string.pwd_no_match), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.pwd_no_match))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.pwd_no_match), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                     } else
-                        Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.pwd_max))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                 } else
-                    Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT).show()
+                    if (toast != null) {
+                        toast!!.setText(getString(R.string.pwd_min))
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
             } else
-                Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.error_pwd_format))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
         }
     }
 
@@ -159,7 +215,14 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                                 }
                             }
                         } else {
-                            Toast.makeText(activity, "change pwd failure!!", Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText("密码修改失败")
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, "密码修改失败", Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })

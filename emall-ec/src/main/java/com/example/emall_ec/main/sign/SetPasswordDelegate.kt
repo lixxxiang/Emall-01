@@ -42,7 +42,7 @@ class SetPasswordDelegate : BottomItemDelegate() {
     var flag1 = false
     var flag2 = false
     private val REQ_MODIFY_FRAGMENT = 100
-
+    var toast : Toast? = null
     fun create(): SetPasswordDelegate? {
         return SetPasswordDelegate()
     }
@@ -58,9 +58,13 @@ class SetPasswordDelegate : BottomItemDelegate() {
         tel = arguments.getString("MODIFY_PASSWORD_TELEPHONE")
 
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        set_pwd_toolbar.title = ""
+        set_pwd_toolbar.title = getString(R.string.sign_up)
         (activity as AppCompatActivity).setSupportActionBar(set_pwd_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        set_pwd_toolbar.setNavigationOnClickListener {
+            pop()
+        }
 
         set_password_new_pwd_et.addTextChangedListener(mNewTextWatcher)
         set_password_confirm_password_et.addTextChangedListener(mConfirmTextWatcher)
@@ -89,11 +93,32 @@ class SetPasswordDelegate : BottomItemDelegate() {
                         if (!checkMaxLength(temp)) {
                             newPassword = set_password_new_pwd_et.text.toString()
                         } else
-                            Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.pwd_max))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                     } else
-                        Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.pwd_min))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                 } else {
-                    Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
+                    if (toast != null) {
+                        toast!!.setText(getString(R.string.error_pwd_format))
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
                 }
             }
         }
@@ -107,7 +132,6 @@ class SetPasswordDelegate : BottomItemDelegate() {
                         newPassword = set_password_new_pwd_et.text.toString()
                         confirmPassword = set_password_confirm_password_et.text.toString()
                         if (newPassword == confirmPassword) {
-                            Toast.makeText(activity, "pwd success", Toast.LENGTH_SHORT).show()
                             val delegate: SetUserNameDelegate = SetUserNameDelegate().create()!!
                             val bundle = Bundle()
                             bundle.putString("USER_TELEPHONE", tel)
@@ -122,14 +146,46 @@ class SetPasswordDelegate : BottomItemDelegate() {
                             KeyboardUtils.hideSoftInput(activity)
 
 //                            changePassword()
-                        } else
-                            Toast.makeText(activity, getString(R.string.pwd_no_match), Toast.LENGTH_SHORT).show()
-                    } else
-                        Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT).show()
-                } else
-                    Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT).show()
-            } else
-                Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT).show()
+                        } else{
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.pwd_no_match))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.pwd_no_match), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
+                        }
+                    } else{
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.pwd_max))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.pwd_max), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
+                    }
+                } else{
+                    if (toast != null) {
+                        toast!!.setText(getString(R.string.pwd_min))
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, getString(R.string.pwd_min), Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
+                }
+            } else{
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.error_pwd_format))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.error_pwd_format), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
+            }
         }
         btn_set_password_submit.isClickable = false
     }
@@ -141,33 +197,6 @@ class SetPasswordDelegate : BottomItemDelegate() {
             EmallLogger.d(data.getString("test"))
 //            supportDelegate.pop()
         }
-    }
-
-    private fun changePassword() {
-        changePasswordParams!!["userTelephone"] = tel
-        changePasswordParams!!["userPassword"] = confirmPassword
-
-        RestClient().builder()
-                .url("http://59.110.161.48:8023/changePassword.do")
-                .params(changePasswordParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        commonBean = Gson().fromJson(response, CommonBean::class.java)
-                        if (commonBean.meta == "success") {
-                            Toast.makeText(activity, "change pwd success!!", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(activity, "change pwd failure!!", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {}
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {}
-                })
-                .build()
-                .post()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

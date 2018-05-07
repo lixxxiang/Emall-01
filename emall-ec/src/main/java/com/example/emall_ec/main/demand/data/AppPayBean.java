@@ -103,5 +103,26 @@ public class AppPayBean {
         public void setTimestamp(String timestamp) {
             this.timestamp = timestamp;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "packageX='" + packageX + '\'' +
+                    ", appid='" + appid + '\'' +
+                    ", sign='" + sign + '\'' +
+                    ", prepayid='" + prepayid + '\'' +
+                    ", mch_id='" + mch_id + '\'' +
+                    ", noncestr='" + noncestr + '\'' +
+                    ", timestamp='" + timestamp + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "AppPayBean{" +
+                "code=" + code +
+                ", data=" + data +
+                '}';
     }
 }

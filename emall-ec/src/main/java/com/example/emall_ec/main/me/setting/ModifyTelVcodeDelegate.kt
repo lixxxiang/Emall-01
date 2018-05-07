@@ -134,7 +134,14 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
                             /**
                              * registered
                              */
-                            Toast.makeText(activity, "cannot use this number because it is already signed up", Toast.LENGTH_SHORT).show()
+                            if (emptyToast != null) {
+                                emptyToast!!.setText("该手机号已被注册")
+                                emptyToast!!.duration = Toast.LENGTH_SHORT
+                                emptyToast!!.show()
+                            } else {
+                                emptyToast = Toast.makeText(activity, "该手机号已被注册", Toast.LENGTH_SHORT)
+                                emptyToast!!.show()
+                            }
                         }
                     }
                 })
@@ -189,7 +196,14 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
                              */
                             changeTelephone(oldTel, newTel)
                         } else {
-                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
+                            if (emptyToast != null) {
+                                emptyToast!!.setText(getString(R.string.wrong_vcode))
+                                emptyToast!!.duration = Toast.LENGTH_SHORT
+                                emptyToast!!.show()
+                            } else {
+                                emptyToast = Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT)
+                                emptyToast!!.show()
+                            }
                         }
                     }
                 })
@@ -237,11 +251,25 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
                                 info.userTelephone = newTel
                                 DatabaseManager().getInstance()!!.getDao()!!.update(info)
                             }
-                            Toast.makeText(activity, "手机号修改成功", Toast.LENGTH_SHORT).show()
+                            if (emptyToast != null) {
+                                emptyToast!!.setText("手机号修改成功")
+                                emptyToast!!.duration = Toast.LENGTH_SHORT
+                                emptyToast!!.show()
+                            } else {
+                                emptyToast = Toast.makeText(activity, "手机号修改成功", Toast.LENGTH_SHORT)
+                                emptyToast!!.show()
+                            }
                             popTo(findFragment(AccountPrivacySettingsDelegate().javaClass).javaClass, false)
                             KeyboardUtils.hideSoftInput(activity)
                         } else {
-                            Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT).show()
+                            if (emptyToast != null) {
+                                emptyToast!!.setText(getString(R.string.not_register))
+                                emptyToast!!.duration = Toast.LENGTH_SHORT
+                                emptyToast!!.show()
+                            } else {
+                                emptyToast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                emptyToast!!.show()
+                            }
                         }
                     }
                 })

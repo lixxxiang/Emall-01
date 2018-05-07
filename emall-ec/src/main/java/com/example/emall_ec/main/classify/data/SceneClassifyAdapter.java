@@ -34,7 +34,7 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
         ViewGroup.LayoutParams parm = helper.getView(R.id.item_classify_iv).getLayoutParams();
         parm.height = glm.getWidth() / 2 - helper.getView(R.id.item_classify_iv).getPaddingLeft();
 
-        helper.setText(R.id.item_classify_time_tv, item.getTime());
+        helper.setText(R.id.item_classify_time_tv, "拍摄时间：" + item.getTime());
 
         if (!item.getProductType().equals("3")){
             helper.setText(R.id.item_classify_price_tv, "¥"+ item.getPrice());

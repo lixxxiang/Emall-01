@@ -42,7 +42,7 @@ class SetUserNameDelegate : BottomItemDelegate() {
     var pwd = String()
     var findUserNameParam: WeakHashMap<String, Any>? = WeakHashMap()
     var registerParam: WeakHashMap<String, Any>? = WeakHashMap()
-
+    var toast:Toast? = null
     var commonBean = CommonBean()
 
     fun create(): SetUserNameDelegate? {
@@ -63,7 +63,10 @@ class SetUserNameDelegate : BottomItemDelegate() {
     override fun initial() {
         set_nickname_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
 //        set_nickname_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
-        set_user_name_toolbar.title = ""
+        set_user_name_toolbar.title = getString(R.string.sign_up)
+        set_user_name_toolbar.setNavigationOnClickListener {
+            pop()
+        }
         (activity as AppCompatActivity).setSupportActionBar(set_user_name_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         set_nickname_tel_et.addTextChangedListener(mTextWatcher)
@@ -109,7 +112,14 @@ class SetUserNameDelegate : BottomItemDelegate() {
         btn_set_nickname_submit.setOnClickListener {
             userName = set_nickname_tel_et.text.toString()
             if (userName.isEmpty()) {
-                Toast.makeText(activity, getString(R.string.empty_userName), Toast.LENGTH_SHORT).show()
+                if (toast != null) {
+                    toast!!.setText(getString(R.string.empty_userName))
+                    toast!!.duration = Toast.LENGTH_SHORT
+                    toast!!.show()
+                } else {
+                    toast = Toast.makeText(activity, getString(R.string.empty_userName), Toast.LENGTH_SHORT)
+                    toast!!.show()
+                }
             } else {
                 if (!checkMinLength(userName)) {
                     if (!checkMaxLength(userName)) {
@@ -125,9 +135,23 @@ class SetUserNameDelegate : BottomItemDelegate() {
                         userNameAvailable(userName)
 
                     } else
-                        Toast.makeText(activity, "用户名过长", Toast.LENGTH_SHORT).show()
+                        if (toast != null) {
+                            toast!!.setText("用户名过长")
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, "用户名过长", Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
                 } else
-                    Toast.makeText(activity, getString(R.string.empty_userName), Toast.LENGTH_SHORT).show()
+                    if (toast != null) {
+                        toast!!.setText(getString(R.string.empty_userName))
+                        toast!!.duration = Toast.LENGTH_SHORT
+                        toast!!.show()
+                    } else {
+                        toast = Toast.makeText(activity, getString(R.string.empty_userName), Toast.LENGTH_SHORT)
+                        toast!!.show()
+                    }
             }
         }
         btn_set_nickname_submit.isClickable = false
@@ -142,13 +166,16 @@ class SetUserNameDelegate : BottomItemDelegate() {
                     override fun onSuccess(response: String) {
                         commonBean = Gson().fromJson(response, CommonBean::class.java)
                         if (commonBean.meta == "success") {
-                            Toast.makeText(activity, getString(R.string.username_taken), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.username_taken))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.username_taken), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         } else {
                             register(tel, pwd, string)
-//                            Toast.makeText(activity, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
-//                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
-//                            KeyboardUtils.hideSoftInput(activity)
-//                            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         }
                     }
                 })
@@ -217,12 +244,26 @@ class SetUserNameDelegate : BottomItemDelegate() {
                              * test------------------------------------
                              */
                             SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\""), mISignListener!!)
-                            Toast.makeText(activity, "注册成功", Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText("注册成功")
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, "注册成功", Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                             popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
                             KeyboardUtils.hideSoftInput(activity)
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         } else {
-                            Toast.makeText(activity, resources.getString(R.string.account_pwd_error), Toast.LENGTH_SHORT).show()
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.account_pwd_error))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.account_pwd_error), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
                     }
                 })

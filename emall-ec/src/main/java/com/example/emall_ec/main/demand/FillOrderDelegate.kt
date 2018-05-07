@@ -1,6 +1,8 @@
 package com.example.emall_ec.main.demand
 
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.emall_ec.main.bottom.BottomItemDelegate
@@ -8,7 +10,9 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
+import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.ButtonUtils
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.data.OrderBean
@@ -38,6 +42,7 @@ class FillOrderDelegate : BottomItemDelegate() {
         return R.layout.delegate_fill_order
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         fill_order_toolbar.title = getString(R.string.fill_order)
         (activity as AppCompatActivity).setSupportActionBar(fill_order_toolbar)
@@ -89,7 +94,10 @@ class FillOrderDelegate : BottomItemDelegate() {
         }
 
         fill_order_to_pay.setOnClickListener {
-            insertOrderData()
+            if (!ButtonUtils.isFastDoubleClick(R.id.fill_order_to_pay)) {
+                EmallProgressBar.showProgressbar(context)
+                insertOrderData()
+            }
         }
     }
 
@@ -111,13 +119,13 @@ class FillOrderDelegate : BottomItemDelegate() {
                         orderBean = Gson().fromJson(response, OrderBean::class.java)
                         EmallLogger.d(orderBean)
                         if (orderBean.msg == "成功") {
+                            EmallProgressBar.hideProgressbar()
                             val delegate: PayMethodDelegate = PayMethodDelegate().create()!!
                             val bundle: Bundle? = Bundle()
-                            bundle!!.putString("ORDER_ID",orderBean.data.parentOrderId)
-                            bundle.putString("DEMAND_ID", arguments.getString("demandId"))
+                            bundle!!.putString("PARENT_ORDER_ID",orderBean.data.parentOrderId)
                             bundle.putString("TYPE", "1")
                             delegate.arguments = bundle
-                            start(delegate)
+                            startWithPop(delegate)
                         }
                     }
                 })
