@@ -142,6 +142,7 @@ class PayMethodDelegate : BottomItemDelegate() {
             }
             "-2" -> {
                 Toast.makeText(activity, "取消支付", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
