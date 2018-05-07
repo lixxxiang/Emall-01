@@ -455,6 +455,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 ssp2!!["resolution"] = "16"
             }
             if (flag_1_5) {
+                ssp2!!["resolution"] = ""
                 ssp2!!["satelliteId"] = "JL101A"
             }
             if (!flag_1_1 && !flag_1_2 && !flag_1_3 && !flag_1_4 && !flag_1_5) {
@@ -474,8 +475,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 ssp2!!["cloud"] = "40"
             }
             if (!flag_2_1 && !flag_2_2 && !flag_2_3 && !flag_2_4) {
-                ssp2!!["resolution"] = ""
-                ssp2!!["satelliteId"] = ""
+                ssp2!!["cloud"] = ""
             }
 
             if (flag_3_1) {
@@ -553,7 +553,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
-                        EmallLogger.d(response)
                         itemSize = 0
                         if (sceneSearch.status != 103) {
                             optics_rv.visibility = View.VISIBLE

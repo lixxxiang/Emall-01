@@ -39,7 +39,7 @@ public class AllListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    public static String[] typeArray = {"","标准景", "编程摄影",   "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] typeArray = {"", "标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
     public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
 
@@ -130,13 +130,20 @@ public class AllListAdapter extends BaseAdapter {
         util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
-        if (imageList.get(i) == null){
-            util.imageView.setBackgroundResource(R.drawable.program);
-        }else{
-            Glide.with(context)
-                    .load(imageList.get(i))
-                    .into(util.imageView);
-        }
+//        if (imageList.get(i) == null) {
+//            if (util.imageView.getTag() != null) {
+//                util.imageView.setBackgroundResource(R.drawable.program);
+//            }
+//        } else {
+            util.imageView.setImageResource(R.drawable.program);
+            util.imageView.setTag(R.id.imageid, imageList.get(i));
+            if (util.imageView.getTag(R.id.imageid) != null && imageList.get(i) == util.imageView.getTag(R.id.imageid)) {
+                Glide.with(context).load(imageList.get(i)).into(util.imageView);
+            }
+//            Glide.with(context)
+//                    .load(imageList.get(i))
+//                    .into(util.imageView);
+//        }
 
         return view;
     }

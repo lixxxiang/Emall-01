@@ -53,6 +53,8 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         setSwipeBackEnable(false)
+        initRefreshLayout()
+        all_srl.isRefreshing = true
         all_lv.addHeaderView(View.inflate(activity, R.layout.orderlist_head_view, null))
         delegate = this
         data()
@@ -109,9 +111,9 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                             all_rl.visibility = View.GONE
 
                             data!!.add(orderDetail)
-                            initRefreshLayout()
                             adapter = AllListAdapter(delegate, data, R.layout.item_order, context)
                             all_lv.adapter = adapter
+                            all_srl.isRefreshing = false
                         }
                     }
                 } else {

@@ -17,6 +17,7 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
+import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_modify_tel.*
@@ -167,7 +168,7 @@ class ModifyTelDelegate : BottomItemDelegate() {
     }
 
     private fun checkOldTel(){
-        if (oldTel == arguments.getString("OLD_TEL")){
+        if (oldTel == DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone){
             checkNewTel(newTel)
         }else{
             if (wrongToast != null) {

@@ -150,7 +150,9 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
 
     private fun checkOldTel(){
         if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
-            if (tel != arguments.getString("OLD_TEL")){
+            EmallLogger.d(tel)
+            EmallLogger.d(arguments.getString("OLD_TEL"))
+            if (tel != DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone){
                 if (toast != null) {
                     toast!!.setText("当前绑定的手机号码输入有误")
                     toast!!.duration = Toast.LENGTH_SHORT
