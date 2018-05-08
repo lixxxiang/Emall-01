@@ -341,7 +341,7 @@ public class MediaController extends FrameLayout {
 
         mWindow.setAnimationStyle(mAnimStyle);
         setWindowLayoutType();
-        mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY, anchorRect.left, anchorRect.bottom);
+        mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY, anchorRect.left, anchorRect.height());
       }
       mShowing = true;
       if (mShownListener != null)

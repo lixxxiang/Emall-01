@@ -690,6 +690,34 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        level = 1
+        program_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
+        topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        program_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
+        program_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
+        program_camera.visibility = View.VISIBLE
+        satelliteImageView!!.visibility = View.VISIBLE
+        scrollTextView!!.visibility = View.VISIBLE
+        title!!.visibility = View.GONE
+        program_toolbar_searchbar.visibility = View.VISIBLE
+        nextStep!!.visibility = View.GONE
+        rulerRl!!.visibility = View.INVISIBLE
+        rular!!.visibility = View.INVISIBLE
+        rular2!!.visibility = View.INVISIBLE
+        r1Tv!!.visibility = View.INVISIBLE
+        r2Tv!!.visibility = View.INVISIBLE
+        val mUiSettings = mBaiduMap!!.uiSettings
+        mUiSettings.isScrollGesturesEnabled = true
+        mUiSettings.isOverlookingGesturesEnabled = true
+        mUiSettings.isZoomGesturesEnabled = true
+        move!!.visibility = View.VISIBLE
+        zoomImageView!!.visibility = View.VISIBLE
+        zoomIn!!.visibility = View.VISIBLE
+        zoomOut!!.visibility = View.VISIBLE
+        mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null))
     }
 
     inner class MyLocationListenner : BDLocationListener {
@@ -805,4 +833,6 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         }
 
     }
+
+
 }

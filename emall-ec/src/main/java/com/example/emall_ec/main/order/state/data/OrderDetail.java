@@ -414,6 +414,63 @@ public class OrderDetail implements Parcelable{
             public void setSwingSatelliteAngle(String swingSatelliteAngle) {
                 this.swingSatelliteAngle = swingSatelliteAngle;
             }
+
+            @Override
+            public String toString() {
+                return "DetailsBean{" +
+                        "centerTime='" + centerTime + '\'' +
+                        ", cloud='" + cloud + '\'' +
+                        ", geo='" + geo + '\'' +
+                        ", imageDetailUrl='" + imageDetailUrl + '\'' +
+                        ", latitude='" + latitude + '\'' +
+                        ", longitude='" + longitude + '\'' +
+                        ", originalPrice='" + originalPrice + '\'' +
+                        ", productId='" + productId + '\'' +
+                        ", productLevel='" + productLevel + '\'' +
+                        ", promotionDescription='" + promotionDescription + '\'' +
+                        ", promotionName='" + promotionName + '\'' +
+                        ", resolution='" + resolution + '\'' +
+                        ", salePrice='" + salePrice + '\'' +
+                        ", satelliteId='" + satelliteId + '\'' +
+                        ", sceneId='" + sceneId + '\'' +
+                        ", sensor='" + sensor + '\'' +
+                        ", serviceDescription='" + serviceDescription + '\'' +
+                        ", size='" + size + '\'' +
+                        ", swingSatelliteAngle='" + swingSatelliteAngle + '\'' +
+                        ", startTime='" + startTime + '\'' +
+                        ", productType='" + productType + '\'' +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "commitTime='" + commitTime + '\'' +
+                    ", details=" + details +
+                    ", fresh=" + fresh +
+                    ", invoiceState=" + invoiceState +
+                    ", orderId='" + orderId + '\'' +
+                    ", parentOrderId='" + parentOrderId + '\'' +
+                    ", payment=" + payment +
+                    ", planCommitTime='" + planCommitTime + '\'' +
+                    ", productId='" + productId + '\'' +
+                    ", state=" + state +
+                    ", type=" + type +
+                    ", userId='" + userId + '\'' +
+                    ", payMethod=" + payMethod +
+                    ", payTime='" + payTime + '\'' +
+                    '}';
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDetail{" +
+                "message='" + message + '\'' +
+                ", status=" + status +
+                ", data=" + data +
+                '}';
     }
 }

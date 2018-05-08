@@ -7,7 +7,9 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatTextView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.emall_core.net.RestClient
@@ -31,6 +33,7 @@ import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.util.view.CacheUtil
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
@@ -42,6 +45,11 @@ import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
+import io.vov.vitamio.Vitamio
+import io.vov.vitamio.widget.MediaController
+import kotlinx.android.synthetic.main.activity_vitamio_player.*
+import kotlinx.android.synthetic.main.delegate_goods_detail.view.*
+import kotlinx.android.synthetic.main.delegate_setting.*
 import retrofit2.Retrofit
 
 
@@ -179,6 +187,35 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             val bundle = Bundle()
             delegate.arguments = bundle
             start(delegate)
+        }
+
+        video_goods_detail_title_image.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("当前为非WiFi网络，播放将消耗流量")
+            builder.setPositiveButton("确定播放") { dialog, _ ->
+                dialog.dismiss()
+                detail_videoview.visibility = View.VISIBLE
+                video_goods_detail_title_image.visibility = View.GONE
+                play_btn.visibility = View.GONE
+                video_mark.visibility = View.GONE
+                video_goods_detail_mask_iv.visibility = View.GONE
+                if (Vitamio.isInitialized(context)) {
+                    detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
+                    detail_videoview!!.setMediaController(MediaController(context))
+                    detail_videoview!!.start()
+                }
+            }
+
+            builder.setNegativeButton("取消播放") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.create().show()
+
+        }
+
+        detail_videoview.setOnCompletionListener {
+            detail_videoview!!.start()
         }
     }
 
@@ -622,5 +659,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     override fun onDestroy() {
         super.onDestroy()
         mMapView!!.onDestroy()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
     }
 }

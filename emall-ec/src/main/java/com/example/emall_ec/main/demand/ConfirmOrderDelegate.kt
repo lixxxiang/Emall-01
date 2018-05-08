@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
+import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -125,6 +126,7 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
                             bundle!!.putString("ORDER_ID",orderBean.data.parentOrderId)
                             bundle.putString("DEMAND_ID", arguments.getString("demandId"))
                             bundle.putString("TYPE", "1")
+                            bundle.putString("PAGE_FROM", "PROGRAM")
                             delegate.arguments = bundle
                             start(delegate)
                         }
@@ -152,10 +154,10 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
                     .load(arguments.getString("imageUrl"))
                     .into(fill_order_iv)
         fill_order_title_tv.text = arguments.getString("title")
-        fill_order_time_tv.text = String.format("拍摄于 %s（北京时间）", arguments.getString("time"))
+        fill_order_time_tv.text = arguments.getString("time")
         fill_order_op_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].originalPrice)
         fill_order_cp_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
-        fill_order_dp_tv.text = String.format("-¥%s", viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble())
+        fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble()))
         fill_order_out_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
         fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
     }

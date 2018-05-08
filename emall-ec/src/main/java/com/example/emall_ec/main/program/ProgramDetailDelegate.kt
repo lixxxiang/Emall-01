@@ -262,12 +262,14 @@ class ProgramDetailDelegate : EmallDelegate() {
                             bundle!!.putString("demandId", demandBean.data.orderIdArray)
                             bundle.putString("imageUrl", "program")
                             bundle.putString("type", "2")
+                            bundle.putString("title", "编程摄影")
+
                             when {
-                                sp.getString("productType", "") == "1" -> bundle.putString("title", String.format("类型：%s", getString(R.string.optics_1)))
-                                sp.getString("productType", "") == "2" -> bundle.putString("title", String.format("类型：%s", getString(R.string.noctilucence)))
-                                sp.getString("productType", "") == "3" -> bundle.putString("title", String.format("类型：%s", getString(R.string.video1A_1B)))
+                                sp.getString("productType", "") == "1" -> bundle.putString("time", String.format("类型：%s", getString(R.string.optics_1)))
+                                sp.getString("productType", "") == "2" -> bundle.putString("time", String.format("类型：%s", getString(R.string.noctilucence)))
+                                sp.getString("productType", "") == "3" -> bundle.putString("time", String.format("类型：%s", getString(R.string.video1A_1B)))
                             }
-                            bundle.putString("time", String.format("%s - %s", sp.getString("startTime", "").toString().replace("-", "."), sp.getString("endTime", "").toString().replace("-", ".")))
+//                            bundle.putString("time", String.format("%s - %s", sp.getString("startTime", "").toString().replace("-", "."), sp.getString("endTime", "").toString().replace("-", ".")))
                             delegate.arguments = bundle
                             start(delegate)
                             pageFrom = "next"

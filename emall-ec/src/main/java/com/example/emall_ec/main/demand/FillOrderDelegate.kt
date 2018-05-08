@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.demand
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -18,6 +19,7 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.data.OrderBean
 import com.example.emall_ec.main.demand.data.QueryInvoiceBean
 import com.example.emall_ec.main.demand.data.ViewDemandBean
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter.programArray
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
 import kotlinx.android.synthetic.main.delegate_invoice.*
@@ -108,10 +110,10 @@ class FillOrderDelegate : BottomItemDelegate() {
         bill_icon_btn.setOnClickListener {
             EmallLogger.d(isChecked)
             if (!isChecked) {
-                if(hasInvoice){//没勾选 有发票
+                if (hasInvoice) {//没勾选 有发票
                     cb.setBackgroundResource(R.drawable.invoice_checked)
                     isChecked = true
-                }else{//没勾选 没发票
+                } else {//没勾选 没发票
                     val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
                     val bundle: Bundle? = Bundle()
                     bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
@@ -133,7 +135,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         queryInvoiceBean = Gson().fromJson(response, QueryInvoiceBean::class.java)
-                        if (queryInvoiceBean.message == "success"){
+                        if (queryInvoiceBean.message == "success") {
                             hasInvoice = true
                         }
                     }
@@ -207,6 +209,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                 .post()
     }
 
+    @SuppressLint("SetTextI18n")
     fun initViews(viewDemandBean: ViewDemandBean) {
         if (arguments.getString("imageUrl") == "program") {
             fill_order_iv.setBackgroundResource(R.drawable.program)
@@ -214,8 +217,13 @@ class FillOrderDelegate : BottomItemDelegate() {
             Glide.with(context)
                     .load(arguments.getString("imageUrl"))
                     .into(fill_order_iv)
+
         fill_order_title_tv.text = arguments.getString("title")
-        fill_order_time_tv.text = String.format("拍摄于 %s（北京时间）", arguments.getString("time"))
+        EmallLogger.d(arguments.getString("type"))
+        if (arguments.getString("type") == "2") {
+            fill_order_time_tv.text = arguments.getString("time")
+        } else
+            fill_order_time_tv.text = String.format("拍摄于 %s（北京时间）", arguments.getString("time"))
         fill_order_op_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].originalPrice)
         fill_order_cp_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
         fill_order_dp_tv.text = String.format("-¥%s", viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble())

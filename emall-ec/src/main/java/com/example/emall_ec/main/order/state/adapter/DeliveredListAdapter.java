@@ -23,6 +23,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.emall_ec.main.order.state.adapter.AllListAdapter.programArray;
+
 /**
  * Created by lixiang on 2018/3/6.
  */
@@ -111,10 +113,14 @@ public class DeliveredListAdapter extends BaseAdapter {
         }
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
-        if (dataList.get(0).getData().get(i).getDetails().getCenterTime()== null)
-            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
-        else
-            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+        if(dataList.get(0).getData().get(i).getType() == 2){
+            util.time.setText("类型：" + programArray[Integer.parseInt(dataList.get(0).getData().get(i).getDetails().getProductType())]);
+        }else {
+            if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
+                util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
+            else
+                util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+        }
         util.price.setText(String.format("¥%s", new DecimalFormat("######0.00").format(dataList.get(0).getData().get(i).getPayment())));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);

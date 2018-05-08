@@ -40,6 +40,16 @@
                     android:layout_height="255dp"
                     android:background="#33000000" />
 
+                <io.vov.vitamio.widget.VideoView
+                    android:id="@+id/detail_videoview"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="255dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"/>
+
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/play_btn"
                     android:layout_width="59dp"

@@ -19,6 +19,7 @@ import com.example.emall_ec.R
 import com.example.emall_ec.main.demand.data.FindOrderDetailByOrderIdBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter.programArray
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_order_detail.*
@@ -141,7 +142,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
 
     private fun initViews(orderData: FindOrderDetailByOrderIdBean) {
 
-        if (orderData.data.state != 4){
+        if (orderData.data.state != 4) {
             order_detail_download_btn.visibility = View.GONE
         }
         Glide.with(context)
@@ -152,7 +153,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
         order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.details.centerTime)
 //        order_detail_price_tv.text = String.format("¥%s", orderData.data.payment)
         EmallLogger.d(DecimalFormat("######0.00").format(orderData.data.payment))
-        order_detail_price_tv.text = String.format("¥%f",DecimalFormat("######0.00").format(orderData.data.payment))
+        order_detail_price_tv.text = String.format("¥%f", DecimalFormat("######0.00").format(orderData.data.payment))
 
         order_detail_state_tv.text = stateFormat(orderData.data.state, orderData.data.planCommitTime)
         order_detail_id_tv.text = orderData.data.orderId
@@ -166,7 +167,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
     }
 
     private fun initViews(orderData: OrderDetail, index: Int) {
-        if (orderData.data[index].state != 4){
+        if (orderData.data[index].state != 4) {
             order_detail_download_btn.visibility = View.GONE
         }
         if (orderData.data[index].details.imageDetailUrl == null) {
@@ -177,12 +178,18 @@ class OrderDetailDelegate : BottomItemDelegate() {
                     .into(order_detail_image_iv)
 
         order_detail_title_tv.text = AllListAdapter.typeArray[orderData.data[index].type]
-        if (orderData.data[index].details.centerTime == null)
-            order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.startTime)
-        else
-            order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.centerTime)
 
-        order_detail_price_tv.text = String.format("¥%s",DecimalFormat("######0.00").format(orderData.data.get(index).payment))
+        if (orderData.data[index].type != 2) {
+            if (orderData.data[index].details.centerTime == null)
+                order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.startTime)
+            else
+                order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.centerTime)
+        } else {
+            order_detail_time_tv.text = "类型：" + programArray[Integer.parseInt(orderData.data.get(index).details.productType)]
+        }
+
+
+        order_detail_price_tv.text = String.format("¥%s", DecimalFormat("######0.00").format(orderData.data.get(index).payment))
         order_detail_state_tv.text = stateFormat(orderData.data.get(index).state, orderData.data[index].planCommitTime)
         order_detail_id_tv.text = orderData.data[index].orderId
         println(orderData.data[index].orderId)

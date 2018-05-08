@@ -122,6 +122,8 @@ class DeliveredDelegate : EmallDelegate() {
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null) {
                     orderDetail = response.body()!!
+                    val data: MutableList<OrderDetail>? = mutableListOf()
+
                     if (orderDetail.data.isEmpty()) {
                         delivered_lv.visibility = View.INVISIBLE
                         delivered_rl.visibility = View.VISIBLE

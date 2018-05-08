@@ -120,6 +120,8 @@ class ObligationDelegate : EmallDelegate() {
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null && obligation_lv !=null && obligation_rl != null) {
                     orderDetail = response.body()!!
+                    val data: MutableList<OrderDetail>? = mutableListOf()
+                    EmallLogger.d(orderDetail.data.toString())
                     if (orderDetail.data.isEmpty()) {
                         obligation_lv.visibility = View.INVISIBLE
                         obligation_rl.visibility = View.VISIBLE
@@ -128,7 +130,8 @@ class ObligationDelegate : EmallDelegate() {
                         obligation_rl.visibility = View.INVISIBLE
                         data!!.add(orderDetail)
                         initRefreshLayout()
-                        obligation_lv.adapter = ObligationListAdapter(delegate, data, R.layout.item_order, activity)
+                        adapter = ObligationListAdapter(delegate, data, R.layout.item_order, context)
+                        obligation_lv.adapter = adapter
 
                     }
                 } else {
@@ -146,7 +149,6 @@ class ObligationDelegate : EmallDelegate() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSupportVisible() {
         super.onSupportVisible()
 //        all_lv.visibility = View.INVISIBLE

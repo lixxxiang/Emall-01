@@ -129,6 +129,7 @@ class CheckPendingDelegate : EmallDelegate() {
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null) {
                     orderDetail = response.body()!!
+                    val data: MutableList<OrderDetail>? = mutableListOf()
                     if (orderDetail.data.isEmpty()) {
                         check_pending_lv.visibility = View.INVISIBLE
                         check_pending_rl.visibility = View.VISIBLE

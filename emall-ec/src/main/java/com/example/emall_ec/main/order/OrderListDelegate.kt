@@ -9,9 +9,12 @@ import android.support.v4.app.Fragment
 import com.example.emall_ec.main.order.state.*
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.View
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
+import com.example.emall_ec.main.program.ProgramDelegate
+import me.yokeyword.fragmentation.SwipeBackLayout
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 
@@ -92,6 +95,24 @@ class OrderListDelegate : BottomItemDelegate() {
         vp_FindFragment_pager.offscreenPageLimit = 5
         vp_FindFragment_pager.currentItem = arguments.getInt("INDEX")
         //tab_FindFragment_title.set
+
+        swipeBackLayout.addSwipeListener(object: SwipeBackLayout.OnSwipeListener{
+            override fun onEdgeTouch(oritentationEdgeFlag: Int) {
+                EmallLogger.d("1")
+            }
+
+            override fun onDragScrolled(scrollPercent: Float) {
+                EmallLogger.d("2")
+                if(arguments.getString("PAGE_FROM") == "PROGRAM"){
+                    popTo(findFragment(ProgramDelegate().javaClass).javaClass, false)
+                }
+            }
+
+            override fun onDragStateChange(state: Int) {
+                EmallLogger.d("3")
+            }
+
+        })
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

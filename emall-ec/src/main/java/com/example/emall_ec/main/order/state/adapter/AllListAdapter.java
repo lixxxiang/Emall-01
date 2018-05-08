@@ -55,6 +55,7 @@ public class AllListAdapter extends BaseAdapter {
         this.context = context;
 
 //        EmallLogger.INSTANCE.d(dataList.get(0).getData().get(0).getDetails().getImageDetailUrl());
+
         for (int i = 0; i < dataList.get(0).getData().size(); i++) {
             imageList.add(dataList.get(0).getData().get(i).getDetails().getImageDetailUrl());
         }
@@ -120,13 +121,14 @@ public class AllListAdapter extends BaseAdapter {
             view.setTag(util);
         } else {
             util = (Util) view.getTag();
+
         }
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
 
-        if(dataList.get(0).getData().get(i).getType() == 2){
+        if (dataList.get(0).getData().get(i).getType() == 2) {
             util.time.setText("类型：" + programArray[Integer.parseInt(dataList.get(0).getData().get(i).getDetails().getProductType())]);
-        }else{
+        } else {
             if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
                 util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
             else
@@ -135,21 +137,15 @@ public class AllListAdapter extends BaseAdapter {
 
         util.price.setText(String.format("¥%s", new DecimalFormat("######0.00").format(dataList.get(0).getData().get(i).getPayment())));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
-        buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
-//        if (imageList.get(i) == null) {
-//            if (util.imageView.getTag() != null) {
-//                util.imageView.setBackgroundResource(R.drawable.program);
-//            }
-//        } else {
-            util.imageView.setImageResource(R.drawable.program);
-            util.imageView.setTag(R.id.imageid, imageList.get(i));
-            if (util.imageView.getTag(R.id.imageid) != null && imageList.get(i) == util.imageView.getTag(R.id.imageid)) {
-                Glide.with(context).load(imageList.get(i)).into(util.imageView);
-            }
-//            Glide.with(context)
-//                    .load(imageList.get(i))
-//                    .into(util.imageView);
-//        }
+//        util.btn.setTag(R.id.buttonid, dataList.get(0).getData().get(i).getState());
+//        if (util.btn.getTag(R.id.buttonid) != null && dataList.get(0).getData().get(i).getState() == util.btn.getTag(R.id.buttonid))
+            buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
+
+        util.imageView.setImageResource(R.drawable.program);
+        util.imageView.setTag(R.id.imageid, imageList.get(i));
+        if (util.imageView.getTag(R.id.imageid) != null && imageList.get(i) == util.imageView.getTag(R.id.imageid)) {
+            Glide.with(context).load(imageList.get(i)).into(util.imageView);
+        }
 
         return view;
     }
@@ -160,10 +156,12 @@ public class AllListAdapter extends BaseAdapter {
             btn.setTextColor(Color.WHITE);
             btn.setBackgroundResource(R.drawable.order_btn_shape_red);
             btn.setBackgroundColor(Color.parseColor("#B80017"));
+            btn.setVisibility(View.VISIBLE);
         } else if (state == 4) {
             btn.setText("前往下载");
             btn.setBackgroundResource(R.drawable.order_btn_shape);
             btn.setTextColor(Color.parseColor("#5C5C5C"));
+            btn.setVisibility(View.VISIBLE);
         } else {
             btn.setVisibility(View.INVISIBLE);
         }

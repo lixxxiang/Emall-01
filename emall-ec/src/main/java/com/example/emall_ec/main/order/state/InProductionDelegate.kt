@@ -49,6 +49,8 @@ class InProductionDelegate  : EmallDelegate(){
     override fun initial() {
         setSwipeBackEnable(false)
         delegate = this
+        in_production_lv.addHeaderView(View.inflate(activity, R.layout.orderlist_head_view, null))
+
         data()
         in_production_lv.setOnItemClickListener { adapterView, view, i, l ->
 
@@ -119,6 +121,8 @@ class InProductionDelegate  : EmallDelegate(){
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null) {
                     orderDetail = response.body()!!
+                    val data: MutableList<OrderDetail>? = mutableListOf()
+
                     if (orderDetail.data.isEmpty()){
                         in_production_lv.visibility = View.INVISIBLE
                         in_production_rl.visibility = View.VISIBLE
@@ -128,8 +132,6 @@ class InProductionDelegate  : EmallDelegate(){
                         in_production_rl.visibility = View.INVISIBLE
                         data!!.add(orderDetail)
                         initRefreshLayout()
-                        val head = View.inflate(activity, R.layout.orderlist_head_view, null)
-                        in_production_lv.addHeaderView(head)
                         in_production_lv.adapter = InProductionListAdapter(delegate, data, R.layout.item_order, activity)
                     }
                 } else {
@@ -142,7 +144,7 @@ class InProductionDelegate  : EmallDelegate(){
     }
 
     fun initRefreshLayout() {
-        obligation_srl.setColorSchemeColors(Color.parseColor("#b80017"))
+        in_production_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
