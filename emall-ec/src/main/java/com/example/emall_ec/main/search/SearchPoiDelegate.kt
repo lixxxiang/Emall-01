@@ -60,9 +60,7 @@ class SearchPoiDelegate : EmallDelegate() {
             } else {
                 bundle.putString("LOCATION", "")
                 this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
-
                 pop()
-
             }
 
         }
@@ -101,43 +99,52 @@ class SearchPoiDelegate : EmallDelegate() {
         }
 
         search_poi_et.setOnEditorActionListener { v, actionId, event ->
-            RestClient().builder()
-                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s", search_poi_et.text))
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-//                            hideText()
-                            val tempCities = Gson().fromJson(response, CitiesBean::class.java)
-                            val tempPois = Gson().fromJson(response, PoiBean::class.java)
-
-                            if (tempPois.type == "0" || tempCities.type == "0") {//is cities
-                                pages = 1
-                                clearCities()
-                                showCities(response)
-                            } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
-                                clearPois()
-                                pages = 3
-                                showPois(response)
-                            } else {//no return
-                                clearCities()
-                                clearPois()
-                                showNoResult()
-                            }
-                        }
-                    })
-                    .failure(object : IFailure {
-                        override fun onFailure() {
-
-                        }
-                    })
-                    .error(object : IError {
-                        override fun onError(code: Int, msg: String) {
-
-                        }
-                    })
-                    .build()
-                    .post()
+            search()
             false
         }
+
+        index_noti_tv.setOnClickListener {
+            KeyboardUtils.hideSoftInput(activity)
+            search()
+        }
+    }
+
+    private fun search() {
+        RestClient().builder()
+                .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s", search_poi_et.text))
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+//                            hideText()
+                        val tempCities = Gson().fromJson(response, CitiesBean::class.java)
+                        val tempPois = Gson().fromJson(response, PoiBean::class.java)
+
+                        if (tempPois.type == "0" || tempCities.type == "0") {//is cities
+                            pages = 1
+                            clearCities()
+                            showCities(response)
+                        } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
+                            clearPois()
+                            pages = 3
+                            showPois(response)
+                        } else {//no return
+                            clearCities()
+                            clearPois()
+                            showNoResult()
+                        }
+                    }
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {
+
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {
+
+                    }
+                })
+                .build()
+                .post()
     }
 
     private fun addHeadView() {

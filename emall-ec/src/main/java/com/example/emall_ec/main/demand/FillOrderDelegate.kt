@@ -16,9 +16,13 @@ import com.example.emall_core.util.view.ButtonUtils
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.data.OrderBean
+import com.example.emall_ec.main.demand.data.QueryInvoiceBean
 import com.example.emall_ec.main.demand.data.ViewDemandBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
+import kotlinx.android.synthetic.main.delegate_invoice.*
+import kotlinx.android.synthetic.main.me_function_item.*
+import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
@@ -34,6 +38,11 @@ class FillOrderDelegate : BottomItemDelegate() {
     var orderParams: WeakHashMap<String, Any>? = WeakHashMap()
     var productId = String()
     var orderBean = OrderBean()
+    var hasInvoice = false
+    private var queryInvoiceBean = QueryInvoiceBean()
+
+    private var queryInvoiceParams: WeakHashMap<String, Any>? = WeakHashMap()
+
     fun create(): FillOrderDelegate? {
         return FillOrderDelegate()
     }
@@ -52,6 +61,7 @@ class FillOrderDelegate : BottomItemDelegate() {
             pop()
         }
 
+
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
         viewDemandParams!!["type"] = arguments.getString("type")// 1 3 5
 
@@ -63,6 +73,8 @@ class FillOrderDelegate : BottomItemDelegate() {
                         viewDemandBean = Gson().fromJson(response, ViewDemandBean::class.java)
                         productId = viewDemandBean.data.demands[0].productId
                         initViews(viewDemandBean)
+                        getInvoice()
+
                     }
                 })
                 .failure(object : IFailure {
@@ -78,25 +90,77 @@ class FillOrderDelegate : BottomItemDelegate() {
                 .build()
                 .post()
 
-        bill_rl.setOnClickListener {
-            if (!isChecked) {
-                cb.setBackgroundResource(R.drawable.invoice_checked)
-                isChecked = true
-                val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
-                val bundle: Bundle? = Bundle()
-                bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
-                delegate.arguments = bundle
-                start(delegate)
-            } else {
-                cb.setBackgroundResource(R.drawable.invoice_unchecked)
-                isChecked = false
-            }
+        bill_btn.setOnClickListener {
+            val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
+            delegate.arguments = bundle
+            startForResult(delegate, 1)
         }
 
         fill_order_to_pay.setOnClickListener {
             if (!ButtonUtils.isFastDoubleClick(R.id.fill_order_to_pay)) {
                 EmallProgressBar.showProgressbar(context)
                 insertOrderData()
+            }
+        }
+
+        bill_icon_btn.setOnClickListener {
+            EmallLogger.d(isChecked)
+            if (!isChecked) {
+                if(hasInvoice){//没勾选 有发票
+                    cb.setBackgroundResource(R.drawable.invoice_checked)
+                    isChecked = true
+                }else{//没勾选 没发票
+                    val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
+                    val bundle: Bundle? = Bundle()
+                    bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
+                    delegate.arguments = bundle
+                    startForResult(delegate, 1)
+                }
+            } else {
+                cb.setBackgroundResource(R.drawable.invoice_unchecked)
+                isChecked = false
+            }
+        }
+    }
+
+    private fun getInvoice() {
+        queryInvoiceParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/query/invoice")
+                .params(queryInvoiceParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        queryInvoiceBean = Gson().fromJson(response, QueryInvoiceBean::class.java)
+                        if (queryInvoiceBean.message == "success"){
+                            hasInvoice = true
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+    }
+
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == ISupportFragment.RESULT_OK) {
+            val index = data.getString("flag")
+            EmallLogger.d(index)
+            if (index == "false") {
+                cb.setBackgroundResource(R.drawable.invoice_unchecked)
+                isChecked = false
+                hasInvoice = false
+            } else if (index == "true") {
+                cb.setBackgroundResource(R.drawable.invoice_checked)
+                isChecked = true
+                hasInvoice = true
             }
         }
     }
@@ -122,10 +186,10 @@ class FillOrderDelegate : BottomItemDelegate() {
                             EmallProgressBar.hideProgressbar()
                             val delegate: PayMethodDelegate = PayMethodDelegate().create()!!
                             val bundle: Bundle? = Bundle()
-                            bundle!!.putString("PARENT_ORDER_ID",orderBean.data.parentOrderId)
+                            bundle!!.putString("PARENT_ORDER_ID", orderBean.data.parentOrderId)
                             bundle.putString("TYPE", "1")
                             delegate.arguments = bundle
-                            startWithPop(delegate)
+                            start(delegate)
                         }
                     }
                 })

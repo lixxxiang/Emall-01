@@ -242,13 +242,6 @@
                         android:textColor="#4A4A4A"
                         android:textSize="12dp" />
 
-                    <RelativeLayout
-                        android:layout_width="2px"
-                        android:layout_height="12dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/program_detail_params_tv"
-                        android:background="#9B9B9B" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/detail_product_id_tv"
@@ -441,6 +434,8 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/program_detail_head_set_rl"
             android:layout_width="0dp"
             android:layout_weight="1"

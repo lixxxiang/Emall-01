@@ -19,6 +19,7 @@ import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.setting.AccountPrivacySettingsDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.sign.data.CommonBean
@@ -213,6 +214,7 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                                     popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
                                     KeyboardUtils.hideSoftInput(activity)
                                 }
+
                             }
                         } else {
                             if (toast != null) {

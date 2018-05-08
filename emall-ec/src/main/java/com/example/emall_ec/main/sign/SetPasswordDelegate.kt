@@ -136,6 +136,8 @@ class SetPasswordDelegate : BottomItemDelegate() {
                             val bundle = Bundle()
                             bundle.putString("USER_TELEPHONE", tel)
                             bundle.putString("USER_PWD", EncryptUtils.encryptMD5ToString(newPassword))
+                            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+
                             delegate.arguments = bundle
                             start(delegate)
 //                            startForResult(delegate, REQ_MODIFY_FRAGMENT)

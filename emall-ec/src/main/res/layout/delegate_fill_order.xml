@@ -210,9 +210,7 @@
                 android:id="@+id/bill_rl"
                 android:layout_width="match_parent"
                 android:background="#FFFFFF"
-                android:clickable="true"
-                android:layout_height="43dp"
-                android:focusable="true">
+                android:layout_height="43dp">
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/cb"
                     android:layout_width="16dp"
@@ -221,6 +219,7 @@
                     android:background="@drawable/invoice_unchecked"
                     android:layout_centerVertical="true" />
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/invoice_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/invoice"
@@ -236,6 +235,20 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:layout_alignParentRight="true"/>
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/bill_icon_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/bill_btn"
+                    android:background="#00000000"/>
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/bill_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignLeft="@id/invoice_tv"
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"/>
             </RelativeLayout>
         </LinearLayout>
         

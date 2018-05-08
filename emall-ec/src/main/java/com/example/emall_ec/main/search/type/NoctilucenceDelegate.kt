@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.widget.Toast
@@ -14,6 +16,7 @@ import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.CustomLoadMoreView
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
 import com.example.emall_ec.main.classify.data.Model
@@ -23,6 +26,7 @@ import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.search.SearchResultDelegate
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_noctilucence.*
+import kotlinx.android.synthetic.main.delegate_optics1.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,6 +66,8 @@ class NoctilucenceDelegate : EmallDelegate() {
     var startTime = String()
     var endTime = String()
 
+    var resetFlag = false
+
     override fun setLayout(): Any? {
         return R.layout.delegate_noctilucence
     }
@@ -82,6 +88,15 @@ class NoctilucenceDelegate : EmallDelegate() {
         initSceneGlm()
 
         getData(ssp!!, pages)
+
+        noctilucence_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            mAdapter = null
+            noctilucence_srl.isRefreshing = true
+            Handler().postDelayed({
+                getData(ssp!!, 1)
+                noctilucence_srl.isRefreshing = false
+            }, 1200)
+        })
 
         noctilucence_gather_time_rl.setOnClickListener {
 
@@ -409,8 +424,14 @@ class NoctilucenceDelegate : EmallDelegate() {
         }
 
         noctilucence_btn_confirm.setOnClickListener {
-            noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+            if (resetFlag){
+                noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+                noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                resetFlag = false
+            }else{
+                noctilucence_screen_tv.setTextColor(Color.parseColor("#B80017"))
+                noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_red)
+            }
             screenIsShow = false
 
             if (flag_1_1) {
@@ -512,6 +533,9 @@ class NoctilucenceDelegate : EmallDelegate() {
             noctilucence_btn_3_2.setTextColor(Color.parseColor("#4A4A4A"))
 
             confirmChangeColor()
+            noctilucence_btn_confirm.isClickable = true
+            noctilucence_btn_confirm.setBackgroundResource(R.drawable.screen_btn_shape_confirm)
+            resetFlag = true
         }
     }
 
@@ -582,6 +606,8 @@ class NoctilucenceDelegate : EmallDelegate() {
         mAdapter!!.setOnLoadMoreListener {
             //            loadMoreData(ssp!!, pages, data)
         }
+        mAdapter!!.setLoadMoreView(CustomLoadMoreView())
+
         noctilucence_rv.adapter = mAdapter
         if (pages < pagesAmount)
             pages += 1

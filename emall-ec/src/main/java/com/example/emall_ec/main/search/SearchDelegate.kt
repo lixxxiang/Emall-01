@@ -99,20 +99,26 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 val pt = Point()
                 pt.x = 0
                 pt.y = 0
-                val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
+                if (mBaiduMap != null) {
+                    val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
 
-                lati_lt = ll.latitude
-                longi_lt = ll.longitude
+                    lati_lt = ll.latitude
+                    longi_lt = ll.longitude
 
-                //右下角经纬度
-                val dm = DisplayMetrics()
-                activity.windowManager.defaultDisplay.getMetrics(dm)
-                val pty = Point()
-                pty.x = dm.widthPixels
-                pty.y = dm.heightPixels
-                val lly = mBaiduMap!!.projection.fromScreenLocation(pty)
-                lati_rb = lly.latitude
-                longi_rb = lly.longitude
+                    if (lati_lt!= null && longi_lt != null){
+                        val dm = DisplayMetrics()
+                        activity.windowManager.defaultDisplay.getMetrics(dm)
+                        val pty = Point()
+                        pty.x = dm.widthPixels
+                        pty.y = dm.heightPixels
+                        val lly = mBaiduMap!!.projection.fromScreenLocation(pty)
+                        lati_rb = lly.latitude
+                        longi_rb = lly.longitude
+                    }
+                    //右下角经纬度
+
+                }
+
             }
 
         }
@@ -130,6 +136,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
             val delegate = SearchResultDelegate().create()
             val bundle = Bundle()
             bundle.putString("GEO", geo)
+            bundle.putInt("PRODUCT_TYPE", arguments.getInt("PRODUCT_TYPE"))
             delegate!!.arguments = bundle
             start(delegate)
 
@@ -296,6 +303,16 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        mMapView!!.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMapView!!.onDestroy()
+    }
+
     override fun onResume() {
         mMapView!!.onResume()
         super.onResume()
@@ -305,6 +322,11 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 
 }

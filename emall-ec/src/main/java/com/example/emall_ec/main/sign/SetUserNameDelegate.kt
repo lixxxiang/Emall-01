@@ -24,6 +24,12 @@ import com.example.emall_core.util.view.SoftKeyboardListener
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.index.dailypic.pic.PicDetailDelegate
+import com.example.emall_ec.main.index.dailypic.video.VideoDetailDelegate
+import com.example.emall_ec.main.me.setting.AccountPrivacySettingsDelegate
+import com.example.emall_ec.main.me.setting.SettingDelegate
+import com.example.emall_ec.main.program.ProgramDetailDelegate
 import com.example.emall_ec.main.sign.data.UserNameLoginBean
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -252,7 +258,45 @@ class SetUserNameDelegate : BottomItemDelegate() {
                                 toast = Toast.makeText(activity, "注册成功", Toast.LENGTH_SHORT)
                                 toast!!.show()
                             }
-                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+//                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                            when {
+                                arguments.getString("PAGE_FROM") == "SETTING" -> {
+                                    popTo(findFragment(SettingDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "ACCOUNT_PRIVACY_SETTINGS" -> {
+                                    popTo(findFragment(AccountPrivacySettingsDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "AVATAR" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> {
+                                    popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "INDEX" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "DAILY_PIC" -> {
+                                    popTo(findFragment(PicDetailDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "DAILY_VIDEO" -> {
+                                    popTo(findFragment(VideoDetailDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "PROGRAM_DETAIL" -> {
+                                    popTo(findFragment(ProgramDetailDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "ME" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                            }
                             KeyboardUtils.hideSoftInput(activity)
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         } else {

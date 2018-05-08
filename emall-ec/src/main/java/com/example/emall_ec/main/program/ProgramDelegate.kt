@@ -283,7 +283,10 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
                         EmallLogger.d(areaString)
                         val temp = areaString.substring(0, areaString.indexOf(".") + 3)
                         if (areaString.contains("E")) {
-                            areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
+                            if (areaString.contains("-")) {
+                                areaTv!!.text = String.format("当前面积：小于 0.01平方公里", temp)
+                            } else
+                                areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
                         } else {
                             areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
                         }
@@ -505,7 +508,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         val rularParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         rularParams.setMargins(0, DimenUtil().dip2px(context, 40F), 0, 0)
         rular!!.mMaxValue = 5000
-        rular!!.mMinValue = 1000
+        rular!!.mMinValue = 0
         rular!!.mScaleBase = 100
         rular!!.mMaxScaleColor = Color.parseColor("#ffffff")
         rular!!.mMidScaleColor = Color.parseColor("#666666")
@@ -516,7 +519,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         rular!!.mMaxScaleWidth = DimenUtil().dip2px(activity, 2.5F).toFloat()
         rular!!.mMidScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
         rular!!.mMinScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
-        rular!!.mCurrentValue = 10
+        rular!!.mCurrentValue = 0
         rular!!.mScaleValueColor = Color.parseColor("#666666")
         rular!!.isScaleGradient = false
         rular!!.isShowScaleValue = false
@@ -558,7 +561,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         val rular2Params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         rular2Params.setMargins(0, DimenUtil().dip2px(context, 120F), 0, 0)
         rular2!!.mMaxValue = 5000
-        rular2!!.mMinValue = 1000
+        rular2!!.mMinValue = 0
         rular2!!.mScaleBase = 100
         rular2!!.mMaxScaleColor = Color.parseColor("#ffffff")
         rular2!!.mMidScaleColor = Color.parseColor("#666666")
@@ -569,7 +572,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         rular2!!.mMaxScaleWidth = DimenUtil().dip2px(activity, 2.5F).toFloat()
         rular2!!.mMidScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
         rular2!!.mMinScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
-        rular2!!.mCurrentValue = 10
+        rular2!!.mCurrentValue = 0
         rular2!!.mScaleValueColor = Color.parseColor("#666666")
         rular2!!.isScaleGradient = false
         rular2!!.isShowScaleValue = false

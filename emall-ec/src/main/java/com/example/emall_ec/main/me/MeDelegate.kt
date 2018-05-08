@@ -111,7 +111,7 @@ class MeDelegate : BottomItemDelegate() {
                 if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                     val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                     val bundle = Bundle()
-                    bundle.putString("PAGE_FROM", "AVATAR")
+                    bundle.putString("PAGE_FROM", "ME")
                     delegate.arguments = bundle
                     DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
                 }
@@ -132,7 +132,7 @@ class MeDelegate : BottomItemDelegate() {
                 if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                     val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                     val bundle = Bundle()
-                    bundle.putString("PAGE_FROM", "AVATAR")
+                    bundle.putString("PAGE_FROM", "ME")
                     delegate.arguments = bundle
                     DELEGATE!!.startForResult(delegate, ME_USERNAME_CODE)
                 }

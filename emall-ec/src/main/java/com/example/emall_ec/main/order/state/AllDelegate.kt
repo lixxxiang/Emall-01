@@ -106,6 +106,8 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         if (orderDetail.data.isEmpty()) {
                             all_lv.visibility = View.INVISIBLE
                             all_rl.visibility = View.VISIBLE
+                            all_srl.isRefreshing = false
+
                         } else {
                             all_lv.visibility = View.VISIBLE
                             all_rl.visibility = View.GONE
@@ -118,6 +120,8 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                     }
                 } else {
                     EmallLogger.d("error")
+                    all_srl.isRefreshing = false
+
                 }
             }
 

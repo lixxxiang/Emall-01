@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.detail
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
@@ -28,6 +29,7 @@ import java.util.*
 import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
+import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
@@ -37,6 +39,7 @@ import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
+import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
 import retrofit2.Retrofit
@@ -51,11 +54,10 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var VIDEO = "3"
     var sceneDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
     var videoDetailParams: WeakHashMap<String, Any>? = WeakHashMap()
-    var sceneDetail = SceneDetailBean()
     var videoDetail = VideoDetailBean()
     var lati = "S"
     var longi = "W"
-    var mMapView: MapView? = null
+    var mMapView: TextureMapView? = null
     var mBaiduMap: BaiduMap? = null
     var commoditySubmitDemandParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commoditySubmitDemandBean = CommoditySubmitDemandBean()
@@ -86,7 +88,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        mMapView = activity.findViewById(R.id.goods_detail_map) as MapView
+        mMapView = activity.findViewById<TextureMapView>(R.id.goods_detail_map) as TextureMapView
         mBaiduMap = mMapView!!.map
         initViews()
         resolveConflict()
@@ -102,7 +104,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 sceneDetailParams!!["type"] = "2"
                 type135 = NOCTILUCENCE
             }
-            EmallLogger.d(sceneDetailParams!!["productId"]!!)
             getData(sceneDetailParams!!)
         } else if (type == "3") {
             videoDetailParams!!["productId"] = arguments.getString("productId")
@@ -147,7 +148,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             if (DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                 val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                 val bundle = Bundle()
-                bundle.putString("PAGE_FROM", "DETAIL")
+                bundle.putString("PAGE_FROM", "GOODS_DETAIL")
                 delegate.arguments = bundle
                 start(delegate)
             } else {
@@ -172,20 +173,28 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         video_goods_detail_toolbar.setNavigationOnClickListener {
             supportDelegate.pop()
         }
+
+        video_detail_head_set_rl.setOnClickListener {
+            val delegate: ContactDelegate = ContactDelegate().create()!!
+            val bundle = Bundle()
+            delegate.arguments = bundle
+            start(delegate)
+        }
     }
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
-        EmallLogger.d(sceneDetailParams["type"]!!)
-
+        EmallLogger.d(sceneDetailParams["productId"]!!)
+        EmallLogger.d(arguments.getString("productId"))
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        EmallLogger.d(String.format("%s %s", arguments.getString("productId"), arguments.getString("type")))
         val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString())
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
+                var sceneDetail = SceneDetailBean()
+
                 if (response.body() != null) {
                     sceneDetail = response.body()!!
-                    EmallLogger.d(sceneDetail.data)
+                    EmallLogger.d(sceneDetail.data.toString())
                     setSceneData(sceneDetail)
 //                        videoSearch = response.body()!!
 //                        bundle!!.putString("type","0")
@@ -332,20 +341,20 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         if (type == "1") {
                             bundle.putString("type", "1")
                             bundle.putString("imageUrl", sceneData.imageDetailUrl)
-                            bundle.putString("title", sceneData.productId)
+                            bundle.putString("title","光学一级")
                             bundle.putString("time", sceneData.centerTime)
 
 
                         } else if (type == "3") {
                             bundle.putString("type", "3")
                             bundle.putString("imageUrl", videoData.imageDetailUrl)
-                            bundle.putString("title", videoData.productId)
+                            bundle.putString("title", "视频1A+1B")
                             bundle.putString("time", videoData.startTime)
 
                         } else if (type == "5") {
                             bundle.putString("type", "5")
                             bundle.putString("imageUrl", sceneData.imageDetailUrl)
-                            bundle.putString("title", sceneData.productId)
+                            bundle.putString("title", "夜光增强")
                             bundle.putString("time", sceneData.centerTime)
 
                         }
@@ -381,6 +390,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setSceneData(sceneDetail: SceneDetailBean) {
         sceneData = sceneDetail.data
         if(type == "1"){
@@ -394,19 +404,22 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         Glide.with(context)
                 .load(sceneData.imageDetailUrl)
                 .into(video_goods_detail_title_image)
+        EmallLogger.d(sceneData.geo)
         drawMap(getGeo(sceneData.geo))
         scene_detail_promotion_description_tv.text = sceneData.promotionDescription
         scene_detail_sale_price_tv.text = String.format(resources.getString(R.string.video_detail_sale_price), sceneData.salePrice)
         scene_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), sceneData.originalPrice)
         changeColor(sceneData.serviceDescription)
         detail_product_id_tv.text = sceneData.productId
-        detail_satellite_tv.text = sceneData.satelliteId
+//        detail_satellite_tv.text = sceneData.satelliteId + "(" + sceneData.sensor + " " + sceneData.resolution + ")"
+        detail_satellite_tv.text = String.format("%s (%s %s)",sceneData.satelliteId, sceneData.sensor , sceneData.resolution)
+
         detail_ratio_tv.text = sceneData.resolution
         detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), sceneData.size)
         detail_cloud_tv.text = String.format(resources.getString(R.string.video_detail_cloud), sceneData.cloud)
         judgeLati_longi(sceneData.latitude, sceneData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), sceneData.longitude, longi, sceneData.latitude, lati)
-        detail_coordinate_tv.text = sceneData.sensor
+        detail_coordinate_tv.text = "WGS-84"
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
@@ -426,16 +439,19 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         video_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), videoData.originalPrice)
         changeColor(videoData.serviceDescription)
         detail_product_id_tv.text = videoData.productId
-        detail_satellite_tv.text = videoData.satelliteId
-        detail_ratio_tv.text = videoData.resolution
+        detail_satellite_tv.text = String.format("%s (%s %s)",videoData.satelliteId, videoData.sensor , videoData.resolution)
+
+//        detail_satellite_tv.text = videoData.satelliteId
+        detail_ratio_tv.text = videoData.resolution + "m"
         detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), videoData.size)
         detail_cloud_tv.text = String.format(resources.getString(R.string.video_detail_cloud), videoData.cloud)
         judgeLati_longi(videoData.latitude, videoData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), videoData.longitude, longi, videoData.latitude, lati)
-        detail_coordinate_tv.text = videoData.sensor
+        detail_coordinate_tv.text = "WGS-84"
     }
 
     private fun drawMap(geo: MutableList<Array<String>>) {
+        EmallLogger.d(geo[0])
         val pt1 = LatLng(java.lang.Double.parseDouble(geo[0][1]), java.lang.Double.parseDouble(geo[0][0]))
         val pt2 = LatLng(java.lang.Double.parseDouble(geo[1][1]), java.lang.Double.parseDouble(geo[1][0]))
         val pt3 = LatLng(java.lang.Double.parseDouble(geo[2][1]), java.lang.Double.parseDouble(geo[2][0]))
@@ -445,7 +461,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         pts.add(pt2)
         pts.add(pt3)
         pts.add(pt4)
-
+        EmallLogger.d(pts)
         val polygonOption = PolygonOptions()
                 .points(pts)
                 .stroke(Stroke(1, Color.parseColor("#F56161")))
@@ -475,7 +491,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun changeColor(serviceDescription: String) {
-        EmallLogger.d(serviceDescription)
         val prefix = serviceDescription.split("，")[0] + "，"
         val tempSuffix = serviceDescription.split("，")[1]
         val time = tempSuffix.substring(0, tempSuffix.length - 3)
@@ -592,5 +607,20 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 })
                 .build()
                 .post()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mMapView!!.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mMapView!!.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMapView!!.onDestroy()
     }
 }

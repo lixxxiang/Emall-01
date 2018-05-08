@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.demand
 
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -22,6 +23,7 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.data.QueryInvoiceBean
 import com.example.emall_ec.main.demand.data.UpdateInvoiceBean
 import com.google.gson.Gson
+import me.yokeyword.fragmentation.ISupportFragment
 import java.util.*
 
 
@@ -42,6 +44,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
     private var queryInvoiceParams: WeakHashMap<String, Any>? = WeakHashMap()
     private var queryInvoiceBean = QueryInvoiceBean()
     private var updateInvoiceBean = UpdateInvoiceBean()
+    private var flag = "false"
     override fun onClick(p0: View?) {
 
     }
@@ -91,11 +94,27 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         invoice_toolbar.setNavigationOnClickListener {
+            if (!title.text.toString().isEmpty()
+                    && !invoice_id.text.toString().isEmpty()
+                    && !address.text.toString().isEmpty()
+                    && !tel.text.toString().isEmpty()
+                    && !bank.text.toString().isEmpty()
+                    && !account.text.toString().isEmpty()
+                    && !name.text.toString().isEmpty()
+                    && !phone.text.toString().isEmpty()
+                    && !address_detail.text.toString().isEmpty()
+                    && !invoice_cities_picker_tv.text.isEmpty()) {
+                flag = "true"
+            }
+            val bundle = Bundle()
+            bundle.putString("flag", flag)
+            setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             pop()
         }
 //        invoice_back_iv.setOnClickListener {
 //            pop()
 //        }
+
 
 
         tel.inputType = EditorInfo.TYPE_CLASS_PHONE
@@ -133,6 +152,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                     && !phone.text.toString().isEmpty()
                     && !address_detail.text.toString().isEmpty()
                     && !invoice_cities_picker_tv.text.isEmpty()) {
+                flag = "true"
                 updateInvoice()
 
             } else {
@@ -207,7 +227,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                              * success
                              */
                             Snackbar.make(view!!, "保存成功", Snackbar.LENGTH_SHORT).show()
-
+                            flag = "true"
                         }
                     }
                 })
@@ -224,5 +244,24 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        if (!title.text.toString().isEmpty()
+                && !invoice_id.text.toString().isEmpty()
+                && !address.text.toString().isEmpty()
+                && !tel.text.toString().isEmpty()
+                && !bank.text.toString().isEmpty()
+                && !account.text.toString().isEmpty()
+                && !name.text.toString().isEmpty()
+                && !phone.text.toString().isEmpty()
+                && !address_detail.text.toString().isEmpty()
+                && !invoice_cities_picker_tv.text.isEmpty()) {
+            flag = "true"
+        }
+        val bundle = Bundle()
+        bundle.putString("flag", flag)
+        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
     }
 }

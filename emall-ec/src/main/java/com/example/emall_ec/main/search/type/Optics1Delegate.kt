@@ -17,6 +17,7 @@ import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.CustomLoadMoreView
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
 import com.example.emall_ec.main.classify.data.Model
@@ -67,6 +68,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     var startTime = String()
     var endTime = String()
     var itemSize = 0
+
+    var resetFlag = false
 
 
     override fun setLayout(): Any? {
@@ -438,8 +441,15 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         optics_btn_confirm.setOnClickListener {
 
-            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+            if (resetFlag){
+                optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+                optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                resetFlag = false
+            }else{
+                optics_screen_tv.setTextColor(Color.parseColor("#B80017"))
+                optics_screen_iv.setBackgroundResource(R.drawable.ic_down_red)
+            }
+
             screenIsShow = false
 
             if (flag_1_1) {
@@ -513,6 +523,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             flag_3_2 = false
 
 
+
             optics_btn_1_5.setBackgroundResource(R.drawable.screen_btn_shape)
             optics_btn_1_5.setTextColor(Color.parseColor("#4A4A4A"))
             optics_btn_1_1.setBackgroundResource(R.drawable.screen_btn_shape)
@@ -541,6 +552,9 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             optics_btn_3_2.setTextColor(Color.parseColor("#4A4A4A"))
 
             confirmChangeColor()
+            optics_btn_confirm.isClickable = true
+            optics_btn_confirm.setBackgroundResource(R.drawable.screen_btn_shape_confirm)
+            resetFlag = true
         }
     }
 
@@ -667,7 +681,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 //                mAdapter!!.loadMoreFail()
             }
         }
-//        mAdapter!!.setLoadMoreView(CustomLoadMoreView())
+        mAdapter!!.setLoadMoreView(CustomLoadMoreView())
         optics_rv.adapter = mAdapter
 //        mAdapter!!.disableLoadMoreIfNotFullPage()
 

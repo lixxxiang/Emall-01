@@ -36,6 +36,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import com.example.emall_core.util.view.BitmapUtil
 import com.example.emall_ec.main.demand.ConfirmOrderDelegate
+import com.example.emall_ec.main.me.ContactDelegate
 import java.io.File
 
 
@@ -94,13 +95,19 @@ class ProgramDetailDelegate : EmallDelegate() {
                 getDemandId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, sp)
             }
         }
+        program_detail_head_set_rl.setOnClickListener {
+            val delegate: ContactDelegate = ContactDelegate().create()!!
+            val bundle = Bundle()
+            delegate.arguments = bundle
+            start(delegate)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViews(data: DetailBean.DataBean, sp: SharedPreferences) {
         program_detail_original_price_tv.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
 
-        program_detail_title_tv.text = data.promotionName
+        program_detail_title_tv.text = "限时促销"
         program_detail_promotion_description_tv.text = data.promotionDescription
         program_detail_sale_price_tv.text = String.format("¥%s", data.salePrice)
         program_detail_original_price_tv.text = String.format("¥%s", data.originalPrice)

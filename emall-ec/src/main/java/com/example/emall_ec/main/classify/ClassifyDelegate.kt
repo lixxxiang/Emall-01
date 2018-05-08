@@ -35,6 +35,8 @@ import com.example.emall_ec.main.classify.data.*
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
+import com.example.emall_ec.main.search.SearchDelegate
+import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.google.gson.Gson
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -82,12 +84,9 @@ class ClassifyDelegate : EmallDelegate() {
         super.onEnterAnimationEnd(savedInstanceState)
         if (arguments.getString("TYPE") == "SCENE") {
             initSceneGlm()
-            classify_progressBar.visibility = View.VISIBLE
-            getData("",
-                    "", "",
-                    "", "",
-                    "", "",
-                    "0", "10", pages.toString())//0是标准景
+            initRecommendCities()
+
+
 
         } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
             initSceneGlm()
@@ -125,7 +124,6 @@ class ClassifyDelegate : EmallDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(classify_toolbar)
         classify_ctl.isTitleEnabled = false
 
-        initRecommendCities()
         val observer = classify_introduction_rl.viewTreeObserver
         observer.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -149,19 +147,32 @@ class ClassifyDelegate : EmallDelegate() {
                 classify_hsv.visibility = View.INVISIBLE
                 isScroll(false)
                 isExpanded = true
+                classify_recommand_tv.isClickable = false
             } else {
                 closeScreen()
+                classify_recommand_tv.isClickable = true
             }
 
         }
 
         classify_gv.setOnItemClickListener { parent, view, position, id ->
+            EmallLogger.d(position)
             if(position != 0){
                 if (!data!!.isEmpty())
                     data!!.clear()
                 closeScreen()
                 classify_recommand_tv.text = getRecommendCitiesBean.data[position - 1].cityName
-                getData(getRecommendCitiesBean.data[position].geo,
+                getData(getRecommendCitiesBean.data[position -1].geo,
+                        "", "",
+                        "", "",
+                        "", "",
+                        "0", "10", "1")
+            }else{
+                if (!data!!.isEmpty())
+                    data!!.clear()
+                closeScreen()
+                classify_recommand_tv.text = getString(R.string.recommand)
+                getData("",
                         "", "",
                         "", "",
                         "", "",
@@ -203,14 +214,16 @@ class ClassifyDelegate : EmallDelegate() {
         })
 
         classify_recommand_rl.setOnClickListener {
-            classify_recommand_tv.text = getString(R.string.recommand)
-            if (!data!!.isEmpty())
-                data!!.clear()
-            getData("",
-                    "", "",
-                    "", "",
-                    "", "",
-                    "0", "10", "1")
+            if(!isExpanded){
+                classify_recommand_tv.text = getString(R.string.recommand)
+                if (!data!!.isEmpty())
+                    data!!.clear()
+                getData("",
+                        "", "",
+                        "", "",
+                        "", "",
+                        "0", "10", "1")
+            }
         }
 
         classify_sv.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
@@ -226,6 +239,32 @@ class ClassifyDelegate : EmallDelegate() {
                 }
             }
         })
+
+        classify_toolbar_search_iv.setOnClickListener {
+            when {
+                arguments.getString("TYPE") == "SCENE" -> {
+                    val delegate: SearchDelegate = SearchDelegate().create()!!
+                    val bundle = Bundle()
+                    bundle.putInt("PRODUCT_TYPE", 0)
+                    delegate.arguments = bundle
+                    start(delegate)
+                }
+                arguments.getString("TYPE") == "NOCTILUCENCE" -> {
+                    val delegate: SearchDelegate = SearchDelegate().create()!!
+                    val bundle = Bundle()
+                    bundle.putInt("PRODUCT_TYPE", 2)
+                    delegate.arguments = bundle
+                    start(delegate)
+                }
+                arguments.getString("TYPE") == "VIDEO" -> {
+                    val delegate: SearchDelegate = SearchDelegate().create()!!
+                    val bundle = Bundle()
+                    bundle.putInt("PRODUCT_TYPE", 1)
+                    delegate.arguments = bundle
+                    start(delegate)
+                }
+            }
+        }
 
     }
 
@@ -284,7 +323,7 @@ class ClassifyDelegate : EmallDelegate() {
                         bottom_rl.visibility = View.INVISIBLE
                     sceneSearch = response.body()!!
                     pagesAmount = sceneSearch.data.pages
-
+                    productId!!.clear()
                     getSceneData()
 
                 } else {
@@ -333,6 +372,12 @@ class ClassifyDelegate : EmallDelegate() {
                         if (getRecommendCitiesBean.message == "success") {
                             EmallLogger.d(response)
                             val size = getRecommendCitiesBean.data.size
+                            classify_progressBar.visibility = View.VISIBLE
+                            getData("",
+                                    "", "",
+                                    "", "",
+                                    "", "",
+                                    "0", "10", pages.toString())//0是标准景
                             for (i in 0 until size) {
                                 cityName!!.add(getRecommendCitiesBean.data[i].cityName)
                                 val topRl = RelativeLayout(activity)
@@ -351,6 +396,7 @@ class ClassifyDelegate : EmallDelegate() {
                                             "", "",
                                             "", "",
                                             "0", "10", "1")
+
                                 }
                                 classify_ll.addView(topRl, topRlParams)
                                 val tv = AppCompatTextView(activity)

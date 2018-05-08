@@ -234,5 +234,39 @@ public class SceneDetailBean {
         public void setSwingSatelliteAngle(String swingSatelliteAngle) {
             this.swingSatelliteAngle = swingSatelliteAngle;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "centerTime='" + centerTime + '\'' +
+                    ", cloud='" + cloud + '\'' +
+                    ", geo='" + geo + '\'' +
+                    ", imageDetailUrl='" + imageDetailUrl + '\'' +
+                    ", latitude='" + latitude + '\'' +
+                    ", longitude='" + longitude + '\'' +
+                    ", originalPrice='" + originalPrice + '\'' +
+                    ", productId='" + productId + '\'' +
+                    ", productLevel='" + productLevel + '\'' +
+                    ", promotionDescription='" + promotionDescription + '\'' +
+                    ", promotionName='" + promotionName + '\'' +
+                    ", resolution='" + resolution + '\'' +
+                    ", salePrice='" + salePrice + '\'' +
+                    ", satelliteId='" + satelliteId + '\'' +
+                    ", sceneId='" + sceneId + '\'' +
+                    ", sensor='" + sensor + '\'' +
+                    ", serviceDescription='" + serviceDescription + '\'' +
+                    ", size='" + size + '\'' +
+                    ", swingSatelliteAngle='" + swingSatelliteAngle + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "SceneDetailBean{" +
+                "data=" + data +
+                ", message='" + message + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

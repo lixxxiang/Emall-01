@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="20dp"
-                    android:textColor="#5C5C5C"
+                    android:textColor="#B80017"
                     android:text="@string/time_limit"
                     android:textSize="14dp" />
 
@@ -679,7 +679,7 @@
                     android:textSize="12dp" />
             </RelativeLayout>
 
-            <com.baidu.mapapi.map.MapView
+            <com.baidu.mapapi.map.TextureMapView
                 android:id="@+id/goods_detail_map"
                 android:layout_width="match_parent"
                 android:layout_height="259dp"
@@ -726,6 +726,8 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/video_detail_head_set_rl"
             android:layout_width="0dp"
             android:layout_weight="1"

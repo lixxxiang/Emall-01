@@ -183,7 +183,12 @@ class SignInByTelDelegate : BottomItemDelegate() {
         }
 
         sign_in_by_tel_login_tv.setOnClickListener {
-            startWithPop(SignUpDelegate())
+            val delegate: SignUpDelegate = SignUpDelegate().create()!!
+            val arg = arguments.getString("PAGE_FROM")
+            val bundle = Bundle()
+            bundle.putString("PAGE_FROM", arg)
+            delegate.arguments = bundle
+            startWithPop(delegate)
             KeyboardUtils.hideSoftInput(activity)
         }
 

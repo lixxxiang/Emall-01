@@ -1,6 +1,8 @@
 package com.example.emall_ec.main.demand
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -30,9 +32,8 @@ import java.util.*
 class PaymentDelegate : EmallDelegate() {
 
     var findDetailByParentOrderIdParams: WeakHashMap<String, Any>? = WeakHashMap()
-//    var findDetailByParentOrderIdBean = FindDetailByParentOrderIdBean()
     var orderDetail = OrderDetail()
-
+    var mSharedPreferences: SharedPreferences? = null
     var payMethodArray = arrayOf("支付宝", "微信支付", "银行汇款", "线下支付")
 
     fun create(): PaymentDelegate? {
@@ -48,19 +49,16 @@ class PaymentDelegate : EmallDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(payment_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         payment_toolbar.setNavigationOnClickListener {
-            popTo(findFragment(FillOrderDelegate().javaClass).javaClass, false)
-//            popTo(findChildFragment(FillOrderDelegate().javaClass).javaClass, false)
+//            popTo(findFragment(OrderListDelegate().javaClass).javaClass, false)
+            val editor = mSharedPreferences!!.edit()
+            editor.putString("BACK_FROM","PAYMENT")
+            editor.commit()
+            pop()
         }
 
         findDetailByParentOrderId()
-
+        mSharedPreferences = activity.getSharedPreferences("PAGE_BACK", Context.MODE_PRIVATE)
         payment_success_check_order_list_btn.setOnClickListener {
-//            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
-//            val bundle: Bundle? = Bundle()
-//            bundle!!.putString("KEY", "ID")
-//            bundle.putParcelable("KEy", orderDetail)
-//            delegate.arguments = bundle
-//            start(delegate)
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
@@ -70,12 +68,6 @@ class PaymentDelegate : EmallDelegate() {
             start(delegate)
         }
         payment_failure_check_order_list_btn.setOnClickListener {
-//            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
-//            val bundle: Bundle? = Bundle()
-//            bundle!!.putString("KEY", "ID")
-//            bundle.putParcelable("KEy", orderDetail)
-//            delegate.arguments = bundle
-//            start(delegate)
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
@@ -95,45 +87,6 @@ class PaymentDelegate : EmallDelegate() {
             startWithPop(delegate)
         }
     }
-
-//    private fun findOrderDetailByOrderId() {
-//        EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
-//        EmallLogger.d(arguments.getString("DEMAND_ID"))
-//
-//        findOrderDetailByOrderIdParams!!["orderId"] = arguments.getString("ORDER_ID")
-//        RestClient().builder()
-//                .url("http://59.110.164.214:8024/global/order/findOrderDetailByOrderId")
-//                .params(findOrderDetailByOrderIdParams!!)
-//                .success(object : ISuccess {
-//                    @SuppressLint("ApplySharedPref")
-//                    override fun onSuccess(response: String) {
-//                        EmallLogger.d(response)
-//                        findOrderDetailByOrderIdBean = Gson().fromJson(response, FindOrderDetailByOrderIdBean::class.java)
-//                        if (findOrderDetailByOrderIdBean.message == "success") {
-//                            val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
-//                            val bundle: Bundle? = Bundle()
-//                            bundle!!.putString("KEY", "ID")
-//                            bundle.putParcelable("KEy", findOrderDetailByOrderIdBean)
-//                            bundle.putInt("INDEX", 0)
-//                            bundle.putString("FROM", "PAYMENT")
-//                            delegate.arguments = bundle
-//                            start(delegate)
-//                        }
-//                    }
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {
-//
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {
-//
-//                    }
-//                })
-//                .build()
-//                .post()
-//    }
 
     private fun findDetailByParentOrderId() {
         findDetailByParentOrderIdParams!!["parentOrderId"] = arguments.getString("PARENT_ORDER_ID")

@@ -25,6 +25,7 @@ import com.example.emall_ec.main.order.state.data.OrderDetail;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class AllListAdapter extends BaseAdapter {
     public static String[] typeArray = {"", "标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
     public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
-
+    public static String[] programArray = {"", "光学1级", "夜光增强", "视频1A+1B"};
     public BtnListener btnListener;
     AllDelegate delegate;
 
@@ -122,12 +123,17 @@ public class AllListAdapter extends BaseAdapter {
         }
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
-        if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
-            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
-        else
-            util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
 
-        util.price.setText(String.format("¥%s", dataList.get(0).getData().get(i).getPayment()));
+        if(dataList.get(0).getData().get(i).getType() == 2){
+            util.time.setText("类型：" + programArray[Integer.parseInt(dataList.get(0).getData().get(i).getDetails().getProductType())]);
+        }else{
+            if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
+                util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
+            else
+                util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getCenterTime()));
+        }
+
+        util.price.setText(String.format("¥%s", new DecimalFormat("######0.00").format(dataList.get(0).getData().get(i).getPayment())));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
 //        if (imageList.get(i) == null) {

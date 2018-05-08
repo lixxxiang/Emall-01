@@ -16,10 +16,18 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.mm.opensdk.modelpay.PayReq
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.os.Build
+import android.os.Handler
+import android.support.annotation.RequiresApi
+import android.view.View
+import com.example.emall_core.ui.progressbar.EmallProgressBar
+import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.demand.data.QueryOrderBean
 import com.example.emall_ec.main.demand.data.QueryOrderFailureBean
+import com.example.emall_ec.main.order.OrderListDelegate
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -37,6 +45,7 @@ class PayMethodDelegate : BottomItemDelegate() {
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
     private var api: IWXAPI? = null
+    var count = 0
     fun create(): PayMethodDelegate? {
         return PayMethodDelegate()
     }
@@ -52,7 +61,6 @@ class PayMethodDelegate : BottomItemDelegate() {
         pay_method_toolbar.setNavigationOnClickListener {
             pop()
         }
-
 
         pay_method_pay_rl.setOnClickListener {
             if (flag == 1) {
@@ -125,6 +133,7 @@ class PayMethodDelegate : BottomItemDelegate() {
         return DefaultHorizontalAnimator()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("ApplySharedPref")
     override fun onSupportVisible() {
         super.onSupportVisible()
@@ -139,6 +148,27 @@ class PayMethodDelegate : BottomItemDelegate() {
             "-2" -> {
                 queryOrderFailure(sp)
             }
+        }
+
+        var sp2 = activity.getSharedPreferences("PAGE_BACK", Context.MODE_PRIVATE)
+        if (sp2.getString("BACK_FROM", "") == "PAYMENT") {
+            sp2.edit().clear().commit()
+            EmallProgressBar.showProgressbar(context)
+            pay_method_pay_rl.visibility = View.GONE
+            pay_method_sv.visibility = View.GONE
+            back_rv.visibility = View.VISIBLE
+            pay_method_toolbar.visibility = View.GONE
+            ll_bar.visibility = View.GONE
+            val delegate: OrderListDelegate = OrderListDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+            bundle.putInt("INDEX", 0)
+            bundle.putString("FROM", "PAYMENT")
+            delegate.arguments = bundle
+            Handler().postDelayed({
+                start(delegate)
+            }, 1000)
+//            EmallProgressBar.hideProgressbar()
         }
     }
 
@@ -166,6 +196,8 @@ class PayMethodDelegate : BottomItemDelegate() {
                         bundle.putString("COMMIT_TIME", queryOrderBean.data.planCommitTime)
                         bundle.putString("STATUS", "SUCCESS")
                         start(delegate)
+
+
                         /**
                          * 这里有隐患
                          */
@@ -210,5 +242,7 @@ class PayMethodDelegate : BottomItemDelegate() {
             override fun onFailure(call: retrofit2.Call<QueryOrderFailureBean>, throwable: Throwable) {}
         })
     }
+
+
 }
 

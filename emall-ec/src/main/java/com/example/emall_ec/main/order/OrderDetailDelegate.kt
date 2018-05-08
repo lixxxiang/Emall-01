@@ -24,6 +24,8 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_order_detail.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
+import java.math.BigDecimal
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -60,6 +62,8 @@ class OrderDetailDelegate : BottomItemDelegate() {
             initViews(orderData)
             orderId = orderData.data.orderId
         }
+
+
 
         order_detail_list_toolbar.setNavigationOnClickListener {
             pop()
@@ -136,13 +140,20 @@ class OrderDetailDelegate : BottomItemDelegate() {
     }
 
     private fun initViews(orderData: FindOrderDetailByOrderIdBean) {
+
+        if (orderData.data.state != 4){
+            order_detail_download_btn.visibility = View.GONE
+        }
         Glide.with(context)
                 .load(orderData.data.details.imageDetailUrl)
                 .into(order_detail_image_iv)
 
         order_detail_title_tv.text = AllListAdapter.typeArray[orderData.data.type]
         order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.details.centerTime)
-        order_detail_price_tv.text = String.format("¥%s", orderData.data.payment)
+//        order_detail_price_tv.text = String.format("¥%s", orderData.data.payment)
+        EmallLogger.d(DecimalFormat("######0.00").format(orderData.data.payment))
+        order_detail_price_tv.text = String.format("¥%f",DecimalFormat("######0.00").format(orderData.data.payment))
+
         order_detail_state_tv.text = stateFormat(orderData.data.state, orderData.data.planCommitTime)
         order_detail_id_tv.text = orderData.data.orderId
         println(orderData.data.orderId)
@@ -155,6 +166,9 @@ class OrderDetailDelegate : BottomItemDelegate() {
     }
 
     private fun initViews(orderData: OrderDetail, index: Int) {
+        if (orderData.data[index].state != 4){
+            order_detail_download_btn.visibility = View.GONE
+        }
         if (orderData.data[index].details.imageDetailUrl == null) {
             order_detail_image_iv.setBackgroundResource(R.drawable.program)
         } else
@@ -168,7 +182,7 @@ class OrderDetailDelegate : BottomItemDelegate() {
         else
             order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.get(index).details.centerTime)
 
-        order_detail_price_tv.text = String.format("¥%s", orderData.data.get(index).payment)
+        order_detail_price_tv.text = String.format("¥%s",DecimalFormat("######0.00").format(orderData.data.get(index).payment))
         order_detail_state_tv.text = stateFormat(orderData.data.get(index).state, orderData.data[index].planCommitTime)
         order_detail_id_tv.text = orderData.data[index].orderId
         println(orderData.data[index].orderId)
@@ -176,12 +190,12 @@ class OrderDetailDelegate : BottomItemDelegate() {
         order_detail_pay_method_tv.text = AllListAdapter.payMethodArray[orderData.data[index].payMethod]
         order_detail_origional_price_tv.text = String.format("¥%s", orderData.data[index].details.originalPrice)
         order_detail_current_price_tv.text = String.format("¥%s", orderData.data[index].details.salePrice)
-        order_detail_final_price_tv.text = String.format("¥%s", orderData.data[index].payment)
+        order_detail_final_price_tv.text = String.format("¥%s", DecimalFormat("######0.00").format(orderData.data[index].payment))
         order_detail_discount_tv.text = discount(orderData.data[index].details.originalPrice as String, orderData.data[index].payment)
     }
 
     private fun discount(salePrice: String, payment: Double): String {
-        return String.format("-¥%s", salePrice.toDouble() - payment)
+        return String.format("-¥%s", DecimalFormat("######0.00").format(salePrice.toDouble() - payment))
     }
 
     private fun stateFormat(state: Int, planCommitTime: String): String {

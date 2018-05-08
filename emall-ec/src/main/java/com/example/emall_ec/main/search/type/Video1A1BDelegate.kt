@@ -3,6 +3,7 @@ package com.example.emall_ec.main.search.type
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
@@ -14,6 +15,7 @@ import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.CustomLoadMoreView
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
@@ -22,8 +24,10 @@ import com.example.emall_ec.main.classify.data.VideoClassifyAdapter
 import com.example.emall_ec.main.classify.data.VideoSearch
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.order.state.adapter.ObligationListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
+import com.example.emall_ec.main.search.SearchResultDelegate
 import com.example.emall_ec.main.search.data.VideoSearchBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_obligation.*
@@ -184,6 +188,7 @@ class Video1A1BDelegate : EmallDelegate() {
                             model.price = videoSearchBean.data.searchReturnDtoList[i].price
                             model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
                             model.title = videoSearchBean.data.searchReturnDtoList[i].title
+                            model.productId = videoSearchBean.data.searchReturnDtoList[i].productId
                             model.productType = "3"
                             data!!.add(model)
                         }
@@ -214,7 +219,17 @@ class Video1A1BDelegate : EmallDelegate() {
 //                mAdapter!!.loadMoreFail()
             }
         }
+        mAdapter!!.setLoadMoreView(CustomLoadMoreView())
+
         recyclerView.adapter = mAdapter
+        mAdapter!!.setOnItemClickListener { adapter, view, position ->
+            val delegate = GoodsDetailDelegate().create()
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("productId", data[position].productId)
+            bundle.putString("type", "3")
+            delegate!!.arguments = bundle
+            getParentDelegate<SearchResultDelegate>().start(delegate)
+        }
     }
 
     private fun loadMoreData() {

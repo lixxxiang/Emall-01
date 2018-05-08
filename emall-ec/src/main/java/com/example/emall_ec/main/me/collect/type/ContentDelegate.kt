@@ -81,17 +81,17 @@ class ContentDelegate : EmallDelegate() {
                 .success(object : ISuccess {
                     @SuppressLint("ApplySharedPref")
                     override fun onSuccess(response: String) {
+
                         EmallLogger.d(response)
                         myCollectionBean = Gson().fromJson(response, MyCollectionBean::class.java)
 
-                        EmallLogger.d("refresh")
-
                         myCollectionData!!.clear()
 
-                        for (i in 0 until myCollectionBean.data.collections.size)
-                            myCollectionData!!.add(myCollectionBean.data.collections[i])
+
 
                         if (myCollectionBean.message == "success") {
+                            for (i in 0 until myCollectionBean.data.collections.size)
+                                myCollectionData!!.add(myCollectionBean.data.collections[i])
                             if (content_lv.visibility == View.GONE) {
                                 content_lv.visibility = View.VISIBLE
                                 collection_content_no_result_rl.visibility = View.GONE

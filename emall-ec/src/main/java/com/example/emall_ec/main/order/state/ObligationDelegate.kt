@@ -48,6 +48,8 @@ class ObligationDelegate : EmallDelegate() {
         setSwipeBackEnable(false)
         delegate = this
         data()
+        obligation_lv.addHeaderView(View.inflate(activity, R.layout.orderlist_head_view, null))
+
         obligation_lv.setOnItemClickListener { adapterView, view, i, l ->
 
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
@@ -126,8 +128,6 @@ class ObligationDelegate : EmallDelegate() {
                         obligation_rl.visibility = View.INVISIBLE
                         data!!.add(orderDetail)
                         initRefreshLayout()
-                        val head = View.inflate(activity, R.layout.orderlist_head_view, null)
-                        obligation_lv.addHeaderView(head)
                         obligation_lv.adapter = ObligationListAdapter(delegate, data, R.layout.item_order, activity)
 
                     }
@@ -144,6 +144,13 @@ class ObligationDelegate : EmallDelegate() {
         if(obligation_srl != null){
             obligation_srl.setColorSchemeColors(Color.parseColor("#b80017"))
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+//        all_lv.visibility = View.INVISIBLE
+        data()
     }
 
 }

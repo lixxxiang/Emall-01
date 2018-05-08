@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
@@ -11,6 +12,7 @@ import com.example.emall_ec.main.order.Find_tab_Adapter
 import com.example.emall_ec.main.search.type.NoctilucenceDelegate
 import com.example.emall_ec.main.search.type.Optics1Delegate
 import com.example.emall_ec.main.search.type.Video1A1BDelegate
+import kotlinx.android.synthetic.main.delegate_order_list.*
 import kotlinx.android.synthetic.main.delegate_search_result.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -70,6 +72,7 @@ class SearchResultDelegate : BottomItemDelegate() {
         search_result_vp.adapter = fAdapter
         search_result_tl.setupWithViewPager(search_result_vp)
         search_result_vp.offscreenPageLimit = 3
+        search_result_vp.currentItem = arguments.getInt("PRODUCT_TYPE")
 //        optics_screen_tv.setOnClickListener {
 //            optics_screen_rl.visibility = View.VISIBLE
 //        }
@@ -79,5 +82,10 @@ class SearchResultDelegate : BottomItemDelegate() {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }

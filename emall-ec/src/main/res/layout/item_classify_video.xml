@@ -48,7 +48,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="13dp"
-                android:text="试看时长：31分32秒"
+                android:text="试看时长：32秒"
                 android:textColor="#FFFFFF"
                 android:textSize="12dp" />
         </RelativeLayout>

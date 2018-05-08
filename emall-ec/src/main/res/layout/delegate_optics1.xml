@@ -451,7 +451,6 @@
                         android:layout_width="117dp"
                         android:textSize="12dp"
                         android:id="@+id/optics_btn_confirm"
-
                         android:background="@drawable/sign_up_btn_shape"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_alignParentRight="true"

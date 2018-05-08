@@ -34,6 +34,7 @@
     <com.example.emall_core.util.view.BounceScrollView
         android:layout_below="@+id/pay_method_toolbar"
         android:layout_width="match_parent"
+        android:id="@+id/pay_method_sv"
         android:background="#F0F0F0"
         android:layout_height="match_parent">
         <LinearLayout
@@ -145,5 +146,12 @@
             android:layout_centerInParent="true"
             android:textSize="12dp"
             android:textColor="#FFFFFF"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/back_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F0F0F0"
+        android:visibility="gone">
     </RelativeLayout>
 </RelativeLayout>

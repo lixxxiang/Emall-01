@@ -204,6 +204,7 @@ class SignUpDelegate : BottomItemDelegate() {
                                 val delegate: SetPasswordDelegate = SetPasswordDelegate().create()!!
                                 val bundle = Bundle()
                                 bundle.putString("MODIFY_PASSWORD_TELEPHONE", this@SignUpDelegate.tel)
+                                bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
                                 delegate.arguments = bundle
                                 start(delegate)
 //            startForResult(delegate, REQ_MODIFY_FRAGMENT)

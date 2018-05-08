@@ -135,7 +135,7 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         userId = if (isLogin)
             DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         else
-            "-2"
+            "-100"
         pic_detail_2.visibility = View.INVISIBLE
         val parser = ConfigXmlParser()
         parser.parse(activity)
@@ -443,14 +443,17 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
     }
 
     fun initComments(articleId: String, userId: String, type: String) {
+
         getArticleAttachParams!!["articleId"] = articleId
         getArticleAttachParams!!["userId"] = userId
         getArticleAttachParams!!["type"] = type
+        EmallLogger.d(getArticleAttachParams!!)
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getArticleAttach")
                 .params(getArticleAttachParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
                         getArticleAttachBean = Gson().fromJson(response, GetArticleAttachBean::class.java)
                         if (getArticleAttachBean.data.comments != null) {
                             comment_adapter = CommentListViewAdapter(activity.applicationContext, getArticleAttachBean.data)
@@ -477,6 +480,7 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
                             upVoteAmount--
                         }
                         if (getArticleAttachBean.data!!.collectionMark == 1) {
+                            EmallLogger.d("??")
                             collect.setImageResource(R.drawable.collection_highlight)
                             isCollected = true
                         }

@@ -88,6 +88,7 @@ public class OrderDetail implements Parcelable{
         private int payMethod;
         private String payTime;
 
+
         public String getCommitTime() {
             return commitTime;
         }
@@ -245,6 +246,15 @@ public class OrderDetail implements Parcelable{
             private String size;
             private String swingSatelliteAngle;
             private String startTime;
+            private String productType;
+
+            public String getProductType() {
+                return productType;
+            }
+
+            public void setProductType(String productType) {
+                this.productType = productType;
+            }
 
             public String getStartTime() {
                 return startTime;

@@ -163,7 +163,7 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
             } else {
                 val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                 val bundle = Bundle()
-                bundle.putString("PAGE_FROM", "DAILY_PIC")
+                bundle.putString("PAGE_FROM", "DAILY_VIDEO")
                 delegate.arguments = bundle
                 start(delegate)
             }
@@ -186,7 +186,7 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
             } else {
                 val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                 val bundle = Bundle()
-                bundle.putString("PAGE_FROM", "DAILY_PIC")
+                bundle.putString("PAGE_FROM", "DAILY_VIDEO")
                 delegate.arguments = bundle
                 start(delegate)
             }
@@ -208,7 +208,7 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
             } else {
                 val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                 val bundle = Bundle()
-                bundle.putString("PAGE_FROM", "DAILY_PIC")
+                bundle.putString("PAGE_FROM", "DAILY_VIDEO")
                 delegate.arguments = bundle
                 start(delegate)
             }

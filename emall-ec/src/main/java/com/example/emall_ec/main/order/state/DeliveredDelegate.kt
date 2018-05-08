@@ -149,4 +149,10 @@ class DeliveredDelegate : EmallDelegate() {
         delivered_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+//        all_lv.visibility = View.INVISIBLE
+        data()
+    }
 }
