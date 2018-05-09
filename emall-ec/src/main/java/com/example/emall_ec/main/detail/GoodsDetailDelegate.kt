@@ -639,17 +639,21 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 .params(getCollectionMarkParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
+                        EmallLogger.d(response)
                         getCollectionMarkBean = Gson().fromJson(response, GetCollectionMarkBean::class.java)
-                        if (getCollectionMarkBean.message == "success" && video_detail_star_iv != null) {
+                        if (getCollectionMarkBean.message == "success" ) {
                             if (getCollectionMarkBean.data.collectionMark == 1) {
-                                video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
-                                flag = true
+                                if (video_detail_star_iv != null){
+                                    video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
+                                    flag = true
+                                }
                             } else {
-                                video_detail_star_iv.setBackgroundResource(R.drawable.collection)
-                                flag = false
+                                if (video_detail_star_iv != null) {
+                                    video_detail_star_iv.setBackgroundResource(R.drawable.collection)
+                                    flag = false
+                                }
                             }
                         } else {
-                            Toast.makeText(activity, getString(R.string.wrong_vcode), Toast.LENGTH_SHORT).show()
                         }
                     }
                 })

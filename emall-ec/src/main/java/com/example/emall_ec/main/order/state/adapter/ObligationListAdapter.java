@@ -52,9 +52,7 @@ public class ObligationListAdapter extends BaseAdapter {
         this.context = context;
 
         for (int i = 0; i < dataList.get(0).getData().size(); i++) {
-            if (dataList.get(0).getData().get(i).getDetails().getImageDetailUrl() == null) {
-                imageList.add("");
-            } else
+
                 imageList.add(dataList.get(0).getData().get(i).getDetails().getImageDetailUrl());
         }
     }
@@ -136,6 +134,7 @@ public class ObligationListAdapter extends BaseAdapter {
         util.price.setText(String.format("¥%s", new DecimalFormat("######0.00").format(dataList.get(0).getData().get(i).getPayment())));
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
         buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
+
         util.imageView.setImageResource(R.drawable.program);
         util.imageView.setTag(R.id.imageid, imageList.get(i));
         if (util.imageView.getTag(R.id.imageid) != null && imageList.get(i) == util.imageView.getTag(R.id.imageid)) {

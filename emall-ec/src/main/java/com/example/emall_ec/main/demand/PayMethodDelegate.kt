@@ -95,8 +95,13 @@ class PayMethodDelegate : BottomItemDelegate() {
                 call.enqueue(object : retrofit2.Callback<AppPayBean> {
                     override fun onResponse(call: retrofit2.Call<AppPayBean>, response: retrofit2.Response<AppPayBean>) {
                         if (response.body() != null) {
-                            if (response.body()!!.code == 0)
-                                start(OfflinePaymentDelegate().create())
+                            if (response.body()!!.code == 0){
+                                val delegate: OfflinePaymentDelegate = OfflinePaymentDelegate().create()!!
+                                val bundle = Bundle()
+                                delegate.arguments = bundle
+                                bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+                                start(delegate)
+                            }
                         } else {
                             EmallLogger.d("error")
                         }

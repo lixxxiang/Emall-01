@@ -15,6 +15,9 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.ClickableSpan
+import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.order.OrderListDelegate
 
@@ -34,7 +37,26 @@ class OfflinePaymentDelegate : BottomItemDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(offline_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         offline_toolbar.setNavigationOnClickListener {
-            pop()
+            EmallLogger.d(arguments.getString("PAGE_FROM"))
+            when {
+                arguments.getString("PAGE_FROM") == "CLASSIFY" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "ORDER_LIST" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "ME" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+
+                arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "PAYMENT" -> {
+                    if (findFragment(GoodsDetailDelegate().javaClass) == null) {
+                        popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                    } else
+                        popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                }
+                arguments.getString("PAGE_FROM") == "PROGRAM_INDEX" ->
+                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "PROGRAM" ->
+                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                else -> pop()
+            }
+//            pop()
         }
         imageSpan()
         imageSpan2()
