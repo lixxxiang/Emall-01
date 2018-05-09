@@ -98,7 +98,6 @@ public class AllListAdapter extends BaseAdapter {
             util.price = view.findViewById(R.id.item_order_price_tv);
             util.imageView = view.findViewById(R.id.item_order_image_iv);
             util.state = view.findViewById(R.id.item_order_state_tv);
-
             util.btn = view.findViewById(R.id.item_order_btn);
             util.btn.setOnClickListener(new View.OnClickListener() {
                 @Override

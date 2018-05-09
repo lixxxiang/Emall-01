@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.AbsListView
 import android.widget.AdapterView
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.log.EmallLogger
@@ -23,31 +21,29 @@ import com.example.emall_ec.main.demand.PayMethodDelegate
 import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.order.state.adapter.All2RecyclerViewAdapter
-import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.example.emall_ec.main.order.state.data.OrderListModel
-import kotlinx.android.synthetic.main.delegate_all.*
-import kotlinx.android.synthetic.main.delegate_all_2.*
-import kotlinx.android.synthetic.main.delegate_optics1.*
+import kotlinx.android.synthetic.main.delegate_in_production.*
+import kotlinx.android.synthetic.main.delegate_in_production_2.*
 import retrofit2.Retrofit
 import java.util.*
 
-class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
+class InProduction2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     private var orderDetail = OrderDetail()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
     var inited = false
     var adapter: All2RecyclerViewAdapter? = null
-    var delegate: All2Delegate? = null
+    var delegate: InProduction2Delegate? = null
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
-    var allLinearLayoutManager : LinearLayoutManager ?= null
+    var in_productionLinearLayoutManager : LinearLayoutManager?= null
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
     }
 
 
     override fun setLayout(): Any? {
-        return R.layout.delegate_all_2
+        return R.layout.delegate_in_production_2
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -55,24 +51,24 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         setSwipeBackEnable(false)
 
         initRefreshLayout()
-        all2_srl.isRefreshing = true
+        in_production2_srl.isRefreshing = true
         delegate = this
-        allLinearLayoutManager = LinearLayoutManager(context)
-        allLinearLayoutManager!!.isSmoothScrollbarEnabled = true
-        allLinearLayoutManager!!.isAutoMeasureEnabled = true
-        all2_rv.layoutManager = allLinearLayoutManager
-        all2_rv.setHasFixedSize(true)
-        all2_rv.addItemDecoration(GridSpacingItemDecoration(1, 30, true))
+        in_productionLinearLayoutManager = LinearLayoutManager(context)
+        in_productionLinearLayoutManager!!.isSmoothScrollbarEnabled = true
+        in_productionLinearLayoutManager!!.isAutoMeasureEnabled = true
+        in_production2_rv.layoutManager = in_productionLinearLayoutManager
+        in_production2_rv.setHasFixedSize(true)
+        in_production2_rv.addItemDecoration(GridSpacingItemDecoration(1, 30, true))
 
-        all2_rv.isNestedScrollingEnabled = false
+        in_production2_rv.isNestedScrollingEnabled = false
         data()
 
-        all2_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        in_production2_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             adapter = null
-            all2_srl.isRefreshing = true
+            in_production2_srl.isRefreshing = true
             Handler().postDelayed({
                 data()
-                all2_srl.isRefreshing = false
+                in_production2_srl.isRefreshing = false
             }, 1200)
         })
 
@@ -82,7 +78,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     fun data() {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "", "")
+        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "3", "")
         call.enqueue(object : retrofit2.Callback<OrderDetail> {
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null) {
@@ -90,15 +86,15 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                     EmallLogger.d(response)
                     inited = true
                     val data: MutableList<OrderListModel>? = mutableListOf()
-                    if (all2_rv != null && all2_rl != null) {
+                    if (in_production2_rv != null && in_production2_rl != null) {
                         if (orderDetail.data.isEmpty()) {
-                            all2_rv.visibility = View.INVISIBLE
-                            all2_rl.visibility = View.VISIBLE
-                            all_srl.isRefreshing = false
+                            in_production2_rv.visibility = View.INVISIBLE
+                            in_production2_rl.visibility = View.VISIBLE
+                            in_production2_srl.isRefreshing = false
 
                         } else {
-                            all2_rv.visibility = View.VISIBLE
-                            all2_rl.visibility = View.GONE
+                            in_production2_rv.visibility = View.VISIBLE
+                            in_production2_rl.visibility = View.GONE
                             val size = orderDetail.data.size
                             for (i in 0 until size) {
                                 var orderListModel = OrderListModel()
@@ -124,8 +120,8 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
 
                             }
                             adapter = All2RecyclerViewAdapter(R.layout.item_order, data)
-                            all2_rv.adapter = adapter
-                            all2_srl.isRefreshing = false
+                            in_production2_rv.adapter = adapter
+                            in_production2_srl.isRefreshing = false
                             adapter!!.setOnItemChildClickListener { adapter, view, position ->
                                 EmallLogger.d(position)
                                 EmallLogger.d(orderDetail.data[position].getState())
@@ -159,7 +155,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                     }
                 } else {
                     EmallLogger.d("error")
-                    all2_srl.isRefreshing = false
+                    in_production2_srl.isRefreshing = false
 
                 }
             }
@@ -169,7 +165,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     }
 
     fun initRefreshLayout() {
-        all2_srl.setColorSchemeColors(Color.parseColor("#b80017"))
+        in_production2_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -177,5 +173,6 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         super.onSupportVisible()
         data()
     }
+
 
 }

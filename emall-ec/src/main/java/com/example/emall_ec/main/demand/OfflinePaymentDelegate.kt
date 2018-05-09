@@ -11,6 +11,7 @@ import android.text.style.ImageSpan
 import android.text.Spannable
 import android.view.View
 import android.graphics.Color.parseColor
+import android.os.Bundle
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
@@ -114,6 +115,9 @@ class OfflinePaymentDelegate : BottomItemDelegate() {
         spannableImgae.setSpan(object : NolineClickSpan() {
             override fun onClick(widget: View) {
                 val delegate: OrderListDelegate = OrderListDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+                delegate.arguments = bundle
                 start(delegate)
             }
         }, spannableImgae.length - 14, spannableImgae.length - 8, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)

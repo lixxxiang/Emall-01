@@ -77,11 +77,11 @@ class OrderListDelegate : BottomItemDelegate() {
 
 
         //初始化各fragment
-        var allDelegate = AllDelegate()
-        var obligationDelegate = ObligationDelegate()
-        var checkPendingDelegate = CheckPendingDelegate()
-        var inProductionDelegate = InProductionDelegate()
-        var deliveredDelegate = DeliveredDelegate()
+        var allDelegate = All2Delegate()
+        var obligationDelegate = Obligation2Delegate()
+        var checkPendingDelegate = CheckPending2Delegate()
+        var inProductionDelegate = InProduction2Delegate()
+        var deliveredDelegate = Delivered2Delegate()
 
         //将fragment装进列表中
         listFragment!!.add(allDelegate)
