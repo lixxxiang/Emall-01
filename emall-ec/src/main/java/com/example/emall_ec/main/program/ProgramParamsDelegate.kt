@@ -118,6 +118,7 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             val delegate: ProgramDetailDelegate = ProgramDetailDelegate().create()!!
             val bundle = Bundle()
             bundle.putByteArray("image", arguments.getByteArray("image"))
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
             delegate.arguments = bundle
             start(delegate)
         }

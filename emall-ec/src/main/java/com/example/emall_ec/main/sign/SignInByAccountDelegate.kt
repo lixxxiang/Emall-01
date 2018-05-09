@@ -134,13 +134,19 @@ class SignInByAccountDelegate : EmallDelegate() {
         btn_sign_in_by_tel_submit.setOnClickListener {
             val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
             val bundle = Bundle()
-            bundle.putString("PAGE_FROM", "SIGN_IN_BY_COUNT")
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
             delegate.arguments = bundle
             startWithPop(delegate)
         }
 
         sign_in_by_account_login_tv.setOnClickListener {
-            startWithPop(SignUpDelegate())
+            val delegate: SignUpDelegate = SignUpDelegate().create()!!
+            val arg = arguments.getString("PAGE_FROM")
+            val bundle = Bundle()
+            bundle.putString("PAGE_FROM", arg)
+            delegate.arguments = bundle
+            startWithPop(delegate)
+            KeyboardUtils.hideSoftInput(activity)
         }
 
         sign_in_by_account_close.setOnClickListener {

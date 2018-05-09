@@ -34,6 +34,7 @@ import com.baidu.location.*
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
+import com.blankj.utilcode.util.AppUtils
 import com.example.emall_core.util.view.RulerView
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.search.SearchPoiDelegate
@@ -92,8 +93,8 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
     private var zoomIn: AppCompatButton? = null
     private var zoomOut: AppCompatButton? = null
     private var scopeGeo = String()
-    private var angle = "10"
-    private var cloud = "10"
+    private var angle = "0"
+    private var cloud = "0"
     private var center = String()
     private var geoString = String()
     //    var bitmapByte: ByteArray ?= vy
@@ -642,11 +643,8 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
                 mBaiduMap!!.snapshot { p0 ->
                     var baos = ByteArrayOutputStream()
                     p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                    var bitmapByte = baos.toByteArray()
-                    println("~-~-~-~" + bitmapByte!!.size)
-                    bundle!!.putByteArray("image", bitmapByte)
-
-//                    saveBitmapToLocal("test", p0)
+                    EmallLogger.d(AppUtils.getAppPath())
+                    saveBitmapToLocal("temp_map.jpg", p0)
                 }
             }, 1000)   //5秒
         }
@@ -654,12 +652,14 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         nextStep!!.setOnClickListener {
             val delegate: ProgramParamsDelegate = ProgramParamsDelegate().create()!!
 
+            EmallLogger.d(angle)
+            EmallLogger.d(cloud)
             bundle!!.putString("scopeGeo", scopeGeo)
             bundle.putString("angle", angle)
             bundle.putString("cloud", cloud)
             bundle.putString("center", center)
             bundle.putString("geoString", geoString)
-
+            bundle.putString("PAGE_FROM", "PROGRAM")
             if (area.toString().contains("E")) {
                 Toast.makeText(activity, "区域面积过大", Toast.LENGTH_SHORT).show()
             } else {
@@ -815,7 +815,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
     }
 
     fun saveBitmapToLocal(fileName: String, bitmap: Bitmap) {
-        var FILE_PATH = File(Environment.getExternalStorageDirectory().absolutePath + "image")//设置保存路径
+        var FILE_PATH = File(Environment.getExternalStorageDirectory().absolutePath + "/YaoGanYiGou/temp/")//设置保存路径
         try {
             // 创建文件流，指向该路径，文件名叫做fileName
             val file = File(FILE_PATH, fileName)

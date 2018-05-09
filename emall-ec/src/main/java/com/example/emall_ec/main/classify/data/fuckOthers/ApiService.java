@@ -10,6 +10,7 @@ import com.example.emall_ec.main.demand.data.QueryOrderBean;
 import com.example.emall_ec.main.demand.data.QueryOrderFailureBean;
 import com.example.emall_ec.main.detail.data.SceneDetailBean;
 import com.example.emall_ec.main.detail.data.VideoDetailBean;
+import com.example.emall_ec.main.index.dailypic.data.CommonBean;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
 import com.example.emall_ec.main.search.data.VideoSearchBean;
 
@@ -71,10 +72,15 @@ public interface ApiService {
                                             @Query("state") String targetSentence2,
                                             @Query("type") String targetSentence3);
 
+    @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
+    @GET("/global/order/deleteOrder")
+    Call<CommonBean> deleteOrder(@Query("orderId") String targetSentence);
+
     @POST("/global/wxpay/appPay")
     @FormUrlEncoded
     Call<AppPayBean> appPay(@Field("orderId") String targetSentence,
-                            @Field("type") String targetSentence2);
+                            @Field("type") String targetSentence2,
+                            @Field("payMethod") String targetSentence3);
 
     @POST("/global/mobile/wxpay/queryOrder")
     @FormUrlEncoded

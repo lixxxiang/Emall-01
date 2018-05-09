@@ -2,6 +2,7 @@ package com.example.emall_ec.main.order.state.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.demand.PayMethodDelegate;
+import com.example.emall_ec.main.order.ProductDeliveryDelegate;
 import com.example.emall_ec.main.order.state.AllDelegate;
 import com.example.emall_ec.main.order.state.InProductionDelegate;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
@@ -34,7 +36,7 @@ public class InProductionListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    public static String[] typeArray = {"", "标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] typeArray = {"", "光学1级", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
     public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
 
@@ -96,14 +98,19 @@ public class InProductionListAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     EmallLogger.INSTANCE.d(dataList.get(0).getData().get(i).getState());
-                    if (dataList.get(0).getData().get(i).getState() == 2){
-//                        EmallLogger.INSTANCE.d("pay");
-//                        PayMethodDelegate delegate = new PayMethodDelegate().create();;
-//                        assert delegate1 != null;
-//                        delegate1.start(delegate);
-//                        btnListener.onBtnClick();
-                        EmallLogger.INSTANCE.d("dfsf");
-                        delegate.getParentDelegate().start(new PayMethodDelegate().create());
+                    if (dataList.get(0).getData().get(i).getState() == 2) {
+                        PayMethodDelegate payMethodDelegate = new PayMethodDelegate().create();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("PARENT_ORDER_ID", dataList.get(0).getData().get(i).getOrderId());
+                        bundle.putString("TYPE", "2");
+                        bundle.putString("PAGE_FROM","ORDER_LIST");
+
+                        payMethodDelegate.setArguments(bundle);
+                        delegate.getParentDelegate().start(payMethodDelegate);
+
+                    } else if (dataList.get(0).getData().get(i).getState() == 4) {
+                        ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
+                        delegate.getParentDelegate().start(productDeliveryDelegate);
                     }
                 }
             });

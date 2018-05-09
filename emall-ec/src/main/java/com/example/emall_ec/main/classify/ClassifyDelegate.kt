@@ -415,10 +415,14 @@ class ClassifyDelegate : EmallDelegate() {
                     }
                 })
                 .error(object : IError {
-                    override fun onError(code: Int, msg: String) {}
+                    override fun onError(code: Int, msg: String) {
+                        EmallLogger.d(msg)
+                    }
                 })
                 .failure(object : IFailure {
-                    override fun onFailure() {}
+                    override fun onFailure() {
+                        EmallLogger.d("f")
+                    }
                 })
                 .build()
                 .get()
@@ -435,6 +439,7 @@ class ClassifyDelegate : EmallDelegate() {
             productId!!.add(sceneSearch.data.searchReturnDtoList[i].productId)
             data!!.add(model)
         }
+        EmallLogger.d(productId!!)
         initRecyclerView("SCENE")
     }
 
@@ -469,6 +474,7 @@ class ClassifyDelegate : EmallDelegate() {
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("productId", productId!![position])
                 bundle.putString("type", VIDEO)
+//                bundle.putString("PAGE_FROM","CLASSIFY")
                 delegate!!.arguments = bundle
                 start(delegate)
             }
@@ -484,12 +490,18 @@ class ClassifyDelegate : EmallDelegate() {
             sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
-                bundle!!.putString("productId", productId!![position])
+                var index = position
+                if(position > 9){
+                    index -= 10
+                }
+                bundle!!.putString("productId", productId!![index])
 
                 if (arguments.getString("TYPE") == "NOCTILUCENCE") {
                     bundle.putString("type", NOCTILUCENCE)
                 } else
                     bundle.putString("type", OPTICS)
+//                bundle.putString("PAGE_FROM","CLASSIFY")
+
                 delegate!!.arguments = bundle
                 start(delegate)
             }

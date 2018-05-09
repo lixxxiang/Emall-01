@@ -22,6 +22,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
@@ -40,6 +41,8 @@ import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 
 /**
@@ -89,8 +92,8 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     private var zoomIn: AppCompatButton? = null
     private var zoomOut: AppCompatButton? = null
     private var scopeGeo = String()
-    private var angle = "10"
-    private var cloud = "10"
+    private var angle = "0"
+    private var cloud = "0"
     private var center = String()
     private var geoString = String()
     //    var bitmapByte: ByteArray ?= vy
@@ -508,7 +511,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         val rularParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         rularParams.setMargins(0, DimenUtil().dip2px(context, 40F), 0, 0)
         rular!!.mMaxValue = 5000
-        rular!!.mMinValue = 1000
+        rular!!.mMinValue = 0
         rular!!.mScaleBase = 100
         rular!!.mMaxScaleColor = Color.parseColor("#ffffff")
         rular!!.mMidScaleColor = Color.parseColor("#666666")
@@ -519,7 +522,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         rular!!.mMaxScaleWidth = DimenUtil().dip2px(activity, 2.5F).toFloat()
         rular!!.mMidScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
         rular!!.mMinScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
-        rular!!.mCurrentValue = 10
+        rular!!.mCurrentValue = 0
         rular!!.mScaleValueColor = Color.parseColor("#666666")
         rular!!.isScaleGradient = false
         rular!!.isShowScaleValue = false
@@ -561,7 +564,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         val rular2Params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         rular2Params.setMargins(0, DimenUtil().dip2px(context, 120F), 0, 0)
         rular2!!.mMaxValue = 5000
-        rular2!!.mMinValue = 1000
+        rular2!!.mMinValue = 0
         rular2!!.mScaleBase = 100
         rular2!!.mMaxScaleColor = Color.parseColor("#ffffff")
         rular2!!.mMidScaleColor = Color.parseColor("#666666")
@@ -572,7 +575,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         rular2!!.mMaxScaleWidth = DimenUtil().dip2px(activity, 2.5F).toFloat()
         rular2!!.mMidScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
         rular2!!.mMinScaleWidth = DimenUtil().dip2px(activity, 2F).toFloat()
-        rular2!!.mCurrentValue = 10
+        rular2!!.mCurrentValue = 0
         rular2!!.mScaleValueColor = Color.parseColor("#666666")
         rular2!!.isScaleGradient = false
         rular2!!.isShowScaleValue = false
@@ -642,14 +645,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
                 mBaiduMap!!.snapshot { p0 ->
                     var baos = ByteArrayOutputStream()
                     p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                    var bitmapByte = baos.toByteArray()
-                    println("~-~-~-~" + bitmapByte!!.size)
-                    bundle!!.putByteArray("image", bitmapByte)
-
-
-//                    bundle!!.putParcelable("image", p0)
-
-//                    saveBitmapToLocal("test", p0)
+                    saveBitmapToLocal("temp_map.jpg", p0)
 
                 }
             }, 1000)   //5秒
@@ -663,6 +659,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
             bundle.putString("cloud", cloud)
             bundle.putString("center", center)
             bundle.putString("geoString", geoString)
+            bundle.putString("PAGE_FROM","PROGRAM_INDEX")
 
             if (area.toString().contains("E")) {
                 Toast.makeText(activity, "区域面积过大", Toast.LENGTH_SHORT).show()
@@ -690,6 +687,39 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
+        val sp = activity.getSharedPreferences("FROM_ORDER_LIST", Context.MODE_PRIVATE)
+        if (sp.getString("from_order_list", "")== "1"){
+            level = 1
+            program_index_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
+            topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            program_index_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
+            program_index_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
+            program_index_camera.visibility = View.VISIBLE
+            satelliteImageView!!.visibility = View.VISIBLE
+            scrollTextView!!.visibility = View.VISIBLE
+            title!!.visibility = View.GONE
+            program_index_toolbar_searchbar.visibility = View.VISIBLE
+            nextStep!!.visibility = View.GONE
+            rulerRl!!.visibility = View.INVISIBLE
+            rular!!.visibility = View.INVISIBLE
+            rular2!!.visibility = View.INVISIBLE
+            r1Tv!!.visibility = View.INVISIBLE
+            r2Tv!!.visibility = View.INVISIBLE
+            val mUiSettings = mBaiduMap!!.uiSettings
+            mUiSettings.isScrollGesturesEnabled = true
+            mUiSettings.isOverlookingGesturesEnabled = true
+            mUiSettings.isZoomGesturesEnabled = true
+            move!!.visibility = View.VISIBLE
+            zoomImageView!!.visibility = View.VISIBLE
+            zoomIn!!.visibility = View.VISIBLE
+            zoomOut!!.visibility = View.VISIBLE
+            mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null))
+        }
+        sp.edit().clear().commit()
     }
 
     inner class MyLocationListenner : BDLocationListener {
@@ -792,4 +822,23 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         return DefaultVerticalAnimator()
     }
 
+    fun saveBitmapToLocal(fileName: String, bitmap: Bitmap) {
+        var FILE_PATH = File(Environment.getExternalStorageDirectory().absolutePath + "/YaoGanYiGou/temp/")//设置保存路径
+        try {
+            // 创建文件流，指向该路径，文件名叫做fileName
+            val file = File(FILE_PATH, fileName)
+            // file其实是图片，它的父级File是文件夹，判断一下文件夹是否存在，如果不存在，创建文件夹
+            val fileParent = file.getParentFile()
+            if (!fileParent.exists()) {
+                // 文件夹不存在
+                fileParent.mkdirs()// 创建文件夹
+            }
+            // 将图片保存到本地
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,
+                    FileOutputStream(file))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
 }

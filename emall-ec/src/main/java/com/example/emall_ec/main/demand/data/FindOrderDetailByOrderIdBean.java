@@ -236,6 +236,24 @@ public class FindOrderDetailByOrderIdBean implements Parcelable {
             private String serviceDescription;
             private String size;
             private String swingSatelliteAngle;
+            private String startTime;
+            private String productType;
+
+            public String getProductType() {
+                return productType;
+            }
+
+            public void setProductType(String productType) {
+                this.productType = productType;
+            }
+
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
 
             public String getCenterTime() {
                 return centerTime;

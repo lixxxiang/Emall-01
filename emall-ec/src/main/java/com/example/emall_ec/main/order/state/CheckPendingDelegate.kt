@@ -53,14 +53,13 @@ class CheckPendingDelegate : EmallDelegate() {
         check_pending_lv.addHeaderView(head)
         data()
         check_pending_lv.setOnItemClickListener { adapterView, view, i, l ->
-
             val delegate: OrderDetailDelegate = OrderDetailDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("KEY", "ID")
             bundle.putParcelable("KEy", orderDetail)
+            bundle.putInt("INDEX", i - 1)
             delegate.arguments = bundle
             (parentFragment as BottomItemDelegate).start(delegate)
-
         }
 
         check_pending_lv.setOnScrollListener(object : AbsListView.OnScrollListener {

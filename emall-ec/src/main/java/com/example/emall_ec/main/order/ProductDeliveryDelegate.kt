@@ -9,6 +9,8 @@ import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_ec.R
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.scanner.ScannerDelegate
 import kotlinx.android.synthetic.main.delegate_product_delivery.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -37,6 +39,10 @@ class ProductDeliveryDelegate : EmallDelegate() {
             rl.layoutParams = rlParams
             rl.setBackgroundColor(Color.parseColor("#FFFFFF"))
             delivery_ll.addView(rl, rlParams)
+        }
+
+        delivery.setOnClickListener{
+            start(ScannerDelegate().create())
         }
     }
 

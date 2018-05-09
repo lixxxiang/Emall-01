@@ -40,8 +40,8 @@ class FillOrderDelegate : BottomItemDelegate() {
     var orderParams: WeakHashMap<String, Any>? = WeakHashMap()
     var productId = String()
     var orderBean = OrderBean()
-    var hasInvoice = false
     private var queryInvoiceBean = QueryInvoiceBean()
+    var invoiceState = "0"
 
     private var queryInvoiceParams: WeakHashMap<String, Any>? = WeakHashMap()
 
@@ -75,8 +75,6 @@ class FillOrderDelegate : BottomItemDelegate() {
                         viewDemandBean = Gson().fromJson(response, ViewDemandBean::class.java)
                         productId = viewDemandBean.data.demands[0].productId
                         initViews(viewDemandBean)
-                        getInvoice()
-
                     }
                 })
                 .failure(object : IFailure {
@@ -92,14 +90,6 @@ class FillOrderDelegate : BottomItemDelegate() {
                 .build()
                 .post()
 
-        bill_btn.setOnClickListener {
-            val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
-            delegate.arguments = bundle
-            startForResult(delegate, 1)
-        }
-
         fill_order_to_pay.setOnClickListener {
             if (!ButtonUtils.isFastDoubleClick(R.id.fill_order_to_pay)) {
                 EmallProgressBar.showProgressbar(context)
@@ -107,48 +97,24 @@ class FillOrderDelegate : BottomItemDelegate() {
             }
         }
 
-        bill_icon_btn.setOnClickListener {
-            EmallLogger.d(isChecked)
+        bill_rl.setOnClickListener {
             if (!isChecked) {
-                if (hasInvoice) {//没勾选 有发票
-                    cb.setBackgroundResource(R.drawable.invoice_checked)
-                    isChecked = true
-                } else {//没勾选 没发票
-                    val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
-                    val bundle: Bundle? = Bundle()
-                    bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
-                    delegate.arguments = bundle
-                    startForResult(delegate, 1)
-                }
+                cb.setBackgroundResource(R.drawable.invoice_checked)
+                isChecked = true
+                val delegate: InvoiceDelegate = InvoiceDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
+                delegate.arguments = bundle
+                startForResult(delegate, 1)
+                invoiceState = "1"
             } else {
                 cb.setBackgroundResource(R.drawable.invoice_unchecked)
                 isChecked = false
+                invoiceState = "0"
             }
         }
     }
 
-    private fun getInvoice() {
-        queryInvoiceParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/query/invoice")
-                .params(queryInvoiceParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        queryInvoiceBean = Gson().fromJson(response, QueryInvoiceBean::class.java)
-                        if (queryInvoiceBean.message == "success") {
-                            hasInvoice = true
-                        }
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {}
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {}
-                })
-                .build()
-                .post()
-    }
 
     override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
         super.onFragmentResult(requestCode, resultCode, data)
@@ -158,18 +124,18 @@ class FillOrderDelegate : BottomItemDelegate() {
             if (index == "false") {
                 cb.setBackgroundResource(R.drawable.invoice_unchecked)
                 isChecked = false
-                hasInvoice = false
+                invoiceState = "0"
             } else if (index == "true") {
                 cb.setBackgroundResource(R.drawable.invoice_checked)
                 isChecked = true
-                hasInvoice = true
+                invoiceState = "1"
             }
         }
     }
 
     private fun insertOrderData() {
         orderParams!!["type"] = arguments.getString("type")
-        orderParams!!["invoiceState"] = "0"
+        orderParams!!["invoiceState"] = invoiceState
         orderParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         orderParams!!["productId"] = productId
         orderParams!!["parentOrderId"] = arguments.getString("demandId")
@@ -190,6 +156,8 @@ class FillOrderDelegate : BottomItemDelegate() {
                             val bundle: Bundle? = Bundle()
                             bundle!!.putString("PARENT_ORDER_ID", orderBean.data.parentOrderId)
                             bundle.putString("TYPE", "1")
+                            bundle.putString("PAGE_FROM",arguments.getString("PAGE_FROM"))
+
                             delegate.arguments = bundle
                             start(delegate)
                         }

@@ -50,6 +50,7 @@
                     android:textSize="12dp" />
 
                 <RelativeLayout
+                    android:id="@+id/order_detail_line"
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_below="@+id/order_detail_state_tv"

@@ -31,6 +31,7 @@ import java.util.*
 import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.view.CacheUtil
@@ -93,6 +94,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -190,28 +192,43 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_goods_detail_title_image.setOnClickListener {
-            val builder = AlertDialog.Builder(activity)
-            builder.setTitle("当前为非WiFi网络，播放将消耗流量")
-            builder.setPositiveButton("确定播放") { dialog, _ ->
-                dialog.dismiss()
-                detail_videoview.visibility = View.VISIBLE
-                video_goods_detail_title_image.visibility = View.GONE
-                play_btn.visibility = View.GONE
-                video_mark.visibility = View.GONE
-                video_goods_detail_mask_iv.visibility = View.GONE
-                if (Vitamio.isInitialized(context)) {
-                    detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
-                    detail_videoview!!.setMediaController(MediaController(context))
-                    detail_videoview!!.start()
+            if(type == "3"){
+                if(!NetworkUtils.isWifiAvailable() && !NetworkUtils.isWifiConnected()){
+                    val builder = AlertDialog.Builder(activity)
+                    builder.setTitle("当前为非WiFi网络，播放将消耗流量")
+                    builder.setPositiveButton("确定播放") { dialog, _ ->
+                        dialog.dismiss()
+                        detail_videoview.visibility = View.VISIBLE
+                        video_goods_detail_title_image.visibility = View.GONE
+                        play_btn.visibility = View.GONE
+                        video_mark.visibility = View.GONE
+                        video_goods_detail_mask_iv.visibility = View.GONE
+                        if (Vitamio.isInitialized(context)) {
+                            detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
+                            detail_videoview!!.setMediaController(MediaController(context))
+                            detail_videoview!!.start()
+                        }
+                    }
+
+                    builder.setNegativeButton("取消播放") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                    builder.create().show()
+                }else{
+                    detail_videoview.visibility = View.VISIBLE
+                    video_goods_detail_title_image.visibility = View.GONE
+                    play_btn.visibility = View.GONE
+                    video_mark.visibility = View.GONE
+                    video_goods_detail_mask_iv.visibility = View.GONE
+                    if (Vitamio.isInitialized(context)) {
+                        detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
+                        detail_videoview!!.setMediaController(MediaController(context))
+                        detail_videoview!!.start()
+                    }
                 }
+
             }
-
-            builder.setNegativeButton("取消播放") { dialog, _ ->
-                dialog.dismiss()
-            }
-
-            builder.create().show()
-
         }
 
         detail_videoview.setOnCompletionListener {
@@ -395,7 +412,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                             bundle.putString("time", sceneData.centerTime)
 
                         }
-
+                        bundle.putString("PAGE_FROM","GOODS_DETAIL")
                         delegate.arguments = bundle
                         start(delegate)
                     }
@@ -623,7 +640,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         getCollectionMarkBean = Gson().fromJson(response, GetCollectionMarkBean::class.java)
-                        if (getCollectionMarkBean.message == "success") {
+                        if (getCollectionMarkBean.message == "success" && video_detail_star_iv != null) {
                             if (getCollectionMarkBean.data.collectionMark == 1) {
                                 video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
                                 flag = true

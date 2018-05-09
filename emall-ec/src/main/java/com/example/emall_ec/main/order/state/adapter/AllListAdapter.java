@@ -40,9 +40,9 @@ public class AllListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    public static String[] typeArray = {"", "标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] typeArray = {"", "光学1级", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
-    public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
+    public static String[] payMethodArray = {"尚未选择支付方式", "", "微信支付", "线下支付"};
     public static String[] programArray = {"", "光学1级", "夜光增强", "视频1A+1B"};
     public BtnListener btnListener;
     AllDelegate delegate;
@@ -109,8 +109,11 @@ public class AllListAdapter extends BaseAdapter {
                         Bundle bundle = new Bundle();
                         bundle.putString("PARENT_ORDER_ID", dataList.get(0).getData().get(i).getOrderId());
                         bundle.putString("TYPE", "2");
+                        bundle.putString("PAGE_FROM", "ORDER_LIST");
+
                         payMethodDelegate.setArguments(bundle);
                         delegate.getParentDelegate().start(payMethodDelegate);
+
                     } else if (dataList.get(0).getData().get(i).getState() == 4) {
                         ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
                         delegate.getParentDelegate().start(productDeliveryDelegate);
@@ -139,7 +142,7 @@ public class AllListAdapter extends BaseAdapter {
         util.state.setText(stateFormat(dataList.get(0).getData().get(i).getState(), dataList.get(0).getData().get(i).getPlanCommitTime()));
 //        util.btn.setTag(R.id.buttonid, dataList.get(0).getData().get(i).getState());
 //        if (util.btn.getTag(R.id.buttonid) != null && dataList.get(0).getData().get(i).getState() == util.btn.getTag(R.id.buttonid))
-            buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
+        buttonFormat(dataList.get(0).getData().get(i).getState(), util.btn);
 
         util.imageView.setImageResource(R.drawable.program);
         util.imageView.setTag(R.id.imageid, imageList.get(i));

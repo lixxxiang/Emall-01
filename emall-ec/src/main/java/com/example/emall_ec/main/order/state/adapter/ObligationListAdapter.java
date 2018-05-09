@@ -2,6 +2,7 @@ package com.example.emall_ec.main.order.state.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.demand.PayMethodDelegate;
+import com.example.emall_ec.main.order.ProductDeliveryDelegate;
 import com.example.emall_ec.main.order.state.AllDelegate;
 import com.example.emall_ec.main.order.state.ObligationDelegate;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
@@ -34,13 +36,14 @@ public class ObligationListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    public static String[] typeArray = {"", "标准景", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] typeArray = {"", "光学1级", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
 
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
     public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
 
     public BtnListener btnListener;
     ObligationDelegate delegate;
+
     public ObligationListAdapter(ObligationDelegate delegate, List<OrderDetail> dataList,
                                  int resource, Context context) {
         this.delegate = delegate;
@@ -49,7 +52,10 @@ public class ObligationListAdapter extends BaseAdapter {
         this.context = context;
 
         for (int i = 0; i < dataList.get(0).getData().size(); i++) {
-            imageList.add(dataList.get(0).getData().get(i).getDetails().getImageDetailUrl());
+            if (dataList.get(0).getData().get(i).getDetails().getImageDetailUrl() == null) {
+                imageList.add("");
+            } else
+                imageList.add(dataList.get(0).getData().get(i).getDetails().getImageDetailUrl());
         }
     }
 
@@ -72,7 +78,7 @@ public class ObligationListAdapter extends BaseAdapter {
         public void onBtnClick();
     }
 
-    public void setOnBtnClickListener (BtnListener  listener) {
+    public void setOnBtnClickListener(BtnListener listener) {
         this.btnListener = listener;
     }
 
@@ -96,14 +102,19 @@ public class ObligationListAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     EmallLogger.INSTANCE.d(dataList.get(0).getData().get(i).getState());
-                    if (dataList.get(0).getData().get(i).getState() == 2){
-//                        EmallLogger.INSTANCE.d("pay");
-//                        PayMethodDelegate delegate = new PayMethodDelegate().create();;
-//                        assert delegate1 != null;
-//                        delegate1.start(delegate);
-//                        btnListener.onBtnClick();
-                        EmallLogger.INSTANCE.d("dfsf");
-                        delegate.getParentDelegate().start(new PayMethodDelegate().create());
+                    if (dataList.get(0).getData().get(i).getState() == 2) {
+                        PayMethodDelegate payMethodDelegate = new PayMethodDelegate().create();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("PARENT_ORDER_ID", dataList.get(0).getData().get(i).getOrderId());
+                        bundle.putString("TYPE", "2");
+                        bundle.putString("PAGE_FROM", "ORDER_LIST");
+
+                        payMethodDelegate.setArguments(bundle);
+                        delegate.getParentDelegate().start(payMethodDelegate);
+
+                    } else if (dataList.get(0).getData().get(i).getState() == 4) {
+                        ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
+                        delegate.getParentDelegate().start(productDeliveryDelegate);
                     }
                 }
             });
@@ -114,9 +125,9 @@ public class ObligationListAdapter extends BaseAdapter {
         }
         util.orderId.setText(String.format(context.getString(R.string.orderId), dataList.get(0).getData().get(i).getOrderId()));
         util.title.setText(typeArray[dataList.get(0).getData().get(i).getType()]);
-        if(dataList.get(0).getData().get(i).getType() == 2){
+        if (dataList.get(0).getData().get(i).getType() == 2) {
             util.time.setText("类型：" + programArray[Integer.parseInt(dataList.get(0).getData().get(i).getDetails().getProductType())]);
-        }else {
+        } else {
             if (dataList.get(0).getData().get(i).getDetails().getCenterTime() == null)
                 util.time.setText(timeFormat(dataList.get(0).getData().get(i).getDetails().getStartTime()));
             else

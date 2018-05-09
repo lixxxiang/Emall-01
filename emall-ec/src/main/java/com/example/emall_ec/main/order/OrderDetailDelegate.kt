@@ -13,18 +13,28 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
+import com.example.emall_core.net.callback.IError
+import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.R.id.*
+import com.example.emall_ec.R.string.discount
+import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.main.demand.data.AppPayBean
 import com.example.emall_ec.main.demand.data.FindOrderDetailByOrderIdBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter.programArray
+import com.example.emall_ec.main.order.state.adapter.AllListAdapter.stateArray
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.google.gson.Gson
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlinx.android.synthetic.main.delegate_order_detail.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
+import retrofit2.Retrofit
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.util.*
@@ -39,7 +49,8 @@ class OrderDetailDelegate : BottomItemDelegate() {
     var deleteOrderBean = CommonBean()
     var orderId = String()
     var flag = false
-
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     fun create(): OrderDetailDelegate? {
         return OrderDetailDelegate()
     }
@@ -58,13 +69,12 @@ class OrderDetailDelegate : BottomItemDelegate() {
             orderId = orderData.data[index].orderId
             initViews(orderData, index)
         } else {
-//            val findOrderDetailByOrderIdBean = Gson().fromJson(response, FindOrderDetailByOrderIdBean::class.java)
             val orderData = arguments.getParcelable<FindOrderDetailByOrderIdBean>("KEy")
             initViews(orderData)
             orderId = orderData.data.orderId
         }
 
-
+        EmallLogger.d(orderId)
 
         order_detail_list_toolbar.setNavigationOnClickListener {
             pop()
@@ -74,20 +84,26 @@ class OrderDetailDelegate : BottomItemDelegate() {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("确认删除订单？")
             builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
+                EmallLogger.d(orderId)
                 deleteOrderParams!!["orderId"] = orderId
-                RestClient().builder()
-                        .url("http://59.110.164.214:8024/global/order/deleteOrder")
-                        .params(deleteOrderParams!!)
-                        .success(object : ISuccess {
-                            override fun onSuccess(response: String) {
-                                deleteOrderBean = Gson().fromJson(response, CommonBean::class.java)
-                                if (deleteOrderBean.message == "success") {
-                                    pop()
-                                }
+                retrofit = NetUtils.getRetrofit()
+                apiService = retrofit!!.create(ApiService::class.java)
+                val call = apiService!!.deleteOrder(orderId)
+                call.enqueue(object : retrofit2.Callback<CommonBean> {
+                    override fun onResponse(call: retrofit2.Call<CommonBean>, response: retrofit2.Response<CommonBean>) {
+                        if (response.body() != null) {
+                            EmallLogger.d(response.body()!!)
+                            deleteOrderBean = response.body()!!
+                            if (deleteOrderBean.message == "success") {
+                                pop()
                             }
-                        })
-                        .build()
-                        .get()
+                        } else {
+                            EmallLogger.d("error")
+                        }
+                    }
+
+                    override fun onFailure(call: retrofit2.Call<CommonBean>, throwable: Throwable) {}
+                })
                 dialog.dismiss()
             }
 
@@ -151,14 +167,16 @@ class OrderDetailDelegate : BottomItemDelegate() {
 
         order_detail_title_tv.text = AllListAdapter.typeArray[orderData.data.type]
         order_detail_time_tv.text = AllListAdapter.timeFormat(orderData.data.details.centerTime)
-//        order_detail_price_tv.text = String.format("¥%s", orderData.data.payment)
         EmallLogger.d(DecimalFormat("######0.00").format(orderData.data.payment))
         order_detail_price_tv.text = String.format("¥%f", DecimalFormat("######0.00").format(orderData.data.payment))
 
         order_detail_state_tv.text = stateFormat(orderData.data.state, orderData.data.planCommitTime)
+
+
         order_detail_id_tv.text = orderData.data.orderId
         println(orderData.data.orderId)
         order_detail_order_time_tv.text = orderData.data.commitTime
+        EmallLogger.d(orderData.data.payMethod)
         order_detail_pay_method_tv.text = AllListAdapter.payMethodArray[orderData.data.payMethod]
         order_detail_origional_price_tv.text = String.format("¥%s", orderData.data.details.originalPrice)
         order_detail_current_price_tv.text = String.format("¥%s", orderData.data.details.salePrice)
@@ -190,10 +208,17 @@ class OrderDetailDelegate : BottomItemDelegate() {
 
 
         order_detail_price_tv.text = String.format("¥%s", DecimalFormat("######0.00").format(orderData.data.get(index).payment))
-        order_detail_state_tv.text = stateFormat(orderData.data.get(index).state, orderData.data[index].planCommitTime)
+//        if (orderData.data[index].state == 4) {
+        order_detail_state_tv.text = stateFormat(orderData.data[index].state, orderData.data[index].planCommitTime)
+//        } else
+//            order_detail_state_tv.text = stateArray[orderData.data[index].state]
+
+
         order_detail_id_tv.text = orderData.data[index].orderId
         println(orderData.data[index].orderId)
         order_detail_order_time_tv.text = orderData.data[index].commitTime
+        EmallLogger.d(orderData.data[index].payMethod)
+
         order_detail_pay_method_tv.text = AllListAdapter.payMethodArray[orderData.data[index].payMethod]
         order_detail_origional_price_tv.text = String.format("¥%s", orderData.data[index].details.originalPrice)
         order_detail_current_price_tv.text = String.format("¥%s", orderData.data[index].details.salePrice)
@@ -206,10 +231,10 @@ class OrderDetailDelegate : BottomItemDelegate() {
     }
 
     private fun stateFormat(state: Int, planCommitTime: String): String {
-        return if (state != 4) {
+        return if (state == 3) {
             String.format("%s：预计 %s 交付", AllListAdapter.stateArray[state], planCommitTime)
         } else {
-            String.format("%s：已交付", AllListAdapter.stateArray[state])
+            String.format("%s", AllListAdapter.stateArray[state])
         }
     }
 

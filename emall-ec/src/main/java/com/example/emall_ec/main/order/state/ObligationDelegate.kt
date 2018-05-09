@@ -56,6 +56,8 @@ class ObligationDelegate : EmallDelegate() {
             val bundle: Bundle? = Bundle()
             bundle!!.putString("KEY", "ID")
             bundle!!.putParcelable("KEy", orderDetail)
+            bundle.putInt("INDEX", i - 1)
+
             delegate.arguments = bundle
 //            start(delegate)
 //            showHideFragment(OrderDetailDelegate(), getParentDelegate())

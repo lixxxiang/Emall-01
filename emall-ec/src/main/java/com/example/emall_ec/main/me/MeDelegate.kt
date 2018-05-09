@@ -321,6 +321,7 @@ class MeDelegate : BottomItemDelegate() {
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
             bundle.putInt("INDEX", index)
+            bundle.putString("PAGE_FROM", "ME")
             delegate.arguments = bundle
             (DELEGATE as EcBottomDelegate).start(delegate)
 

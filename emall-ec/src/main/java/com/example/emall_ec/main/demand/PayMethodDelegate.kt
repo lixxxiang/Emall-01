@@ -67,7 +67,8 @@ class PayMethodDelegate : BottomItemDelegate() {
                 retrofit = NetUtils.getRetrofit()
                 apiService = retrofit!!.create(ApiService::class.java)
                 EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
-                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"))
+                EmallLogger.d(arguments.getString("TYPE"))
+                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "2")
                 call.enqueue(object : retrofit2.Callback<AppPayBean> {
                     override fun onResponse(call: retrofit2.Call<AppPayBean>, response: retrofit2.Response<AppPayBean>) {
                         if (response.body() != null) {
@@ -86,7 +87,23 @@ class PayMethodDelegate : BottomItemDelegate() {
                     override fun onFailure(call: retrofit2.Call<AppPayBean>, throwable: Throwable) {}
                 })
             } else {
-                start(OfflinePaymentDelegate().create())
+                retrofit = NetUtils.getRetrofit()
+                apiService = retrofit!!.create(ApiService::class.java)
+                EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
+                EmallLogger.d(arguments.getString("TYPE"))
+                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "3")
+                call.enqueue(object : retrofit2.Callback<AppPayBean> {
+                    override fun onResponse(call: retrofit2.Call<AppPayBean>, response: retrofit2.Response<AppPayBean>) {
+                        if (response.body() != null) {
+                            if (response.body()!!.code == 0)
+                                start(OfflinePaymentDelegate().create())
+                        } else {
+                            EmallLogger.d("error")
+                        }
+                    }
+
+                    override fun onFailure(call: retrofit2.Call<AppPayBean>, throwable: Throwable) {}
+                })
             }
         }
 
@@ -151,6 +168,7 @@ class PayMethodDelegate : BottomItemDelegate() {
         }
 
         var sp2 = activity.getSharedPreferences("PAGE_BACK", Context.MODE_PRIVATE)
+
         if (sp2.getString("BACK_FROM", "") == "PAYMENT") {
             sp2.edit().clear().commit()
             EmallProgressBar.showProgressbar(context)
@@ -163,7 +181,8 @@ class PayMethodDelegate : BottomItemDelegate() {
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
             bundle.putInt("INDEX", 0)
-            bundle.putString("FROM", "PAYMENT")
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+            println("!!!!!!!!!" + arguments.getString("PAGE_FROM"))
             delegate.arguments = bundle
             Handler().postDelayed({
                 start(delegate)
@@ -187,6 +206,7 @@ class PayMethodDelegate : BottomItemDelegate() {
                 if (response.body() != null) {
                     queryOrderBean = response.body()!!
                     EmallLogger.d(queryOrderBean.toString())
+
                     EmallLogger.d(queryOrderBean.data.toString())
                     if (queryOrderBean.message == "已支付成功" || queryOrderBean.message == "支付成功") {
                         val delegate: PaymentDelegate = PaymentDelegate().create()!!
@@ -195,6 +215,9 @@ class PayMethodDelegate : BottomItemDelegate() {
                         bundle.putString("PARENT_ORDER_ID", arguments.getString("PARENT_ORDER_ID"))
                         bundle.putString("COMMIT_TIME", queryOrderBean.data.planCommitTime)
                         bundle.putString("STATUS", "SUCCESS")
+                        bundle.putString("TYPE", arguments.getString("TYPE"))
+                        bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+
                         start(delegate)
 
 
@@ -213,8 +236,6 @@ class PayMethodDelegate : BottomItemDelegate() {
     }
 
     fun queryOrderFailure(sp: SharedPreferences) {
-
-
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
@@ -231,6 +252,10 @@ class PayMethodDelegate : BottomItemDelegate() {
                         bundle.putString("PARENT_ORDER_ID", arguments.getString("PARENT_ORDER_ID"))
                         bundle.putString("STATUS", "FAILURE")
                         bundle.putString("PAYMETHOD", "微信")
+                        bundle.putString("TYPE", arguments.getString("TYPE"))
+                        bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+
+
                         start(delegate)
                         sp.edit().clear().commit()
                     }

@@ -17,6 +17,7 @@ import com.example.emall_ec.main.search.data.PoiBean
 import android.os.Bundle
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.R.id.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -47,10 +48,10 @@ class SearchPoiDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        search_poi_et.isFocusable = true
-        search_poi_et.isFocusableInTouchMode = true
-        search_poi_et.requestFocus()
-        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+//        search_poi_et.isFocusable = true
+//        search_poi_et.isFocusableInTouchMode = true
+//        search_poi_et.requestFocus()
+//        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         search_back_iv.setOnClickListener {
             EmallLogger.d(pages)
             if (pages == 2) {
@@ -99,6 +100,7 @@ class SearchPoiDelegate : EmallDelegate() {
         }
 
         search_poi_et.setOnEditorActionListener { v, actionId, event ->
+            KeyboardUtils.hideSoftInput(activity)
             search()
             false
         }
@@ -115,22 +117,34 @@ class SearchPoiDelegate : EmallDelegate() {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
 //                            hideText()
+                        EmallLogger.d(response)
                         val tempCities = Gson().fromJson(response, CitiesBean::class.java)
                         val tempPois = Gson().fromJson(response, PoiBean::class.java)
 
-                        if (tempPois.type == "0" || tempCities.type == "0") {//is cities
-                            pages = 1
-                            clearCities()
-                            showCities(response)
-                        } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
-                            clearPois()
-                            pages = 3
-                            showPois(response)
-                        } else {//no return
-                            clearCities()
-                            clearPois()
-                            showNoResult()
-                        }
+//                        if(tempCities.sug != null){
+//                            if(tempCities.sug.isEmpty()){
+//                                hideText()
+//                                clearCities()
+//                                clearPois()
+//                                showNoResult()
+//                            }else {
+                                if (tempPois.type == "0" || tempCities.type == "0") {//is cities
+                                    pages = 1
+                                    clearCities()
+                                    showCities(response)
+                                } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
+                                    clearPois()
+                                    pages = 3
+                                    showPois(response)
+                                } else {//no return
+                                    hideText()
+                                    clearCities()
+                                    clearPois()
+                                    showNoResult()
+                                }
+//                            }
+//                        }
+
                     }
                 })
                 .failure(object : IFailure {
@@ -235,14 +249,13 @@ class SearchPoiDelegate : EmallDelegate() {
         return DefaultHorizontalAnimator()
     }
 
-    override fun onSupportVisible() {
-        super.onSupportVisible()
-        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        KeyboardUtils.showSoftInput(activity)
-    }
+//    override fun onSupportVisible() {
+//        super.onSupportVisible()
+//        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        KeyboardUtils.showSoftInput(activity)
+//    }
 
     override fun onSupportInvisible() {
         super.onSupportInvisible()
-        KeyboardUtils.hideSoftInput(activity)
     }
 }

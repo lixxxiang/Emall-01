@@ -13,6 +13,7 @@ import com.smarttop.library.widget.OnAddressSelectedListener
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -23,6 +24,9 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.data.QueryInvoiceBean
 import com.example.emall_ec.main.demand.data.UpdateInvoiceBean
 import com.google.gson.Gson
+import io.vov.vitamio.Vitamio
+import io.vov.vitamio.widget.MediaController
+import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import me.yokeyword.fragmentation.ISupportFragment
 import java.util.*
 
@@ -89,31 +93,50 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
         invoice_toolbar.title = getString(R.string.invoice_title)
         (activity as AppCompatActivity).setSupportActionBar(invoice_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         invoice_toolbar.setNavigationOnClickListener {
-            if (!title.text.toString().isEmpty()
-                    && !invoice_id.text.toString().isEmpty()
-                    && !address.text.toString().isEmpty()
-                    && !tel.text.toString().isEmpty()
-                    && !bank.text.toString().isEmpty()
-                    && !account.text.toString().isEmpty()
-                    && !name.text.toString().isEmpty()
-                    && !phone.text.toString().isEmpty()
-                    && !address_detail.text.toString().isEmpty()
-                    && !invoice_cities_picker_tv.text.isEmpty()) {
-                flag = "true"
+            KeyboardUtils.hideSoftInput(activity)
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("是否要保存当前发票信息")
+            builder.setPositiveButton("保存") { dialog, _ ->
+                if (!title.text.toString().isEmpty()
+                        && !invoice_id.text.toString().isEmpty()
+                        && !address.text.toString().isEmpty()
+                        && !tel.text.toString().isEmpty()
+                        && !bank.text.toString().isEmpty()
+                        && !account.text.toString().isEmpty()
+                        && !name.text.toString().isEmpty()
+                        && !phone.text.toString().isEmpty()
+                        && !address_detail.text.toString().isEmpty()
+                        && !invoice_cities_picker_tv.text.isEmpty()) {
+                    flag = "true"
+                    updateInvoiceBack()
+
+                } else {
+                    val snackBar = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
+                    snackBar.setAction(getString(R.string.confirm_2), { snackBar.dismiss() })
+                    snackBar.show()
+                }
+                dialog.dismiss()
             }
-            val bundle = Bundle()
-            bundle.putString("flag", flag)
-            setFragmentResult(ISupportFragment.RESULT_OK, bundle)
-            pop()
-        }
-//        invoice_back_iv.setOnClickListener {
+
+            builder.setNegativeButton("取消") { dialog, _ ->
+                dialog.dismiss()
+                flag = "false"
+                val bundle = Bundle()
+                bundle.putString("flag", flag)
+                EmallLogger.d(flag)
+                setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+                pop()
+            }
+
+            builder.create().show()
 //            pop()
-//        }
+        }
 
 
 
@@ -240,6 +263,50 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                 .build()
                 .post()
     }
+    private fun updateInvoiceBack() {
+        updateInvoiceParams!!["title"] = title.text.toString()
+        updateInvoiceParams!!["payerNumber"] = invoice_id.text.toString()
+        updateInvoiceParams!!["registerAddress"] = address.text.toString()
+        updateInvoiceParams!!["registerTel"] = tel.text.toString()
+        updateInvoiceParams!!["depositBank"] = bank.text.toString()
+        updateInvoiceParams!!["bankAccount"] = account.text.toString()
+        updateInvoiceParams!!["receiver"] = name.text.toString()
+        updateInvoiceParams!!["mobilePhone"] = phone.text.toString()
+        updateInvoiceParams!!["fullAddress"] = address_detail.text.toString()
+        updateInvoiceParams!!["location"] = invoice_cities_picker_tv.text.toString()
+        updateInvoiceParams!!["invoiceAmount"] = arguments.getString("INVOICE_PRICE")
+        updateInvoiceParams!!["invoiceType"] = "1"
+        updateInvoiceParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+
+        RestClient().builder()
+                .url("http://59.110.164.214:8024/global/update/invoice")
+                .params(updateInvoiceParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        updateInvoiceBean = Gson().fromJson(response, UpdateInvoiceBean::class.java)
+                        EmallLogger.d(response)
+                        if (updateInvoiceBean.message == "success") {
+                            /**
+                             * success
+                             */
+
+                            flag = "true"
+                            val bundle = Bundle()
+                            bundle.putString("flag", flag)
+                            setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+                            pop()
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+    }
 
     override fun onSupportVisible() {
         super.onSupportVisible()
@@ -248,20 +315,20 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
 
     override fun onSupportInvisible() {
         super.onSupportInvisible()
-        if (!title.text.toString().isEmpty()
-                && !invoice_id.text.toString().isEmpty()
-                && !address.text.toString().isEmpty()
-                && !tel.text.toString().isEmpty()
-                && !bank.text.toString().isEmpty()
-                && !account.text.toString().isEmpty()
-                && !name.text.toString().isEmpty()
-                && !phone.text.toString().isEmpty()
-                && !address_detail.text.toString().isEmpty()
-                && !invoice_cities_picker_tv.text.isEmpty()) {
-            flag = "true"
-        }
-        val bundle = Bundle()
-        bundle.putString("flag", flag)
-        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+//        if (!title.text.toString().isEmpty()
+//                && !invoice_id.text.toString().isEmpty()
+//                && !address.text.toString().isEmpty()
+//                && !tel.text.toString().isEmpty()
+//                && !bank.text.toString().isEmpty()
+//                && !account.text.toString().isEmpty()
+//                && !name.text.toString().isEmpty()
+//                && !phone.text.toString().isEmpty()
+//                && !address_detail.text.toString().isEmpty()
+//                && !invoice_cities_picker_tv.text.isEmpty()) {
+//            flag = "true"
+//        }
+//        val bundle = Bundle()
+//        bundle.putString("flag", flag)
+//        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
     }
 }

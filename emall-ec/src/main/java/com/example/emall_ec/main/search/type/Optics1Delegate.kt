@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.widget.AdapterView
+import android.widget.DatePicker
 import android.widget.Toast
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
@@ -19,6 +20,7 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.CustomLoadMoreView
 import com.example.emall_core.util.view.GridSpacingItemDecoration
+import com.example.emall_core.util.view.MyDatePickerDialog
 import com.example.emall_ec.R
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
@@ -430,12 +432,15 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_3_1.setOnClickListener {
-            DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener, mYear, mMonth, mDay).show()
+            var dp =MyDatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener, mYear, mMonth, mDay)
+            dp.datePicker.descendantFocusability = DatePicker.FOCUS_BLOCK_DESCENDANTS
+            dp.show()
             confirmChangeColor()
         }
 
         optics_btn_3_2.setOnClickListener {
-            DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener2, mYear, mMonth, mDay).show()
+            var dp =DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener2, mYear, mMonth, mDay)
+            dp.show()
             confirmChangeColor()
         }
 

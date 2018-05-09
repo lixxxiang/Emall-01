@@ -3,17 +3,11 @@ package com.example.emall_ec.main.program
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.ZoomControls
-import com.baidu.mapapi.map.*
-import com.baidu.mapapi.model.LatLng
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -22,7 +16,6 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.example.emall_ec.main.program.data.DemandBean
 import com.example.emall_ec.main.program.data.DetailBean
 import com.example.emall_ec.main.sign.SignInByTelDelegate
@@ -30,14 +23,14 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_program_detail.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
-import java.lang.Double
 import java.util.*
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import com.example.emall_core.util.view.BitmapUtil
+import android.os.Environment
 import com.example.emall_ec.main.demand.ConfirmOrderDelegate
 import com.example.emall_ec.main.me.ContactDelegate
 import java.io.File
+import java.io.FileInputStream
 
 
 class ProgramDetailDelegate : EmallDelegate() {
@@ -52,6 +45,8 @@ class ProgramDetailDelegate : EmallDelegate() {
     var originalPrice = String()
     var salePrice = String()
     var pageFrom = ""
+    var FILE_PATH = File(Environment.getExternalStorageDirectory().absolutePath + "/YaoGanYiGou/temp/")//设置保存路径
+
     fun create(): ProgramDetailDelegate? {
         return ProgramDetailDelegate()
     }
@@ -69,13 +64,8 @@ class ProgramDetailDelegate : EmallDelegate() {
         program_detail_toolbar.setNavigationOnClickListener {
             pop()
         }
-        val bis = arguments.getByteArray("image")
-        val bitmap = BitmapFactory.decodeByteArray(bis, 0, bis.size)
 
-
-//        val bitmap = arguments.getParcelable<Bitmap>("image")
-
-//        val bitmap = BitmapUtil.getBitmapFromLocal("test")
+        var bitmap: Bitmap? = getBitmapFromLocal("temp_map.jpg")
         program_detail_map.setImageBitmap(bitmap)
         val sp = activity.getSharedPreferences("PROGRAMMING", Context.MODE_PRIVATE)
 
@@ -263,7 +253,7 @@ class ProgramDetailDelegate : EmallDelegate() {
                             bundle.putString("imageUrl", "program")
                             bundle.putString("type", "2")
                             bundle.putString("title", "编程摄影")
-
+                            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
                             when {
                                 sp.getString("productType", "") == "1" -> bundle.putString("time", String.format("类型：%s", getString(R.string.optics_1)))
                                 sp.getString("productType", "") == "2" -> bundle.putString("time", String.format("类型：%s", getString(R.string.noctilucence)))
@@ -292,6 +282,19 @@ class ProgramDetailDelegate : EmallDelegate() {
         return DefaultHorizontalAnimator()
     }
 
+    fun getBitmapFromLocal(fileName: String): Bitmap? {
+        try {
+            val file = File(FILE_PATH, fileName)
+            if (file.exists()) {
+                return BitmapFactory.decodeStream(FileInputStream(
+                        file))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
 
 }
 

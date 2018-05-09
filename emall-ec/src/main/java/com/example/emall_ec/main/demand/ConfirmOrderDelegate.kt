@@ -16,6 +16,7 @@ import com.example.emall_ec.main.demand.data.ViewDemandBean
 import com.example.emall_ec.main.order.OrderListDelegate
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_fill_order.*
+import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.text.DecimalFormat
@@ -32,6 +33,8 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
     var orderParams: WeakHashMap<String, Any>? = WeakHashMap()
     var productId = String()
     var orderBean = OrderBean()
+    var invoiceState = "0"
+
     fun create(): ConfirmOrderDelegate? {
         return ConfirmOrderDelegate()
     }
@@ -83,10 +86,14 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("INVOICE_PRICE", viewDemandBean.data.demands[0].salePrice)
                 delegate.arguments = bundle
-                start(delegate)
+                startForResult(delegate, 1)
+                invoiceState = "1"
+
             } else {
                 cb.setBackgroundResource(R.drawable.invoice_unchecked)
                 isChecked = false
+                invoiceState = "0"
+
             }
         }
 
@@ -94,10 +101,26 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
             insertOrderData()
         }
     }
+    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
+        super.onFragmentResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == ISupportFragment.RESULT_OK) {
+            val index = data.getString("flag")
+            EmallLogger.d(index)
+            if (index == "false") {
+                cb.setBackgroundResource(R.drawable.invoice_unchecked)
+                isChecked = false
+                invoiceState = "0"
+            } else if (index == "true") {
+                cb.setBackgroundResource(R.drawable.invoice_checked)
+                isChecked = true
+                invoiceState = "1"
+            }
+        }
+    }
 
     private fun insertOrderData() {
         orderParams!!["type"] = arguments.getString("type")
-        orderParams!!["invoiceState"] = "0"
+        orderParams!!["invoiceState"] = invoiceState
         orderParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         orderParams!!["productId"] = productId
         orderParams!!["parentOrderId"] = arguments.getString("demandId")
@@ -126,7 +149,7 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
                             bundle!!.putString("ORDER_ID",orderBean.data.parentOrderId)
                             bundle.putString("DEMAND_ID", arguments.getString("demandId"))
                             bundle.putString("TYPE", "1")
-                            bundle.putString("PAGE_FROM", "PROGRAM")
+                            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
                             delegate.arguments = bundle
                             start(delegate)
                         }

@@ -1,5 +1,7 @@
 package com.example.emall_ec.main.order
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_order_list.*
@@ -11,9 +13,11 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.view.View
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.program.ProgramDelegate
+import com.example.emall_ec.main.program.ProgramIndexDelegate
 import me.yokeyword.fragmentation.SwipeBackLayout
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -27,22 +31,40 @@ class OrderListDelegate : BottomItemDelegate() {
     var listTitle: MutableList<String>? = mutableListOf()
     var userId = String()
     private var fAdapter: FragmentPagerAdapter? = null
+    var mSharedPreferences: SharedPreferences? = null
     fun create(): OrderListDelegate? {
         return OrderListDelegate()
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         order_list_toolbar.title = getString(R.string.my_order)
+        mSharedPreferences = activity.getSharedPreferences("FROM_ORDER_LIST", Context.MODE_PRIVATE)
         userId = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         (activity as AppCompatActivity).setSupportActionBar(order_list_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         order_list_toolbar.setNavigationOnClickListener {
-            if (arguments.getString("FROM") == "PAYMENT")
-                popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
-            else
-                pop()
+            EmallLogger.d(arguments.getString("PAGE_FROM"))
+            when {
+                arguments.getString("PAGE_FROM") == "CLASSIFY" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "ORDER_LIST" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "ME" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+
+                arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "PAYMENT" -> {
+                    if (findFragment(GoodsDetailDelegate().javaClass) == null) {
+                        popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                    } else
+                        popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                }
+                arguments.getString("PAGE_FROM") == "PROGRAM_INDEX" ->
+                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                arguments.getString("PAGE_FROM") == "PROGRAM" ->
+                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                else -> pop()
+            }
         }
         initControls()
     }
@@ -96,23 +118,31 @@ class OrderListDelegate : BottomItemDelegate() {
         vp_FindFragment_pager.currentItem = arguments.getInt("INDEX")
         //tab_FindFragment_title.set
 
-        swipeBackLayout.addSwipeListener(object: SwipeBackLayout.OnSwipeListener{
-            override fun onEdgeTouch(oritentationEdgeFlag: Int) {
-                EmallLogger.d("1")
-            }
-
-            override fun onDragScrolled(scrollPercent: Float) {
-                EmallLogger.d("2")
-                if(arguments.getString("PAGE_FROM") == "PROGRAM"){
-                    popTo(findFragment(ProgramDelegate().javaClass).javaClass, false)
-                }
-            }
-
-            override fun onDragStateChange(state: Int) {
-                EmallLogger.d("3")
-            }
-
-        })
+//        swipeBackLayout.addSwipeListener(object : SwipeBackLayout.OnSwipeListener {
+//            override fun onEdgeTouch(oritentationEdgeFlag: Int) {
+//                EmallLogger.d("1")
+//            }
+//
+//            override fun onDragScrolled(scrollPercent: Float) {
+//                EmallLogger.d("2")
+//                if (arguments.getString("PAGE_FROM") == "PROGRAM") {
+//                    popTo(findFragment(ProgramDelegate().javaClass).javaClass, false)
+//                }
+//                if (arguments.getString("PAGE_FROM") == "CLASSIFY")
+//                    popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+//                if (arguments.getString("PAGE_FROM") == "PROGRAM_INDEX") {
+//                    val editor = mSharedPreferences!!.edit()
+//                    editor.putString("from_order_list", "1")
+//                    editor.commit()
+//                    popTo(findFragment(ProgramIndexDelegate().javaClass).javaClass, false)
+//                }
+//            }
+//
+//            override fun onDragStateChange(state: Int) {
+//                EmallLogger.d("3")
+//            }
+//
+//        })
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

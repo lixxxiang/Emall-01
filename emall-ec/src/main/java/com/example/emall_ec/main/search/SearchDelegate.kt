@@ -101,7 +101,6 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 pt.y = 0
                 if (mBaiduMap != null) {
                     val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
-
                     lati_lt = ll.latitude
                     longi_lt = ll.longitude
 
@@ -116,11 +115,8 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                         longi_rb = lly.longitude
                     }
                     //右下角经纬度
-
                 }
-
             }
-
         }
 
         mMapView!!.map.setOnMapStatusChangeListener(listener)
@@ -160,7 +156,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         search_locate.setOnClickListener {
             var mMapStatus = MapStatus.Builder()
                     .target(LatLng(mCurrentLat, mCurrentLon))
-                    .zoom(8F)
+                    .zoom(14F)
                     .build()
             var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
             mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
@@ -185,7 +181,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 mBaiduMap!!.addOverlay(option)
                 var mMapStatus = MapStatus.Builder()
                         .target(LatLng(latitude.toDouble(), longitude.toDouble()))
-                        .zoom(8F)
+                        .zoom(14F)
                         .build()
                 var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
                 mBaiduMap!!.animateMapStatus(mMapStatusUpdate);

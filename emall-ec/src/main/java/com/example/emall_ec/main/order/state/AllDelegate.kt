@@ -111,9 +111,6 @@ class AllDelegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         } else {
                             all_lv.visibility = View.VISIBLE
                             all_rl.visibility = View.GONE
-                            EmallLogger.d(orderDetail.toString())
-                            EmallLogger.d(orderDetail.data.toString())
-                            EmallLogger.d(orderDetail.data[0].toString())
 
                             data!!.add(orderDetail)
                             adapter = AllListAdapter(delegate, data, R.layout.item_order, context)

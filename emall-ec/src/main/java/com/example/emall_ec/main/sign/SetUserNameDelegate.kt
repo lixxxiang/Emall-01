@@ -259,6 +259,7 @@ class SetUserNameDelegate : BottomItemDelegate() {
                                 toast!!.show()
                             }
 //                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                            EmallLogger.d(arguments.getString("PAGE_FROM"))
                             when {
                                 arguments.getString("PAGE_FROM") == "SETTING" -> {
                                     popTo(findFragment(SettingDelegate().javaClass).javaClass, false)

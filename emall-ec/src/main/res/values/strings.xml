@@ -97,7 +97,7 @@
     <string name="price">价格</string>
     <string name="screen">筛选</string>
     <string name="search_poi">搜索感兴趣的地点</string>
-    <string name="search_poi_tv_1">支持国内、国外任意地点搜索</string>
+    <string name="search_poi_tv_1">支持国内任意地点搜索</string>
     <string name="search_poi_tv_2">快速定位到您感兴趣的位置</string>
     <string name="search_poi_head">找到相关地点，请选择城市</string>
     <string name="no_result">抱歉，没有找到相关地点</string>
