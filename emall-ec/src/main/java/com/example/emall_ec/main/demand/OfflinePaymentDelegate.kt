@@ -34,6 +34,8 @@ class OfflinePaymentDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
+
         offline_toolbar.title = "线下支付"
         (activity as AppCompatActivity).setSupportActionBar(offline_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -62,7 +64,6 @@ class OfflinePaymentDelegate : BottomItemDelegate() {
         imageSpan()
         imageSpan2()
         imageSpan3()
-
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

@@ -303,8 +303,13 @@ class MeDelegate : BottomItemDelegate() {
                     toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
                     toast!!.show()
                 }
-            else
-                (DELEGATE as EcBottomDelegate).start(ScannerDelegate().create())
+            else{
+                val delegate: ScannerDelegate = ScannerDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("PAGE_FROM", "ME")
+                delegate.arguments = bundle
+                (DELEGATE as EcBottomDelegate).start(delegate)
+            }
         }
     }
 

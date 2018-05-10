@@ -488,6 +488,7 @@ class ClassifyDelegate : EmallDelegate() {
                 classify_progressBar.visibility = View.GONE
 
             sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+                EmallLogger.d(position)
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
                 var index = position

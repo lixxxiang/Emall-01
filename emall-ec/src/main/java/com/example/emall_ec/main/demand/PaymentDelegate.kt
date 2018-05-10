@@ -51,6 +51,8 @@ class PaymentDelegate : EmallDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
+
         payment_toolbar.title = getString(R.string.payment)
         (activity as AppCompatActivity).setSupportActionBar(payment_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)

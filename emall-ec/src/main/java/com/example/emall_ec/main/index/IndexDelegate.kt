@@ -79,7 +79,11 @@ class IndexDelegate : BottomItemDelegate() {
                 }
             else {
                 if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+
                     val delegate: ScannerDelegate = ScannerDelegate().create()!!
+                    val bundle: Bundle? = Bundle()
+                    bundle!!.putString("PAGE_FROM", "INDEX")
+                    delegate.arguments = bundle
                     (DELEGATE as EcBottomDelegate).start(delegate)
                 }else{
                     val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!

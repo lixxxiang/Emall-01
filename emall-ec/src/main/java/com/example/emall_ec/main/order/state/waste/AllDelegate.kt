@@ -1,4 +1,4 @@
-package com.example.emall_ec.main.order.state
+package com.example.emall_ec.main.order.state.waste
 
 import android.graphics.Color
 import android.os.Build
@@ -9,21 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.AdapterView
 import com.example.emall_ec.main.bottom.BottomItemDelegate
-import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.state.data.OrderDetail
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_all.*
 import java.util.*
 import android.widget.AbsListView
-import com.example.emall_core.net.callback.IError
-import com.example.emall_core.net.callback.IFailure
-import com.example.emall_ec.main.classify.data.VideoHomeBean
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter

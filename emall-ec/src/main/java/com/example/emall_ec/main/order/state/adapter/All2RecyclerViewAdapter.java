@@ -1,32 +1,19 @@
 package com.example.emall_ec.main.order.state.adapter;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
-import com.example.emall_ec.main.demand.PayMethodDelegate;
-import com.example.emall_ec.main.order.ProductDeliveryDelegate;
-import com.example.emall_ec.main.order.state.AllDelegate;
-import com.example.emall_ec.main.order.state.data.OrderDetail;
 import com.example.emall_ec.main.order.state.data.OrderListModel;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.emall_ec.main.order.state.adapter.AllListAdapter.programArray;

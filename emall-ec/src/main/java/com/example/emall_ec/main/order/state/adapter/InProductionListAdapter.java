@@ -16,8 +16,7 @@ import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.demand.PayMethodDelegate;
 import com.example.emall_ec.main.order.ProductDeliveryDelegate;
-import com.example.emall_ec.main.order.state.AllDelegate;
-import com.example.emall_ec.main.order.state.InProductionDelegate;
+import com.example.emall_ec.main.order.state.waste.InProductionDelegate;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
 
 import java.text.DecimalFormat;

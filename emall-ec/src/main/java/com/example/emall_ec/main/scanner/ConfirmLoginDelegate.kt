@@ -15,6 +15,7 @@ import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.order.OrderListDelegate
 import com.example.emall_ec.main.scanner.data.ScanCodeLoginBean
 import com.example.emall_ec.main.sign.SetPasswordDelegate
 import com.example.emall_ec.main.sign.data.CheckMessageBean
@@ -25,9 +26,9 @@ import java.util.*
 
 class ConfirmLoginDelegate : EmallDelegate() {
 
-    private var scanCodeLoginParams : WeakHashMap<String, Any> ?= WeakHashMap()
+    private var scanCodeLoginParams: WeakHashMap<String, Any>? = WeakHashMap()
     private var scanCodeLoginBean = ScanCodeLoginBean()
-    var toast : Toast?= null
+    var toast: Toast? = null
     fun create(): ConfirmLoginDelegate? {
         return ConfirmLoginDelegate()
     }
@@ -55,6 +56,7 @@ class ConfirmLoginDelegate : EmallDelegate() {
                     .params(scanCodeLoginParams!!)
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
+                            EmallLogger.d(response)
                             scanCodeLoginBean = Gson().fromJson(response, ScanCodeLoginBean::class.java)
                             if (scanCodeLoginBean.meta == "success") {
                                 if (toast != null) {
@@ -65,8 +67,11 @@ class ConfirmLoginDelegate : EmallDelegate() {
                                     toast = Toast.makeText(activity, getString(R.string.login_success), Toast.LENGTH_SHORT)
                                     toast!!.show()
                                 }
-                                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
-
+                                EmallLogger.d(arguments.getString("PAGE_FROM"))
+                                if (arguments.getString("PAGE_FROM") == "ORDER_LIST")
+                                    popTo(findFragment(OrderListDelegate().javaClass).javaClass, false)
+                                else
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
                             }
                         }
                     })

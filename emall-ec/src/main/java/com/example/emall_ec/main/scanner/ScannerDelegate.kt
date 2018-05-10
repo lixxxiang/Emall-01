@@ -62,6 +62,7 @@ class ScannerDelegate : BottomItemDelegate() {
                 val delegate: ConfirmLoginDelegate = ConfirmLoginDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("UUID", uuid)
+                bundle!!.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
                 delegate.arguments = bundle
                 start(delegate)
             }

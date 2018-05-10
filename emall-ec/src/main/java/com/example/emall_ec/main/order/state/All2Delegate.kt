@@ -1,5 +1,8 @@
 package com.example.emall_ec.main.order.state
 
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -8,6 +11,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.AbsListView
 import android.widget.AdapterView
@@ -28,7 +32,9 @@ import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.example.emall_ec.main.order.state.data.OrderListModel
 import kotlinx.android.synthetic.main.delegate_all.*
 import kotlinx.android.synthetic.main.delegate_all_2.*
+import kotlinx.android.synthetic.main.delegate_fill_order.*
 import kotlinx.android.synthetic.main.delegate_optics1.*
+import me.yokeyword.fragmentation.ISupportFragment
 import retrofit2.Retrofit
 import java.util.*
 
@@ -40,7 +46,10 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     var delegate: All2Delegate? = null
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
-    var allLinearLayoutManager : LinearLayoutManager ?= null
+    var allLinearLayoutManager: LinearLayoutManager? = null
+    private var lastPosition = 0//位置
+    private var lastOffset = 0//偏移量
+    var mSharedPreferences: SharedPreferences? = null
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
     }
@@ -53,6 +62,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         setSwipeBackEnable(false)
+        mSharedPreferences = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
 
         initRefreshLayout()
         all2_srl.isRefreshing = true
@@ -75,6 +85,20 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                 all2_srl.isRefreshing = false
             }, 1200)
         })
+
+
+        all2_rv.setOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+//                getPositionAndOffset()
+
+            }
+        })
+
 
     }
 
@@ -110,16 +134,6 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                                 orderListModel.state = orderDetail.data[i].state
                                 orderListModel.imageDetailUrl = orderDetail.data[i].details.imageDetailUrl
                                 orderListModel.productType = orderDetail.data[i].details.productType
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-//                                orderListModel.type = orderDetail.data[i].type
-
                                 data!!.add(orderListModel)
 
                             }
@@ -128,19 +142,21 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                             all2_srl.isRefreshing = false
                             adapter!!.setOnItemChildClickListener { adapter, view, position ->
                                 EmallLogger.d(position)
-                                EmallLogger.d(orderDetail.data[position].getState())
-                                if (orderDetail.data[position].getState() == 2) {
+                                EmallLogger.d(orderDetail.data[position].state)
+                                if (orderDetail.data[position].state == 2) {
                                     val payMethodDelegate = PayMethodDelegate().create()
                                     val bundle = Bundle()
-                                    bundle.putString("PARENT_ORDER_ID", orderDetail.data[position].getOrderId())
+                                    bundle.putString("PARENT_ORDER_ID", orderDetail.data[position].orderId)
                                     bundle.putString("TYPE", "2")
                                     bundle.putString("PAGE_FROM", "ORDER_LIST")
-
                                     payMethodDelegate!!.arguments = bundle
                                     delegate!!.getParentDelegate<EmallDelegate>().start(payMethodDelegate)
 
-                                } else if (orderDetail.data[position].getState() == 4) {
+                                } else if (orderDetail.data[position].state == 4) {
                                     val productDeliveryDelegate = ProductDeliveryDelegate().create()
+                                    val bundle: Bundle? = Bundle()
+                                    bundle!!.putString("PAGE_FROM", "ORDER_LIST")
+                                    productDeliveryDelegate!!.arguments = bundle
                                     delegate!!.getParentDelegate<EmallDelegate>().start(productDeliveryDelegate)
                                 }
                             }
@@ -152,7 +168,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                                 bundle.putParcelable("KEy", orderDetail)
                                 bundle.putInt("INDEX", position)
                                 delegate.arguments = bundle
-                                (parentFragment as BottomItemDelegate).start(delegate)
+                                (parentFragment as BottomItemDelegate).startForResult(delegate, 1)
                             }
 
                         }
@@ -168,14 +184,78 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
         })
     }
 
+//    override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle?) {
+//        super.onFragmentResult(requestCode, resultCode, data)
+//        EmallLogger.d(data!!.getString("BACK_FROM"))
+//        if (requestCode == 1 && resultCode == ISupportFragment.RESULT_OK) {
+//            val index = data!!.getString("BACK_FROM")
+//            if (index == "ORDER_DETAIL"){
+//                EmallLogger.d("fdfdfdf")
+//            }
+//        }
+//    }
+
     fun initRefreshLayout() {
         all2_srl.setColorSchemeColors(Color.parseColor("#b80017"))
     }
 
+
+
+
+
+//    override fun onPause() {
+//        super.onPause()
+//        getPositionAndOffset()
+//    }
+
+//    private fun getPositionAndOffset() {
+//        var topView = allLinearLayoutManager!!.getChildAt(0)
+//        lastOffset = topView.top
+//        lastPosition = allLinearLayoutManager!!.getPosition(topView)
+//        val editor = mSharedPreferences!!.edit()
+//        editor.putInt("lastOffset", lastOffset)
+//        editor.putInt("lastPosition", lastPosition)
+//        editor.commit()
+//    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        scrollToPosition()
+//    }
+
+//    private fun scrollToPosition() {
+//        val sp = activity.getSharedPreferences("POSITION", Context.MODE_PRIVATE)
+//        sp.getInt("lastOffset", 0)
+//        sp.getInt("lastPosition", 0)
+//        if (all2_rv.layoutManager != null && lastPosition >= 0) {
+//            (all2_rv.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(lastPosition, lastOffset)
+//        }
+//        sp.edit().clear().commit()
+//    }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSupportVisible() {
         super.onSupportVisible()
-        data()
+        val sp = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
+        if (sp.getString("BACK_FROM", "") != "ORDER_DETAIL"
+                && sp.getString("BACK_FROM", "") != "PAY_METHOD"
+                && sp.getString("BACK_FROM", "") != "DELIVERY"
+                && sp.getString("BACK_FROM", "") != "OBLIGATION"
+                && sp.getString("BACK_FROM", "") != "CHECK_PENDING"
+                && sp.getString("BACK_FROM", "") != "DELIVERED"
+                && sp.getString("BACK_FROM", "") != "ALL"
+                && sp.getString("BACK_FROM", "") != "IN_PRODUCTION"
+                ) {
+            all2_srl.isRefreshing = true
+            data()
+        }
+        sp.edit().clear().commit()
     }
 
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        val editor = mSharedPreferences!!.edit()
+        editor.putString("BACK_FROM", "ALL")
+        editor.commit()
+    }
 }

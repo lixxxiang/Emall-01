@@ -1,5 +1,7 @@
 package com.example.emall_ec.main.order.state
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +25,7 @@ import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.order.state.adapter.All2RecyclerViewAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.example.emall_ec.main.order.state.data.OrderListModel
+import kotlinx.android.synthetic.main.delegate_all_2.*
 import kotlinx.android.synthetic.main.delegate_delivered.*
 import kotlinx.android.synthetic.main.delegate_delivered_2.*
 import retrofit2.Retrofit
@@ -32,6 +35,8 @@ class Delivered2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener
     private var orderDetail = OrderDetail()
     var findOrderListByUserIdParams: WeakHashMap<String, Any>? = WeakHashMap()
     var inited = false
+    var mSharedPreferences: SharedPreferences? = null
+
     var adapter: All2RecyclerViewAdapter? = null
     var delegate: Delivered2Delegate? = null
     internal var retrofit: Retrofit? = null
@@ -49,6 +54,7 @@ class Delivered2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         setSwipeBackEnable(false)
+        mSharedPreferences = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
 
         initRefreshLayout()
         delivered2_srl.isRefreshing = true
@@ -171,7 +177,27 @@ class Delivered2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSupportVisible() {
         super.onSupportVisible()
-        data()
+        val sp = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
+        if (sp.getString("BACK_FROM", "") != "ORDER_DETAIL"
+                && sp.getString("BACK_FROM", "") != "PAY_METHOD"
+                && sp.getString("BACK_FROM", "") != "DELIVERY"
+                && sp.getString("BACK_FROM", "") != "OBLIGATION"
+                && sp.getString("BACK_FROM", "") != "CHECK_PENDING"
+                && sp.getString("BACK_FROM", "") != "DELIVERED"
+                && sp.getString("BACK_FROM", "") != "ALL"
+
+                && sp.getString("BACK_FROM", "") != "IN_PRODUCTION") {
+            delivered2_srl.isRefreshing = true
+            data()
+        }
+        sp.edit().clear().commit()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        val editor = mSharedPreferences!!.edit()
+        editor.putString("BACK_FROM", "DELIVERED")
+        editor.commit()
     }
 
 

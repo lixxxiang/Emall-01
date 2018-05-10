@@ -45,6 +45,8 @@ class PayMethodDelegate : BottomItemDelegate() {
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
     private var api: IWXAPI? = null
+    var mSharedPreferences: SharedPreferences? = null
+
     var count = 0
     fun create(): PayMethodDelegate? {
         return PayMethodDelegate()
@@ -56,9 +58,14 @@ class PayMethodDelegate : BottomItemDelegate() {
 
     override fun initial() {
         pay_method_toolbar.title = getString(R.string.choose_pay_method)
+        mSharedPreferences = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
+
         (activity as AppCompatActivity).setSupportActionBar(pay_method_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         pay_method_toolbar.setNavigationOnClickListener {
+            val editor = mSharedPreferences!!.edit()
+            editor.putString("BACK_FROM", "PAY_METHOD")
+            editor.commit()
             pop()
         }
 

@@ -1,5 +1,7 @@
 package com.example.emall_ec.main.order.state
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +25,7 @@ import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.order.state.adapter.All2RecyclerViewAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.example.emall_ec.main.order.state.data.OrderListModel
+import kotlinx.android.synthetic.main.delegate_all_2.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
 import kotlinx.android.synthetic.main.delegate_obligation_2.*
 import retrofit2.Retrofit
@@ -36,6 +39,7 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
     var delegate: Obligation2Delegate? = null
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
+    var mSharedPreferences: SharedPreferences? = null
     var obligationLinearLayoutManager : LinearLayoutManager?= null
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
@@ -49,7 +53,7 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         setSwipeBackEnable(false)
-
+        mSharedPreferences = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
         initRefreshLayout()
         obligation2_srl.isRefreshing = true
         delegate = this
@@ -171,7 +175,28 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSupportVisible() {
         super.onSupportVisible()
-        data()
+        val sp = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
+        EmallLogger.d(sp.getString("BACK_FROM", "") )
+        if (sp.getString("BACK_FROM", "") != "ORDER_DETAIL"
+                && sp.getString("BACK_FROM", "") != "PAY_METHOD"
+                && sp.getString("BACK_FROM", "") != "DELIVERY"
+                && sp.getString("BACK_FROM", "") != "OBLIGATION"
+                && sp.getString("BACK_FROM", "") != "CHECK_PENDING"
+                && sp.getString("BACK_FROM", "") != "DELIVERED"
+                && sp.getString("BACK_FROM", "") != "ALL"
+
+                && sp.getString("BACK_FROM", "") != "IN_PRODUCTION") {
+            obligation2_srl.isRefreshing = true
+            data()
+        }
+        sp.edit().clear().commit()
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        val editor = mSharedPreferences!!.edit()
+        editor.putString("BACK_FROM", "OBLIGATION")
+        editor.commit()
     }
 
 
