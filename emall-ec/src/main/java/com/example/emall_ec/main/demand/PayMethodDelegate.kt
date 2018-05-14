@@ -229,7 +229,7 @@ class PayMethodDelegate : BottomItemDelegate() {
                         bundle.putString("STATUS", "SUCCESS")
                         bundle.putString("TYPE", arguments.getString("TYPE"))
                         bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
-
+                        bundle.putString("title",arguments.getString("title"))
                         start(delegate)
 
 

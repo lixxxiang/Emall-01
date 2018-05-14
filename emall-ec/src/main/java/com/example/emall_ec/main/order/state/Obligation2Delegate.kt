@@ -40,7 +40,7 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
     var mSharedPreferences: SharedPreferences? = null
-    var obligationLinearLayoutManager : LinearLayoutManager?= null
+    var obligationLinearLayoutManager: LinearLayoutManager? = null
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
     }
@@ -94,7 +94,8 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
                         if (orderDetail.data.isEmpty()) {
                             obligation2_rv.visibility = View.INVISIBLE
                             obligation2_rl.visibility = View.VISIBLE
-                            obligation_srl.isRefreshing = false
+                            if (obligation_srl != null)
+                                obligation_srl.isRefreshing = false
 
                         } else {
                             obligation2_rv.visibility = View.VISIBLE
@@ -176,7 +177,7 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
     override fun onSupportVisible() {
         super.onSupportVisible()
         val sp = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
-        EmallLogger.d(sp.getString("BACK_FROM", "") )
+        EmallLogger.d(sp.getString("BACK_FROM", ""))
         if (sp.getString("BACK_FROM", "") != "ORDER_DETAIL"
                 && sp.getString("BACK_FROM", "") != "PAY_METHOD"
                 && sp.getString("BACK_FROM", "") != "DELIVERY"

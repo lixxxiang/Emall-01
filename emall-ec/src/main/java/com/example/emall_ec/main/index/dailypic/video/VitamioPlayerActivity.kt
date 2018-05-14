@@ -21,6 +21,7 @@ class VitamioPlayerActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         Vitamio.isInitialized(this)
         vitamio_toolbar.setNavigationOnClickListener {
+            videoview!!.stopPlayback()
             finish()
         }
         init()
@@ -33,5 +34,10 @@ class VitamioPlayerActivity : AppCompatActivity() {
             videoview!!.setMediaController(MediaController(this))
             videoview!!.start()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        videoview!!.stopPlayback()
     }
 }

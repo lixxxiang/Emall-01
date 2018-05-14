@@ -70,14 +70,15 @@ class SetUserNameDelegate : BottomItemDelegate() {
         set_nickname_title_tv.typeface = Typeface.createFromAsset(activity.assets, "fonts/pingfang.ttf")
 //        set_nickname_close.typeface = Typeface.createFromAsset(activity.assets, "iconfont/close.ttf")
         set_user_name_toolbar.title = getString(R.string.sign_up)
-        set_user_name_toolbar.setNavigationOnClickListener {
-            pop()
-        }
+
         (activity as AppCompatActivity).setSupportActionBar(set_user_name_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         set_nickname_tel_et.addTextChangedListener(mTextWatcher)
         setEditTextInhibitInputSpeChat(set_nickname_tel_et)
-
+        set_user_name_toolbar.setNavigationOnClickListener {
+            EmallLogger.d("o[")
+            pop()
+        }
         tel = arguments.getString("USER_TELEPHONE")
         pwd = arguments.getString("USER_PWD")
 
@@ -294,6 +295,10 @@ class SetUserNameDelegate : BottomItemDelegate() {
                                     KeyboardUtils.hideSoftInput(activity)
                                 }
                                 arguments.getString("PAGE_FROM") == "ME" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "SIGN_IN_BY_ACCOUNT" -> {
                                     popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
                                     KeyboardUtils.hideSoftInput(activity)
                                 }

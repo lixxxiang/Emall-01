@@ -128,20 +128,30 @@ class SearchPoiDelegate : EmallDelegate() {
 //                                clearPois()
 //                                showNoResult()
 //                            }else {
-                                if (tempPois.type == "0" || tempCities.type == "0") {//is cities
-                                    pages = 1
-                                    clearCities()
-                                    showCities(response)
-                                } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
-                                    clearPois()
-                                    pages = 3
-                                    showPois(response)
-                                } else {//no return
-                                    hideText()
-                                    clearCities()
-                                    clearPois()
-                                    showNoResult()
-                                }
+                        if (tempPois.type == "0" || tempCities.type == "0") {//is cities
+                            if (tempCities.sug.isEmpty()) {
+                                hideText()
+                                clearCities()
+                                clearPois()
+                                showNoResult()
+                            } else {
+                                hideNoResult()
+                                pages = 1
+                                clearCities()
+                                showCities(response)
+                            }
+
+                        } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
+                            hideNoResult()
+                            clearPois()
+                            pages = 3
+                            showPois(response)
+                        } else {//no return
+                            hideText()
+                            clearCities()
+                            clearPois()
+                            showNoResult()
+                        }
 //                            }
 //                        }
 
@@ -186,11 +196,19 @@ class SearchPoiDelegate : EmallDelegate() {
     }
 
     fun showNoResult() {
-        if (search_poi_cities_listview.visibility == View.VISIBLE || search_poi_poi_listview.visibility == View.INVISIBLE) {
+        if (search_poi_cities_listview.visibility == View.VISIBLE || search_poi_poi_listview.visibility == View.VISIBLE) {
             search_poi_poi_listview.visibility = View.INVISIBLE
             search_poi_cities_listview.visibility = View.INVISIBLE
         }
         search_poi_no_result_rl.visibility = View.VISIBLE
+    }
+
+    fun hideNoResult(){
+//        if (search_poi_cities_listview.visibility == View.INVISIBLE || search_poi_poi_listview.visibility == View.INVISIBLE) {
+//            search_poi_poi_listview.visibility = View.VISIBLE
+//            search_poi_cities_listview.visibility = View.VISIBLE
+//        }
+        search_poi_no_result_rl.visibility = View.INVISIBLE
     }
 
 

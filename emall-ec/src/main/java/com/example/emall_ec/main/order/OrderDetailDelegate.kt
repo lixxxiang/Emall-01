@@ -104,6 +104,9 @@ class OrderDetailDelegate : BottomItemDelegate() {
                             EmallLogger.d(response.body()!!)
                             deleteOrderBean = response.body()!!
                             if (deleteOrderBean.message == "success") {
+                                val editor = mSharedPreferences!!.edit()
+                                editor.putString("BACK_FROM", "ORDER_DETAIL_DELETE")
+                                editor.commit()
                                 pop()
                             }
                         } else {

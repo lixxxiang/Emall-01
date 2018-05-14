@@ -35,6 +35,8 @@ public class All2RecyclerViewAdapter extends BaseQuickAdapter<OrderListModel, Ba
 
         helper.setText(R.id.item_order_orderid_tv, String.format(this.mContext.getString(R.string.orderId), item.getOrderId()));
         helper.setText(R.id.item_order_title_tv, typeArray[item.getType()]);
+        helper.setText(R.id.item_order_title_tv, typeArray[item.getType()]);
+
         if (item.getType() == 2) {
             helper.setText(R.id.item_order_time_tv, "类型：" + programArray[Integer.parseInt(item.getProductType())]);
         } else {

@@ -96,6 +96,7 @@ class InProduction2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListe
                         if (orderDetail.data.isEmpty()) {
                             in_production2_rv.visibility = View.INVISIBLE
                             in_production2_rl.visibility = View.VISIBLE
+                            if (in_production2_srl != null)
                             in_production2_srl.isRefreshing = false
 
                         } else {
@@ -104,6 +105,7 @@ class InProduction2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListe
                             val size = orderDetail.data.size
                             for (i in 0 until size) {
                                 var orderListModel = OrderListModel()
+                                orderListModel.planCommitTime = orderDetail.data[i].planCommitTime
                                 orderListModel.orderId = orderDetail.data[i].orderId
                                 orderListModel.type = orderDetail.data[i].type
                                 orderListModel.startTime = orderDetail.data[i].details.startTime

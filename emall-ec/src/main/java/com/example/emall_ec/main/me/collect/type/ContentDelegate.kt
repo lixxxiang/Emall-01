@@ -13,6 +13,7 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.classify.ClassifyDelegate
 import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
 import com.example.emall_ec.main.index.dailypic.data.HomePageBean
 import com.example.emall_ec.main.index.dailypic.pic.PicDetailDelegate
@@ -69,6 +70,14 @@ class ContentDelegate : EmallDelegate() {
                 content_content_srv.isRefreshing = false
             }, 1200)
         })
+
+        collection_content_btn.setOnClickListener {
+            val delegate = ClassifyDelegate().create()
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("TYPE", "SCENE")
+            delegate!!.arguments = bundle
+            getParentDelegate<CollectionDelegate>().start(delegate)
+        }
     }
 
     private fun initContent() {
@@ -81,7 +90,6 @@ class ContentDelegate : EmallDelegate() {
                 .success(object : ISuccess {
                     @SuppressLint("ApplySharedPref")
                     override fun onSuccess(response: String) {
-
                         EmallLogger.d(response)
                         myCollectionBean = Gson().fromJson(response, MyCollectionBean::class.java)
 
@@ -122,6 +130,7 @@ class ContentDelegate : EmallDelegate() {
 
     override fun onSupportVisible() {
         super.onSupportVisible()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         myCollectionData!!.clear()
         initContent()
 

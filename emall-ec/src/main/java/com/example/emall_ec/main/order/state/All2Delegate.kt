@@ -118,7 +118,8 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                         if (orderDetail.data.isEmpty()) {
                             all2_rv.visibility = View.INVISIBLE
                             all2_rl.visibility = View.VISIBLE
-                            all_srl.isRefreshing = false
+                            if (all_srl != null)
+                                all_srl.isRefreshing = false
 
                         } else {
                             all2_rv.visibility = View.VISIBLE
@@ -126,6 +127,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                             val size = orderDetail.data.size
                             for (i in 0 until size) {
                                 var orderListModel = OrderListModel()
+                                orderListModel.planCommitTime = orderDetail.data[i].planCommitTime
                                 orderListModel.orderId = orderDetail.data[i].orderId
                                 orderListModel.type = orderDetail.data[i].type
                                 orderListModel.startTime = orderDetail.data[i].details.startTime
@@ -200,9 +202,6 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     }
 
 
-
-
-
 //    override fun onPause() {
 //        super.onPause()
 //        getPositionAndOffset()
@@ -237,6 +236,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
     override fun onSupportVisible() {
         super.onSupportVisible()
         val sp = activity.getSharedPreferences("BACK_FROM", Context.MODE_PRIVATE)
+        EmallLogger.d(sp.getString("BACK_FROM", ""))
         if (sp.getString("BACK_FROM", "") != "ORDER_DETAIL"
                 && sp.getString("BACK_FROM", "") != "PAY_METHOD"
                 && sp.getString("BACK_FROM", "") != "DELIVERY"
@@ -245,7 +245,7 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                 && sp.getString("BACK_FROM", "") != "DELIVERED"
                 && sp.getString("BACK_FROM", "") != "ALL"
                 && sp.getString("BACK_FROM", "") != "IN_PRODUCTION"
-                ) {
+        ) {
             all2_srl.isRefreshing = true
             data()
         }

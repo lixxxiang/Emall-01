@@ -1,6 +1,9 @@
 package com.example.emall_ec.main.detail
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
@@ -43,6 +46,7 @@ import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
+import com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity
 import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
@@ -51,6 +55,7 @@ import io.vov.vitamio.widget.MediaController
 import kotlinx.android.synthetic.main.activity_vitamio_player.*
 import kotlinx.android.synthetic.main.delegate_goods_detail.view.*
 import kotlinx.android.synthetic.main.delegate_setting.*
+import me.yokeyword.fragmentation.ISupportFragment
 import retrofit2.Retrofit
 
 
@@ -84,6 +89,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var cancelCollectionParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commonBean = CommonBean()
     var type = String()
+    var mSharedPreferences: SharedPreferences? = null
     var type135 = String()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
@@ -98,6 +104,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        mSharedPreferences = activity.getSharedPreferences("COLLECTION", Context.MODE_PRIVATE)
         mMapView = activity.findViewById<TextureMapView>(R.id.goods_detail_map) as TextureMapView
         mBaiduMap = mMapView!!.map
         initViews()
@@ -181,6 +188,12 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
         video_detail_tablayout_ctl.setOnTabSelectListener(this)
         video_goods_detail_toolbar.setNavigationOnClickListener {
+            if(arguments.getString("PAGE_FROM") == "COLLECTION"){
+                val editor = mSharedPreferences!!.edit()
+                editor.putString("collection", "true")
+                editor.putString("collection_type", arguments.getString("COLLECTION_TYPE"))
+                editor.commit()
+            }
             supportDelegate.pop()
         }
 
@@ -205,7 +218,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         video_goods_detail_mask_iv.visibility = View.GONE
                         if (Vitamio.isInitialized(context)) {
                             detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
-                            detail_videoview!!.setMediaController(MediaController(context))
+//                            detail_videoview!!.setMediaController(MediaController(context))
                             detail_videoview!!.start()
                         }
                     }
@@ -223,8 +236,24 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     video_goods_detail_mask_iv.visibility = View.GONE
                     if (Vitamio.isInitialized(context)) {
                         detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
-                        detail_videoview!!.setMediaController(MediaController(context))
+//                        detail_videoview!!.setMediaController(MediaController(context))
                         detail_videoview!!.start()
+                        detail_videoview.setOnTouchListener { view, motionEvent ->
+                            detail_videoview!!.stopPlayback()
+                            detail_videoview.visibility = View.GONE
+                            var intent = Intent(activity, VitamioPlayerActivity::class.java)
+                            intent.putExtra("title", videoDetail.data.title)
+                            intent.putExtra("url", videoDetail.data.videoPath)
+                            startActivity(intent)
+
+                            video_goods_detail_title_image.isClickable = false
+                            video_goods_detail_title_image.visibility = View.VISIBLE
+                            play_btn.visibility = View.VISIBLE
+                            video_mark.visibility = View.VISIBLE
+                            video_goods_detail_mask_iv.visibility = View.VISIBLE
+
+
+                            false }
                     }
                 }
 
@@ -629,6 +658,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
             getCollectionMark(productId, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
         }
+        video_goods_detail_title_image.isClickable = true
     }
 
     private fun getCollectionMark(pid: String, uid: String?) {
@@ -680,9 +710,13 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     override fun onDestroy() {
         super.onDestroy()
         mMapView!!.onDestroy()
+
+
     }
 
     override fun onSupportInvisible() {
         super.onSupportInvisible()
     }
+
+
 }

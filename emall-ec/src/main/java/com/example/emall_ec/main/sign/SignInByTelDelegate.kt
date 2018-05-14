@@ -24,6 +24,7 @@ import android.app.Activity
 import android.os.Bundle
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.bottom.BottomItemDelegate
+import com.example.emall_ec.main.sign.data.CommonBean
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 
@@ -43,7 +44,9 @@ class SignInByTelDelegate : BottomItemDelegate() {
     var checkMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var emptyToast: Toast? = null
     var toast: Toast? = null
+    var findTelephoneParams : WeakHashMap<String, Any>?= WeakHashMap()
 
+    var commonBean = CommonBean()
     var wrongToast: Toast? = null
     var wrongVcodeToast: Toast? = null
     private var mISignListener: ISignListener? = null
@@ -109,7 +112,7 @@ class SignInByTelDelegate : BottomItemDelegate() {
                     /**
                      * tel is valid
                      */
-                    getVCode(tel)
+                    findTelephone(tel)
                 } else {
                     /**
                      * tel is invalid
@@ -192,6 +195,42 @@ class SignInByTelDelegate : BottomItemDelegate() {
             KeyboardUtils.hideSoftInput(activity)
         }
 
+    }
+
+    private fun findTelephone(tel: String) {
+        findTelephoneParams!!["telephone"] = tel
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/findTelephone.do")
+                .params(findTelephoneParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if (commonBean.meta == "success") {
+                            /**
+                             * success
+                             */
+                            getVCode(tel)
+
+                        } else {
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.not_register))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.not_register), Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
     }
 
     private var mTelTextWatcher: TextWatcher = object : TextWatcher {

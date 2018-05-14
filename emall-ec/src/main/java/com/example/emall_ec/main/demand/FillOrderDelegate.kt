@@ -157,7 +157,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                             bundle!!.putString("PARENT_ORDER_ID", orderBean.data.parentOrderId)
                             bundle.putString("TYPE", "1")
                             bundle.putString("PAGE_FROM",arguments.getString("PAGE_FROM"))
-
+                            bundle.putString("title", arguments.getString("title"))
                             delegate.arguments = bundle
                             start(delegate)
                         }

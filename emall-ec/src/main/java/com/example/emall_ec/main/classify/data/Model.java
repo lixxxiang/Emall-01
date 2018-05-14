@@ -11,6 +11,15 @@ public class Model {
     private String title;
     private String productId;
     private String productType;
+    private String duration;
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
     public String getProductType() {
         return productType;

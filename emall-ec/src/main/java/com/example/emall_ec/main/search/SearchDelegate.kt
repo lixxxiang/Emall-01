@@ -100,9 +100,9 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 pt.x = 0
                 pt.y = 0
                 if (mBaiduMap != null) {
-                    val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
-                    lati_lt = ll.latitude
-                    longi_lt = ll.longitude
+                    val ll = mBaiduMap?.projection?.fromScreenLocation(pt)
+                    lati_lt = ll?.latitude
+                    longi_lt = ll?.longitude
 
                     if (lati_lt!= null && longi_lt != null){
                         val dm = DisplayMetrics()

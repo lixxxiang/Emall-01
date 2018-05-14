@@ -37,6 +37,10 @@ class Video1A1BDelegate : EmallDelegate() {
     var gatherTimeFlag = false
     var priceFlag = false
     var itemSize = 0
+    var orderBy = String()
+    var pages = 1
+    private var pagesAmount = -1
+
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
     override fun setLayout(): Any? {
@@ -57,10 +61,16 @@ class Video1A1BDelegate : EmallDelegate() {
             video1a1b_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             gatherTimeFlag = if (!gatherTimeFlag) {
+                orderBy = "startTimeASC"
+                pages = 1
+                getData(orderBy, pages)
                 video1a1b_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
                 video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
                 true
             } else {
+                orderBy = "startTimeDESC"
+                pages = 1
+                getData(orderBy, pages)
                 video1a1b_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
                 video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 false
@@ -89,13 +99,13 @@ class Video1A1BDelegate : EmallDelegate() {
             mAdapter = null
             video_srl.isRefreshing = true
             Handler().postDelayed({
-                getData()
+                getData("", 1)
                 video_srl.isRefreshing = false
             }, 1200)
         })
 
         initVideoGlm()
-        getData()
+        getData("", pages)
     }
 
     private fun initVideoGlm() {
@@ -108,56 +118,10 @@ class Video1A1BDelegate : EmallDelegate() {
         video1a1b_rv.isNestedScrollingEnabled = false
     }
 
-    private fun getData() {
-//        EmallLogger.d(videoSearchParams!!)
-//        RestClient().builder()
-//                .url("http://59.110.164.214:8024/global/videoSearch")
-//                .params(videoSearchParams!!)
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        EmallLogger.d(response)
-//                        videoSearchBean = Gson().fromJson(response, VideoSearchBean::class.java)
-//                        if(videoSearchBean.status != 103) {
-//                            if (video_rv_rl.visibility == View.GONE){
-//                                video_rv_rl.visibility = View.VISIBLE
-//                                video_no_result.visibility = View.GONE
-//                                video_top_bar.visibility = View.VISIBLE
-//                            }
-//                            val size = videoSearchBean.data.size
-//                            val data: MutableList<Model> ?= mutableListOf()
-//                            for (i in 0 until size) {
-//                                val model = Model()
-//                                model.imageUrl = videoSearchBean.data[i].detailPath
-//                                model.price = videoSearchBean.data[i].price
-//                                model.time = videoSearchBean.data[i].startTime
-//                                model.title = videoSearchBean.data[i].title
-//                                model.productType = "3"
-//                                data!!.add(model)
-//                            }
-//                            initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.size)
-//                        }else{
-//                            video_rv_rl.visibility = View.GONE
-//                            video_no_result.visibility = View.VISIBLE
-//                            video_top_bar.visibility = View.GONE
-//                        }
-//                    }
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {
-//
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {
-//
-//                    }
-//                })
-//                .build()
-//                .post()
-
+    private fun getData(order: String, pages: Int) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", "1")
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), order)
         println("~~~~~~~~" + videoSearchParams!!["geo"].toString())
         call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
             override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
@@ -212,6 +176,8 @@ class Video1A1BDelegate : EmallDelegate() {
         mAdapter!!.setLoadMoreView(CustomLoadMoreView())
 
         recyclerView.adapter = mAdapter
+        if (pages < pagesAmount)
+            pages += 1
         mAdapter!!.setOnItemClickListener { adapter, view, position ->
             val delegate = GoodsDetailDelegate().create()
             val bundle: Bundle? = Bundle()
@@ -223,6 +189,54 @@ class Video1A1BDelegate : EmallDelegate() {
     }
 
     private fun loadMoreData() {
-        EmallLogger.d("暂无")
+        EmallLogger.d("load more")
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), orderBy)
+        println("~~~~~~~~" + videoSearchParams!!["geo"].toString())
+        call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
+            override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
+                if (response.body() != null) {
+                    videoSearchBean = response.body()!!
+                    EmallLogger.d(response)
+                    if (videoSearchBean.status != 103) {
+                        if (video_rv_rl.visibility == View.GONE) {
+                            video_rv_rl.visibility = View.VISIBLE
+                            video_no_result.visibility = View.GONE
+                            video_top_bar.visibility = View.VISIBLE
+                        }
+                        val size = videoSearchBean.data.searchReturnDtoList.size
+                        pagesAmount = videoSearchBean.data.pages
+
+                        val data: MutableList<Model>? = mutableListOf()
+                        for (i in 0 until size) {
+                            val model = Model()
+                            model.imageUrl = videoSearchBean.data.searchReturnDtoList[i].detailPath
+                            model.price = videoSearchBean.data.searchReturnDtoList[i].price
+                            model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
+                            model.title = videoSearchBean.data.searchReturnDtoList[i].title
+                            model.productId = videoSearchBean.data.searchReturnDtoList[i].productId
+                            model.productType = "3"
+                            data!!.add(model)
+                        }
+                        mAdapter!!.notifyDataSetChanged()
+                        mAdapter!!.loadMoreComplete()
+
+                        if (pages < pagesAmount)
+                            pages += 1
+//                        initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.searchReturnDtoList.size)
+                    }
+//                    else {
+//                        video_rv_rl.visibility = View.GONE
+//                        video_no_result.visibility = View.VISIBLE
+//                        video_top_bar.visibility = View.GONE
+//                    }
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<VideoSearchBean>, throwable: Throwable) {}
+        })
     }
 }

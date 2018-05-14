@@ -41,7 +41,7 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     var tel = String()
     var flag1 = false
     var flag2 = false
-    var toast: Toast ?= null
+    var toast: Toast? = null
     fun create(): ResetPasswordDelegate? {
         return ResetPasswordDelegate()
     }
@@ -129,19 +129,25 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                         newPassword = reset_pwd_new_pwd_et.text.toString()
                         confirmPassword = reset_pwd_confirm_pwd_et.text.toString()
                         if (newPassword == confirmPassword) {
-                            if (!pwdRepeat(temp)) {
-                                EmallLogger.d("new", EncryptUtils.encryptMD5ToString(temp))
-                                EmallLogger.d("old", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userPassword)
+                            EmallLogger.d(arguments.getString("PAGE_FROM"))
+                            if (arguments.getString("PAGE_FROM") == "ACCOUNT_PRIVACY_SETTINGS") {
+                                if (!pwdRepeat(temp)) {
+                                    EmallLogger.d("new", EncryptUtils.encryptMD5ToString(temp))
+                                    EmallLogger.d("old", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userPassword)
+                                    changePassword()
+                                } else
+                                    if (toast != null) {
+                                        toast!!.setText(getString(R.string.check_pwd_repeat))
+                                        toast!!.duration = Toast.LENGTH_SHORT
+                                        toast!!.show()
+                                    } else {
+                                        toast = Toast.makeText(activity, getString(R.string.check_pwd_repeat), Toast.LENGTH_SHORT)
+                                        toast!!.show()
+                                    }
+                            }else{
                                 changePassword()
-                            } else
-                                if (toast != null) {
-                                    toast!!.setText(getString(R.string.check_pwd_repeat))
-                                    toast!!.duration = Toast.LENGTH_SHORT
-                                    toast!!.show()
-                                } else {
-                                    toast = Toast.makeText(activity, getString(R.string.check_pwd_repeat), Toast.LENGTH_SHORT)
-                                    toast!!.show()
-                                }
+                            }
+
                         } else
                             if (toast != null) {
                                 toast!!.setText(getString(R.string.pwd_no_match))
@@ -201,6 +207,14 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                                 info.userPassword = changePasswordParams!!["userPassword"].toString()
                                 DatabaseManager().getInstance()!!.getDao()!!.update(info)
                             }
+                            if (toast != null) {
+                                toast!!.setText("密码修改成功")
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, "密码修改成功", Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                             when {
                                 arguments.getString("PAGE_FROM") == "SETTING" -> {
                                     popTo(findFragment(SettingDelegate().javaClass).javaClass, false)
@@ -212,6 +226,18 @@ class ResetPasswordDelegate : BottomItemDelegate() {
                                 }
                                 arguments.getString("PAGE_FROM") == "AVATAR" -> {
                                     popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "ME" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "INDEX" -> {
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    KeyboardUtils.hideSoftInput(activity)
+                                }
+                                arguments.getString("PAGE_FROM") == "GOODS_DETAIL" ->{
+                                    popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
                                     KeyboardUtils.hideSoftInput(activity)
                                 }
 

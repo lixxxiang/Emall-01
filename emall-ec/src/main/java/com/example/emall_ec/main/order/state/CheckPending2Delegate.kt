@@ -96,6 +96,7 @@ class CheckPending2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListe
                         if (orderDetail.data.isEmpty()) {
                             check_pending2_rv.visibility = View.INVISIBLE
                             check_pending2_rl.visibility = View.VISIBLE
+                            if (check_pending2_srl != null)
                             check_pending2_srl.isRefreshing = false
 
                         } else {
@@ -104,6 +105,8 @@ class CheckPending2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListe
                             val size = orderDetail.data.size
                             for (i in 0 until size) {
                                 var orderListModel = OrderListModel()
+                                orderListModel.planCommitTime = orderDetail.data[i].planCommitTime
+
                                 orderListModel.orderId = orderDetail.data[i].orderId
                                 orderListModel.type = orderDetail.data[i].type
                                 orderListModel.startTime = orderDetail.data[i].details.startTime

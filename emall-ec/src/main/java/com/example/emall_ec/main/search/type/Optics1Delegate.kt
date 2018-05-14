@@ -119,7 +119,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
             gatherTimeFlag = if (!gatherTimeFlag) {
                 //正序
-                ssp2!!["orderBy"] = "centerTime asc"
+                ssp2!!["orderBy"] = "centerTimeASC"
                 pages = 1
                 getData(ssp2!!,pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
@@ -127,7 +127,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 true
             } else {
                 //倒序
-                ssp2!!["orderBy"] = "centerTime desc"
+                ssp2!!["orderBy"] = "centerTimeDESC"
                 pages = 1
                 getData(ssp2!!,pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
@@ -148,7 +148,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
 
             priceFlag = if (!priceFlag) {
-                ssp2!!["orderBy"] = "price asc"
+                ssp2!!["orderBy"] = "priceASC"
                 pages = 1
                 getData(ssp2!!,pages)
                 optics_price_tv.setTextColor(Color.parseColor("#B80017"))
@@ -156,7 +156,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 true
             } else {
-                ssp2!!["orderBy"] = "price desc"
+                ssp2!!["orderBy"] = "priceDESC"
                 pages = 1
                 getData(ssp2!!,pages)
                 optics_price_tv.setTextColor(Color.parseColor("#B80017"))
@@ -572,6 +572,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
+                        EmallLogger.d(sceneSearch.data.count)
+
                         itemSize = 0
                         if (sceneSearch.status != 103) {
                             optics_rv.visibility = View.VISIBLE

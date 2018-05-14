@@ -98,9 +98,9 @@ class IndexDelegate : BottomItemDelegate() {
         initRefreshLayout()
         initRecyclerView()
         refreshHandler!!.firstPage(
-                "http://59.110.164.214:8024/global/homePageSlide",
+                "http://59.110.164.214:8024/global/mobile/homePageSlide",
                 "http://192.168.1.36:3030/data",
-                "http://59.110.162.194:5201/global/homePageUnits",
+                "http://59.110.162.194:5201/global/mobile/homePageUnits",
                 "http://202.111.178.10:28085/mobile/homePage")
         index_search_rl.setOnClickListener {
             if (!NetworkUtils.isConnected())
@@ -130,9 +130,9 @@ class IndexDelegate : BottomItemDelegate() {
                         IndexDataConverter(),
                         IndexDataConverter())
                 refreshHandler!!.firstPage(
-                        "http://59.110.164.214:8024/global/homePageSlide",
+                        "http://59.110.164.214:8024/global/mobile/homePageSlide",
                         "http://192.168.1.36:3030/data",
-                        "http://59.110.162.194:5201/global/homePageUnits",
+                        "http://59.110.162.194:5201/global/mobile/homePageUnits",
                         "http://202.111.178.10:28085/mobile/homePage")
                 swipe_refresh_layout_index.isRefreshing = false
             }, 1200)

@@ -96,6 +96,8 @@ class Delivered2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener
                         if (orderDetail.data.isEmpty()) {
                             delivered2_rv.visibility = View.INVISIBLE
                             delivered2_rl.visibility = View.VISIBLE
+                            if (delivered2_srl != null)
+
                             delivered2_srl.isRefreshing = false
 
                         } else {
@@ -104,6 +106,8 @@ class Delivered2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener
                             val size = orderDetail.data.size
                             for (i in 0 until size) {
                                 var orderListModel = OrderListModel()
+                                orderListModel.planCommitTime = orderDetail.data[i].planCommitTime
+
                                 orderListModel.orderId = orderDetail.data[i].orderId
                                 orderListModel.type = orderDetail.data[i].type
                                 orderListModel.startTime = orderDetail.data[i].details.startTime

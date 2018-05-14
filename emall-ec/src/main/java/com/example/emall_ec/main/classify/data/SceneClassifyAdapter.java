@@ -40,6 +40,8 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
             helper.setText(R.id.item_classify_price_tv, "¥"+ item.getPrice());
             helper.getView(R.id.item_classify_video_mask_rl).setVisibility(View.INVISIBLE);
             helper.getView(R.id.item_classify_video_playbtn_rl).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.classify_duration).setVisibility(View.INVISIBLE);
+
             helper.getView(R.id.item_classify_video_title_tv).setVisibility(View.INVISIBLE);
             helper.getView(R.id.item_classify_video_price_tv).setVisibility(View.INVISIBLE);
             helper.getView(R.id.item_classify_price_tv).setVisibility(View.VISIBLE);
@@ -51,6 +53,9 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
             helper.getView(R.id.item_classify_price_tv).setVisibility(View.INVISIBLE);
             helper.getView(R.id.item_classify_video_price_tv).setVisibility(View.VISIBLE);
             helper.getView(R.id.item_classify_video_title_tv).setVisibility(View.VISIBLE);
+            helper.getView(R.id.classify_duration).setVisibility(View.VISIBLE);
+            helper.setText(R.id.classify_duration, "时长："+ item.getDuration());
+
         }
         Glide.with(this.mContext)
                 .load(item.getImageUrl())

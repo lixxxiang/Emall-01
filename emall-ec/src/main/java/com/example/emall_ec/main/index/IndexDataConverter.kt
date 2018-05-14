@@ -141,6 +141,7 @@ class IndexDataConverter : DataConverter() {
             val data = dataArray.getJSONObject(i)
             val bannerImageUrl = data.getString("imageUrl")
             val bannerLink = data.getString("link")
+            EmallLogger.d(bannerLink)
             bannerImages!!.add(bannerImageUrl)
             entity = MultipleItemEntity.builder()
                     .setField(MultipleFields.BANNERS_COUNT, size)

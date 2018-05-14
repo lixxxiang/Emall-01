@@ -51,7 +51,6 @@ class OrderListDelegate : BottomItemDelegate() {
                 arguments.getString("PAGE_FROM") == "CLASSIFY" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
                 arguments.getString("PAGE_FROM") == "ORDER_LIST" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
                 arguments.getString("PAGE_FROM") == "ME" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
-
                 arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
                 arguments.getString("PAGE_FROM") == "PAYMENT" -> {
                     if (findFragment(GoodsDetailDelegate().javaClass) == null) {
@@ -152,6 +151,27 @@ class OrderListDelegate : BottomItemDelegate() {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    override fun onBackPressedSupport(): Boolean {
+        when {
+            arguments.getString("PAGE_FROM") == "CLASSIFY" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "ORDER_LIST" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "ME" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "PAYMENT" -> {
+                if (findFragment(GoodsDetailDelegate().javaClass) == null) {
+                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                } else
+                    popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            }
+            arguments.getString("PAGE_FROM") == "PROGRAM_INDEX" ->
+                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "PROGRAM" ->
+                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            else -> pop()
+        }
+        return true
     }
 
 }

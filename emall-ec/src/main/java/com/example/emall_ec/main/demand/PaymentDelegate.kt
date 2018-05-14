@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.baidu.location.g.j.ar
 import com.bumptech.glide.Glide
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
@@ -228,8 +229,13 @@ class PaymentDelegate : EmallDelegate() {
             Glide.with(context)
                     .load(data[0].details.imageDetailUrl)
                     .into(payment_iv)
-        payment_title_tv.text = data[0].productId
-        payment_time_tv.text = timeFormat(data[0].details.centerTime)
+        payment_title_tv.text = typeArray[data[0].type]
+        if (data[0].details.centerTime == null) {
+            payment_time_tv.text = timeFormat(data[0].details.startTime)
+
+        } else
+            payment_time_tv.text = timeFormat(data[0].details.centerTime)
+
         payment_price_tv.text = String.format("¥%s", data[0].details.salePrice)
         payment_detail_id_tv.text = data[0].orderId
         payment_detail_order_time_tv.text = data[0].commitTime
@@ -255,6 +261,14 @@ class PaymentDelegate : EmallDelegate() {
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
+    }
+
+    override fun onBackPressedSupport(): Boolean {
+        val editor = mSharedPreferences!!.edit()
+        editor.putString("BACK_FROM", "PAYMENT")
+        editor.commit()
+        pop()
+        return true
     }
 
 }

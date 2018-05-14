@@ -106,6 +106,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
                             val data: MutableList<MultipleItemEntity>? = mutableListOf()
+                            EmallLogger.d(response)
                             if (!data!!.isEmpty()) {
                                 data.clear()
                             }

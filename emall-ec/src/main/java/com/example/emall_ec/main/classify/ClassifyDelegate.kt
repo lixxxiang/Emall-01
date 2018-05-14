@@ -34,6 +34,7 @@ import com.example.emall_ec.main.classify.adapter.GridViewAdapter
 import com.example.emall_ec.main.classify.data.*
 import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
 import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.main.demand.data.AppPayBean
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
@@ -71,6 +72,7 @@ class ClassifyDelegate : EmallDelegate() {
     var isExpanded = false
     private var pages = 1
     private var pagesAmount = -1
+    private var SCROLL_TIMES = 0
 
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
@@ -85,7 +87,6 @@ class ClassifyDelegate : EmallDelegate() {
         if (arguments.getString("TYPE") == "SCENE") {
             initSceneGlm()
             initRecommendCities()
-
 
 
         } else if (arguments.getString("TYPE") == "NOCTILUCENCE") {
@@ -157,17 +158,17 @@ class ClassifyDelegate : EmallDelegate() {
 
         classify_gv.setOnItemClickListener { parent, view, position, id ->
             EmallLogger.d(position)
-            if(position != 0){
+            if (position != 0) {
                 if (!data!!.isEmpty())
                     data!!.clear()
                 closeScreen()
                 classify_recommand_tv.text = getRecommendCitiesBean.data[position - 1].cityName
-                getData(getRecommendCitiesBean.data[position -1].geo,
+                getData(getRecommendCitiesBean.data[position - 1].geo,
                         "", "",
                         "", "",
                         "", "",
                         "0", "10", "1")
-            }else{
+            } else {
                 if (!data!!.isEmpty())
                     data!!.clear()
                 closeScreen()
@@ -214,7 +215,7 @@ class ClassifyDelegate : EmallDelegate() {
         })
 
         classify_recommand_rl.setOnClickListener {
-            if(!isExpanded){
+            if (!isExpanded) {
                 classify_recommand_tv.text = getString(R.string.recommand)
                 if (!data!!.isEmpty())
                     data!!.clear()
@@ -228,7 +229,7 @@ class ClassifyDelegate : EmallDelegate() {
 
         classify_sv.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
             if (scrollY == (v!!.getChildAt(0).measuredHeight - v.measuredHeight)) {
-
+                SCROLL_TIMES++
                 if (arguments.getString("TYPE") == "SCENE") {
                     bottom_rl.visibility = View.VISIBLE
                     getData("",
@@ -323,7 +324,7 @@ class ClassifyDelegate : EmallDelegate() {
                         bottom_rl.visibility = View.INVISIBLE
                     sceneSearch = response.body()!!
                     pagesAmount = sceneSearch.data.pages
-                    productId!!.clear()
+//                    productId!!.clear()
                     getSceneData()
 
                 } else {
@@ -364,68 +365,132 @@ class ClassifyDelegate : EmallDelegate() {
 
     private fun initRecommendCities() {
         cityName!!.add(getString(R.string.recommand))
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/mobile/getRecommendCities")
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        getRecommendCitiesBean = Gson().fromJson(response, GetRecommendCitiesBean::class.java)
-                        if (getRecommendCitiesBean.message == "success") {
-                            EmallLogger.d(response)
-                            val size = getRecommendCitiesBean.data.size
-                            classify_progressBar.visibility = View.VISIBLE
-                            getData("",
-                                    "", "",
-                                    "", "",
-                                    "", "",
-                                    "0", "10", pages.toString())//0是标准景
-                            for (i in 0 until size) {
-                                cityName!!.add(getRecommendCitiesBean.data[i].cityName)
-                                val topRl = RelativeLayout(activity)
-                                topRl.id = i
-                                val topRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT)
-                                topRl.setBackgroundColor(Color.parseColor("#FFFFFF"))
-                                topRl.layoutParams = topRlParams
-                                topRl.isClickable = true
-                                topRl.isFocusable = true
-                                topRl.setOnClickListener {
-                                    classify_recommand_tv.text = getRecommendCitiesBean.data[i].cityName
-                                    if (!data!!.isEmpty())
-                                        data!!.clear()
-                                    getData(getRecommendCitiesBean.data[i].geo,
-                                            "", "",
-                                            "", "",
-                                            "", "",
-                                            "0", "10", "1")
+//        RestClient().builder()
+//                .url("http://59.110.164.214:8024/global/mobile/getRecommendCities")
+//                .success(object : ISuccess {
+//                    override fun onSuccess(response: String) {
+//                        getRecommendCitiesBean = Gson().fromJson(response, GetRecommendCitiesBean::class.java)
+//                        if (getRecommendCitiesBean.message == "success") {
+//                            EmallLogger.d(response)
+//                            val size = getRecommendCitiesBean.data.size
+//                            classify_progressBar.visibility = View.VISIBLE
+//                            getData("",
+//                                    "", "",
+//                                    "", "",
+//                                    "", "",
+//                                    "0", "10", pages.toString())//0是标准景
+//                            for (i in 0 until size) {
+//                                cityName!!.add(getRecommendCitiesBean.data[i].cityName)
+//                                val topRl = RelativeLayout(activity)
+//                                topRl.id = i
+//                                val topRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+//                                topRl.setBackgroundColor(Color.parseColor("#FFFFFF"))
+//                                topRl.layoutParams = topRlParams
+//                                topRl.isClickable = true
+//                                topRl.isFocusable = true
+//                                topRl.setOnClickListener {
+//                                    classify_recommand_tv.text = getRecommendCitiesBean.data[i].cityName
+//                                    if (!data!!.isEmpty())
+//                                        data!!.clear()
+//                                    productId!!.clear()
+//
+//                                    getData(getRecommendCitiesBean.data[i].geo,
+//                                            "", "",
+//                                            "", "",
+//                                            "", "",
+//                                            "0", "10", "1")
+//
+//                                }
+//                                classify_ll.addView(topRl, topRlParams)
+//                                val tv = AppCompatTextView(activity)
+//                                val tvParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+//                                tvParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+//                                tvParams.setMargins(DimenUtil().dip2px(activity, 10F), 0, DimenUtil().dip2px(activity, 10F), 0)
+//                                tv.layoutParams = topRlParams
+//                                tv.text = getRecommendCitiesBean.data[i].cityName
+//                                tv.setTextColor(Color.parseColor("#5C5C5C"))
+//                                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
+//                                topRl.addView(tv, tvParams)
+//                            }
+//                        } else {
+//                            Toast.makeText(activity, "getRecommendCities wrong", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//                })
+//                .error(object : IError {
+//                    override fun onError(code: Int, msg: String) {
+//                        EmallLogger.d(msg)
+//                    }
+//                })
+//                .failure(object : IFailure {
+//                    override fun onFailure() {
+//                        EmallLogger.d("f")
+//                    }
+//                })
+//                .build()
+//                .get()
 
-                                }
-                                classify_ll.addView(topRl, topRlParams)
-                                val tv = AppCompatTextView(activity)
-                                val tvParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-                                tvParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-                                tvParams.setMargins(DimenUtil().dip2px(activity, 10F), 0, DimenUtil().dip2px(activity, 10F), 0)
-                                tv.layoutParams = topRlParams
-                                tv.text = getRecommendCitiesBean.data[i].cityName
-                                tv.setTextColor(Color.parseColor("#5C5C5C"))
-                                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
-                                topRl.addView(tv, tvParams)
+
+        retrofit = NetUtils.getRetrofit()
+        apiService = retrofit!!.create(ApiService::class.java)
+
+        val call = apiService!!.getRecommandCities()
+        call.enqueue(object : retrofit2.Callback<GetRecommendCitiesBean> {
+            override fun onResponse(call: retrofit2.Call<GetRecommendCitiesBean>, response: retrofit2.Response<GetRecommendCitiesBean>) {
+                if (response.body() != null) {
+                    getRecommendCitiesBean = response.body()!!
+                    if (getRecommendCitiesBean.message == "success") {
+                        EmallLogger.d(response)
+                        val size = getRecommendCitiesBean.data.size
+                        classify_progressBar.visibility = View.VISIBLE
+                        getData("",
+                                "", "",
+                                "", "",
+                                "", "",
+                                "0", "10", pages.toString())//0是标准景
+                        for (i in 0 until size) {
+                            cityName!!.add(getRecommendCitiesBean.data[i].cityName)
+                            val topRl = RelativeLayout(activity)
+                            topRl.id = i
+                            val topRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+                            topRl.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                            topRl.layoutParams = topRlParams
+                            topRl.isClickable = true
+                            topRl.isFocusable = true
+                            topRl.setOnClickListener {
+                                classify_recommand_tv.text = getRecommendCitiesBean.data[i].cityName
+                                if (!data!!.isEmpty())
+                                    data!!.clear()
+                                productId!!.clear()
+
+                                getData(getRecommendCitiesBean.data[i].geo,
+                                        "", "",
+                                        "", "",
+                                        "", "",
+                                        "0", "10", "1")
+
                             }
-                        } else {
-                            Toast.makeText(activity, "getRecommendCities wrong", Toast.LENGTH_SHORT).show()
+                            classify_ll.addView(topRl, topRlParams)
+                            val tv = AppCompatTextView(activity)
+                            val tvParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+                            tvParams.addRule(RelativeLayout.CENTER_IN_PARENT)
+                            tvParams.setMargins(DimenUtil().dip2px(activity, 10F), 0, DimenUtil().dip2px(activity, 10F), 0)
+                            tv.layoutParams = topRlParams
+                            tv.text = getRecommendCitiesBean.data[i].cityName
+                            tv.setTextColor(Color.parseColor("#5C5C5C"))
+                            tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
+                            topRl.addView(tv, tvParams)
                         }
+                    } else {
+                        Toast.makeText(activity, "getRecommendCities wrong", Toast.LENGTH_SHORT).show()
                     }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
-                        EmallLogger.d(msg)
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
-                        EmallLogger.d("f")
-                    }
-                })
-                .build()
-                .get()
+                } else {
+                    EmallLogger.d("error")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<GetRecommendCitiesBean>, throwable: Throwable) {}
+        })
     }
 
     private fun getSceneData() {
@@ -491,11 +556,7 @@ class ClassifyDelegate : EmallDelegate() {
                 EmallLogger.d(position)
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
-                var index = position
-                if(position > 9){
-                    index -= 10
-                }
-                bundle!!.putString("productId", productId!![index])
+                bundle!!.putString("productId", productId!![position])
 
                 if (arguments.getString("TYPE") == "NOCTILUCENCE") {
                     bundle.putString("type", NOCTILUCENCE)

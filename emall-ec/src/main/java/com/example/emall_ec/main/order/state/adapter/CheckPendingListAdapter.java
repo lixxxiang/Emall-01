@@ -35,7 +35,7 @@ public class CheckPendingListAdapter extends BaseAdapter {
     private List<OrderDetail> dataList;
     private List<String> imageList = new ArrayList<>();
     private int resource;
-    public static String[] typeArray = {"", "光学1级", "编程摄影", "视频", "镶嵌", "夜景", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
+    public static String[] typeArray = {"", "光学1级", "编程摄影", "视频", "镶嵌", "夜光1A+1A_ENH", "剪裁（边缘）", "剪裁（区块）", "良田计划"};
     public static String[] stateArray = {"待审核", "审核未通过", "待支付", "生产中", "已完成"};
     public static String[] payMethodArray = {"支付宝", "微信支付", "银行汇款", "线下支付"};
 
