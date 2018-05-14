@@ -1,4 +1,4 @@
-package com.example.emall_core.ui.refresh
+package com.example.emall_ec.main.index.move.refresh
 
 /**
  * Created by lixiang on 18/02/2018.

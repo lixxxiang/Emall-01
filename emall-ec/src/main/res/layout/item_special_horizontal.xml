@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="168dp">
+    android:layout_height="228dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="162dp">
+        android:layout_height="222dp">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/special_scroll_horiziontal_recyclerview"
             android:layout_width="match_parent"

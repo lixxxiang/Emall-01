@@ -1,10 +1,6 @@
 package com.example.emall_ec.main.special
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.example.emall_core.ui.recycler.MultipleEntityBuilder
-import com.example.emall_core.ui.recycler.MultipleFields
-import com.example.emall_core.ui.recycler.MultipleItemEntity
-import com.example.emall_core.util.log.EmallLogger
 import java.lang.ref.ReferenceQueue
 import java.lang.ref.SoftReference
 

@@ -1,4 +1,4 @@
-package com.example.emall_core.ui.recycler.data;
+package com.example.emall_ec.main.index.move.recycler.data;
 
 /**
  * Created by lixiang on 2018/2/23.

@@ -1,7 +1,7 @@
-package com.example.emall_core.ui.recycler
+package com.example.emall_ec.main.index.move.recycler
 
-import android.text.method.TextKeyListener.clear
 
+import com.example.emall_ec.main.index.move.recycler.MultipleItemEntity
 
 
 /**

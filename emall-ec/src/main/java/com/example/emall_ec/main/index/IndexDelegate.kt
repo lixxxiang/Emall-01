@@ -10,7 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_index.*
-import com.example.emall_core.ui.refresh.RefreshHandler
+import com.example.emall_ec.main.index.move.refresh.RefreshHandler
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -31,6 +31,7 @@ import pub.devrel.easypermissions.EasyPermissions
 class IndexDelegate : BottomItemDelegate() {
     var DELEGATE: EmallDelegate? = null
     var refreshHandler: RefreshHandler? = null
+    var delegate: IndexDelegate ?= null
     var toast: Toast?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_index
@@ -48,6 +49,7 @@ class IndexDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
+        delegate = this
         setSwipeBackEnable(false)
         getPermission()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -97,11 +99,7 @@ class IndexDelegate : BottomItemDelegate() {
         }
         initRefreshLayout()
         initRecyclerView()
-        refreshHandler!!.firstPage(
-                "http://59.110.164.214:8024/global/mobile/homePageSlide",
-                "http://192.168.1.36:3030/data",
-                "http://59.110.162.194:5201/global/mobile/homePageUnits",
-                "http://202.111.178.10:28085/mobile/homePage")
+        refreshHandler!!.getData(delegate!!)
         index_search_rl.setOnClickListener {
             if (!NetworkUtils.isConnected())
                 if (toast != null) {
@@ -129,11 +127,7 @@ class IndexDelegate : BottomItemDelegate() {
                         IndexDataConverter(),
                         IndexDataConverter(),
                         IndexDataConverter())
-                refreshHandler!!.firstPage(
-                        "http://59.110.164.214:8024/global/mobile/homePageSlide",
-                        "http://192.168.1.36:3030/data",
-                        "http://59.110.162.194:5201/global/mobile/homePageUnits",
-                        "http://202.111.178.10:28085/mobile/homePage")
+                refreshHandler!!.getData(delegate!!)
                 swipe_refresh_layout_index.isRefreshing = false
             }, 1200)
         })

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.emall_core.util.log.EmallLogger;
+import com.example.emall_core.util.view.SquareImageView;
 import com.example.emall_ec.R;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class SceneClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
         }
         Glide.with(this.mContext)
                 .load(item.getImageUrl())
-                .into((ImageView) helper.getView(R.id.item_classify_iv));
+                .into((SquareImageView) helper.getView(R.id.item_classify_iv));
     }
 }
 

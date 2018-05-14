@@ -3,6 +3,7 @@ package com.example.emall_ec.main.special
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
@@ -56,6 +57,6 @@ class SpecialDelegate : BottomItemDelegate() {
 
     private fun initRecyclerView() {
         val manager = GridLayoutManager(context, 2)
-        special_rv.layoutManager = manager
+        special_rv.layoutManager = manager as RecyclerView.LayoutManager?
     }
 }

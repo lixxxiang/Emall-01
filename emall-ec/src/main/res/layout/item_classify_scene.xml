@@ -6,7 +6,7 @@
         android:id="@+id/item_classify_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <android.support.v7.widget.AppCompatImageView
+        <com.example.emall_core.util.view.SquareImageView
             android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

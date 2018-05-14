@@ -110,6 +110,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         initViews()
         resolveConflict()
         type = arguments.getString("type")
+        EmallLogger.d(type)
+
         if (type == "1" || type == "5") {
             sceneDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
@@ -127,7 +129,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             productId = arguments.getString("productId")
             videoDetailParams!!["type"] = VIDEO
             type135 = VIDEO
-            EmallLogger.d(videoDetailParams!!["productId"]!!)
             getVideoData(videoDetailParams!!)
         }
 
@@ -169,7 +170,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 delegate.arguments = bundle
                 start(delegate)
             } else {
-                EmallLogger.d(flag)
                 if (flag) {
                     /**
                      * signed in
@@ -266,26 +266,18 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
-        EmallLogger.d(sceneDetailParams["productId"]!!)
-        EmallLogger.d(arguments.getString("productId"))
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
+        EmallLogger.d(String.format("%s %s",arguments.getString("productId"), arguments.getString("type")))
         val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString())
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
                 var sceneDetail = SceneDetailBean()
-
+                EmallLogger.d(response.body().toString())
                 if (response.body() != null) {
                     sceneDetail = response.body()!!
-                    EmallLogger.d(sceneDetail.data.toString())
                     setSceneData(sceneDetail)
-//                        videoSearch = response.body()!!
-//                        bundle!!.putString("type","0")
-//                        bundle.putSerializable("videoData", videoSearch)
-//                        delegate.arguments = bundle
-//                        (DELEGATE as EcBottomDelegate).start(delegate)
                 } else {
-                    EmallLogger.d("errpr")
                 }
             }
 
@@ -307,8 +299,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
 
     private fun getVideoData(videoDetailParams: WeakHashMap<String, Any>) {
-        EmallLogger.d(videoDetailParams["type"]!!)
-
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         val call = apiService!!.videoDetail(arguments.getString("productId"))
@@ -317,7 +307,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 if (response.body() != null) {
                     EmallLogger.d(response.body()!!.data.imageDetailUrl)
                     videoDetail = response.body()!!
-                    EmallLogger.d(videoDetail)
                     setVideoData(videoDetail)
 //                        videoSearch = response.body()!!
 //                        bundle!!.putString("type","0")
@@ -487,7 +476,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         Glide.with(context)
                 .load(sceneData.imageDetailUrl)
                 .into(video_goods_detail_title_image)
-        EmallLogger.d(sceneData.geo)
         drawMap(getGeo(sceneData.geo))
         scene_detail_promotion_description_tv.text = sceneData.promotionDescription
         scene_detail_sale_price_tv.text = String.format(resources.getString(R.string.video_detail_sale_price), sceneData.salePrice)
@@ -508,7 +496,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     private fun setVideoData(videoDetail: VideoDetailBean) {
 
         videoData = videoDetail.data
-        EmallLogger.d(videoData)
         video_detail_title_tv.text = videoData.title
         detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), videoData.startTime)
         detail_angle_tv.text = String.format(resources.getString(R.string.video_detail_angle), videoData.rollSatelliteAngleMajor)
@@ -534,7 +521,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun drawMap(geo: MutableList<Array<String>>) {
-        EmallLogger.d(geo[0])
         val pt1 = LatLng(java.lang.Double.parseDouble(geo[0][1]), java.lang.Double.parseDouble(geo[0][0]))
         val pt2 = LatLng(java.lang.Double.parseDouble(geo[1][1]), java.lang.Double.parseDouble(geo[1][0]))
         val pt3 = LatLng(java.lang.Double.parseDouble(geo[2][1]), java.lang.Double.parseDouble(geo[2][0]))
@@ -544,7 +530,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         pts.add(pt2)
         pts.add(pt3)
         pts.add(pt4)
-        EmallLogger.d(pts)
         val polygonOption = PolygonOptions()
                 .points(pts)
                 .stroke(Stroke(1, Color.parseColor("#F56161")))
@@ -564,7 +549,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         val temp3 = geo.substring(geo.indexOf("[[") + 1, geo.indexOf("]}"))
         val temp2 = temp3.replace("[", "")
         val temp = temp2.replace("]", "")
-        EmallLogger.d(temp)
         val array = temp.split(',')
         geos.add(arrayOf(array[0], array[1]))
         geos.add(arrayOf(array[2], array[3]))

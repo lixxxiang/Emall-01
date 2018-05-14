@@ -6,11 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.example.emall_core.ui.recycler.ItemUnitAdapter;
-import com.example.emall_core.ui.recycler.data.UnitBean;
-import com.example.emall_core.util.view.HalfRoundImageView;
 import com.example.emall_core.util.view.RoundImageView;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.special.beans.SpecialVerticalBean;
@@ -40,8 +36,8 @@ public class ItemVerticalAdapter extends RecyclerView.Adapter<ItemVerticalAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         SpecialVerticalBean app = mApps.get(position);
-        holder.special_vertical_title_tv.setText(app.getPosTitle());
-        holder.special_vertical_detail_tv.setText(app.getPosDescription());
+//        holder.special_vertical_title_tv.setText(app.getPosTitle());
+//        holder.special_vertical_detail_tv.setText(app.getPosDescription());
 
         Glide.with(context)
                 .load(app.getImageUrl())
@@ -61,16 +57,16 @@ public class ItemVerticalAdapter extends RecyclerView.Adapter<ItemVerticalAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public RoundImageView special_vertical_riv;
-        public TextView special_vertical_title_tv;
-        public TextView special_vertical_detail_tv;
+//        public TextView special_vertical_title_tv;
+//        public TextView special_vertical_detail_tv;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             special_vertical_riv = itemView.findViewById(R.id.special_vertical_riv);
-            special_vertical_title_tv = itemView.findViewById(R.id.special_vertical_title_tv);
-            special_vertical_detail_tv = itemView.findViewById(R.id.special_vertical_detail_tv);
+//            special_vertical_title_tv = itemView.findViewById(R.id.special_vertical_title_tv);
+//            special_vertical_detail_tv = itemView.findViewById(R.id.special_vertical_detail_tv);
         }
 
         @Override

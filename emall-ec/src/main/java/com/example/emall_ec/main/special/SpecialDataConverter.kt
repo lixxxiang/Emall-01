@@ -1,11 +1,6 @@
 package com.example.emall_ec.main.special
 
 import com.alibaba.fastjson.JSON
-import com.example.emall_core.ui.recycler.MultipleFields
-import com.example.emall_core.ui.recycler.MultipleItemEntity
-import com.example.emall_core.ui.recycler.data.GuessLikeBean
-import com.example.emall_core.ui.recycler.data.UnitBean
-import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.special.beans.SpecialHorizontalBean
 import com.example.emall_ec.main.special.beans.SpecialVerticalBean
 
@@ -46,7 +41,7 @@ class SpecialDataConverter {
         return ENTITIES
     }
     fun verticalConvert(): ArrayList<SpecialItemEntity>{
-        var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(2).getJSONArray("pieces")
+        var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(1).getJSONArray("pieces")
         var size = jsonObject.size
         var dataType: String?
         var imageUrl: String?

@@ -10,18 +10,6 @@ import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.example.emall_core.app.Emall;
-import com.example.emall_core.ui.recycler.DataConverter;
-import com.example.emall_core.ui.recycler.GuessLikeAdapter;
-import com.example.emall_core.ui.recycler.ItemUnitAdapter;
-import com.example.emall_core.ui.recycler.MultipleFields;
-import com.example.emall_core.ui.recycler.MultipleItemEntity;
-import com.example.emall_core.ui.recycler.MultipleRecyclerAdapter;
-import com.example.emall_core.ui.recycler.MultipleViewHolder;
-import com.example.emall_core.ui.recycler.data.GuessLikeBean;
-import com.example.emall_core.ui.recycler.data.UnitBean;
-import com.example.emall_core.util.log.EmallLogger;
-import com.example.emall_core.util.view.GridSpacingItemDecoration;
 import com.example.emall_ec.R;
 import com.example.emall_ec.main.special.beans.SpecialHorizontalBean;
 import com.example.emall_ec.main.special.beans.SpecialVerticalBean;

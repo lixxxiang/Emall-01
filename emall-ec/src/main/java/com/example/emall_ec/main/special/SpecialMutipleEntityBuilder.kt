@@ -1,10 +1,5 @@
 package com.example.emall_ec.main.special
 
-import com.example.emall_core.ui.recycler.MultipleEntityBuilder
-import com.example.emall_core.ui.recycler.MultipleFields
-import com.example.emall_core.ui.recycler.MultipleItemEntity
-import com.example.emall_core.util.log.EmallLogger
-
 /**
  * Created by lixiang on 2018/3/13.
  */

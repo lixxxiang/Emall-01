@@ -6,7 +6,6 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
 import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
-import com.example.emall_core.ui.recycler.GlideImageLoader
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.index.dailypic.adapter.HomePageListViewAdapter
@@ -30,6 +29,7 @@ import android.view.ViewGroup
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_ec.main.index.dailypic.video.VideoDetailDelegate
+import com.example.emall_ec.main.index.move.recycler.GlideImageLoader
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 

@@ -1,7 +1,6 @@
 package com.example.emall_ec.main.detail
 
-import com.example.emall_core.ui.recycler.DataConverter
-import com.example.emall_core.ui.recycler.MultipleItemEntity
+import com.example.emall_ec.main.index.move.recycler.MultipleItemEntity
 
 /**
  * Created by lixiang on 2018/2/28.

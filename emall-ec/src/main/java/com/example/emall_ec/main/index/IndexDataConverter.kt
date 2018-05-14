@@ -1,14 +1,13 @@
 package com.example.emall_ec.main.index
 
-import com.example.emall_core.ui.recycler.DataConverter
-import com.example.emall_core.ui.recycler.MultipleFields
-import com.example.emall_core.ui.recycler.MultipleItemEntity
+import com.example.emall_ec.main.index.move.recycler.MultipleItemEntity
 import com.alibaba.fastjson.JSON
-import com.example.emall_core.ui.recycler.data.GuessLikeBean
-import com.example.emall_core.ui.recycler.data.TheThreeBean
-import com.example.emall_core.ui.recycler.data.UnitBean
 import com.example.emall_core.util.log.EmallLogger
-import com.example.emall_ec.main.index.dailypic.data.HomePageBean
+import com.example.emall_ec.main.index.move.recycler.DataConverter
+import com.example.emall_ec.main.index.move.recycler.MultipleFields
+import com.example.emall_ec.main.index.move.recycler.data.GuessLikeBean
+import com.example.emall_ec.main.index.move.recycler.data.TheThreeBean
+import com.example.emall_ec.main.index.move.recycler.data.UnitBean
 
 
 /**
@@ -115,7 +114,7 @@ class IndexDataConverter : DataConverter() {
 
     override fun everyDayPicConvert(): ArrayList<MultipleItemEntity> {
         val jsonObject = JSON.parseObject(getJsonData()).getJSONObject("data").getJSONArray("MixedContentList")
-        for (i in 0..2){
+        for (i in 0..2) {
             dailyPic!!.add(jsonObject.getJSONObject(i).getString("contentName"))
         }
         val entity = MultipleItemEntity.builder()
@@ -137,16 +136,35 @@ class IndexDataConverter : DataConverter() {
         val size = dataArray.size
         var entity = MultipleItemEntity.builder().build()
         val bannerImages: MutableList<String>? = mutableListOf()
+        val bannerDataTypes: MutableList<String>? = mutableListOf()
+        val bannerProductIds: MutableList<String>? = mutableListOf()
+        val bannerLinks: MutableList<String>? = mutableListOf()
+
         for (i in 0 until size) {
             val data = dataArray.getJSONObject(i)
+            var bannerDataType = data.getString("dataType")
             val bannerImageUrl = data.getString("imageUrl")
             val bannerLink = data.getString("link")
+            var bannerProductId = String()
+            bannerProductId = if (data.getString("productId") != null) {
+                data.getString("productId")
+            } else
+                "NULL"
+
             EmallLogger.d(bannerLink)
+            bannerLinks!!.add(bannerLink)
             bannerImages!!.add(bannerImageUrl)
+            bannerDataTypes!!.add(bannerDataType)
+//            if (bannerProductId == null) {
+//                bannerProductIds!!.add("")
+//            } else
+            bannerProductIds!!.add(bannerProductId)
             entity = MultipleItemEntity.builder()
                     .setField(MultipleFields.BANNERS_COUNT, size)
-                    .setField(MultipleFields.BANNERS, bannerImages)
-                    .setField(MultipleFields.BANNERS_LINK, bannerLink)
+                    .setField(MultipleFields.BANNERS_DATA_TYPE, bannerDataTypes)
+                    .setField(MultipleFields.BANNERS_IMAGEURL, bannerImages)
+                    .setField(MultipleFields.BANNERS_LINK, bannerLinks)
+                    .setField(MultipleFields.BANNERS_PRODUCT_ID, bannerProductIds)
                     .setField(MultipleFields.SPAN_SIZE, 2)
                     .setField(MultipleFields.ITEM_TYPE, 0)
                     .build()

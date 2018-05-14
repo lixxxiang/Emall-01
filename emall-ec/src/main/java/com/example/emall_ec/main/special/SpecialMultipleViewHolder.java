@@ -5,7 +5,6 @@ import android.widget.AdapterView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.emall_core.ui.recycler.MultipleViewHolder;
 
 /**
  * Created by lixiang on 2018/3/13.

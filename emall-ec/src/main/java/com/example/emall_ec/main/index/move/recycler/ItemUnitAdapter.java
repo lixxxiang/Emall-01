@@ -1,4 +1,4 @@
-package com.example.emall_core.ui.recycler;
+package com.example.emall_ec.main.index.move.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.emall_core.R;
-import com.example.emall_core.ui.recycler.data.UnitBean;
-import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_core.util.view.RoundImageView;
+import com.example.emall_ec.main.index.move.recycler.data.UnitBean;
 
 import java.util.List;
 
