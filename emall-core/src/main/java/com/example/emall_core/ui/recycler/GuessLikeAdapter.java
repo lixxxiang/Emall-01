@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.emall_core.R;
 import com.example.emall_core.ui.recycler.data.GuessLikeBean;
 import com.example.emall_core.util.view.RoundImageView;
+import com.example.emall_core.util.view.SquareImageView;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class GuessLikeAdapter extends RecyclerView.Adapter<GuessLikeAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public ImageView guess_like_image_iv;
+        public SquareImageView guess_like_image_iv;
         public TextView guess_like_type_tv;
         public TextView guess_like_title_tv;
         public TextView guess_like_price_tv;
