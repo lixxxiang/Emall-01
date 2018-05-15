@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.DatePicker
 import android.widget.Toast
+import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -114,8 +115,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
             optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
-            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+//            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+//            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             gatherTimeFlag = if (!gatherTimeFlag) {
                 //正序
@@ -140,8 +141,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
             optics_screen_rl.visibility = View.INVISIBLE
 
-            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
+//            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
+//            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
             optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
@@ -173,12 +174,12 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
 
         optics_screen_rel.setOnClickListener {
-            optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
-            optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
-            optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+//            optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
+//            optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+//            optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+//
+//            optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
+//            optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             if (!screenIsShow) {
                 optics_screen_rl.visibility = View.VISIBLE
@@ -565,7 +566,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
     private fun getData(ssp2: WeakHashMap<String, Any>, p: Int) {
         ssp2["pageNum"] = p
-        println("~~~~$ssp2")
+        EmallLogger.d(ssp2)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
                 .params(ssp2)
@@ -677,7 +678,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         mAdapter = SceneClassifyAdapter(R.layout.item_classify_scene, data, sceneGlm)
         mAdapter!!.setOnLoadMoreListener {
             itemSize += 10
-            EmallLogger.d(size)
             if (size > itemSize) {
                 EmallLogger.d("In le me ")
                 loadMoreData(ssp2!!, pages, data)
