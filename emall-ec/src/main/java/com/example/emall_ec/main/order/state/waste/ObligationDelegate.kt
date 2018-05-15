@@ -13,8 +13,8 @@ import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.state.adapter.ObligationListAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail

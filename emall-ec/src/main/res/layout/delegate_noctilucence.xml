@@ -39,14 +39,27 @@
                         android:textColor="#9B9B9B"
                         android:textSize="12dp" />
 
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/noctilucence_gather_time_iv"
+                    <RelativeLayout
                         android:layout_width="6dp"
-                        android:layout_height="6dp"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="6dp"
-                        android:layout_toRightOf="@+id/noctilucence_gather_time_tv"
-                        android:background="@drawable/ic_down_gray" />
+                        android:layout_toRightOf="@+id/noctilucence_gather_time_tv">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/noctilucence_gather_time_up_iv"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:background="@drawable/ic_up_gray" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/noctilucence_gather_time_down_iv"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_below="@+id/noctilucence_gather_time_up_iv"
+                            android:layout_marginTop="-1dp"
+                            android:background="@drawable/ic_down_gray" />
+                    </RelativeLayout>
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -89,7 +102,7 @@
                             android:layout_width="6dp"
                             android:layout_height="6dp"
                             android:layout_below="@+id/noctilucence_price_up_iv"
-                            android:layout_marginTop="1dp"
+                            android:layout_marginTop="-1dp"
                             android:background="@drawable/ic_down_gray" />
                     </RelativeLayout>
 

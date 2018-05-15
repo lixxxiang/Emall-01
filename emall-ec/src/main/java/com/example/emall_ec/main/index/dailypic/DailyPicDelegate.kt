@@ -28,10 +28,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.ui.progressbar.EmallProgressBar
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.index.dailypic.video.VideoDetailDelegate
 import com.example.emall_ec.main.index.move.recycler.GlideImageLoader
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
@@ -43,7 +47,8 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
     var homePageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var adapter = HomePageListViewAdapter()
     var homePageData: MutableList<HomePageBean.DataBean.MixedContentListBean>? = mutableListOf()
-
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
     var content: MutableList<BannerBean.DataBean> = mutableListOf()
     val images = mutableListOf<String>()
     val titles = mutableListOf<String>()
@@ -214,6 +219,34 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
                 })
                 .build()
                 .post()
+//        retrofit = Retrofit.Builder()
+//                .baseUrl("http://202.111.178.10:28085")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//        apiService = retrofit!!.create(ApiService::class.java)
+//        val call = apiService!!.homePage(num.toString(), size.toString())
+//        call.enqueue(object : retrofit2.Callback<HomePageBean> {
+//            override fun onResponse(call: retrofit2.Call<HomePageBean>, response: retrofit2.Response<HomePageBean>) {
+//                if (response.body() != null) {
+//                    EmallLogger.d("ddd")
+//                    homePageBean = response.body()!!
+//                    val content: MutableList<HomePageBean.DataBean.MixedContentListBean> = mutableListOf()
+//                    for (i in 0 until homePageBean.data.mixedContentList.size) {
+//                        content.add(homePageBean.data.mixedContentList[i])
+//                    }
+//                    homePageData!!.addAll(content)
+//                    adapter.notifyDataSetChanged()
+//                    if (pageNum < homePageBean.data.pages) {
+//                        pageNum += 1
+//                    }
+//                } else {
+//                    EmallLogger.d("error")
+//                }
+//            }
+//
+//            override fun onFailure(call: retrofit2.Call<HomePageBean>, throwable: Throwable) {}
+//        })
+
     }
 
     fun setBanner(data: MutableList<BannerBean.DataBean>) {

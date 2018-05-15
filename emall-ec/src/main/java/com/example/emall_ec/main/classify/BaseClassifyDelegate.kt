@@ -8,7 +8,7 @@ import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
+import com.example.emall_ec.api.ApiService
 import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.classify.data.VideoHomeBean
 import com.example.emall_ec.main.classify.data.VideoSearch

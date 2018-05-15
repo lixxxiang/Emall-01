@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.log.EmallLogger
@@ -16,8 +15,8 @@ import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.VideoClassifyAdapter
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.search.SearchResultDelegate
 import com.example.emall_ec.main.search.data.VideoSearchBean
@@ -65,22 +64,24 @@ class Video1A1BDelegate : EmallDelegate() {
                 pages = 1
                 getData(orderBy, pages)
                 video1a1b_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
-                video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
+                video1a1b_gather_up_iv.setBackgroundResource(R.drawable.ic_up_red)
+                video1a1b_gather_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 true
             } else {
                 orderBy = "startTimeDESC"
                 pages = 1
                 getData(orderBy, pages)
-                video1a1b_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-                video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                video1a1b_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
+                video1a1b_gather_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+                video1a1b_gather_down_iv.setBackgroundResource(R.drawable.ic_down_red)
                 false
             }
         }
 
         video1a1b_price_rl.setOnClickListener {
             video1a1b_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            video1a1b_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
+            video1a1b_gather_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+            video1a1b_gather_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             priceFlag = if (!priceFlag) {
                 orderBy = "priceASC"
@@ -153,6 +154,7 @@ class Video1A1BDelegate : EmallDelegate() {
                             model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
                             model.title = videoSearchBean.data.searchReturnDtoList[i].title
                             model.productId = videoSearchBean.data.searchReturnDtoList[i].productId
+                            model.duration= videoSearchBean.data.searchReturnDtoList[i].duration
                             model.productType = "3"
                             data!!.add(model)
                         }
@@ -225,6 +227,8 @@ class Video1A1BDelegate : EmallDelegate() {
                             model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
                             model.title = videoSearchBean.data.searchReturnDtoList[i].title
                             model.productId = videoSearchBean.data.searchReturnDtoList[i].productId
+                            model.duration= videoSearchBean.data.searchReturnDtoList[i].duration
+
                             model.productType = "3"
                             data!!.add(model)
                         }

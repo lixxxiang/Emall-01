@@ -31,6 +31,8 @@ public class VideoClassifyAdapter extends BaseQuickAdapter<Model, BaseViewHolder
         parm.height = glm.getWidth() / 2 - helper.getView(R.id.classify_video_image_iv).getPaddingLeft();
         helper.setText(R.id.classify_video_title, item.getTitle());
         helper.setText(R.id.classify_video_time, "拍摄时间：" + item.getTime());
+        helper.setText(R.id.video_time, "试看时长：" + item.getDuration());
+
         helper.setText(R.id.classify_video_price, "¥" + item.getPrice());
 
 

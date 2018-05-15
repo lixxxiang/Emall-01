@@ -1,7 +1,6 @@
 package com.example.emall_ec.main.classify
 
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -18,7 +17,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.example.emall_core.util.view.GridSpacingItemDecoration
 import android.os.Handler
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.AppCompatTextView
 import android.util.TypedValue
@@ -26,19 +24,12 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import com.example.emall_core.util.dimen.DimenUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.example.emall_core.net.RestClient
-import com.example.emall_core.net.callback.IError
-import com.example.emall_core.net.callback.IFailure
-import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_ec.main.classify.adapter.GridViewAdapter
 import com.example.emall_ec.main.classify.data.*
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
-import com.example.emall_ec.main.demand.data.AppPayBean
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.search.SearchDelegate
-import com.example.emall_ec.main.sign.SignInByTelDelegate
-import com.google.gson.Gson
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import retrofit2.Retrofit
@@ -462,7 +453,7 @@ class ClassifyDelegate : EmallDelegate() {
                                 if (!data!!.isEmpty())
                                     data!!.clear()
                                 productId!!.clear()
-
+                                classify_progressBar.visibility = View.VISIBLE
                                 getData(getRecommendCitiesBean.data[i].geo,
                                         "", "",
                                         "", "",
@@ -519,6 +510,7 @@ class ClassifyDelegate : EmallDelegate() {
             model.price = videoHomeBean.data[i].price
             model.time = videoHomeBean.data[i].startTime
             model.title = videoHomeBean.data[i].title
+            model.duration = videoHomeBean.data[i].duration
             model.productType = "3"
             productId!!.add(videoHomeBean.data[i].productId)
             data!!.add(model)

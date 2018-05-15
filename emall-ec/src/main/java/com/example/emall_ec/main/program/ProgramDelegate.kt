@@ -192,22 +192,27 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         EmallLogger.d(data.getString("LOCATION"))
         mBaiduMap!!.clear()
         var location = data.getString("LOCATION")
-        var latitude = location.split(",")[1]
-        var longitude = location.split(",")[0]
-        var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
-        var point = LatLng(gps.lat, gps.lon)
-        var bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.location_mark)
-        var option = MarkerOptions()
-                .position(point)
-                .icon(bitmap)
-        mBaiduMap!!.addOverlay(option)
-        var mMapStatus = MapStatus.Builder()
-                .target(LatLng(latitude.toDouble(), longitude.toDouble()))
-                .zoom(12F)
-                .build()
-        var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
-        mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
+        if(location == ""){
+
+        }else {
+
+            var latitude = location.split(",")[1]
+            var longitude = location.split(",")[0]
+            var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
+            var point = LatLng(gps.lat, gps.lon)
+            var bitmap = BitmapDescriptorFactory
+                    .fromResource(R.drawable.location_mark)
+            var option = MarkerOptions()
+                    .position(point)
+                    .icon(bitmap)
+            mBaiduMap!!.addOverlay(option)
+            var mMapStatus = MapStatus.Builder()
+                    .target(LatLng(latitude.toDouble(), longitude.toDouble()))
+                    .zoom(12F)
+                    .build()
+            var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+            mBaiduMap!!.animateMapStatus(mMapStatusUpdate)
+        }
     }
 
     private fun getAttr() {

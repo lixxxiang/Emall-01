@@ -115,39 +115,33 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
             optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
-//            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-//            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
             gatherTimeFlag = if (!gatherTimeFlag) {
                 //正序
                 ssp2!!["orderBy"] = "centerTimeASC"
                 pages = 1
                 getData(ssp2!!,pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
-                optics_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
+                optics_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_red)
+                optics_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
                 true
             } else {
                 //倒序
                 ssp2!!["orderBy"] = "centerTimeDESC"
                 pages = 1
                 getData(ssp2!!,pages)
-                optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-                optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
+                optics_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+                optics_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_red)
                 false
             }
         }
 
         optics_price_rl.setOnClickListener {
-
             optics_screen_rl.visibility = View.INVISIBLE
-
-//            optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-//            optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
             optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
-
+            optics_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+            optics_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
             priceFlag = if (!priceFlag) {
                 ssp2!!["orderBy"] = "priceASC"
                 pages = 1
@@ -167,19 +161,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             }
         }
 
-//        all_srl.setOnLoadMoreListener {
-//            loadMoreData(ssp2!!, pages)
-//            all_srl.setLoading(false)
-//        }
-
-
         optics_screen_rel.setOnClickListener {
-//            optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
-//            optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
-//            optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
-//
-//            optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-//            optics_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             if (!screenIsShow) {
                 optics_screen_rl.visibility = View.VISIBLE
@@ -736,12 +718,15 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_btn_3_1.setTextColor(Color.parseColor("#B4A078"))
         if (compare_date(optics_btn_3_1.text.toString(), optics_btn_3_2.text.toString()) == 1) {
             Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-            flag_3_1 = false
-            confirmChangeColor()
+            optics_btn_confirm.isClickable = false
+            optics_btn_confirm.setBackgroundResource(R.drawable.sign_up_btn_shape)
+//            flag_3_1 = false
+//            confirmChangeColor()
         } else {
             flag_3_1 = true
+            confirmChangeColor()
+
         }
-        confirmChangeColor()
     }
 
     private val onDateSetListener2 = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -765,12 +750,15 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_btn_3_2.setTextColor(Color.parseColor("#B4A078"))
         if (compare_date(optics_btn_3_1.text.toString(), optics_btn_3_2.text.toString()) == 1) {
             Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-            flag_3_2 = false
-            confirmChangeColor()
+            optics_btn_confirm.isClickable = false
+            optics_btn_confirm.setBackgroundResource(R.drawable.sign_up_btn_shape)
+//            flag_3_2 = false
+//            confirmChangeColor()
         } else {
             flag_3_2 = true
+            confirmChangeColor()
+
         }
-        confirmChangeColor()
 
     }
 

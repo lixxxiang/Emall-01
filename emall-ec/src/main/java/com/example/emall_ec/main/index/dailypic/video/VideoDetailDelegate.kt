@@ -6,6 +6,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +27,7 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_core.util.log.EmallLogger
+import com.example.emall_core.util.view.ShareUtil
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.index.dailypic.adapter.CommentListViewAdapter
@@ -37,10 +40,16 @@ import com.example.emall_ec.main.index.dailypic.pic.ImagePage1Delegate
 import com.example.emall_ec.main.index.dailypic.pic.ImagePage2Delegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.google.gson.Gson
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
+import com.tencent.mm.opensdk.openapi.IWXAPI
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlinx.android.synthetic.main.comment.view.*
 import kotlinx.android.synthetic.main.delegate_pic_detail.*
 import kotlinx.android.synthetic.main.delegate_video_detail.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
+import kotlinx.android.synthetic.main.share.view.*
 import kotlinx.android.synthetic.main.video_detail_1.*
 import kotlinx.android.synthetic.main.video_detail_2.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
@@ -115,6 +124,7 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         imageView.visibility = View.INVISIBLE
         mask.visibility = View.INVISIBLE
         like_video.visibility = View.INVISIBLE
+        api = WXAPIFactory.createWXAPI(activity, "wxd12cdf5edf0f42fd")
 
         videoId = arguments.getString("VIDEO_ID")
         isLogin = !DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()
@@ -240,6 +250,26 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
                 startActivity(intent)
 
             }
+        }
+
+        val contentView2 = LayoutInflater.from(activity).inflate(R.layout.share, null)
+
+        repost_video.setOnClickListener {
+            bottomDialog!!.setContentView(contentView2)
+            val layoutParams = contentView2.layoutParams
+            layoutParams.width = resources.displayMetrics.widthPixels
+            contentView2.layoutParams = layoutParams
+            bottomDialog!!.window!!.setGravity(Gravity.BOTTOM)
+            bottomDialog!!.window!!.setWindowAnimations(R.style.BottomDialog_Animation)
+            bottomDialog!!.show()
+        }
+
+        contentView2.wechat.setOnClickListener {
+            shareToWechat(SendMessageToWX.Req.WXSceneSession, videoId, getPlanetEarthDetailBean.data.videoName)
+        }
+
+        contentView2.moment.setOnClickListener {
+            shareToWechat(SendMessageToWX.Req.WXSceneTimeline, videoId, getPlanetEarthDetailBean.data.videoName)
         }
     }
 
@@ -588,4 +618,33 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
     }
+
+    private var api: IWXAPI? = null
+
+    fun shareToWechat(scene: Int, articleId: String, title: String) {
+        val THUMB_SIZE = 150
+        val mTargetScene = scene
+
+        val webpage = WXWebpageObject()
+        webpage.webpageUrl = "http://10.10.90.3:8092?id=$articleId"
+        val msg = WXMediaMessage(webpage)
+        msg.title = title
+        msg.description = ""
+        val bmp = BitmapFactory.decodeResource(resources, R.drawable.app_icon)
+        val thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true)
+        bmp.recycle()
+        msg.thumbData = ShareUtil.bmpToByteArray(thumbBmp, true)
+
+        val req = SendMessageToWX.Req()
+        req.transaction = buildTransaction("webpage")
+        req.message = msg
+        req.scene = mTargetScene
+        api!!.sendReq(req)
+    }
+
+    private fun buildTransaction(type: String?): String {
+        return if (type == null) System.currentTimeMillis().toString() else type + System.currentTimeMillis()
+    }
+
+
 }

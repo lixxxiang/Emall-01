@@ -7,7 +7,6 @@ import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import android.widget.Toast
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.IError
@@ -20,9 +19,8 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.classify.ClassifyDelegate
 import com.example.emall_ec.main.classify.data.Model
 import com.example.emall_ec.main.classify.data.SceneClassifyAdapter
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
-import com.example.emall_ec.main.demand.data.AppPayBean
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import com.example.emall_ec.main.me.collect.CollectionDelegate
 import com.example.emall_ec.main.me.collect.data.MyAllCollectionBean

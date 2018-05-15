@@ -17,15 +17,14 @@ import com.example.emall_core.util.view.GridSpacingItemDecoration
 import com.example.emall_ec.R
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.bottom.BottomItemDelegate
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.demand.PayMethodDelegate
 import com.example.emall_ec.main.order.OrderDetailDelegate
 import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.order.state.adapter.All2RecyclerViewAdapter
 import com.example.emall_ec.main.order.state.data.OrderDetail
 import com.example.emall_ec.main.order.state.data.OrderListModel
-import kotlinx.android.synthetic.main.delegate_all_2.*
 import kotlinx.android.synthetic.main.delegate_obligation.*
 import kotlinx.android.synthetic.main.delegate_obligation_2.*
 import retrofit2.Retrofit

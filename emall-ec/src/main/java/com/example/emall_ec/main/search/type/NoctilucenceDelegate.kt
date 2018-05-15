@@ -104,34 +104,45 @@ class NoctilucenceDelegate : EmallDelegate() {
             noctilucence_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
             noctilucence_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
-            noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             gatherTimeFlag = if (!gatherTimeFlag) {
+                ssp!!["orderBy"] = "centerTimeASC"
+                pages = 1
+                getData(ssp!!,pages)
                 noctilucence_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
-                noctilucence_gather_time_iv.setBackgroundResource(R.drawable.ic_up_red)
+                noctilucence_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_red)
+                noctilucence_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
+
                 true
             } else {
-                noctilucence_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-                noctilucence_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
+                ssp!!["orderBy"] = "centerTimeDESC"
+                pages = 1
+                getData(ssp!!,pages)
+                noctilucence_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
+                noctilucence_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+                noctilucence_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_red)
                 false
             }
         }
 
         noctilucence_price_rl.setOnClickListener {
-            noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             noctilucence_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            noctilucence_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
+            noctilucence_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
+            noctilucence_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             priceFlag = if (!priceFlag) {
+                ssp!!["orderBy"] = "priceASC"
+                pages = 1
+                getData(ssp!!,pages)
                 noctilucence_price_tv.setTextColor(Color.parseColor("#B80017"))
                 noctilucence_price_up_iv.setBackgroundResource(R.drawable.ic_up_red)
                 noctilucence_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 true
             } else {
+                ssp!!["orderBy"] = "priceDESC"
+                pages = 1
+                getData(ssp!!,pages)
                 noctilucence_price_tv.setTextColor(Color.parseColor("#B80017"))
                 noctilucence_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
                 noctilucence_price_down_iv.setBackgroundResource(R.drawable.ic_down_red)
@@ -140,12 +151,6 @@ class NoctilucenceDelegate : EmallDelegate() {
         }
 
         noctilucence_screen_rel.setOnClickListener {
-            noctilucence_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            noctilucence_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
-            noctilucence_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
-
-            noctilucence_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
-            noctilucence_gather_time_iv.setBackgroundResource(R.drawable.ic_down_gray)
 
             if (!screenIsShow) {
                 noctilucence_screen_rl.visibility = View.VISIBLE
@@ -159,21 +164,6 @@ class NoctilucenceDelegate : EmallDelegate() {
                 screenIsShow = false
             }
         }
-
-
-//        noctilucence_screen_tv.setOnClickListener {
-//            if (!screenIsShow) {
-//                noctilucence_screen_rl.visibility = View.VISIBLE
-//                noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_up_red)
-//                noctilucence_screen_tv.setTextColor(Color.parseColor("#B80017"))
-//                screenIsShow = true
-//            } else {
-//                noctilucence_screen_rl.visibility = View.INVISIBLE
-//                noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
-//                noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
-//                screenIsShow = false
-//            }
-//        }
 
         noctilucence_btn_1_1.setOnClickListener {
             flag_1_2 = false
@@ -642,12 +632,13 @@ class NoctilucenceDelegate : EmallDelegate() {
         noctilucence_btn_3_1.setTextColor(Color.parseColor("#B4A078"))
         if (compare_date(noctilucence_btn_3_1.text.toString(), noctilucence_btn_3_2.text.toString()) == 1) {
             Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-            flag_3_1 = false
-            confirmChangeColor()
+            noctilucence_btn_confirm.isClickable = false
+            noctilucence_btn_confirm.setBackgroundResource(R.drawable.sign_up_btn_shape)
         } else {
             flag_3_1 = true
+            confirmChangeColor()
+
         }
-        confirmChangeColor()
     }
 
     private val onDateSetListener2 = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -671,12 +662,13 @@ class NoctilucenceDelegate : EmallDelegate() {
         noctilucence_btn_3_2.setTextColor(Color.parseColor("#B4A078"))
         if (compare_date(noctilucence_btn_3_1.text.toString(), noctilucence_btn_3_2.text.toString()) == 1) {
             Toast.makeText(activity, getString(R.string.input_right_time), Toast.LENGTH_SHORT).show()
-            flag_3_2 = false
-            confirmChangeColor()
+            noctilucence_btn_confirm.isClickable = false
+            noctilucence_btn_confirm.setBackgroundResource(R.drawable.sign_up_btn_shape)
         } else {
             flag_3_2 = true
+            confirmChangeColor()
+
         }
-        confirmChangeColor()
 
     }
 

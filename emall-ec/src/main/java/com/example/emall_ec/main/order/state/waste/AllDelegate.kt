@@ -17,8 +17,8 @@ import com.example.emall_ec.main.order.state.data.OrderDetail
 import kotlinx.android.synthetic.main.delegate_all.*
 import java.util.*
 import android.widget.AbsListView
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import retrofit2.Retrofit
 

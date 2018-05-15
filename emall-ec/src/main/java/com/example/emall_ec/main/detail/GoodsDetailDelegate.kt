@@ -2,20 +2,16 @@ package com.example.emall_ec.main.detail
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatTextView
-import android.util.AttributeSet
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.emall_core.net.RestClient
@@ -27,7 +23,7 @@ import com.flyco.tablayout.listener.CustomTabEntity
 import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import android.view.MotionEvent
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.ZoomControls
 import cn.jzvd.JZVideoPlayer
 import cn.jzvd.JZVideoPlayerStandard
 import com.baidu.mapapi.map.*
@@ -41,27 +37,18 @@ import com.example.emall_core.util.view.ScreenUtil
 import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.blankj.utilcode.util.NetworkUtils
-import com.example.emall_core.app.Emall
 import com.example.emall_core.delegates.EmallDelegate
-import com.example.emall_core.util.view.CacheUtil
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
-import com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity
 import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
-import io.vov.vitamio.Vitamio
-import io.vov.vitamio.widget.MediaController
-import kotlinx.android.synthetic.main.activity_vitamio_player.*
-import kotlinx.android.synthetic.main.delegate_goods_detail.view.*
-import kotlinx.android.synthetic.main.delegate_setting.*
-import me.yokeyword.fragmentation.ISupportFragment
 import retrofit2.Retrofit
 
 
@@ -111,8 +98,14 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         mSharedPreferences = activity.getSharedPreferences("COLLECTION", Context.MODE_PRIVATE)
-        mMapView = activity.findViewById<TextureMapView>(R.id.goods_detail_map) as TextureMapView
+        mMapView = activity.findViewById(R.id.goods_detail_map) as TextureMapView
         mBaiduMap = mMapView!!.map
+        val child = mMapView!!.getChildAt(1)
+        if (child != null && (child is ImageView || child is ZoomControls)) {
+            child.visibility = View.INVISIBLE
+        }
+        mMapView!!.showScaleControl(false)
+        mMapView!!.showZoomControls(false)
         initViews()
         resolveConflict()
         type = arguments.getString("type")
@@ -484,7 +477,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         video_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), videoData.originalPrice)
         changeColor(videoData.serviceDescription)
         detail_product_id_tv.text = videoData.productId
-        detail_satellite_tv.text = String.format("%s (%s %s)", videoData.satelliteId, videoData.sensor, videoData.resolution)
+        detail_satellite_tv.text = String.format("%s (%s %sm)", videoData.satelliteId, videoData.sensor, videoData.resolution)
 
 //        detail_satellite_tv.text = videoData.satelliteId
         detail_ratio_tv.text = videoData.resolution + "m"

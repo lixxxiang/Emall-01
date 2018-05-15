@@ -1,17 +1,17 @@
-package com.example.emall_ec.main.classify.data.fuckOthers;
+package com.example.emall_ec.api;
 
 
 import com.example.emall_core.ui.HomePageUnitsBean;
 import com.example.emall_ec.main.classify.data.GetRecommendCitiesBean;
 import com.example.emall_ec.main.classify.data.SceneSearch;
 import com.example.emall_ec.main.classify.data.VideoHomeBean;
-import com.example.emall_ec.main.classify.data.VideoSearch;
 import com.example.emall_ec.main.demand.data.AppPayBean;
 import com.example.emall_ec.main.demand.data.QueryOrderBean;
 import com.example.emall_ec.main.demand.data.QueryOrderFailureBean;
 import com.example.emall_ec.main.detail.data.SceneDetailBean;
 import com.example.emall_ec.main.detail.data.VideoDetailBean;
 import com.example.emall_ec.main.index.dailypic.data.CommonBean;
+import com.example.emall_ec.main.index.dailypic.data.HomePageBean;
 import com.example.emall_ec.main.me.collect.data.MyAllCollectionBean;
 import com.example.emall_ec.main.order.state.data.OrderDetail;
 import com.example.emall_ec.main.search.data.VideoSearchBean;
@@ -62,7 +62,7 @@ public interface ApiService {
     @FormUrlEncoded
     Call<VideoSearchBean> videoSearch(@Field("geo") String targetSentence,
                                       @Field("type") String targetSentence2,
-                                      @Field("pageSize") String targetSentence3, @Field("pageNum") String targetSentence4,@Field("orderBy") String targetSentence5);
+                                      @Field("pageSize") String targetSentence3, @Field("pageNum") String targetSentence4, @Field("orderBy") String targetSentence5);
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
     @GET("global/videoHome")
@@ -93,7 +93,7 @@ public interface ApiService {
     @POST("/global/mobile/wxpay/queryOrder")
     @FormUrlEncoded
     Call<QueryOrderFailureBean> queryOrderFailure(@Field("parentOrderId") String targetSentence,
-                                           @Field("type") String targetSentence2);
+                                                  @Field("type") String targetSentence2);
 
     @POST("/global/mobile/wxpay/queryOrder")
     @FormUrlEncoded
@@ -105,4 +105,10 @@ public interface ApiService {
     Call<MyAllCollectionBean> myAllCollection(@Field("userId") String targetSentence,
                                               @Field("pageNum") String targetSentence2,
                                               @Field("pageSize") String targetSentence3);
+
+    @POST("/mobile/homePage")
+    @FormUrlEncoded
+    Call<HomePageBean> homePage(
+            @Field("pageNum") String targetSentence2,
+            @Field("pageSize") String targetSentence3);
 }

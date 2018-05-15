@@ -55,6 +55,15 @@ public class VideoHomeBean implements Serializable{
         private String productId;
         private String startTime;
         private String title;
+        private String duration;
+
+        public String getDuration() {
+            return duration;
+        }
+
+        public void setDuration(String duration) {
+            this.duration = duration;
+        }
 
         public String getDetailPath() {
             return detailPath;

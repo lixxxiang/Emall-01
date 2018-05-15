@@ -22,9 +22,8 @@ import android.support.annotation.RequiresApi
 import android.view.View
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_ec.database.DatabaseManager
-import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.classify.data.fuckOthers.ApiService
-import com.example.emall_ec.main.classify.data.fuckOthers.NetUtils
+import com.example.emall_ec.api.ApiService
+import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.demand.data.QueryOrderBean
 import com.example.emall_ec.main.demand.data.QueryOrderFailureBean
 import com.example.emall_ec.main.order.OrderListDelegate
