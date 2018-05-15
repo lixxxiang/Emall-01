@@ -83,11 +83,17 @@ class Video1A1BDelegate : EmallDelegate() {
 
 
             priceFlag = if (!priceFlag) {
+                orderBy = "priceASC"
+                pages = 1
+                getData(orderBy, pages)
                 video1a1b_price_tv.setTextColor(Color.parseColor("#B80017"))
                 video1a1b_price_up_iv.setBackgroundResource(R.drawable.ic_up_red)
                 video1a1b_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 true
             } else {
+                orderBy = "priceDESC"
+                pages = 1
+                getData(orderBy, pages)
                 video1a1b_price_tv.setTextColor(Color.parseColor("#B80017"))
                 video1a1b_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
                 video1a1b_price_down_iv.setBackgroundResource(R.drawable.ic_down_red)
@@ -98,6 +104,7 @@ class Video1A1BDelegate : EmallDelegate() {
         video_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             mAdapter = null
             video_srl.isRefreshing = true
+            itemSize = 0
             Handler().postDelayed({
                 getData("", 1)
                 video_srl.isRefreshing = false
@@ -128,6 +135,8 @@ class Video1A1BDelegate : EmallDelegate() {
                 if (response.body() != null) {
                     videoSearchBean = response.body()!!
                     EmallLogger.d(response)
+                    itemSize = 0
+
                     if (videoSearchBean.status != 103) {
                         if (video_rv_rl.visibility == View.GONE) {
                             video_rv_rl.visibility = View.VISIBLE
@@ -135,6 +144,7 @@ class Video1A1BDelegate : EmallDelegate() {
                             video_top_bar.visibility = View.VISIBLE
                         }
                         val size = videoSearchBean.data.searchReturnDtoList.size
+                        pagesAmount = videoSearchBean.data.count
                         val data: MutableList<Model>? = mutableListOf()
                         for (i in 0 until size) {
                             val model = Model()
@@ -146,7 +156,7 @@ class Video1A1BDelegate : EmallDelegate() {
                             model.productType = "3"
                             data!!.add(model)
                         }
-                        initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.searchReturnDtoList.size)
+                        initRecyclerView(data!!, videoSearchBean.data.count)
                     } else {
                         video_rv_rl.visibility = View.GONE
                         video_no_result.visibility = View.VISIBLE
@@ -161,21 +171,20 @@ class Video1A1BDelegate : EmallDelegate() {
         })
     }
 
-    private fun initRecyclerView(data: MutableList<Model>, recyclerView: RecyclerView, size: Int) {
-        val mAdapter: VideoClassifyAdapter? = VideoClassifyAdapter(R.layout.item_classify_video, data, glm)
+    private fun initRecyclerView(data: MutableList<Model>, size: Int) {
+        mAdapter = VideoClassifyAdapter(R.layout.item_classify_video, data, glm)
         mAdapter!!.setOnLoadMoreListener {
             itemSize += 10
+            EmallLogger.d(itemSize)
             EmallLogger.d(size)
             if (size > itemSize) {
-                EmallLogger.d("In le me ")
-                loadMoreData()
+                loadMoreData(pages,data)
             } else {
-//                mAdapter!!.loadMoreFail()
             }
         }
         mAdapter!!.setLoadMoreView(CustomLoadMoreView())
 
-        recyclerView.adapter = mAdapter
+        video1a1b_rv.adapter = mAdapter
         if (pages < pagesAmount)
             pages += 1
         mAdapter!!.setOnItemClickListener { adapter, view, position ->
@@ -188,17 +197,17 @@ class Video1A1BDelegate : EmallDelegate() {
         }
     }
 
-    private fun loadMoreData() {
-        EmallLogger.d("load more")
+    private fun loadMoreData(p: Int, data: MutableList<Model>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), orderBy)
-        println("~~~~~~~~" + videoSearchParams!!["geo"].toString())
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", p.toString(), orderBy)
+        println("~~~~~~~~" + p.toString())
         call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
             override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
                 if (response.body() != null) {
+                    EmallLogger.d("in")
                     videoSearchBean = response.body()!!
-                    EmallLogger.d(response)
+                    EmallLogger.d(videoSearchBean.data.toString())
                     if (videoSearchBean.status != 103) {
                         if (video_rv_rl.visibility == View.GONE) {
                             video_rv_rl.visibility = View.VISIBLE
@@ -208,7 +217,7 @@ class Video1A1BDelegate : EmallDelegate() {
                         val size = videoSearchBean.data.searchReturnDtoList.size
                         pagesAmount = videoSearchBean.data.pages
 
-                        val data: MutableList<Model>? = mutableListOf()
+//                        val data: MutableList<Model>? = mutableListOf()
                         for (i in 0 until size) {
                             val model = Model()
                             model.imageUrl = videoSearchBean.data.searchReturnDtoList[i].detailPath
@@ -224,13 +233,7 @@ class Video1A1BDelegate : EmallDelegate() {
 
                         if (pages < pagesAmount)
                             pages += 1
-//                        initRecyclerView(data!!, video1a1b_rv, videoSearchBean.data.searchReturnDtoList.size)
                     }
-//                    else {
-//                        video_rv_rl.visibility = View.GONE
-//                        video_no_result.visibility = View.VISIBLE
-//                        video_top_bar.visibility = View.GONE
-//                    }
                 } else {
                     EmallLogger.d("error")
                 }

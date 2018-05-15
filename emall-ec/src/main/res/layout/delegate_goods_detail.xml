@@ -34,31 +34,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="255dp"
                     android:scaleType="centerCrop" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="255dp"
-                    android:background="#33000000" />
-
-                <io.vov.vitamio.widget.VideoView
+                <cn.jzvd.JZVideoPlayerStandard
                     android:clickable="true"
                     android:focusable="true"
-                    android:id="@+id/detail_videoview"
                     android:visibility="gone"
+                    android:id="@+id/detail_videoview"
                     android:layout_width="match_parent"
                     android:layout_height="255dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"/>
+                <RelativeLayout
+                    android:id="@+id/video_goods_detail_title_image_mask"
+                    android:layout_width="match_parent"
+                    android:layout_height="255dp"
+                    android:background="#33000000" />
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/play_btn"
-                    android:layout_width="59dp"
-                    android:layout_height="59dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/play" />
+
+
+                <!--<android.support.v7.widget.AppCompatImageView-->
+                    <!--android:id="@+id/play_btn"-->
+                    <!--android:layout_width="59dp"-->
+                    <!--android:layout_height="59dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:background="@drawable/play" />-->
 
                 <RelativeLayout
                     android:id="@+id/video_goods_detail_mask_iv"

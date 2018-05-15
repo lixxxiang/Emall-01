@@ -52,7 +52,7 @@ class SearchPoiDelegate : EmallDelegate() {
 //        search_poi_et.isFocusableInTouchMode = true
 //        search_poi_et.requestFocus()
 //        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-        search_back_iv.setOnClickListener {
+        search_back_iv_rl.setOnClickListener {
             EmallLogger.d(pages)
             if (pages == 2) {
                 search_poi_poi_listview.visibility = View.INVISIBLE
@@ -61,6 +61,7 @@ class SearchPoiDelegate : EmallDelegate() {
             } else {
                 bundle.putString("LOCATION", "")
                 this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+                KeyboardUtils.hideSoftInput(activity)
                 pop()
             }
 
@@ -105,7 +106,7 @@ class SearchPoiDelegate : EmallDelegate() {
             false
         }
 
-        index_noti_tv.setOnClickListener {
+        index_noti_tv_rl.setOnClickListener {
             KeyboardUtils.hideSoftInput(activity)
             search()
         }
@@ -237,30 +238,39 @@ class SearchPoiDelegate : EmallDelegate() {
         }
 
         poiInfo = Gson().fromJson(response, PoiBean::class.java)
-        for (i in 0 until poiInfo.gdPois.poiList.size) {
-            println(i)
-            poiList!!.add(poiInfo.gdPois.poiList[i].name)
 
-            if (poiInfo.gdPois.poiList[i].cityname == null) {
-                poiInfo.gdPois.poiList[i].cityname = poiInfo.gdPois.poiList[i].name
-            }
-            if (poiInfo.gdPois.poiList[i].adname == null) {
-                poiInfo.gdPois.poiList[i].adname = ""
-            }
-            if (poiInfo.gdPois.poiList[i].address == null) {
-                poiInfo.gdPois.poiList[i].address = ""
+        if(poiInfo.gdPois == null){
+            hideText()
+            clearCities()
+            clearPois()
+            showNoResult()
+        }else{
+            for (i in 0 until poiInfo.gdPois.poiList.size) {
+                println(i)
+                poiList!!.add(poiInfo.gdPois.poiList[i].name)
+
+                if (poiInfo.gdPois.poiList[i].cityname == null) {
+                    poiInfo.gdPois.poiList[i].cityname = poiInfo.gdPois.poiList[i].name
+                }
+                if (poiInfo.gdPois.poiList[i].adname == null) {
+                    poiInfo.gdPois.poiList[i].adname = ""
+                }
+                if (poiInfo.gdPois.poiList[i].address == null) {
+                    poiInfo.gdPois.poiList[i].address = ""
+                }
+
+                poiAddressList!!.add(String.format("%s %s %s",
+                        poiInfo.gdPois.poiList[i].cityname,
+                        poiInfo.gdPois.poiList[i].adname,
+                        poiInfo.gdPois.poiList[i].address))
             }
 
-            poiAddressList!!.add(String.format("%s %s %s",
-                    poiInfo.gdPois.poiList[i].cityname,
-                    poiInfo.gdPois.poiList[i].adname,
-                    poiInfo.gdPois.poiList[i].address))
+            EmallLogger.d(poiList!!.size)
+
+            searchPoiPoisAdapter = SearchPoiPoisAdapter(poiList, poiAddressList, context)
+            search_poi_poi_listview.adapter = searchPoiPoisAdapter
         }
 
-        EmallLogger.d(poiList!!.size)
-
-        searchPoiPoisAdapter = SearchPoiPoisAdapter(poiList, poiAddressList, context)
-        search_poi_poi_listview.adapter = searchPoiPoisAdapter
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

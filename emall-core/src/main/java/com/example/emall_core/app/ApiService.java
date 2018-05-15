@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
-    @GET("global/homePageUnits")
+    @GET("global/mobile/homePageUnits")
     Call<String> homePageUnits();
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})

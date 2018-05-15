@@ -139,7 +139,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
 
         }
 
-        search_back_iv.setOnClickListener {
+        search_back_iv_rl.setOnClickListener {
             pop()
         }
 

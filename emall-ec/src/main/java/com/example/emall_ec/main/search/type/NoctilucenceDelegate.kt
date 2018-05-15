@@ -466,8 +466,7 @@ class NoctilucenceDelegate : EmallDelegate() {
                 ssp!!["cloud"] = "40"
             }
             if (!flag_2_1 && !flag_2_2 && !flag_2_3 && !flag_2_4) {
-                ssp!!["resolution"] = ""
-                ssp!!["satelliteId"] = ""
+                ssp!!["cloud"] = ""
             }
 
             if (flag_3_1) {

@@ -20,6 +20,9 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <RelativeLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/search_back_iv_rl"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"

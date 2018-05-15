@@ -17,14 +17,14 @@ import kotlinx.android.synthetic.main.delegate_special.*
 class SpecialDelegate : BottomItemDelegate() {
 
     private var mAdapter: SpecialAdapter? = null
-
+    private var delegate : SpecialDelegate ?= null
     override fun setLayout(): Any? {
         return R.layout.delegate_special
     }
 
     override fun initial() {
         setSwipeBackEnable(false)
-
+        delegate = this
         initRecyclerView()
         getData()
 
@@ -41,13 +41,13 @@ class SpecialDelegate : BottomItemDelegate() {
         val data: MutableList<SpecialItemEntity>? = mutableListOf()
 
         RestClient().builder()
-                .url("http://59.110.162.194:5201/global/homePageUnits")
+                .url("http://59.110.164.214:8024/global/mobile/topic")
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         data!!.add(SpecialDataConverter().setJsonData(response).horizontalConvert()[0])
                         data.add(SpecialDataConverter().setJsonData(response).verticalConvert()[0])
-                        mAdapter = SpecialAdapter.create(data)
+                        mAdapter = SpecialAdapter.create(data, delegate)
                         special_rv.adapter = mAdapter
                     }
                 })

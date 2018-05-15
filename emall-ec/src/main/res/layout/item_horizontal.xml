@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="275dp"
+    android:layout_width="295dp"
     android:layout_height="wrap_content">
     <com.example.emall_core.util.view.RoundImageView
-        android:layout_width="262dp"
+        android:layout_width="282dp"
         android:layout_height="185dp"
         android:scaleType="centerCrop"
         android:id="@+id/special_item_horizontal_riv"/>

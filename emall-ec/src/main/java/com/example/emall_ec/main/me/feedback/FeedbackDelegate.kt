@@ -6,7 +6,9 @@ import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatTextView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -27,6 +29,7 @@ import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_feedback.*
 import kotlinx.android.synthetic.main.delegate_my_opinion.*
+import kotlinx.android.synthetic.main.delegate_setting.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
@@ -35,9 +38,9 @@ class FeedbackDelegate : EmallDelegate() {
     var listTitle: MutableList<String>? = mutableListOf()
     var listFragment: MutableList<Fragment>? = mutableListOf()
     private var fAdapter: FragmentPagerAdapter? = null
-    private var supportParams: WeakHashMap<String, Any> ?= WeakHashMap()
+    private var supportParams: WeakHashMap<String, Any>? = WeakHashMap()
     var commonBean = CommonBean()
-    var toast: Toast ?= null
+    var toast: Toast? = null
     fun create(): FeedbackDelegate? {
         return FeedbackDelegate()
     }
@@ -62,11 +65,19 @@ class FeedbackDelegate : EmallDelegate() {
         }
         feedback_toolbar.inflateMenu(R.menu.feedback_menu)
         feedback_toolbar.setOnMenuItemClickListener { item ->
-            when(item!!.itemId){
+            when (item!!.itemId) {
                 R.id.menu_edit -> {
                     KeyboardUtils.hideSoftInput(activity)
-                    EmallLogger.d(activity.getSharedPreferences("OPINION", Context.MODE_PRIVATE).getString("opinion",""))
-                    support(activity.getSharedPreferences("OPINION", Context.MODE_PRIVATE).getString("opinion",""))
+                    EmallLogger.d(activity.getSharedPreferences("OPINION", Context.MODE_PRIVATE).getString("opinion", ""))
+                    if (activity.getSharedPreferences("OPINION", Context.MODE_PRIVATE).getString("opinion", "").isEmpty()) {
+                        val builder = AlertDialog.Builder(activity)
+                        builder.setTitle("请输入反馈信息！")
+                        builder.setPositiveButton(getString(R.string.confirm_2)) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        builder.create().show()
+                    } else
+                        support(activity.getSharedPreferences("OPINION", Context.MODE_PRIVATE).getString("opinion", ""))
                 }
             }
             true
@@ -75,7 +86,10 @@ class FeedbackDelegate : EmallDelegate() {
 
     private fun support(string: String) {
         supportParams!!["content"] = string
-        supportParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+            supportParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        } else
+            supportParams!!["userId"] = "-1"
 
         RestClient().builder()
                 .url("http://59.110.161.48:8023/support.do")
@@ -87,7 +101,6 @@ class FeedbackDelegate : EmallDelegate() {
                             /**
                              * success
                              */
-
                             val snackBar = Snackbar.make(view!!, "提交成功", Snackbar.LENGTH_SHORT)
                             snackBar.show()
                             my_opinion_edt.setText("")

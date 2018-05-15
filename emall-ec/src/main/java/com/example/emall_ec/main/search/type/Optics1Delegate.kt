@@ -572,7 +572,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
-                        EmallLogger.d(sceneSearch.data.count)
+//                        EmallLogger.d(sceneSearch.data.count)
 
                         itemSize = 0
                         if (sceneSearch.status != 103) {
@@ -641,9 +641,6 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                                 data.add(model)
                             }
                             mAdapter!!.notifyDataSetChanged()
-//                            mAdapter!!.setOnLoadMoreListener {
-//                                loadMoreData(ssp2, pages)
-//                            }
                             mAdapter!!.loadMoreComplete()
                             if (pages < pagesAmount)
                                 pages += 1
@@ -685,12 +682,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 EmallLogger.d("In le me ")
                 loadMoreData(ssp2!!, pages, data)
             } else {
-//                mAdapter!!.loadMoreFail()
             }
         }
         mAdapter!!.setLoadMoreView(CustomLoadMoreView())
         optics_rv.adapter = mAdapter
-//        mAdapter!!.disableLoadMoreIfNotFullPage()
 
         if (pages < pagesAmount)
             pages += 1

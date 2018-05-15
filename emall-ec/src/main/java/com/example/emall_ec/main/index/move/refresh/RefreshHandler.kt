@@ -114,7 +114,10 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
     }
 
     fun getUnit2(data: MutableList<MultipleItemEntity>?) {
-        retrofit = NetUtils.getRetrofit()
+        retrofit = Retrofit.Builder()
+                .baseUrl("http://59.110.164.214:8024/")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
         apiService = retrofit!!.create(ApiService::class.java)
         val call = apiService!!.homePageUnits()
         call.enqueue(object : Callback<String> {
@@ -125,7 +128,6 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
             override fun onResponse(call: Call<String>?, response: Response<String>?) {
                 if (response!!.body() != null) {
                     HORIZONTAL_SCROLL_CONVERTER.clearData()
-
                     data!!.add(THE_THREE_CONVERTER.setJsonData(response.body().toString()).theThreeConvert()[0])
                     data.add(HORIZONTAL_SCROLL_CONVERTER.setJsonData(response.body().toString()).horizontalScrollConvert()[0])
                     data.add(GUESS_LIKE_CONVERTER.setJsonData(response.body().toString()).guessLikeConvert()[0])

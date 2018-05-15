@@ -109,11 +109,12 @@ dependencies {
     compile 'pub.devrel:easypermissions:1.0.1'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile 'com.android.support:multidex:1.0.0'
-    compile 'cn.jzvd:jiaozivideoplayer:6.2.9'
+    compile 'cn.jzvd:jiaozivideoplayer:6.2.10'
     compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
     compile 'com.squareup.retrofit2:converter-scalars:2.0.0'
     compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.3.0'
+
 }
 
 repositories {

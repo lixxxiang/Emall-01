@@ -31,12 +31,15 @@ public class SpecialAdapter extends
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
+
+    private static SpecialDelegate delegate;
     public SpecialAdapter(List<SpecialItemEntity> data) {
         super(data);
         init();
     }
 
-    public static SpecialAdapter create(List<SpecialItemEntity> data) {
+    public static SpecialAdapter create(List<SpecialItemEntity> data, SpecialDelegate specialDelegate) {
+        delegate = specialDelegate;
         return new SpecialAdapter(data);
 
     }
@@ -66,13 +69,13 @@ public class SpecialAdapter extends
                 horiziontalRecyclerView.setLayoutManager(new LinearLayoutManager(horiziontalRecyclerView.getContext(), LinearLayout.HORIZONTAL, false));
                 SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
                 snapHelperStart.attachToRecyclerView(horiziontalRecyclerView);
-                horiziontalRecyclerView.setAdapter(new ItemSpecialAdapter((List<SpecialHorizontalBean>) item.getField(SpecialMultipleFields.HORIZONTAL), mContext));
+                horiziontalRecyclerView.setAdapter(new ItemSpecialAdapter((List<SpecialHorizontalBean>) item.getField(SpecialMultipleFields.HORIZONTAL), mContext, delegate));
                 break;
             case SpecialItemType.VERTICAL:
                 RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
 //                verticalRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 20, true));
                 verticalRecyclerView.setLayoutManager(manager);
-                verticalRecyclerView.setAdapter(new ItemVerticalAdapter((List<SpecialVerticalBean>) item.getField(SpecialMultipleFields.VERTICAL),mContext));
+                verticalRecyclerView.setAdapter(new ItemVerticalAdapter((List<SpecialVerticalBean>) item.getField(SpecialMultipleFields.VERTICAL),mContext,delegate));
                 break;
         }
 

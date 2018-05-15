@@ -147,6 +147,28 @@ public class VideoSearchBean {
             public void setTitle(String title) {
                 this.title = title;
             }
+
+            @Override
+            public String toString() {
+                return "SearchReturnDtoListBean{" +
+                        "detailPath='" + detailPath + '\'' +
+                        ", duration='" + duration + '\'' +
+                        ", geo='" + geo + '\'' +
+                        ", price='" + price + '\'' +
+                        ", productId='" + productId + '\'' +
+                        ", startTime='" + startTime + '\'' +
+                        ", title='" + title + '\'' +
+                        '}';
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "pages=" + pages +
+                    ", count=" + count +
+                    ", searchReturnDtoList=" + searchReturnDtoList +
+                    '}';
         }
     }
 }

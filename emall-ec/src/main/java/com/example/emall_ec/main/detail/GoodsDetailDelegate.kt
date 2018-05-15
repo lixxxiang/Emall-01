@@ -7,12 +7,15 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatTextView
+import android.util.AttributeSet
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.emall_core.net.RestClient
@@ -23,7 +26,10 @@ import com.example.emall_ec.R
 import com.flyco.tablayout.listener.CustomTabEntity
 import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import android.view.MotionEvent
+import android.widget.ImageView
 import android.widget.Toast
+import cn.jzvd.JZVideoPlayer
+import cn.jzvd.JZVideoPlayerStandard
 import com.baidu.mapapi.map.*
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.detail.data.VideoDetailBean
@@ -111,20 +117,20 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         resolveConflict()
         type = arguments.getString("type")
         EmallLogger.d(type)
-
         if (type == "1" || type == "5") {
+            detail_videoview.visibility = View.GONE
             sceneDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
-            if (type == "1"){
+            if (type == "1") {
                 sceneDetailParams!!["type"] = OPTICS
                 type135 = OPTICS
-            }
-            else{
+            } else {
                 sceneDetailParams!!["type"] = "2"
                 type135 = NOCTILUCENCE
             }
             getData(sceneDetailParams!!)
         } else if (type == "3") {
+            detail_videoview.visibility = View.VISIBLE
             videoDetailParams!!["productId"] = arguments.getString("productId")
             productId = arguments.getString("productId")
             videoDetailParams!!["type"] = VIDEO
@@ -133,9 +139,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         goods_buy_now_btn.setOnClickListener {
-            if(!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()){
+            if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
                 commoditySubmitDemand(type135)
-            }else{
+            } else {
                 val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
                 val bundle = Bundle()
                 bundle.putString("PAGE_FROM", "GOODS_DETAIL")
@@ -188,7 +194,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
         video_detail_tablayout_ctl.setOnTabSelectListener(this)
         video_goods_detail_toolbar.setNavigationOnClickListener {
-            if(arguments.getString("PAGE_FROM") == "COLLECTION"){
+            if (arguments.getString("PAGE_FROM") == "COLLECTION") {
                 val editor = mSharedPreferences!!.edit()
                 editor.putString("collection", "true")
                 editor.putString("collection_type", arguments.getString("COLLECTION_TYPE"))
@@ -205,22 +211,17 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_goods_detail_title_image.setOnClickListener {
-            if(type == "3"){
-                if(!NetworkUtils.isWifiAvailable() && !NetworkUtils.isWifiConnected()){
+            if (type == "3") {
+                if (!NetworkUtils.isWifiAvailable() && !NetworkUtils.isWifiConnected()) {
                     val builder = AlertDialog.Builder(activity)
                     builder.setTitle("当前为非WiFi网络，播放将消耗流量")
                     builder.setPositiveButton("确定播放") { dialog, _ ->
                         dialog.dismiss()
                         detail_videoview.visibility = View.VISIBLE
                         video_goods_detail_title_image.visibility = View.GONE
-                        play_btn.visibility = View.GONE
                         video_mark.visibility = View.GONE
                         video_goods_detail_mask_iv.visibility = View.GONE
-                        if (Vitamio.isInitialized(context)) {
-                            detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
-//                            detail_videoview!!.setMediaController(MediaController(context))
-                            detail_videoview!!.start()
-                        }
+                        detail_videoview.startButton.performClick()
                     }
 
                     builder.setNegativeButton("取消播放") { dialog, _ ->
@@ -228,47 +229,22 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     }
 
                     builder.create().show()
-                }else{
+                } else {
                     detail_videoview.visibility = View.VISIBLE
                     video_goods_detail_title_image.visibility = View.GONE
-                    play_btn.visibility = View.GONE
                     video_mark.visibility = View.GONE
                     video_goods_detail_mask_iv.visibility = View.GONE
-                    if (Vitamio.isInitialized(context)) {
-                        detail_videoview!!.setVideoPath(videoDetail.data.videoPath)
-//                        detail_videoview!!.setMediaController(MediaController(context))
-                        detail_videoview!!.start()
-                        detail_videoview.setOnTouchListener { view, motionEvent ->
-                            detail_videoview!!.stopPlayback()
-                            detail_videoview.visibility = View.GONE
-                            var intent = Intent(activity, VitamioPlayerActivity::class.java)
-                            intent.putExtra("title", videoDetail.data.title)
-                            intent.putExtra("url", videoDetail.data.videoPath)
-                            startActivity(intent)
-
-                            video_goods_detail_title_image.isClickable = false
-                            video_goods_detail_title_image.visibility = View.VISIBLE
-                            play_btn.visibility = View.VISIBLE
-                            video_mark.visibility = View.VISIBLE
-                            video_goods_detail_mask_iv.visibility = View.VISIBLE
-
-
-                            false }
-                    }
+                    detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
                 }
 
             }
-        }
-
-        detail_videoview.setOnCompletionListener {
-            detail_videoview!!.start()
         }
     }
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        EmallLogger.d(String.format("%s %s",arguments.getString("productId"), arguments.getString("type")))
+        EmallLogger.d(String.format("%s %s", arguments.getString("productId"), arguments.getString("type")))
         val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString())
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
@@ -291,7 +267,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             scene_rl.visibility = View.VISIBLE
         video_mark.visibility = View.INVISIBLE
         video_goods_detail_mask_iv.visibility = View.INVISIBLE
-        play_btn.visibility = View.INVISIBLE
+//        play_btn.visibility = View.INVISIBLE
         video_rl.visibility = View.GONE
 
 
@@ -324,8 +300,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             video_mark.visibility = View.VISIBLE
         if (video_goods_detail_mask_iv.visibility == View.INVISIBLE)
             video_goods_detail_mask_iv.visibility = View.VISIBLE
-        if (play_btn.visibility == View.INVISIBLE)
-            play_btn.visibility = View.VISIBLE
+//        if (play_btn.visibility == View.INVISIBLE)
+//            play_btn.visibility = View.VISIBLE
         if (video_rl.visibility == View.GONE)
             video_rl.visibility = View.VISIBLE
         scene_mark_rl.visibility = View.INVISIBLE
@@ -413,7 +389,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         if (type == "1") {
                             bundle.putString("type", "1")
                             bundle.putString("imageUrl", sceneData.imageDetailUrl)
-                            bundle.putString("title","光学一级")
+                            bundle.putString("title", "光学一级")
                             bundle.putString("time", sceneData.centerTime)
 
 
@@ -430,7 +406,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                             bundle.putString("time", sceneData.centerTime)
 
                         }
-                        bundle.putString("PAGE_FROM","GOODS_DETAIL")
+                        bundle.putString("PAGE_FROM", "GOODS_DETAIL")
                         delegate.arguments = bundle
                         start(delegate)
                     }
@@ -465,9 +441,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     @SuppressLint("SetTextI18n")
     private fun setSceneData(sceneDetail: SceneDetailBean) {
         sceneData = sceneDetail.data
-        if(type == "1"){
+        if (type == "1") {
             scene_mark.text = getString(R.string.optics_1)
-        }else if(type == "5"){
+        } else if (type == "5") {
             scene_mark.text = getString(R.string.noctilucence)
         }
         detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), sceneData.centerTime)
@@ -483,7 +459,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         changeColor(sceneData.serviceDescription)
         detail_product_id_tv.text = sceneData.productId
 //        detail_satellite_tv.text = sceneData.satelliteId + "(" + sceneData.sensor + " " + sceneData.resolution + ")"
-        detail_satellite_tv.text = String.format("%s (%s %s)",sceneData.satelliteId, sceneData.sensor , sceneData.resolution)
+        detail_satellite_tv.text = String.format("%s (%s %s)", sceneData.satelliteId, sceneData.sensor, sceneData.resolution)
 
         detail_ratio_tv.text = sceneData.resolution
         detail_area_tv.text = String.format(resources.getString(R.string.video_detail_area), sceneData.size)
@@ -494,7 +470,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
-
         videoData = videoDetail.data
         video_detail_title_tv.text = videoData.title
         detail_gather_time_tv.text = String.format(resources.getString(R.string.video_detail_gather_time), videoData.startTime)
@@ -509,7 +484,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         video_detail_original_price_tv.text = String.format(resources.getString(R.string.video_detail_original_price), videoData.originalPrice)
         changeColor(videoData.serviceDescription)
         detail_product_id_tv.text = videoData.productId
-        detail_satellite_tv.text = String.format("%s (%s %s)",videoData.satelliteId, videoData.sensor , videoData.resolution)
+        detail_satellite_tv.text = String.format("%s (%s %s)", videoData.satelliteId, videoData.sensor, videoData.resolution)
 
 //        detail_satellite_tv.text = videoData.satelliteId
         detail_ratio_tv.text = videoData.resolution + "m"
@@ -518,6 +493,18 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         judgeLati_longi(videoData.latitude, videoData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), videoData.longitude, longi, videoData.latitude, lati)
         detail_coordinate_tv.text = "WGS-84"
+        Glide.with(context)
+                .load(videoData.imageDetailUrl)
+                .into(detail_videoview.thumbImageView)
+        detail_videoview.thumbImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+//        detail_videoview.thumbImageView.setImage(Uri.parse(videoData.imageDetailUrl))
+        detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
+        video_goods_detail_title_image.visibility = View.GONE
+        video_goods_detail_title_image_mask.visibility = View.GONE
+        Handler().postDelayed({
+            detail_videoview.startButton.performClick()
+        }, 1000)
+
     }
 
     private fun drawMap(geo: MutableList<Array<String>>) {
@@ -655,9 +642,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
                         getCollectionMarkBean = Gson().fromJson(response, GetCollectionMarkBean::class.java)
-                        if (getCollectionMarkBean.message == "success" ) {
+                        if (getCollectionMarkBean.message == "success") {
                             if (getCollectionMarkBean.data.collectionMark == 1) {
-                                if (video_detail_star_iv != null){
+                                if (video_detail_star_iv != null) {
                                     video_detail_star_iv.setBackgroundResource(R.drawable.collection_highlight)
                                     flag = true
                                 }
@@ -700,7 +687,106 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     override fun onSupportInvisible() {
         super.onSupportInvisible()
+        JZVideoPlayer.releaseAllVideos()
     }
 
+//    internal inner class MyJZVideoPlayerStandard : JZVideoPlayerStandard {
+//        constructor(context: Context) : super(context) {}
+//
+//        constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+//
+//        override fun init(context: Context) {
+//            super.init(context)
+//        }
+//
+//        override fun onClick(v: View) {
+//            super.onClick(v)
+//            val i = v.id
+//            if (i == cn.jzvd.R.id.fullscreen) {
+//                if (currentScreen == JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
+//                    //click quit fullscreen
+//                } else {
+//                    //click goto fullscreen
+//                }
+//            }
+//        }
+//
+//        override fun getLayoutId(): Int {
+//            return cn.jzvd.R.layout.jz_layout_standard
+//        }
+//
+//        override fun onTouch(v: View, event: MotionEvent): Boolean {
+//            if (!NetworkUtils.isWifiAvailable() && !NetworkUtils.isWifiConnected()) {
+//                val builder = AlertDialog.Builder(activity)
+//                builder.setTitle("当前为非WiFi网络，播放将消耗流量")
+//                builder.setPositiveButton("确定播放") { dialog, _ ->
+//                    dialog.dismiss()
+//                    detail_videoview.visibility = View.VISIBLE
+//                    video_goods_detail_title_image.visibility = View.GONE
+//                    video_mark.visibility = View.GONE
+//                    video_goods_detail_mask_iv.visibility = View.GONE
+//                    detail_videoview.startButton.performClick()
+//                }
+//
+//                builder.setNegativeButton("取消播放") { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//
+//                builder.create().show()
+//            } else {
+//                detail_videoview.visibility = View.VISIBLE
+//                video_goods_detail_title_image.visibility = View.GONE
+//                video_mark.visibility = View.GONE
+//                video_goods_detail_mask_iv.visibility = View.GONE
+//                detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
+//            }
+//            return super.onTouch(v, event)
+//        }
+//
+//        override fun startVideo() {
+//            super.startVideo()
+//        }
+//
+//        override fun onStateNormal() {
+//            super.onStateNormal()
+//        }
+//
+//        override fun onStatePreparing() {
+//            super.onStatePreparing()
+//        }
+//
+//        override fun onStatePlaying() {
+//            super.onStatePlaying()
+//        }
+//
+//        override fun onStatePause() {
+//            super.onStatePause()
+//        }
+//
+//        override fun onStateError() {
+//            super.onStateError()
+//        }
+//
+//        override fun onStateAutoComplete() {
+//            super.onStateAutoComplete()
+//        }
+//
+//        override fun onInfo(what: Int, extra: Int) {
+//            super.onInfo(what, extra)
+//        }
+//
+//        override fun onError(what: Int, extra: Int) {
+//            super.onError(what, extra)
+//        }
+//
+//        override fun startWindowFullscreen() {
+//            super.startWindowFullscreen()
+//        }
+//
+//        override fun startWindowTiny() {
+//            super.startWindowTiny()
+//        }
+//
+//    }
 
 }

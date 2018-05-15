@@ -8,11 +8,17 @@ public class TheThreeBean {
     private String imageUrl;
     private String type;
     private String link;
+    private String productId;
 
-    public TheThreeBean(String imageUrl, String type, String link) {
+    public TheThreeBean(String imageUrl, String type, String link,String productId) {
         this.imageUrl = imageUrl;
         this.type = type;
         this.link = link;
+        this.productId = productId;
+    }
+
+    public String getProductId() {
+        return productId;
     }
 
     public String getImageUrl() {

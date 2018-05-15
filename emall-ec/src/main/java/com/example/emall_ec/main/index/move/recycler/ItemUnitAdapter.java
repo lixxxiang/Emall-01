@@ -1,6 +1,7 @@
 package com.example.emall_ec.main.index.move.recycler;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +11,31 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.emall_core.R;
+import com.example.emall_core.util.log.EmallLogger;
 import com.example.emall_core.util.view.RoundImageView;
+import com.example.emall_ec.main.classify.ClassifyDelegate;
+import com.example.emall_ec.main.detail.GoodsDetailDelegate;
+import com.example.emall_ec.main.discover.DiscoverDelegate;
+import com.example.emall_ec.main.index.IndexDelegate;
+import com.example.emall_ec.main.index.move.recycler.data.TheThreeBean;
 import com.example.emall_ec.main.index.move.recycler.data.UnitBean;
+import com.example.emall_ec.main.program.ProgramDelegate;
 
+import org.greenrobot.greendao.generator.Index;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemUnitAdapter extends RecyclerView.Adapter<ItemUnitAdapter.ViewHolder> {
 
     private List<UnitBean> mApps;
     private Context context;
+    private IndexDelegate delegate;
 
-    public ItemUnitAdapter(List<UnitBean> apps, Context context) {
+    public ItemUnitAdapter(List<UnitBean> apps, Context context, IndexDelegate delegate) {
         mApps = apps;
         this.context = context;
+        this.delegate = delegate;
     }
 
     @Override
@@ -71,7 +84,77 @@ public class ItemUnitAdapter extends RecyclerView.Adapter<ItemUnitAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-//            Log.d("UnitBean", mApps.get(getAdapterPosition()).getName());
+            horizontalClick(mApps, getAdapterPosition());
+        }
+    }
+
+    private void horizontalClick(List<UnitBean> horizontalList, int position) {
+        EmallLogger.INSTANCE.d(horizontalList.get(position).getType());
+        switch (horizontalList.get(position).getType()) {
+            case "scene": {
+                GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", horizontalList.get(position).getProductId());
+                bundle.putString("type", "1");
+                goodsDetailDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(goodsDetailDelegate);
+                break;
+            }
+            case "night": {
+                GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", horizontalList.get(position).getProductId());
+                bundle.putString("type", "5");
+                goodsDetailDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(goodsDetailDelegate);
+                break;
+            }
+            case "video": {
+                GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", horizontalList.get(position).getProductId());
+                bundle.putString("type", "3");
+                goodsDetailDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(goodsDetailDelegate);
+                break;
+            }
+            case "sceneSearch": {
+                ClassifyDelegate classifyDelegate = new ClassifyDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("TYPE", "SCENE");
+                classifyDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(classifyDelegate);
+                break;
+            }
+            case "nightSearch": {
+                ClassifyDelegate classifyDelegate = new ClassifyDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("TYPE", "NOCTILUCENCE");
+                classifyDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(classifyDelegate);
+                break;
+            }
+            case "videoSearch": {
+                ClassifyDelegate classifyDelegate = new ClassifyDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("TYPE", "VIDEO");
+                classifyDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(classifyDelegate);
+                break;
+            }
+            case "programSearch": {
+                delegate.getParentDelegate().start(new ProgramDelegate().create());
+                break;
+            }
+            case "webview":
+                DiscoverDelegate discoverDelegate = new DiscoverDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", horizontalList.get(position).getLink());
+                discoverDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(discoverDelegate);
+                break;
+
+            default:
         }
     }
 

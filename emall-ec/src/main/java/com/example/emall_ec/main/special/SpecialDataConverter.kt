@@ -22,13 +22,16 @@ class SpecialDataConverter {
         var imageUrl: String?
         var link: String?
         var type: String?
+        var productId: String?
         for (i in 0 until size) {
             title = jsonObject.getJSONObject(i).getString("posTitle")
             detail = jsonObject.getJSONObject(i).getString("posDescription")
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
             link = jsonObject.getJSONObject(i).getString("link")
             type = jsonObject.getJSONObject(i).getString("dataType")
-            horizontalData!!.add(SpecialHorizontalBean(title, detail, imageUrl, type, link))
+            productId = jsonObject.getJSONObject(i).getString("productId")
+
+            horizontalData!!.add(SpecialHorizontalBean(title, detail, imageUrl, type, link, productId))
         }
         val entity = SpecialItemEntity.builder()
                 .setField(SpecialMultipleFields.HORIZONTAL, horizontalData!!)
@@ -48,13 +51,20 @@ class SpecialDataConverter {
         var posTitle: String?
         var posDescription: String?
         var price: String?
+        var productId: String?
+        var link: String?
+
         for (i in 0 until size) {
             dataType = jsonObject.getJSONObject(i).getString("dataType")
+            link = jsonObject.getJSONObject(i).getString("link")
+
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
             posTitle = jsonObject.getJSONObject(i).getString("posTitle")
             posDescription = jsonObject.getJSONObject(i).getString("posDescription")
             price = jsonObject.getJSONObject(i).getString("price")
-            verticalData!!.add(SpecialVerticalBean(dataType, imageUrl, posTitle, posDescription, price))
+            productId = jsonObject.getJSONObject(i).getString("productId")
+
+            verticalData!!.add(SpecialVerticalBean(dataType, imageUrl, posTitle, posDescription, price, productId, link))
         }
         val entity = SpecialItemEntity.builder()
                 .setField(SpecialMultipleFields.VERTICAL, verticalData!!)

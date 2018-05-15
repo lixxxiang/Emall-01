@@ -14,6 +14,7 @@
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/the_three_1"
             android:layout_width="0dp"
+            android:scaleType="centerCrop"
             android:layout_height="310dp"
             android:layout_weight="0.87" />
         <RelativeLayout
@@ -30,6 +31,8 @@
                 android:id="@+id/the_three_2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:scaleType="centerCrop"
+
                 android:layout_weight="1" />
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -38,6 +41,8 @@
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/the_three_3"
                 android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+
                 android:layout_height="0dp"
                 android:layout_weight="1" />
         </LinearLayout>

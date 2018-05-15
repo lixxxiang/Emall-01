@@ -22,23 +22,6 @@ class IndexDataConverter : DataConverter() {
     var dailyPic: MutableList<String>? = mutableListOf()
 
 
-//    override fun dailyPicConvert(): ArrayList<MultipleItemEntity> {
-//        val jsonObject = JSON.parseObject(getJsonData()).getJSONObject("data").getJSONArray("MixedContentList")
-//        for (i in 0..2){
-//            dailyPic!!.add(jsonObject.getJSONObject(i).getString("contentName"))
-//        }
-//        EmallLogger.d("lllllll")
-//
-//        EmallLogger.d(dailyPic!!)
-//        val entity = MultipleItemEntity.builder()
-//                .setField(MultipleFields.EVERY_DAY_PIC_TITLE, dailyPic!!)
-//                .setField(MultipleFields.SPAN_SIZE, 2)
-//                .setField(MultipleFields.ITEM_TYPE, 1)
-//                .build()
-//        ENTITIES.add(entity)
-//        return ENTITIES
-//    }
-
     override fun guessLikeConvert(): ArrayList<MultipleItemEntity> {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(2).getJSONArray("pieces")
         var size = jsonObject.size
@@ -47,13 +30,17 @@ class IndexDataConverter : DataConverter() {
         var posTitle: String?
         var posDescription: String?
         var price: String?
+        var productId: String?
+
         for (i in 0 until size) {
             dataType = jsonObject.getJSONObject(i).getString("dataType")
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
             posTitle = jsonObject.getJSONObject(i).getString("posTitle")
             posDescription = jsonObject.getJSONObject(i).getString("posDescription")
             price = jsonObject.getJSONObject(i).getString("price")
-            guessLike!!.add(GuessLikeBean(dataType, imageUrl, posTitle, posDescription, price))
+            productId = jsonObject.getJSONObject(i).getString("productId")
+
+            guessLike!!.add(GuessLikeBean(dataType, imageUrl, posTitle, posDescription, price, productId))
         }
         val entity = MultipleItemEntity.builder()
                 .setField(MultipleFields.GUESS_LIKE, guessLike!!)
@@ -70,11 +57,13 @@ class IndexDataConverter : DataConverter() {
         var imageUrl: String?
         var link: String?
         var type: String?
+        var productId: String?
         for (i in 0 until size) {
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
             link = jsonObject.getJSONObject(i).getString("link")
             type = jsonObject.getJSONObject(i).getString("dataType")
-            theThree!!.add(TheThreeBean(imageUrl, type, link))
+            productId = jsonObject.getJSONObject(i).getString("productId")
+            theThree!!.add(TheThreeBean(imageUrl, type, link, productId))
         }
         val entity = MultipleItemEntity.builder()
                 .setField(MultipleFields.THE_THREE, theThree!!)
@@ -94,13 +83,17 @@ class IndexDataConverter : DataConverter() {
         var imageUrl: String?
         var link: String?
         var type: String?
+        var productId: String?
+
         for (i in 0 until size) {
             title = jsonObject.getJSONObject(i).getString("posTitle")
             detail = jsonObject.getJSONObject(i).getString("posDescription")
             imageUrl = jsonObject.getJSONObject(i).getString("imageUrl")
             link = jsonObject.getJSONObject(i).getString("link")
             type = jsonObject.getJSONObject(i).getString("dataType")
-            unit!!.add(UnitBean(title, detail, imageUrl, type, link))
+            productId = jsonObject.getJSONObject(i).getString("productId")
+
+            unit!!.add(UnitBean(title, detail, imageUrl, type, link, productId))
         }
         val entity = MultipleItemEntity.builder()
                 .setField(MultipleFields.HORIZONTAL_SCROLL, unit!!)
@@ -142,7 +135,7 @@ class IndexDataConverter : DataConverter() {
 
         for (i in 0 until size) {
             val data = dataArray.getJSONObject(i)
-            var bannerDataType = data.getString("dataType")
+            val bannerDataType = data.getString("dataType")
             val bannerImageUrl = data.getString("imageUrl")
             val bannerLink = data.getString("link")
             var bannerProductId = String()
@@ -151,14 +144,11 @@ class IndexDataConverter : DataConverter() {
             } else
                 "NULL"
 
-            EmallLogger.d(bannerLink)
             bannerLinks!!.add(bannerLink)
             bannerImages!!.add(bannerImageUrl)
             bannerDataTypes!!.add(bannerDataType)
-//            if (bannerProductId == null) {
-//                bannerProductIds!!.add("")
-//            } else
             bannerProductIds!!.add(bannerProductId)
+
             entity = MultipleItemEntity.builder()
                     .setField(MultipleFields.BANNERS_COUNT, size)
                     .setField(MultipleFields.BANNERS_DATA_TYPE, bannerDataTypes)

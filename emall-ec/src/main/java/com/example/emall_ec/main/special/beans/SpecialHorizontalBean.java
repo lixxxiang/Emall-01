@@ -10,13 +10,19 @@ public class SpecialHorizontalBean {
     private String imageUrl;
     private String type;
     private String link;
+    private String productId;
 
-    public SpecialHorizontalBean(String title, String detail, String imageUrl, String type, String link) {
+    public SpecialHorizontalBean(String title, String detail, String imageUrl, String type, String link, String productId) {
         this.title = title;
         this.detail = detail;
         this.imageUrl = imageUrl;
         this.type = type;
         this.link = link;
+        this.productId = productId;
+    }
+
+    public String getProductId() {
+        return productId;
     }
 
     public String getTitle() {

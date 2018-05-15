@@ -27,6 +27,9 @@
             android:orientation="horizontal">
 
             <RelativeLayout
+                android:id="@+id/search_back_iv_rl"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
@@ -70,10 +73,13 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/index_noti_tv_rl"
                 android:layout_width="0dp"
                 android:layout_height="31dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical">
 
                 <ImageView

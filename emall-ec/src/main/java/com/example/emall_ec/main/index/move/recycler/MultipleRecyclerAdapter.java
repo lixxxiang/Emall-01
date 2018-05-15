@@ -115,9 +115,9 @@ public class MultipleRecyclerAdapter extends
                 if (!mIsInitBanner) {
                     banner.setImageLoader(new GlideImageLoader());
                     banner.setImages((List<?>) entity.getField(MultipleFields.BANNERS_IMAGEURL));
-                    bannerDataType = (List<String>)entity.getField(MultipleFields.BANNERS_DATA_TYPE);
-                    bannerProductId = (List<String>)entity.getField(MultipleFields.BANNERS_PRODUCT_ID);
-                    bannerLink = (List<String>)entity.getField(MultipleFields.BANNERS_LINK);
+                    bannerDataType = (List<String>) entity.getField(MultipleFields.BANNERS_DATA_TYPE);
+                    bannerProductId = (List<String>) entity.getField(MultipleFields.BANNERS_PRODUCT_ID);
+                    bannerLink = (List<String>) entity.getField(MultipleFields.BANNERS_LINK);
 
                     banner.start();
                     mIsInitBanner = true;
@@ -138,7 +138,7 @@ public class MultipleRecyclerAdapter extends
                 horiziontalRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, 20, true));
                 SnapHelper snapHelperStart = new GravitySnapHelper(Gravity.START);
                 snapHelperStart.attachToRecyclerView(horiziontalRecyclerView);
-                horiziontalRecyclerView.setAdapter(new ItemUnitAdapter((List<UnitBean>) entity.getField(MultipleFields.HORIZONTAL_SCROLL), mContext));
+                horiziontalRecyclerView.setAdapter(new ItemUnitAdapter((List<UnitBean>) entity.getField(MultipleFields.HORIZONTAL_SCROLL), mContext, delegate));
                 break;
             case ItemType.THE_THREE:
                 theThreeList = entity.getField(MultipleFields.THE_THREE);
@@ -154,17 +154,105 @@ public class MultipleRecyclerAdapter extends
                         .load(theThreeList.get(2).getImageUrl())
                         .apply(RECYCLER_OPTIONS)
                         .into((ImageView) holder.getView(R.id.the_three_3));
+                holder.getView(R.id.the_three_1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        theThreeClick(theThreeList, 0);
+                    }
+                });
+                holder.getView(R.id.the_three_2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        theThreeClick(theThreeList, 1);
+                    }
+                });
+                holder.getView(R.id.the_three_3).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        theThreeClick(theThreeList, 2);
+                    }
+                });
                 break;
             case ItemType.GUESS_LIKE:
                 RecyclerView.LayoutManager manager = new GridLayoutManager(mContext, 2);
                 guessLikeRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 20, true));
                 guessLikeRecyclerView.setLayoutManager(manager);
-                guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE), mContext));
+                guessLikeRecyclerView.setAdapter(new GuessLikeAdapter((List<GuessLikeBean>) entity.getField(MultipleFields.GUESS_LIKE), mContext, delegate));
                 break;
             case ItemType.BLANK:
 
             default:
                 break;
+        }
+    }
+
+    private void theThreeClick(ArrayList<TheThreeBean> theThreeList, int position) {
+        EmallLogger.INSTANCE.d(theThreeList.get(position).getType());
+        switch (theThreeList.get(position).getType()) {
+            case "scene": {
+                GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", theThreeList.get(position).getProductId());
+                bundle.putString("type", "1");
+                goodsDetailDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(goodsDetailDelegate);
+                break;
+            }
+            case "night": {
+                GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", theThreeList.get(position).getProductId());
+                bundle.putString("type", "5");
+                goodsDetailDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(goodsDetailDelegate);
+                break;
+            }
+            case "video": {
+                GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", theThreeList.get(position).getProductId());
+                bundle.putString("type", "3");
+                goodsDetailDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(goodsDetailDelegate);
+                break;
+            }
+            case "sceneSearch": {
+                ClassifyDelegate classifyDelegate = new ClassifyDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("TYPE", "SCENE");
+                classifyDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(classifyDelegate);
+                break;
+            }
+            case "nightSearch": {
+                ClassifyDelegate classifyDelegate = new ClassifyDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("TYPE", "NOCTILUCENCE");
+                classifyDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(classifyDelegate);
+                break;
+            }
+            case "videoSearch": {
+                ClassifyDelegate classifyDelegate = new ClassifyDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("TYPE", "VIDEO");
+                classifyDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(classifyDelegate);
+                break;
+            }
+            case "programSearch": {
+                delegate.getParentDelegate().start(new ProgramDelegate().create());
+                break;
+            }
+            case "webview":
+                DiscoverDelegate discoverDelegate = new DiscoverDelegate().create();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", theThreeList.get(position).getLink());
+                discoverDelegate.setArguments(bundle);
+                delegate.getParentDelegate().start(discoverDelegate);
+                break;
+
+            default:
         }
     }
 
@@ -182,7 +270,7 @@ public class MultipleRecyclerAdapter extends
     public void OnBannerClick(int position) {
         EmallLogger.INSTANCE.d(bannerDataType.get(position));
         EmallLogger.INSTANCE.d(bannerProductId);
-        switch (bannerDataType.get(position)){
+        switch (bannerDataType.get(position)) {
             case "scene": {
                 EmallLogger.INSTANCE.d("DDDDDD");
                 GoodsDetailDelegate goodsDetailDelegate = new GoodsDetailDelegate().create();
