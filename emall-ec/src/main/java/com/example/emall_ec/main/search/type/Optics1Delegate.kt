@@ -122,7 +122,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 //正序
                 ssp2!!["orderBy"] = "centerTimeASC"
                 pages = 1
-                getData(ssp2!!,pages)
+                getData(ssp2!!, pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_red)
                 optics_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
@@ -132,7 +132,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                 //倒序
                 ssp2!!["orderBy"] = "centerTimeDESC"
                 pages = 1
-                getData(ssp2!!,pages)
+                getData(ssp2!!, pages)
                 optics_gather_time_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
                 optics_gather_time_down_iv.setBackgroundResource(R.drawable.ic_down_red)
@@ -150,7 +150,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             priceFlag = if (!priceFlag) {
                 ssp2!!["orderBy"] = "priceASC"
                 pages = 1
-                getData(ssp2!!,pages)
+                getData(ssp2!!, pages)
                 optics_price_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_red)
                 optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
@@ -158,7 +158,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             } else {
                 ssp2!!["orderBy"] = "priceDESC"
                 pages = 1
-                getData(ssp2!!,pages)
+                getData(ssp2!!, pages)
                 optics_price_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
                 optics_price_down_iv.setBackgroundResource(R.drawable.ic_down_red)
@@ -420,14 +420,14 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_3_1.setOnClickListener {
-            var dp =MyDatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener, mYear, mMonth, mDay)
+            var dp = MyDatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener, mYear, mMonth, mDay)
             dp.datePicker.descendantFocusability = DatePicker.FOCUS_BLOCK_DESCENDANTS
             dp.show()
             confirmChangeColor()
         }
 
         optics_btn_3_2.setOnClickListener {
-            var dp =DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener2, mYear, mMonth, mDay)
+            var dp = DatePickerDialog(activity, R.style.MyDatePickerDialogTheme, onDateSetListener2, mYear, mMonth, mDay)
             dp.show()
             confirmChangeColor()
         }
@@ -435,11 +435,11 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         optics_btn_confirm.setOnClickListener {
             optics_srl.isRefreshing = true
 
-            if (resetFlag){
+            if (resetFlag) {
                 optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
                 optics_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
                 resetFlag = false
-            }else{
+            } else {
                 optics_screen_tv.setTextColor(Color.parseColor("#B80017"))
                 optics_screen_iv.setBackgroundResource(R.drawable.ic_down_red)
             }
@@ -632,6 +632,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                             }
                             mAdapter!!.notifyDataSetChanged()
                             mAdapter!!.loadMoreComplete()
+                            if (optics_srl != null)
+                                optics_srl.isEnabled = true
                             if (pages < pagesAmount)
                                 pages += 1
 //                            initRecyclerView(data!!)
@@ -669,6 +671,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
             itemSize += 10
             if (size > itemSize) {
                 EmallLogger.d("In le me ")
+                optics_srl.isEnabled = false
                 loadMoreData(ssp2!!, pages, data)
             } else {
             }
