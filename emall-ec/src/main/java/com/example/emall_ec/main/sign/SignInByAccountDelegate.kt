@@ -30,6 +30,8 @@ import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.database.DatabaseManager
+import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.detail.GoodsDetailDelegate
 import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import kotlinx.android.synthetic.main.forget_pwd_dialog.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
@@ -51,7 +53,7 @@ class SignInByAccountDelegate : EmallDelegate() {
     var commonBean = CommonBean()
     var userNameLoginBean = UserNameLoginBean()
     private var mISignListener: ISignListener? = null
-    var toast: Toast?= null
+    var toast: Toast? = null
 
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
@@ -251,14 +253,30 @@ class SignInByAccountDelegate : EmallDelegate() {
 //                                info.userPassword = passwordMD5
 //                                DatabaseManager().getInstance()!!.getDao()!!.update(info)
 //                            }
-                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\"").replaceFirst("null","\"" + passwordMD5 + "\""), mISignListener!!)
+                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\"").replaceFirst("null", "\"" + passwordMD5 + "\""), mISignListener!!)
 //                            SignHandler().onSignIn(response.replaceFirst("null", "\"" + tel + "\""), mISignListener!!)
 
                             val bundle = Bundle()
                             bundle.putString("USER_NAME", userNameLoginBean.user.username)
                             KeyboardUtils.hideSoftInput(activity)
 //                            popTo(preFragment.javaClass, false)
-                            pop()
+                            when {
+                                arguments.getString("PAGE_FROM") == "CLASSIFY" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                                arguments.getString("PAGE_FROM") == "ORDER_LIST" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                arguments.getString("PAGE_FROM") == "ME" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                                arguments.getString("PAGE_FROM") == "PAYMENT" -> {
+                                    if (findFragment(GoodsDetailDelegate().javaClass) == null) {
+                                        popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                    } else
+                                        popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+                                }
+                                arguments.getString("PAGE_FROM") == "PROGRAM_INDEX" ->
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                arguments.getString("PAGE_FROM") == "PROGRAM" ->
+                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                                else -> pop()
+                            }
                             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 //                            setFragmentResult(RESULT_OK, bundle)
                         } else {

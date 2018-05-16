@@ -47,6 +47,9 @@ class ProgramParamsTypeDelegate : BottomItemDelegate() {
             pop()
         }
         program_back_btn.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putString("index", "-1")
+            setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             pop()
         }
     }

@@ -48,7 +48,10 @@ class SpecialDelegate : BottomItemDelegate() {
                         data!!.add(SpecialDataConverter().setJsonData(response).horizontalConvert()[0])
                         data.add(SpecialDataConverter().setJsonData(response).verticalConvert()[0])
                         mAdapter = SpecialAdapter.create(data, delegate)
-                        special_rv.adapter = mAdapter
+                        if(special_rv != null){
+                            special_rv.adapter = mAdapter
+
+                        }
                     }
                 })
                 .build()

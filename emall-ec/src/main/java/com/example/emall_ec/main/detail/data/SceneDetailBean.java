@@ -82,6 +82,15 @@ public class SceneDetailBean {
         private String serviceDescription;
         private String size;
         private String swingSatelliteAngle;
+        private String pages;
+
+        public String getPages() {
+            return pages;
+        }
+
+        public void setPages(String pages) {
+            this.pages = pages;
+        }
 
         public String getCenterTime() {
             return centerTime;

@@ -2,6 +2,7 @@ package com.example.emall_ec.main.detail
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
@@ -46,9 +47,11 @@ import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
+import com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity
 import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
+import kotlinx.android.synthetic.main.pic_detail_1.*
 import retrofit2.Retrofit
 
 
@@ -84,6 +87,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var type = String()
     var mSharedPreferences: SharedPreferences? = null
     var type135 = String()
+    var pageNum = 0
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -214,7 +218,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         video_goods_detail_title_image.visibility = View.GONE
                         video_mark.visibility = View.GONE
                         video_goods_detail_mask_iv.visibility = View.GONE
-                        detail_videoview.startButton.performClick()
+//                        detail_videoview.startButton.performClick()
                     }
 
                     builder.setNegativeButton("取消播放") { dialog, _ ->
@@ -227,10 +231,18 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                     video_goods_detail_title_image.visibility = View.GONE
                     video_mark.visibility = View.GONE
                     video_goods_detail_mask_iv.visibility = View.GONE
-                    detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
+                    detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_FULLSCREEN, "")
                 }
 
             }
+        }
+
+        video_enlarge.setOnClickListener {
+            EmallLogger.d("ddddd")
+            var intent = Intent(activity, JiaoZiActivity::class.java)
+            intent.putExtra("title",videoDetail.data.title)
+            intent.putExtra("url", videoDetail.data.videoPath)
+            startActivity(intent)
         }
     }
 
@@ -494,9 +506,11 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
         video_goods_detail_title_image.visibility = View.GONE
         video_goods_detail_title_image_mask.visibility = View.GONE
-        Handler().postDelayed({
-            detail_videoview.startButton.performClick()
-        }, 1000)
+//        Handler().postDelayed({
+//            if(detail_videoview != null){
+//                detail_videoview.startButton.performClick()
+//            }
+//        }, 1000)
 
     }
 

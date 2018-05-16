@@ -27,6 +27,7 @@ import com.google.gson.Gson
 import io.vov.vitamio.Vitamio
 import io.vov.vitamio.widget.MediaController
 import kotlinx.android.synthetic.main.delegate_goods_detail.*
+import kotlinx.android.synthetic.main.me_function_item.*
 import me.yokeyword.fragmentation.ISupportFragment
 import java.util.*
 
@@ -97,6 +98,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
         invoice_toolbar.title = getString(R.string.invoice_title)
         (activity as AppCompatActivity).setSupportActionBar(invoice_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        val snackBar2 = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
+        val snackBar = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
 
         invoice_toolbar.setNavigationOnClickListener {
             KeyboardUtils.hideSoftInput(activity)
@@ -117,7 +120,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                     updateInvoiceBack()
 
                 } else {
-                    val snackBar = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
+
                     snackBar.setAction(getString(R.string.confirm_2), { snackBar.dismiss() })
                     snackBar.show()
                 }
@@ -131,6 +134,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                 bundle.putString("flag", flag)
                 EmallLogger.d(flag)
                 setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+                snackBar.dismiss()
+                snackBar2.dismiss()
                 pop()
             }
 
@@ -179,9 +184,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                 updateInvoice()
 
             } else {
-                val snackBar = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
-                snackBar.setAction(getString(R.string.confirm_2), { snackBar.dismiss() })
-                snackBar.show()
+                snackBar2.setAction(getString(R.string.confirm_2), { snackBar2.dismiss() })
+                snackBar2.show()
             }
         }
 
@@ -263,6 +267,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                 .build()
                 .post()
     }
+
     private fun updateInvoiceBack() {
         updateInvoiceParams!!["title"] = title.text.toString()
         updateInvoiceParams!!["payerNumber"] = invoice_id.text.toString()

@@ -104,15 +104,20 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null) {
                     orderDetail = response.body()!!
-                    EmallLogger.d(response)
+                    EmallLogger.d(orderDetail.data)
+                    if(orderDetail.data.toString() == "[]"){
+                        EmallLogger.d("NULL")
+                        if (all2_srl != null)
+                            all2_srl.isRefreshing = false
+                    }
                     inited = true
                     val data: MutableList<OrderListModel>? = mutableListOf()
                     if (all2_rv != null && all2_rl != null) {
                         if (orderDetail.data.isEmpty()) {
                             all2_rv.visibility = View.INVISIBLE
                             all2_rl.visibility = View.VISIBLE
-                            if (all_srl != null)
-                                all_srl.isRefreshing = false
+                            if (all2_srl != null)
+                                all2_srl.isRefreshing = false
 
                         } else {
                             all2_rv.visibility = View.VISIBLE
@@ -175,7 +180,10 @@ class All2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListener {
                 }
             }
 
-            override fun onFailure(call: retrofit2.Call<OrderDetail>, throwable: Throwable) {}
+            override fun onFailure(call: retrofit2.Call<OrderDetail>, throwable: Throwable) {
+                if (all2_srl != null)
+                    all2_srl.isRefreshing = false
+            }
         })
     }
 

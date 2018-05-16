@@ -144,6 +144,9 @@ class ProgramParamsDelegate : BottomItemDelegate() {
                     productType = "3"
                     adapter!!.notifyDataSetChanged()
                 }
+                "-1" ->{
+
+                }
             }
             showNextStep()
 

@@ -64,6 +64,8 @@ class ClassifyDelegate : EmallDelegate() {
     private var pages = 1
     private var pagesAmount = -1
     private var SCROLL_TIMES = 0
+    var cityNameToShow = String()
+    var geo = String()
 
     override fun setLayout(): Any? {
         return R.layout.delegate_classify
@@ -147,13 +149,22 @@ class ClassifyDelegate : EmallDelegate() {
 
         }
 
+        /**
+         * xialabufen
+         */
         classify_gv.setOnItemClickListener { parent, view, position, id ->
-            EmallLogger.d(position)
+            classify_progressBar.visibility = View.VISIBLE
             if (position != 0) {
                 if (!data!!.isEmpty())
                     data!!.clear()
                 closeScreen()
                 classify_recommand_tv.text = getRecommendCitiesBean.data[position - 1].cityName
+                cityNameToShow = getRecommendCitiesBean.data[position - 1].cityName
+                SCROLL_TIMES = 0
+                pages = 1
+                productId!!.clear()
+                EmallLogger.d(getRecommendCitiesBean.data[position - 1].cityName)
+                geo = getRecommendCitiesBean.data[position - 1].geo
                 getData(getRecommendCitiesBean.data[position - 1].geo,
                         "", "",
                         "", "",
@@ -163,7 +174,12 @@ class ClassifyDelegate : EmallDelegate() {
                 if (!data!!.isEmpty())
                     data!!.clear()
                 closeScreen()
+                SCROLL_TIMES = 0
+                pages = 1
+                productId!!.clear()
+
                 classify_recommand_tv.text = getString(R.string.recommand)
+                geo = ""
                 getData("",
                         "", "",
                         "", "",
@@ -210,6 +226,11 @@ class ClassifyDelegate : EmallDelegate() {
                 classify_recommand_tv.text = getString(R.string.recommand)
                 if (!data!!.isEmpty())
                     data!!.clear()
+                classify_progressBar.visibility = View.VISIBLE
+                SCROLL_TIMES = 0
+                pages = 1
+                productId!!.clear()
+                geo = ""
                 getData("",
                         "", "",
                         "", "",
@@ -221,13 +242,17 @@ class ClassifyDelegate : EmallDelegate() {
         classify_sv.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
             if (scrollY == (v!!.getChildAt(0).measuredHeight - v.measuredHeight)) {
                 SCROLL_TIMES++
-                if (arguments.getString("TYPE") == "SCENE") {
-                    bottom_rl.visibility = View.VISIBLE
-                    getData("",
-                            "", "",
-                            "", "",
-                            "", "",
-                            "0", "10", pages.toString())
+                EmallLogger.d(SCROLL_TIMES)
+                EmallLogger.d(pagesAmount)
+                if (SCROLL_TIMES < pagesAmount) {
+                    if (arguments.getString("TYPE") == "SCENE") {
+                        bottom_rl.visibility = View.VISIBLE
+                        getData(geo,
+                                "", "",
+                                "", "",
+                                "", "",
+                                "0", "10", pages.toString())
+                    }
                 }
             }
         })
@@ -263,7 +288,7 @@ class ClassifyDelegate : EmallDelegate() {
     private fun closeScreen() {
         classify_down_btn.setBackgroundResource(R.drawable.down)
         classify_mask_rl.visibility = View.INVISIBLE
-        classify_recommand_tv.text = getString(R.string.recommand)
+        classify_recommand_tv.text = cityNameToShow
         classify_hsv.visibility = View.VISIBLE
         isScroll(true)
         isExpanded = false
@@ -307,10 +332,13 @@ class ClassifyDelegate : EmallDelegate() {
                 param_satelliteId, param_startTime,
                 param_endTime, param_cloud,
                 param_type, param_pageSize, param_pageNum)
+        EmallLogger.d(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",param_productType, param_resolution,
+                param_satelliteId, param_startTime,
+                param_endTime, param_cloud,
+                param_type, param_pageSize, param_pageNum))
         call.enqueue(object : retrofit2.Callback<SceneSearch> {
             override fun onResponse(call: retrofit2.Call<SceneSearch>, response: retrofit2.Response<SceneSearch>) {
                 if (response.body() != null) {
-                    EmallLogger.d(response.body()!!.data.searchReturnDtoList.size)
                     if (bottom_rl != null)
                         bottom_rl.visibility = View.INVISIBLE
                     sceneSearch = response.body()!!
@@ -335,16 +363,7 @@ class ClassifyDelegate : EmallDelegate() {
             override fun onResponse(call: retrofit2.Call<VideoHomeBean>, response: retrofit2.Response<VideoHomeBean>) {
                 if (response.body() != null) {
                     videoHomeBean = response.body()!!
-//                    bundle!!.putString("TYPE","SCENE")
-//                    bundle.putSerializable("SCENE_DATA", sceneSearch)
-//                    delegate.arguments = bundle
-//                    (DELEGATE as EcBottomDelegate).start(delegate)
-//                    if (arguments.getString("TYPE") == "SCENE") {
-//                        getSceneData()
-//                        classify_title_tv.text = resources.getString(R.string.optics_1)
-//                    } else if (arguments.getString("TYPE") == "VIDEO") {
                     getVideoData()
-//                    }
                 } else {
                     EmallLogger.d("error")
                 }
@@ -356,72 +375,6 @@ class ClassifyDelegate : EmallDelegate() {
 
     private fun initRecommendCities() {
         cityName!!.add(getString(R.string.recommand))
-//        RestClient().builder()
-//                .url("http://59.110.164.214:8024/global/mobile/getRecommendCities")
-//                .success(object : ISuccess {
-//                    override fun onSuccess(response: String) {
-//                        getRecommendCitiesBean = Gson().fromJson(response, GetRecommendCitiesBean::class.java)
-//                        if (getRecommendCitiesBean.message == "success") {
-//                            EmallLogger.d(response)
-//                            val size = getRecommendCitiesBean.data.size
-//                            classify_progressBar.visibility = View.VISIBLE
-//                            getData("",
-//                                    "", "",
-//                                    "", "",
-//                                    "", "",
-//                                    "0", "10", pages.toString())//0是标准景
-//                            for (i in 0 until size) {
-//                                cityName!!.add(getRecommendCitiesBean.data[i].cityName)
-//                                val topRl = RelativeLayout(activity)
-//                                topRl.id = i
-//                                val topRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT)
-//                                topRl.setBackgroundColor(Color.parseColor("#FFFFFF"))
-//                                topRl.layoutParams = topRlParams
-//                                topRl.isClickable = true
-//                                topRl.isFocusable = true
-//                                topRl.setOnClickListener {
-//                                    classify_recommand_tv.text = getRecommendCitiesBean.data[i].cityName
-//                                    if (!data!!.isEmpty())
-//                                        data!!.clear()
-//                                    productId!!.clear()
-//
-//                                    getData(getRecommendCitiesBean.data[i].geo,
-//                                            "", "",
-//                                            "", "",
-//                                            "", "",
-//                                            "0", "10", "1")
-//
-//                                }
-//                                classify_ll.addView(topRl, topRlParams)
-//                                val tv = AppCompatTextView(activity)
-//                                val tvParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-//                                tvParams.addRule(RelativeLayout.CENTER_IN_PARENT)
-//                                tvParams.setMargins(DimenUtil().dip2px(activity, 10F), 0, DimenUtil().dip2px(activity, 10F), 0)
-//                                tv.layoutParams = topRlParams
-//                                tv.text = getRecommendCitiesBean.data[i].cityName
-//                                tv.setTextColor(Color.parseColor("#5C5C5C"))
-//                                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
-//                                topRl.addView(tv, tvParams)
-//                            }
-//                        } else {
-//                            Toast.makeText(activity, "getRecommendCities wrong", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                })
-//                .error(object : IError {
-//                    override fun onError(code: Int, msg: String) {
-//                        EmallLogger.d(msg)
-//                    }
-//                })
-//                .failure(object : IFailure {
-//                    override fun onFailure() {
-//                        EmallLogger.d("f")
-//                    }
-//                })
-//                .build()
-//                .get()
-
-
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
 
@@ -453,7 +406,12 @@ class ClassifyDelegate : EmallDelegate() {
                                 if (!data!!.isEmpty())
                                     data!!.clear()
                                 productId!!.clear()
+                                EmallLogger.d(cityNameToShow)
+                                cityNameToShow = getRecommendCitiesBean.data[i].cityName
                                 classify_progressBar.visibility = View.VISIBLE
+                                geo = getRecommendCitiesBean.data[i].geo
+                                SCROLL_TIMES = 0
+                                pages = 1
                                 getData(getRecommendCitiesBean.data[i].geo,
                                         "", "",
                                         "", "",
@@ -495,7 +453,6 @@ class ClassifyDelegate : EmallDelegate() {
             productId!!.add(sceneSearch.data.searchReturnDtoList[i].productId)
             data!!.add(model)
         }
-        EmallLogger.d(productId!!)
         initRecyclerView("SCENE")
     }
 

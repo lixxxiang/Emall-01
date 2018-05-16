@@ -262,7 +262,9 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
                 val pt = Point()
                 pt.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt()
                 pt.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt())
-                if (mBaiduMap != null) {
+                if (mBaiduMap!!.projection != null) {
+                    EmallLogger.d(pt.x)
+                    EmallLogger.d(pt.y)
                     val ll = mBaiduMap!!.projection.fromScreenLocation(pt)
                     lati_lt_screen = ll.latitude
                     longi_lt_screen = ll.longitude

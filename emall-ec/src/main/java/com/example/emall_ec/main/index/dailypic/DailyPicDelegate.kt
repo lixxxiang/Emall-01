@@ -119,6 +119,8 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
 
     override fun onEnterAnimationEnd(saveInstanceState: Bundle?) {
         getBanner()
+        getData(PAGE_SIZE, pageNum)
+
     }
 
     private fun getBanner() {
@@ -130,7 +132,6 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
                         bannerBean = Gson().fromJson(response, BannerBean::class.java)
                         content = bannerBean.data
                         setBanner(content)
-                        getData(PAGE_SIZE, pageNum)
 
                     }
                 })

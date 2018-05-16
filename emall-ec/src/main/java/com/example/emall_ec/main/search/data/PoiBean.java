@@ -124,7 +124,7 @@ public class PoiBean {
             private String pname;
             private String cityname;
             private String adname;
-            private String address;
+            private Object address;
             private String location;
             private String type;
 
@@ -168,11 +168,11 @@ public class PoiBean {
                 this.adname = adname;
             }
 
-            public String getAddress() {
+            public Object getAddress() {
                 return address;
             }
 
-            public void setAddress(String address) {
+            public void setAddress(Object address) {
                 this.address = address;
             }
 

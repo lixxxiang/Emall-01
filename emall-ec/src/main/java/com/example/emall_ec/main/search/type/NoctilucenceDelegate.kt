@@ -86,6 +86,7 @@ class NoctilucenceDelegate : EmallDelegate() {
         ssp!!["type"] = "2"
         ssp!!["pageSize"] = "10"
         initSceneGlm()
+        noctilucence_srl.isRefreshing = true
 
         getData(ssp!!, pages)
 
@@ -99,6 +100,7 @@ class NoctilucenceDelegate : EmallDelegate() {
         })
 
         noctilucence_gather_time_rl.setOnClickListener {
+            noctilucence_srl.isRefreshing = true
 
             noctilucence_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
             noctilucence_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
@@ -126,6 +128,7 @@ class NoctilucenceDelegate : EmallDelegate() {
         }
 
         noctilucence_price_rl.setOnClickListener {
+            noctilucence_srl.isRefreshing = true
 
             noctilucence_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
             noctilucence_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
@@ -414,6 +417,8 @@ class NoctilucenceDelegate : EmallDelegate() {
         }
 
         noctilucence_btn_confirm.setOnClickListener {
+            noctilucence_srl.isRefreshing = true
+
             if (resetFlag){
                 noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
                 noctilucence_screen_iv.setBackgroundResource(R.drawable.ic_down_gray)
@@ -540,6 +545,7 @@ class NoctilucenceDelegate : EmallDelegate() {
                         println(response)
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
                         if (sceneSearch.status != 103) {
+                            noctilucence_srl.isRefreshing = false
                             noctilucence_no_result.visibility = View.GONE
                             noctilucence_rv.visibility = View.VISIBLE
                             productIdList = sceneSearch.data.searchReturnDtoList
@@ -558,6 +564,7 @@ class NoctilucenceDelegate : EmallDelegate() {
                             }
                             initRecyclerView(data!!)
                         } else {
+                            noctilucence_srl.isRefreshing = false
                             noctilucence_rv.visibility = View.GONE
                             noctilucence_no_result.visibility = View.VISIBLE
                             noctilucence_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))

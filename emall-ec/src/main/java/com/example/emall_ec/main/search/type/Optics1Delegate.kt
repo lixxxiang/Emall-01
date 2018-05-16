@@ -83,6 +83,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     @SuppressLint("SimpleDateFormat")
     override fun initial() {
         setSwipeBackEnable(false)
+        optics_srl.isRefreshing = true
+
         val sp = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         ssp2!!["scopeGeo"] = geoFormat(sp.getString("GEO", ""))
         EmallLogger.d(geoFormat(sp.getString("GEO", "")))
@@ -110,6 +112,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
         optics_gather_time_rl.setOnClickListener {
             optics_screen_rl.visibility = View.INVISIBLE
+            optics_srl.isRefreshing = true
 
             optics_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
             optics_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
@@ -138,6 +141,8 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_price_rl.setOnClickListener {
+            optics_srl.isRefreshing = true
+
             optics_screen_rl.visibility = View.INVISIBLE
             optics_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
             optics_gather_time_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
@@ -428,6 +433,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
         }
 
         optics_btn_confirm.setOnClickListener {
+            optics_srl.isRefreshing = true
 
             if (resetFlag){
                 optics_screen_tv.setTextColor(Color.parseColor("#9B9B9B"))
@@ -556,6 +562,7 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
                     override fun onSuccess(response: String) {
                         sceneSearch = Gson().fromJson(response, SceneSearch::class.java)
 //                        EmallLogger.d(sceneSearch.data.count)
+                        optics_srl.isRefreshing = false
 
                         itemSize = 0
                         if (sceneSearch.status != 103) {

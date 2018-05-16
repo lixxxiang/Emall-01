@@ -19,6 +19,7 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.example.emall_ec.main.sign.data.CheckMessageBean
+import com.example.emall_ec.main.sign.data.CommonBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
 import com.google.gson.Gson
 import me.yokeyword.fragmentation.ISupportFragment
@@ -35,6 +36,7 @@ class SignUpDelegate : BottomItemDelegate() {
     var vCode = String()
     var sendMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var checkMessageParams: WeakHashMap<String, Any>? = WeakHashMap()
+    var findTelephoneParams: WeakHashMap<String, Any>? = WeakHashMap()
 
     var flag1 = false
     var flag2 = false
@@ -44,6 +46,7 @@ class SignUpDelegate : BottomItemDelegate() {
     var alreadySignedToast: Toast? = null
     var checkMessageBean = CheckMessageBean()
     var sendMessageBean = SendMessageBean()
+    var commonBean = CommonBean()
     private val REQ_MODIFY_FRAGMENT = 100
 
     fun create(): SignUpDelegate? {
@@ -103,8 +106,9 @@ class SignUpDelegate : BottomItemDelegate() {
                     /**
                      * tel is valid
                      */
-                    sign_up_count_down.start()
-                    getVCode(tel)
+
+                    checkAccount()
+
                 } else {
                     /**
                      * tel is invalid
@@ -150,7 +154,7 @@ class SignUpDelegate : BottomItemDelegate() {
             KeyboardUtils.hideSoftInput(activity)
             val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
             val bundle = Bundle()
-            bundle.putString("PAGE_FROM", "SIGN_UP")
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
             delegate.arguments = bundle
             start(delegate)
         }
@@ -327,6 +331,43 @@ class SignUpDelegate : BottomItemDelegate() {
                             /**
                              * registered
                              */
+                        }
+                    }
+                })
+                .error(object : IError {
+                    override fun onError(code: Int, msg: String) {}
+                })
+                .failure(object : IFailure {
+                    override fun onFailure() {}
+                })
+                .build()
+                .post()
+    }
+
+    private fun checkAccount() {
+        findTelephoneParams!!["telephone"] = tel
+        RestClient().builder()
+                .url("http://59.110.161.48:8023/findTelephone.do")
+                .params(findTelephoneParams!!)
+                .success(object : ISuccess {
+                    override fun onSuccess(response: String) {
+                        commonBean = Gson().fromJson(response, CommonBean::class.java)
+                        if (commonBean.meta != "success") {
+                            /**
+                             * success
+                             */
+                            sign_up_count_down.start()
+
+                            getVCode(tel)
+                        } else {
+                            if (alreadySignedToast != null) {
+                                alreadySignedToast!!.setText("手机号已注册")
+                                alreadySignedToast!!.duration = Toast.LENGTH_SHORT
+                                alreadySignedToast!!.show()
+                            } else {
+                                alreadySignedToast = Toast.makeText(activity, "手机号已注册", Toast.LENGTH_SHORT)
+                                alreadySignedToast!!.show()
+                            }
                         }
                     }
                 })

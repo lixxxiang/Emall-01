@@ -171,6 +171,8 @@ class GoodsDelegate : EmallDelegate() {
                                 model.productId = myAllCollectionBean.data.collection[i].productId
                                 model.productType = myAllCollectionBean.data.collection[i].productType
                                 model.title = myAllCollectionBean.data.collection[i].title
+                                model.duration = myAllCollectionBean.data.collection[i].duration
+
                                 data!!.add(model)
                             }
                             initRecyclerView(data!!)

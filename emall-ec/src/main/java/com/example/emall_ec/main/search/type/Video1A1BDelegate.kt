@@ -49,11 +49,14 @@ class Video1A1BDelegate : EmallDelegate() {
     @SuppressLint("SimpleDateFormat")
     override fun initial() {
         setSwipeBackEnable(false)
+        video_srl.isRefreshing = true
+
         val sp = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         videoSearchParams!!["geo"] = Optics1Delegate().geoFormat(sp.getString("GEO", ""))
         videoSearchParams!!["type"] = "0"
 
         video1a1b_gather_time_rl.setOnClickListener {
+            video_srl.isRefreshing = true
 
             video1a1b_price_tv.setTextColor(Color.parseColor("#9B9B9B"))
             video1a1b_price_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
@@ -79,6 +82,8 @@ class Video1A1BDelegate : EmallDelegate() {
         }
 
         video1a1b_price_rl.setOnClickListener {
+            video_srl.isRefreshing = true
+
             video1a1b_gather_time_tv.setTextColor(Color.parseColor("#9B9B9B"))
             video1a1b_gather_up_iv.setBackgroundResource(R.drawable.ic_up_gray)
             video1a1b_gather_down_iv.setBackgroundResource(R.drawable.ic_down_gray)
@@ -139,6 +144,8 @@ class Video1A1BDelegate : EmallDelegate() {
                     itemSize = 0
 
                     if (videoSearchBean.status != 103) {
+                        video_srl.isRefreshing = false
+
                         if (video_rv_rl.visibility == View.GONE) {
                             video_rv_rl.visibility = View.VISIBLE
                             video_no_result.visibility = View.GONE

@@ -48,9 +48,10 @@ class SearchPoiDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-//        search_poi_et.isFocusable = true
-//        search_poi_et.isFocusableInTouchMode = true
-//        search_poi_et.requestFocus()
+        search_poi_et.isFocusable = true
+        search_poi_et.isFocusableInTouchMode = true
+        search_poi_et.requestFocus()
+        setSwipeBackEnable(false)
 //        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         search_back_iv_rl.setOnClickListener {
             EmallLogger.d(pages)
@@ -102,12 +103,14 @@ class SearchPoiDelegate : EmallDelegate() {
 
         search_poi_et.setOnEditorActionListener { v, actionId, event ->
             KeyboardUtils.hideSoftInput(activity)
+            search_progressBar.visibility = View.VISIBLE
             search()
             false
         }
 
         index_noti_tv_rl.setOnClickListener {
             KeyboardUtils.hideSoftInput(activity)
+            search_progressBar.visibility = View.VISIBLE
             search()
         }
     }
@@ -118,6 +121,7 @@ class SearchPoiDelegate : EmallDelegate() {
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
 //                            hideText()
+                        search_progressBar.visibility = View.INVISIBLE
                         EmallLogger.d(response)
                         val tempCities = Gson().fromJson(response, CitiesBean::class.java)
                         val tempPois = Gson().fromJson(response, PoiBean::class.java)

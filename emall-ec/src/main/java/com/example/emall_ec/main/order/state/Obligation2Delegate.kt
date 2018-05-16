@@ -87,14 +87,18 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
                 if (response.body() != null) {
                     orderDetail = response.body()!!
                     EmallLogger.d(response)
+                    if(orderDetail.data.isEmpty()){
+                        if (obligation2_srl != null)
+                            obligation2_srl.isRefreshing = false
+                    }
                     inited = true
                     val data: MutableList<OrderListModel>? = mutableListOf()
                     if (obligation2_rv != null && obligation2_rl != null) {
                         if (orderDetail.data.isEmpty()) {
                             obligation2_rv.visibility = View.INVISIBLE
                             obligation2_rl.visibility = View.VISIBLE
-                            if (obligation_srl != null)
-                                obligation_srl.isRefreshing = false
+                            if (obligation2_srl != null)
+                                obligation2_srl.isRefreshing = false
 
                         } else {
                             obligation2_rv.visibility = View.VISIBLE
