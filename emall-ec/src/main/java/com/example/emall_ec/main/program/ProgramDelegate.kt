@@ -410,11 +410,10 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         areaTvParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         areaTvParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         areaTvParams.setMargins(0, 0, 0, DimenUtil().dip2px(context, 16F))
-
         areaTv!!.setTextColor(Color.parseColor("#FFFFFF"))
         areaTv!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
-
         topRl!!.addView(areaTv, areaTvParams)
+//        areaTv!!.visibility = View.INVISIBLE
 
 
         val tl = ImageView(activity)
@@ -616,44 +615,49 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
         })
 
         program_camera.setOnClickListener {
-            level = 2
-            program_toolbar.setBackgroundColor(Color.parseColor("#333333"))
-            topRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            leftRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            rightRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            bottomRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            program_bottom_rl.setBackgroundColor(Color.parseColor("#333333"))
-            program_ll_bar.setBackgroundColor(Color.parseColor("#333333"))
-            program_camera.visibility = View.GONE
-            satelliteImageView!!.visibility = View.GONE
-            scrollTextView!!.visibility = View.GONE
-            title!!.visibility = View.VISIBLE
-            program_toolbar_searchbar.visibility = View.INVISIBLE
-            nextStep!!.visibility = View.VISIBLE
-            rulerRl!!.visibility = View.VISIBLE
-            rular!!.visibility = View.VISIBLE
-            rular2!!.visibility = View.VISIBLE
-            r1Tv!!.visibility = View.VISIBLE
-            r2Tv!!.visibility = View.VISIBLE
-            val mUiSettings = mBaiduMap!!.uiSettings
-            mUiSettings.isScrollGesturesEnabled = false
-            mUiSettings.isOverlookingGesturesEnabled = false
-            mUiSettings.isZoomGesturesEnabled = false
-            move!!.visibility = View.INVISIBLE
-            zoomImageView!!.visibility = View.INVISIBLE
-            zoomIn!!.visibility = View.INVISIBLE
-            zoomOut!!.visibility = View.INVISIBLE
-            val bmp = BitmapFactory.decodeResource(resources, R.drawable.trans_locate)
-            val mCurrentMarker = BitmapDescriptorFactory.fromBitmap(bmp)
-            mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker))
-            Handler().postDelayed({
-                mBaiduMap!!.snapshot { p0 ->
-                    var baos = ByteArrayOutputStream()
-                    p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                    EmallLogger.d(AppUtils.getAppPath())
-                    saveBitmapToLocal("temp_map.jpg", p0)
-                }
-            }, 1000)   //5秒
+            if(scopeGeo.isEmpty()){
+                Toast.makeText(activity, "您尚未框选准确的地图区域，请正确框选后再操作",Toast.LENGTH_SHORT).show()
+            }else{
+                level = 2
+                program_toolbar.setBackgroundColor(Color.parseColor("#333333"))
+                topRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                leftRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                rightRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                bottomRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                program_bottom_rl.setBackgroundColor(Color.parseColor("#333333"))
+                program_ll_bar.setBackgroundColor(Color.parseColor("#333333"))
+                program_camera.visibility = View.GONE
+                satelliteImageView!!.visibility = View.GONE
+                scrollTextView!!.visibility = View.GONE
+                title!!.visibility = View.VISIBLE
+                program_toolbar_searchbar.visibility = View.INVISIBLE
+                nextStep!!.visibility = View.VISIBLE
+                rulerRl!!.visibility = View.VISIBLE
+                rular!!.visibility = View.VISIBLE
+                rular2!!.visibility = View.VISIBLE
+                r1Tv!!.visibility = View.VISIBLE
+                r2Tv!!.visibility = View.VISIBLE
+                val mUiSettings = mBaiduMap!!.uiSettings
+                mUiSettings.isScrollGesturesEnabled = false
+                mUiSettings.isOverlookingGesturesEnabled = false
+                mUiSettings.isZoomGesturesEnabled = false
+                move!!.visibility = View.INVISIBLE
+                zoomImageView!!.visibility = View.INVISIBLE
+                zoomIn!!.visibility = View.INVISIBLE
+                zoomOut!!.visibility = View.INVISIBLE
+                val bmp = BitmapFactory.decodeResource(resources, R.drawable.trans_locate)
+                val mCurrentMarker = BitmapDescriptorFactory.fromBitmap(bmp)
+                mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker))
+                Handler().postDelayed({
+                    mBaiduMap!!.snapshot { p0 ->
+                        var baos = ByteArrayOutputStream()
+                        p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                        EmallLogger.d(AppUtils.getAppPath())
+                        saveBitmapToLocal("temp_map.jpg", p0)
+                    }
+                }, 1000)   //5秒
+            }
+
         }
 
         nextStep!!.setOnClickListener {

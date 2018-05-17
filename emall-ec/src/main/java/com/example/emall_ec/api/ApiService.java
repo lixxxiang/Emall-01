@@ -5,6 +5,8 @@ import com.example.emall_core.ui.HomePageUnitsBean;
 import com.example.emall_ec.main.classify.data.GetRecommendCitiesBean;
 import com.example.emall_ec.main.classify.data.SceneSearch;
 import com.example.emall_ec.main.classify.data.VideoHomeBean;
+import com.example.emall_ec.main.coupon.data.GetCouponTypeByProductIdBean;
+import com.example.emall_ec.main.coupon.data.GetCouponTypeByUserAndDemandBean;
 import com.example.emall_ec.main.demand.data.AppPayBean;
 import com.example.emall_ec.main.demand.data.QueryOrderBean;
 import com.example.emall_ec.main.demand.data.QueryOrderFailureBean;
@@ -94,6 +96,14 @@ public interface ApiService {
     @FormUrlEncoded
     Call<QueryOrderFailureBean> queryOrderFailure(@Field("parentOrderId") String targetSentence,
                                                   @Field("type") String targetSentence2);
+
+    @POST("/coupon/getCouponTypeByProductId")
+    @FormUrlEncoded
+    Call<GetCouponTypeByProductIdBean> getCouponTypeByProductId(@Field("productId") String targetSentence);
+
+    @POST("/coupon/getCouponTypeByUserAndDemand")
+    @FormUrlEncoded
+    Call<GetCouponTypeByUserAndDemandBean> getCouponTypeByUserAndDemand(@Field("demandId") String targetSentence, @Field("userId") String targetSentence2);
 
     @POST("/global/mobile/wxpay/queryOrder")
     @FormUrlEncoded

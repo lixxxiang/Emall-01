@@ -43,10 +43,14 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF">
             <RelativeLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/fill_order_coupon_rl"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="#FFFFFF">
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/coupon_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/coupon"
@@ -67,6 +71,40 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="13dp"
                     android:background="#E0E0E0"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/coupon1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/coupon_btn_border_shape"
+                    android:layout_marginLeft="14dp"
+                    android:textColor="#F5A623"
+                    android:textSize="12dp" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/coupon2"
+                    android:layout_toRightOf="@+id/coupon1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="13dp"
+                    android:visibility="gone"
+                    android:background="@drawable/coupon_btn_border_shape"
+                    android:textColor="#F5A623"
+                    android:textSize="12dp" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/coupon3"
+                    android:layout_toRightOf="@+id/coupon2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="13dp"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/coupon_btn_border_shape"
+                    android:textColor="#F5A623"
+                    android:textSize="12dp" />
+
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -83,7 +121,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
-                    android:text="sdfsfsdfsd"
                     android:textColor="#5C5C5C"
                     android:layout_toRightOf="@+id/fill_order_iv"
                     android:layout_marginLeft="14dp"
@@ -94,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
-                    android:text="sdfsfsdfsdfdfsfsdfs"
                     android:layout_marginRight="14dp"
                     android:textColor="#9B9B9B"
                     android:layout_toRightOf="@+id/fill_order_iv"
@@ -245,7 +281,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:background="#FFFFFF">
         <RelativeLayout
             android:layout_width="0dp"

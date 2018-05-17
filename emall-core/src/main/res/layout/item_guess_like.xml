@@ -41,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_guess_like_title_tv"
         android:text="字段字段字段字段字段"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:layout_marginTop="8dp"
         android:layout_alignLeft="@+id/item_guess_like_iv"
         android:textSize="12dp"

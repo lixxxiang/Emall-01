@@ -246,7 +246,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:background="#FFFFFF">
         <RelativeLayout
             android:layout_width="0dp"

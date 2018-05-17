@@ -115,33 +115,7 @@ class OrderListDelegate : BottomItemDelegate() {
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager)
         vp_FindFragment_pager.offscreenPageLimit = 5
         vp_FindFragment_pager.currentItem = arguments.getInt("INDEX")
-        //tab_FindFragment_title.set
 
-//        swipeBackLayout.addSwipeListener(object : SwipeBackLayout.OnSwipeListener {
-//            override fun onEdgeTouch(oritentationEdgeFlag: Int) {
-//                EmallLogger.d("1")
-//            }
-//
-//            override fun onDragScrolled(scrollPercent: Float) {
-//                EmallLogger.d("2")
-//                if (arguments.getString("PAGE_FROM") == "PROGRAM") {
-//                    popTo(findFragment(ProgramDelegate().javaClass).javaClass, false)
-//                }
-//                if (arguments.getString("PAGE_FROM") == "CLASSIFY")
-//                    popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
-//                if (arguments.getString("PAGE_FROM") == "PROGRAM_INDEX") {
-//                    val editor = mSharedPreferences!!.edit()
-//                    editor.putString("from_order_list", "1")
-//                    editor.commit()
-//                    popTo(findFragment(ProgramIndexDelegate().javaClass).javaClass, false)
-//                }
-//            }
-//
-//            override fun onDragStateChange(state: Int) {
-//                EmallLogger.d("3")
-//            }
-//
-//        })
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

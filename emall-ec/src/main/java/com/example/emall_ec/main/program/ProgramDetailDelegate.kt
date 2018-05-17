@@ -27,8 +27,10 @@ import java.util.*
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.os.Environment
+import com.example.emall_core.util.view.SpannableBuilder
 import com.example.emall_ec.main.demand.ConfirmOrderDelegate
 import com.example.emall_ec.main.me.ContactDelegate
+import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import java.io.File
 import java.io.FileInputStream
 
@@ -101,7 +103,7 @@ class ProgramDetailDelegate : EmallDelegate() {
         program_detail_promotion_description_tv.text = data.promotionDescription
         program_detail_sale_price_tv.text = String.format("¥%s", data.salePrice)
         program_detail_original_price_tv.text = String.format("¥%s", data.originalPrice)
-        program_detail_service_1_tv.text = data.serviceDescription
+//        program_detail_service_1_tv.text = data.serviceDescription
         when {
             sp.getString("productType", "") == "1" -> program_detail_type_tv.text = getString(R.string.optics_1)
             sp.getString("productType", "") == "2" -> program_detail_type_tv.text = getString(R.string.noctilucence)
@@ -112,6 +114,19 @@ class ProgramDetailDelegate : EmallDelegate() {
         program_detail_gather_time_tv.text = String.format("%s - %s", sp.getString("startTime", "").toString().replace("-", "."), sp.getString("endTime", "").toString().replace("-", "."))
         program_detail_cloud_tv.text = String.format("%s%%", sp.getString("cloud", ""))
         program_detail_angle_tv.text = String.format("%s°", sp.getString("angle", ""))
+
+
+        val prefix = data.serviceDescription.split("，")[0] + "，"
+        val tempSuffix = data.serviceDescription.split("，")[1]
+        val time = tempSuffix.substring(0, tempSuffix.length - 3)
+        val suffix = tempSuffix.substring(tempSuffix.length - 3, tempSuffix.length)
+
+
+        program_detail_service_1_tv.text = SpannableBuilder.create(context)
+                .append(prefix, R.dimen.text_size, R.color.gray)
+                .append(time, R.dimen.text_size, R.color.orange)
+                .append(suffix, R.dimen.text_size, R.color.gray)
+                .build()
     }
 
 //    private fun initMap(sp: SharedPreferences) {
@@ -166,7 +181,7 @@ class ProgramDetailDelegate : EmallDelegate() {
 
         detailParams!!["area"] = sp.getString("area", "")
         detailParams!!["productType"] = sp.getString("productType", "")
-        EmallLogger.d(String.format("%s %s", detailParams!!["area"], detailParams!!["protuctType"]))
+        EmallLogger.d(String.format("%s %s", detailParams!!["area"], detailParams!!["productType"]))
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/programming/detail")
                 .params(detailParams!!)

@@ -39,20 +39,28 @@ import com.example.emall_core.util.view.SpannableBuilder
 import com.baidu.mapapi.model.LatLng
 import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_ec.R.string.call
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.api.ApiService
 import com.example.emall_ec.api.NetUtils
+import com.example.emall_ec.main.coupon.GoodsDetailCouponDelegate
+import com.example.emall_ec.main.coupon.data.GetCouponTypeByProductIdBean
 import com.example.emall_ec.main.demand.FillOrderDelegate
 import com.example.emall_ec.main.demand.data.CommoditySubmitDemandBean
 import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
+import com.example.emall_ec.main.detail.example.NoctilucenceExampleDelegate
+import com.example.emall_ec.main.detail.example.Optics1ExampleDelegate
+import com.example.emall_ec.main.detail.example.VideoExampleDelegate
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity
 import com.example.emall_ec.main.me.ContactDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 import com.flyco.tablayout.listener.OnTabSelectListener
+import kotlinx.android.synthetic.main.me_function_item.*
 import kotlinx.android.synthetic.main.pic_detail_1.*
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
@@ -88,6 +96,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var mSharedPreferences: SharedPreferences? = null
     var type135 = String()
     var pageNum = 0
+    val couponList: MutableList<String> = mutableListOf()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
     }
@@ -240,23 +249,110 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         video_enlarge.setOnClickListener {
             EmallLogger.d("ddddd")
             var intent = Intent(activity, JiaoZiActivity::class.java)
-            intent.putExtra("title",videoDetail.data.title)
+            intent.putExtra("title", videoDetail.data.title)
             intent.putExtra("url", videoDetail.data.videoPath)
             startActivity(intent)
         }
+
+        video_detail_get_ticket_rl.setOnClickListener {
+            val delegate: GoodsDetailCouponDelegate = GoodsDetailCouponDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            delegate.arguments = bundle
+            start(delegate)
+        }
+
+        scene_goods_detail_mask_iv.setOnClickListener {
+            if(type == "1"){
+                val delegate: Optics1ExampleDelegate = Optics1ExampleDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                delegate.arguments = bundle
+                start(delegate)
+            }else if (type == "5"){
+                val delegate: NoctilucenceExampleDelegate = NoctilucenceExampleDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                delegate.arguments = bundle
+                start(delegate)
+            }
+        }
+
+        video_goods_detail_mask_iv.setOnClickListener{
+            val delegate: VideoExampleDelegate = VideoExampleDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            delegate.arguments = bundle
+            start(delegate)
+        }
+    }
+
+    private fun getCoupon() {
+        retrofit = Retrofit.Builder()
+                .baseUrl("http://10.10.90.11:8086")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        apiService = retrofit!!.create(ApiService::class.java)
+//        val call = apiService!!.getCouponTypeByProductId("JL103B_MSS_20170320213446_100001008_101_0161_002_L1A_MSS")
+        val call = apiService!!.getCouponTypeByProductId(arguments.getString("productId"))
+
+        call.enqueue(object : retrofit2.Callback<GetCouponTypeByProductIdBean> {
+            override fun onResponse(call: retrofit2.Call<GetCouponTypeByProductIdBean>, response: retrofit2.Response<GetCouponTypeByProductIdBean>) {
+                val getCouponTypeByProductIdBean: GetCouponTypeByProductIdBean
+                if (response.body() != null) {
+                    getCouponTypeByProductIdBean = response.body()!!
+                    if(getCouponTypeByProductIdBean.message == "success"){
+                        val size = getCouponTypeByProductIdBean.data.productCoupon.size
+                        if (size in 1..3) {
+                            for (i in 0 until size) {
+                                couponList.add(getCouponTypeByProductIdBean.data.productCoupon[i].toString())
+                            }
+                            when (size) {
+                                1 -> {
+                                    coupon1.text = couponList[0]
+                                    coupon1.visibility = View.VISIBLE
+                                }
+                                2 -> {
+                                    coupon1.text = couponList[0]
+                                    coupon1.visibility = View.VISIBLE
+                                    coupon2.text = couponList[1]
+                                    coupon2.visibility = View.VISIBLE
+                                }
+                                3 -> {
+                                    coupon1.text = couponList[0]
+                                    coupon1.visibility = View.VISIBLE
+                                    coupon2.text = couponList[1]
+                                    coupon2.visibility = View.VISIBLE
+                                    coupon3.text = couponList[2]
+                                    coupon3.visibility = View.VISIBLE
+                                }
+                            }
+                        }else{
+
+                        }
+                    }else{
+                        line.visibility = View.GONE
+                        video_detail_get_ticket_rl.visibility = View.GONE
+                    }
+                } else {
+                    line.visibility = View.GONE
+                    video_detail_get_ticket_rl.visibility = View.GONE
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<GetCouponTypeByProductIdBean>, throwable: Throwable) {}
+        })
     }
 
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        EmallLogger.d(String.format("%s %s", arguments.getString("productId"), arguments.getString("type")))
         val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString())
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
                 var sceneDetail = SceneDetailBean()
                 EmallLogger.d(response.body().toString())
                 if (response.body() != null) {
+
                     sceneDetail = response.body()!!
+                    getCoupon()
+
                     setSceneData(sceneDetail)
                 } else {
                 }
@@ -696,104 +792,4 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         super.onSupportInvisible()
         JZVideoPlayer.releaseAllVideos()
     }
-
-//    internal inner class MyJZVideoPlayerStandard : JZVideoPlayerStandard {
-//        constructor(context: Context) : super(context) {}
-//
-//        constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
-//
-//        override fun init(context: Context) {
-//            super.init(context)
-//        }
-//
-//        override fun onClick(v: View) {
-//            super.onClick(v)
-//            val i = v.id
-//            if (i == cn.jzvd.R.id.fullscreen) {
-//                if (currentScreen == JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN) {
-//                    //click quit fullscreen
-//                } else {
-//                    //click goto fullscreen
-//                }
-//            }
-//        }
-//
-//        override fun getLayoutId(): Int {
-//            return cn.jzvd.R.layout.jz_layout_standard
-//        }
-//
-//        override fun onTouch(v: View, event: MotionEvent): Boolean {
-//            if (!NetworkUtils.isWifiAvailable() && !NetworkUtils.isWifiConnected()) {
-//                val builder = AlertDialog.Builder(activity)
-//                builder.setTitle("当前为非WiFi网络，播放将消耗流量")
-//                builder.setPositiveButton("确定播放") { dialog, _ ->
-//                    dialog.dismiss()
-//                    detail_videoview.visibility = View.VISIBLE
-//                    video_goods_detail_title_image.visibility = View.GONE
-//                    video_mark.visibility = View.GONE
-//                    video_goods_detail_mask_iv.visibility = View.GONE
-//                    detail_videoview.startButton.performClick()
-//                }
-//
-//                builder.setNegativeButton("取消播放") { dialog, _ ->
-//                    dialog.dismiss()
-//                }
-//
-//                builder.create().show()
-//            } else {
-//                detail_videoview.visibility = View.VISIBLE
-//                video_goods_detail_title_image.visibility = View.GONE
-//                video_mark.visibility = View.GONE
-//                video_goods_detail_mask_iv.visibility = View.GONE
-//                detail_videoview.setUp(videoDetail.data.videoPath, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
-//            }
-//            return super.onTouch(v, event)
-//        }
-//
-//        override fun startVideo() {
-//            super.startVideo()
-//        }
-//
-//        override fun onStateNormal() {
-//            super.onStateNormal()
-//        }
-//
-//        override fun onStatePreparing() {
-//            super.onStatePreparing()
-//        }
-//
-//        override fun onStatePlaying() {
-//            super.onStatePlaying()
-//        }
-//
-//        override fun onStatePause() {
-//            super.onStatePause()
-//        }
-//
-//        override fun onStateError() {
-//            super.onStateError()
-//        }
-//
-//        override fun onStateAutoComplete() {
-//            super.onStateAutoComplete()
-//        }
-//
-//        override fun onInfo(what: Int, extra: Int) {
-//            super.onInfo(what, extra)
-//        }
-//
-//        override fun onError(what: Int, extra: Int) {
-//            super.onError(what, extra)
-//        }
-//
-//        override fun startWindowFullscreen() {
-//            super.startWindowFullscreen()
-//        }
-//
-//        override fun startWindowTiny() {
-//            super.startWindowTiny()
-//        }
-//
-//    }
-
 }

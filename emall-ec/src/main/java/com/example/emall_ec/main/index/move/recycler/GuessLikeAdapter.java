@@ -48,8 +48,8 @@ public class GuessLikeAdapter extends RecyclerView.Adapter<GuessLikeAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         GuessLikeBean guessLikeBean = list.get(position);
-        holder.guess_like_type_tv.setText(guessLikeBean.getDataType());
-        holder.guess_like_title_tv.setText(guessLikeBean.getPosTitle());
+        holder.guess_like_type_tv.setText(guessLikeBean.getPosTitle());
+        holder.guess_like_title_tv.setText(guessLikeBean.getPosDescription());
         holder.guess_like_price_tv.setText("¥" + guessLikeBean.getPrice());
         Glide.with(context)
                 .load(guessLikeBean.getImageUrl())

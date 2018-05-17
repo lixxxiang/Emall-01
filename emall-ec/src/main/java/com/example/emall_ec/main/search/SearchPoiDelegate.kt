@@ -15,6 +15,7 @@ import com.example.emall_ec.main.search.adapter.SearchPoiPoisAdapter
 import com.example.emall_ec.main.search.data.CitiesBean
 import com.example.emall_ec.main.search.data.PoiBean
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_ec.R.id.*
@@ -103,28 +104,29 @@ class SearchPoiDelegate : EmallDelegate() {
 
         search_poi_et.setOnEditorActionListener { v, actionId, event ->
             KeyboardUtils.hideSoftInput(activity)
-            search_progressBar.visibility = View.VISIBLE
             search()
             false
         }
 
         index_noti_tv_rl.setOnClickListener {
             KeyboardUtils.hideSoftInput(activity)
-            search_progressBar.visibility = View.VISIBLE
             search()
         }
     }
 
     private fun search() {
-        RestClient().builder()
-                .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s", search_poi_et.text))
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
+        if(search_poi_et.text.toString() != ""){
+            search_progressBar.visibility = View.VISIBLE
+
+            RestClient().builder()
+                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s", search_poi_et.text))
+                    .success(object : ISuccess {
+                        override fun onSuccess(response: String) {
 //                            hideText()
-                        search_progressBar.visibility = View.INVISIBLE
-                        EmallLogger.d(response)
-                        val tempCities = Gson().fromJson(response, CitiesBean::class.java)
-                        val tempPois = Gson().fromJson(response, PoiBean::class.java)
+                            search_progressBar.visibility = View.INVISIBLE
+                            EmallLogger.d(response)
+                            val tempCities = Gson().fromJson(response, CitiesBean::class.java)
+                            val tempPois = Gson().fromJson(response, PoiBean::class.java)
 
 //                        if(tempCities.sug != null){
 //                            if(tempCities.sug.isEmpty()){
@@ -133,47 +135,53 @@ class SearchPoiDelegate : EmallDelegate() {
 //                                clearPois()
 //                                showNoResult()
 //                            }else {
-                        if (tempPois.type == "0" || tempCities.type == "0") {//is cities
-                            if (tempCities.sug.isEmpty()) {
+                            if (tempPois.type == "0" || tempCities.type == "0") {//is cities
+                                if (tempCities.sug.isEmpty()) {
+                                    hideText()
+                                    clearCities()
+                                    clearPois()
+                                    showNoResult()
+                                } else {
+                                    hideNoResult()
+                                    pages = 1
+                                    clearCities()
+                                    showCities(response)
+                                }
+
+                            } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
+                                hideNoResult()
+                                clearPois()
+                                pages = 3
+                                showPois(response)
+                            } else {//no return
                                 hideText()
                                 clearCities()
                                 clearPois()
                                 showNoResult()
-                            } else {
-                                hideNoResult()
-                                pages = 1
-                                clearCities()
-                                showCities(response)
                             }
-
-                        } else if (tempPois.type == "1" || tempCities.type == "1") {//is pois
-                            hideNoResult()
-                            clearPois()
-                            pages = 3
-                            showPois(response)
-                        } else {//no return
-                            hideText()
-                            clearCities()
-                            clearPois()
-                            showNoResult()
-                        }
 //                            }
 //                        }
 
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
+                        }
+                    })
+                    .failure(object : IFailure {
+                        override fun onFailure() {
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
+                        }
+                    })
+                    .error(object : IError {
+                        override fun onError(code: Int, msg: String) {
 
-                    }
-                })
-                .build()
-                .post()
+                        }
+                    })
+                    .build()
+                    .post()
+        }else{
+            KeyboardUtils.hideSoftInput(activity)
+            val snackBar = Snackbar.make(view!!, "输入信息为空", Snackbar.LENGTH_SHORT)
+            snackBar.show()
+        }
+
     }
 
     private fun addHeadView() {

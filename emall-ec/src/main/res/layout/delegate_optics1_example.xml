@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/ll_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="#FFFFFF"
+        android:elevation="2dp" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/optics1_example_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
+
+        <com.flyco.tablayout.CommonTabLayout
+            android:id="@+id/optics1_example_ctl"
+            android:layout_width="184dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="#FFFFFF"
+            tl:tl_iconVisible="false"
+            tl:tl_indicator_color="#B4A078"
+            tl:tl_indicator_corner_radius="1.5dp"
+            tl:tl_indicator_height="3dp"
+            tl:tl_indicator_width="50dp"
+            tl:tl_tab_space_equal="true"
+            tl:tl_textSelectColor="#B4A078"
+            tl:tl_textUnselectColor="#4A4A4A"
+            tl:tl_textsize="16sp" />
+    </android.support.v7.widget.Toolbar>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

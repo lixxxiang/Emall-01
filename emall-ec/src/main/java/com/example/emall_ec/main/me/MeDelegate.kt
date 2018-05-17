@@ -20,9 +20,9 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.InvoiceDelegate
 import com.example.emall_ec.main.me.adapter.MeFunctionAdapter
 import com.example.emall_ec.main.me.collect.CollectionDelegate
+import com.example.emall_ec.main.coupon.CouponDelegate
 import com.example.emall_ec.main.me.feedback.FeedbackDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
-import com.example.emall_ec.main.order.ProductDeliveryDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
 
@@ -166,7 +166,26 @@ class MeDelegate : BottomItemDelegate() {
                     }
                 }
                 1 -> {
-
+                    if (!NetworkUtils.isConnected())
+                        if (toast != null) {
+                            toast!!.setText(getString(R.string.no_internet))
+                            toast!!.duration = Toast.LENGTH_SHORT
+                            toast!!.show()
+                        } else {
+                            toast = Toast.makeText(activity, getString(R.string.no_internet), Toast.LENGTH_SHORT)
+                            toast!!.show()
+                        }
+                    else {
+                        if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+                            (DELEGATE as EcBottomDelegate).start(CouponDelegate().create())
+                        } else {
+                            val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                            val bundle = Bundle()
+                            bundle.putString("PAGE_FROM", "ME")
+                            delegate.arguments = bundle
+                            (DELEGATE as EcBottomDelegate).start(delegate)
+                        }
+                    }
                 }
                 2 -> {
                     if (!NetworkUtils.isConnected())

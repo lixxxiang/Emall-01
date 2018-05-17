@@ -8,7 +8,7 @@
         android:id="@+id/mep_rl"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:elevation="4dp">
+        android:elevation="2dp">
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/mep_title_tv"
