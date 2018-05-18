@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
@@ -130,18 +131,21 @@ class FillOrderDelegate : BottomItemDelegate() {
         fill_order_coupon_rl.setOnClickListener {
             val delegate: FillOrderCouponDelegate = FillOrderCouponDelegate().create()!!
             val bundle: Bundle? = Bundle()
+            bundle!!.putString("demandId", arguments.getString("demandId"))
+            bundle!!.putString("salePrice", viewDemandBean.data.demands[0].salePrice)
+            bundle!!.putString("type", arguments.getString("type"))
             delegate.arguments = bundle
             startForResult(delegate, 2)
         }
     }
 
-    private fun getCoupon(){
+    private fun getCoupon() {
         retrofit = Retrofit.Builder()
                 .baseUrl("http://10.10.90.11:8086")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.getCouponTypeByUserAndDemand("1805171003000227763", userId)
+        val call = apiService!!.getCouponTypeByUserAndDemand(arguments.getString("demandId"), userId)
         call.enqueue(object : retrofit2.Callback<GetCouponTypeByUserAndDemandBean> {
             override fun onResponse(call: retrofit2.Call<GetCouponTypeByUserAndDemandBean>, response: retrofit2.Response<GetCouponTypeByUserAndDemandBean>) {
                 val getCouponTypeByProductIdBean: GetCouponTypeByUserAndDemandBean
@@ -175,7 +179,7 @@ class FillOrderDelegate : BottomItemDelegate() {
 //                                coupon3.visibility = View.VISIBLE
 //                            }
 //                        }
-                    }else{
+                    } else {
 
                     }
                 } else {
@@ -201,17 +205,20 @@ class FillOrderDelegate : BottomItemDelegate() {
                 isChecked = true
                 invoiceState = "1"
             }
-        }else if (requestCode == 2 && resultCode == ISupportFragment.RESULT_OK) {
+        } else if (requestCode == 2 && resultCode == ISupportFragment.RESULT_OK) {
             val index = data.getString("COUPON")
             EmallLogger.d(index)
-            if (index == "C") {
-                coupon_title.visibility = View.GONE
-                coupon1.visibility = View.VISIBLE
-                coupon2.visibility = View.VISIBLE
-                coupon3.visibility = View.VISIBLE
-            }else{
-
+            if (index != ""){
+                val size = index.split(",").size
+                if (size > 2) {
+                    Toast.makeText(context, "coupon error", Toast.LENGTH_SHORT).show()
+                } else {
+                    coupon_title.visibility = View.GONE
+                    coupon1.visibility = View.VISIBLE
+                    coupon1.text = index.split(",")[0]
+                }
             }
+
         }
     }
 
@@ -238,7 +245,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                             val bundle: Bundle? = Bundle()
                             bundle!!.putString("PARENT_ORDER_ID", orderBean.data.parentOrderId)
                             bundle.putString("TYPE", "1")
-                            bundle.putString("PAGE_FROM",arguments.getString("PAGE_FROM"))
+                            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
                             bundle.putString("title", arguments.getString("title"))
                             delegate.arguments = bundle
                             start(delegate)

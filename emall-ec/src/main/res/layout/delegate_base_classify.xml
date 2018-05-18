@@ -35,9 +35,9 @@
             android:id="@+id/base_classify_images_on_top_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="11dp"
+            android:layout_marginLeft="42dp"
             android:layout_marginTop="67dp"
-            android:layout_marginRight="11dp"
+            android:layout_marginRight="42dp"
             android:orientation="horizontal">
             <RelativeLayout
                 android:layout_width="0dp"
@@ -47,10 +47,8 @@
                     android:id="@+id/base_classify_optics_siv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
-
-                    android:layout_marginRight="4dp"
                     android:background="@drawable/classify_1" />
             </RelativeLayout>
             <RelativeLayout
@@ -61,12 +59,20 @@
                     android:id="@+id/base_classify_noctilucence_siv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
-
-                    android:layout_marginRight="4dp"
                     android:background="@drawable/classify_2" />
             </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/base_classify_images_on_bottom_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/base_classify_images_on_top_ll"
+            android:layout_marginRight="42dp"
+            android:orientation="horizontal">
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -75,22 +81,11 @@
                     android:id="@+id/base_classify_video_siv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:scaleType="centerCrop"
+                    android:layout_centerInParent="true"
 
                     android:background="@drawable/classify_3" />
             </RelativeLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/base_classify_images_on_bottom_ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="11dp"
-            android:layout_marginTop="8dp"
-            android:layout_below="@+id/base_classify_images_on_top_ll"
-            android:layout_marginRight="11dp"
-            android:orientation="horizontal">
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -99,35 +94,10 @@
                     android:id="@+id/base_classify_program_siv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/classify_4" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.example.emall_core.util.view.SquareImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:scaleType="centerCrop"
+                    android:layout_centerInParent="true"
 
-                    android:background="@drawable/classify_5" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.example.emall_core.util.view.SquareImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:scaleType="centerCrop"
-                    android:background="@android:color/transparent" />
+                    android:background="@drawable/classify_4" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

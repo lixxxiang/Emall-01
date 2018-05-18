@@ -13,6 +13,7 @@ import com.example.emall_ec.main.classify.data.SceneSearch
 import com.example.emall_ec.main.classify.data.VideoHomeBean
 import com.example.emall_ec.main.classify.data.VideoSearch
 import com.example.emall_ec.main.program.ProgramDelegate
+import com.example.emall_ec.main.program.ProgramDelegateTest
 import com.example.emall_ec.main.search.SearchDelegate
 import kotlinx.android.synthetic.main.delegate_base_classify.*
 import retrofit2.Retrofit
@@ -55,7 +56,7 @@ class BaseClassifyDelegate : BottomItemDelegate() {
 
         base_classify_program_siv.setOnClickListener {
 
-            (DELEGATE as EcBottomDelegate).start(ProgramDelegate().create()!!)
+            (DELEGATE as EcBottomDelegate).start(ProgramDelegateTest().create()!!)
         }
 
         base_classify_video_siv.setOnClickListener {

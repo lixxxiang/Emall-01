@@ -17,9 +17,9 @@
         android:id="@+id/program_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
         android:layout_above="@+id/program_detail_bottom_bar_ll"
-        android:layout_below="@+id/program_detail_toolbar">
+        android:layout_below="@+id/program_detail_toolbar"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,24 +29,25 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="259dp">
-                <!--<com.baidu.mapapi.map.MapView-->
-                    <!--android:id="@+id/program_detail_map"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="259dp"-->
-                    <!--android:clickable="true" />-->
-                <android.support.v7.widget.AppCompatImageView
+
+                <com.baidu.mapapi.map.TextureMapView
+                    android:id="@+id/program_detail_map"
                     android:layout_width="match_parent"
                     android:layout_height="259dp"
-                    android:scaleType="centerCrop"
-                    android:id="@+id/program_detail_map"/>
+                    android:clickable="true" />
+                <!--<android.support.v7.widget.AppCompatImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="259dp"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:id="@+id/program_detail_map"/>-->
                 <RelativeLayout
                     android:id="@+id/scene_mark"
                     android:layout_width="63dp"
                     android:layout_height="22dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginTop="15dp"
                     android:background="#B4A078">
 
                     <android.support.v7.widget.AppCompatTextView
@@ -58,7 +59,61 @@
                         android:textColor="#FFFFFF"
                         android:textSize="10dp" />
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:id="@+id/program_detail_mask_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#4C000000">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="点击查看编程摄影样例"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
+
+                    <RelativeLayout
+                        android:layout_width="68dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/program_detail_eye_tv"
+                            android:layout_width="13dp"
+                            android:layout_height="9dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/eye" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="9dp"
+                            android:layout_toRightOf="@+id/program_detail_eye_tv"
+                            android:text="@string/example"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10dp" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:layout_width="8dp"
+                            android:layout_height="14dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="36dp"
+                            android:layout_toRightOf="@+id/program_detail_eye_tv"
+                            android:background="@drawable/forward_gray" />
+                    </RelativeLayout>
                 </RelativeLayout>
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/scene_rl"
                 android:layout_width="match_parent"
@@ -402,29 +457,31 @@
     </com.example.emall_core.util.view.BounceScrollView>
 
     <android.support.v7.widget.Toolbar
-        android:elevation="2dp"
-        android:layout_below="@+id/ll_bar"
         android:id="@+id/program_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/ll_bar"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        android:background="#FFFFFF">
+        app:contentInsetStartWithNavigation="0dp">
         <!--<android.support.v7.widget.AppCompatTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="@string/programming"-->
-            <!--android:textColor="#686868"-->
-            <!--android:textSize="16dp" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="@string/programming"-->
+        <!--android:textColor="#686868"-->
+        <!--android:textSize="16dp" />-->
     </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_above="@+id/program_detail_bottom_bar_ll"
         android:background="#E0E0E0" />
+
     <LinearLayout
         android:id="@+id/program_detail_bottom_bar_ll"
         android:layout_width="match_parent"
@@ -434,13 +491,13 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:clickable="true"
-            android:focusable="true"
             android:id="@+id/program_detail_head_set_rl"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true">
 
             <TextView
                 android:id="@+id/program_detail_head_set_tv"
@@ -449,6 +506,7 @@
                 android:layout_centerInParent="true"
                 android:text="@string/headset"
                 android:textSize="18dp" />
+
             <RelativeLayout
                 android:layout_width="1px"
                 android:layout_height="match_parent"
@@ -457,13 +515,12 @@
         </RelativeLayout>
 
 
-
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/program_goods_buy_now_btn"
             android:layout_width="0dp"
-            android:layout_weight="5"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/program_detail_star_rl"
+            android:layout_weight="5"
             android:background="#B4A078"
             android:text="@string/confirm_order"
             android:textColor="#FFFFFF"

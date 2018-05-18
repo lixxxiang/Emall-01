@@ -44,6 +44,8 @@ class ProgramParamsDelegate : BottomItemDelegate() {
     private var center = String()
     private var geoString = String()
     private var area = String()
+    private var zoomLevel = String()
+
     private var bitmapByte: ByteArray? = null
 
     fun create(): ProgramParamsDelegate? {
@@ -65,6 +67,7 @@ class ProgramParamsDelegate : BottomItemDelegate() {
         center = arguments.getString("center")
         geoString = arguments.getString("geoString")
         area = arguments.getString("area")
+        zoomLevel = arguments.getString("zoomLevel")
 
         titleList!!.add(R.string.image_type)
         titleList!!.add(R.string.start_time)
@@ -113,6 +116,7 @@ class ProgramParamsDelegate : BottomItemDelegate() {
             editor.putString("center", center)
             editor.putString("geoString", geoString)
             editor.putString("area", area)
+            editor.putString("zoomLevel",zoomLevel)
             editor.commit()
 
             val delegate: ProgramDetailDelegate = ProgramDetailDelegate().create()!!

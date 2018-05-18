@@ -337,7 +337,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="143dp"
+                android:layout_height="wrap_content"
                 android:background="#FFFFFF">
 
                 <RelativeLayout
@@ -405,74 +405,79 @@
                     android:layout_below="@+id/video_detail_get_ticket_rl"
                     android:background="#E0E0E0" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/video_detail_service_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line"
-                    android:layout_marginLeft="13dp"
-                    android:layout_marginTop="11dp"
-                    android:text="@string/service"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="103dp"
+                    android:layout_below="@+id/line">
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/video_detail_service_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="11dp"
+                        android:text="@string/service"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
 
-                <ImageView
-                    android:id="@+id/dot_1"
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_alignTop="@+id/video_detail_service_tv"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_toRightOf="@+id/video_detail_service_tv"
-                    android:background="@drawable/dot" />
+                    <ImageView
+                        android:id="@+id/dot_1"
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_alignTop="@+id/video_detail_service_tv"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_toRightOf="@+id/video_detail_service_tv"
+                        android:background="@drawable/dot" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/video_detail_service_1_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/video_detail_service_tv"
-                    android:layout_marginLeft="36dp"
-                    android:layout_toRightOf="@+id/video_detail_service_tv"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/video_detail_service_1_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/video_detail_service_tv"
+                        android:layout_marginLeft="36dp"
+                        android:layout_toRightOf="@+id/video_detail_service_tv"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
 
-                <ImageView
-                    android:id="@+id/dot_2"
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_alignLeft="@+id/dot_1"
-                    android:layout_below="@+id/dot_1"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/dot" />
+                    <ImageView
+                        android:id="@+id/dot_2"
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_alignLeft="@+id/dot_1"
+                        android:layout_below="@+id/dot_1"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/dot" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/video_detail_service_2_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/video_detail_service_1_tv"
-                    android:layout_below="@+id/video_detail_service_1_tv"
-                    android:layout_marginTop="12dp"
-                    android:text="长光卫星星座数据支持"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/video_detail_service_2_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/video_detail_service_1_tv"
+                        android:layout_below="@+id/video_detail_service_1_tv"
+                        android:layout_marginTop="12dp"
+                        android:text="长光卫星星座数据支持"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
 
-                <ImageView
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_alignLeft="@+id/dot_2"
-                    android:layout_below="@+id/dot_2"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/dot" />
+                    <ImageView
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_alignLeft="@+id/dot_2"
+                        android:layout_below="@+id/dot_2"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/dot" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/video_detail_service_2_tv"
-                    android:layout_below="@+id/video_detail_service_2_tv"
-                    android:layout_marginTop="12dp"
-                    android:text="卫星回传数据10分钟快速上架"
-                    android:textColor="#5C5C5C"
-                    android:textSize="12dp" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/video_detail_service_2_tv"
+                        android:layout_below="@+id/video_detail_service_2_tv"
+                        android:layout_marginTop="12dp"
+                        android:text="卫星回传数据10分钟快速上架"
+                        android:textColor="#5C5C5C"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
             </RelativeLayout>
 
             <RelativeLayout

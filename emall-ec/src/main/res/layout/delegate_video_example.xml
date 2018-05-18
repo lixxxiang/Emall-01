@@ -8,17 +8,23 @@
         android:id="@+id/ll_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
-        android:background="#FFFFFF"
+        android:background="#1B1A20"
         android:elevation="2dp" />
     <android.support.v7.widget.Toolbar
         android:id="@+id/video_example_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="2dp"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:contentInsetStartWithNavigation="0dp"
-        android:background="#FFFFFF">
+        android:background="#1B1A20">
 
     </android.support.v7.widget.Toolbar>
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/video_example_webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.github.lzyzsd.jsbridge.BridgeWebView>
 </LinearLayout>

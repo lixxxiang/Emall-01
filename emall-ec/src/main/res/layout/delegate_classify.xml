@@ -5,7 +5,8 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:descendantFocusability="blocksDescendants"
-    android:layout_height="wrap_content">
+
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/classify_appbar"
@@ -67,7 +68,7 @@
         <RelativeLayout
             android:id="@+id/classify_introduction_root_rl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#FFFFFF"
             android:orientation="vertical">
 

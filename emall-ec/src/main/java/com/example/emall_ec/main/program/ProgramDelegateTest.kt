@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.View
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
+import kotlinx.android.synthetic.main.delegate_program.*
 import com.example.emall_core.util.dimen.DimenUtil
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.TextSwitcherView
@@ -27,18 +28,18 @@ import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.AppCompatButton
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.widget.*
 import com.baidu.location.*
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
+import com.blankj.utilcode.util.AppUtils
 import com.example.emall_core.util.view.RulerView
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.search.SearchPoiDelegate
-import kotlinx.android.synthetic.main.delegate_program_index.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
-import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -48,7 +49,8 @@ import java.io.FileOutputStream
 /**
  * Created by lixiang on 2018/3/16.
  */
-class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
+class ProgramDelegateTest : BottomItemDelegate(), SensorEventListener {
+
     val handler = Handler()
     var task: Runnable? = null
     var mMapView: MapView? = null
@@ -65,10 +67,6 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     private var isFirstLoc = true
     private var locData: MyLocationData? = null
     private var mSensorManager: SensorManager? = null
-    private var lati_lt: Double? = 0.0
-    private var longi_lt: Double? = 0.0
-    private var lati_rb = 0.0
-    private var longi_rb = 0.0
     private var level = 1
     private var topRl: RelativeLayout? = null
     private var leftRl: RelativeLayout? = null
@@ -112,59 +110,34 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     }
 
     override fun setLayout(): Any? {
-        return R.layout.delegate_program_index
+        return R.layout.delegate_program
     }
 
-    fun create(): ProgramIndexDelegate? {
-        return ProgramIndexDelegate()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    override fun onEnterAnimationEnd(savedInstanceState: Bundle?) {
-        super.onEnterAnimationEnd(savedInstanceState)
-        initViews()
-        handlePermisson()
-        getAttr()
-        task = object : Runnable {
-            override fun run() {
-                // TODO Auto-generated method stub
-                handler.postDelayed(this, 3 * 1000)
-                val curTranslationY = move!!.translationY
-                val animator: ObjectAnimator = ObjectAnimator.ofFloat(move!!, "translationY", curTranslationY, DimenUtil().dip2px(context, 236F).toFloat(), curTranslationY)
-                animator.duration = 3000
-                animator.start()
-            }
-        }
-
-        handler.post(task)
+    fun create(): ProgramDelegateTest? {
+        return ProgramDelegateTest()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun initial() {
-        program_index_root_rl.visibility = View.INVISIBLE
-
-        program_index_back_btn_rl.setOnClickListener {
+        program_back_btn_rl.setOnClickListener {
             if (level == 1) {
-                program_index_root_rl.visibility = View.INVISIBLE
-                pop()
-//                _mActivity.onBackPressed()
-//                bottom_bar_ll.visibility = View.VISIBLE
-
+//                pop()
+                _mActivity.onBackPressed()
                 handler.removeCallbacks(task)
             } else if (level == 2) {
                 level = 1
-                program_index_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
+                program_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
                 topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
                 leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
                 rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
                 bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
-                program_index_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
-                program_index_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
-                program_index_camera.visibility = View.VISIBLE
+                program_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
+                program_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
+                program_camera.visibility = View.VISIBLE
                 satelliteImageView!!.visibility = View.VISIBLE
                 scrollTextView!!.visibility = View.VISIBLE
                 title!!.visibility = View.GONE
-                program_index_toolbar_searchbar.visibility = View.VISIBLE
+                program_toolbar_searchbar.visibility = View.VISIBLE
                 nextStep!!.visibility = View.GONE
                 rulerRl!!.visibility = View.INVISIBLE
                 rular!!.visibility = View.INVISIBLE
@@ -183,8 +156,26 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
             }
         }
         mSensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        initViews()
+        handlePermisson()
+        initMap()
+        getAttr()
+        task = object : Runnable {
+            override fun run() {
+                // TODO Auto-generated method stub
+                handler.postDelayed(this, 3 * 1000)
+                val curTranslationY = move!!.translationY
+                val animator: ObjectAnimator = ObjectAnimator.ofFloat(move!!, "translationY", curTranslationY, DimenUtil().dip2px(context, 236F).toFloat(), curTranslationY)
+                animator.duration = 3000
+                animator.start()
+            }
+        }
 
-        program_index_toolbar_searchbar.setOnClickListener {
+        handler.post(task)
+
+
+
+        program_toolbar_searchbar.setOnClickListener {
             startForResult(SearchPoiDelegate().create(), 101)
         }
     }
@@ -194,9 +185,10 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         EmallLogger.d(data.getString("LOCATION"))
         mBaiduMap!!.clear()
         var location = data.getString("LOCATION")
-        if(location == ""){
+        if (location == "") {
 
-        }else{
+        } else {
+
             var latitude = location.split(",")[1]
             var longitude = location.split(",")[0]
             var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
@@ -214,7 +206,6 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
             var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
             mBaiduMap!!.animateMapStatus(mMapStatusUpdate)
         }
-
     }
 
     private fun getAttr() {
@@ -226,7 +217,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     private fun initMap() {
         EmallLogger.d("initMap")
         val mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL
-        mMapView = activity.findViewById<MapView>(R.id.program_index_mapview)
+        mMapView = activity.findViewById<MapView>(R.id.program_mapview)
         mLocClient = LocationClient(activity)
         mLocClient!!.registerLocationListener(myListener)
         val option = LocationClientOption()
@@ -255,49 +246,12 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         mUiSettings.isZoomGesturesEnabled = true
 
 
-        mBaiduMap = program_index_mapview.map
+        mBaiduMap = program_mapview.map
         val listener: BaiduMap.OnMapStatusChangeListener = object : BaiduMap.OnMapStatusChangeListener {
             override fun onMapStatusChangeStart(p0: MapStatus?) {}
             override fun onMapStatusChangeStart(p0: MapStatus?, p1: Int) {}
             override fun onMapStatusChange(p0: MapStatus?) {}
             override fun onMapStatusChangeFinish(p0: MapStatus?) {
-//                val pt = Point()
-//                pt.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt()
-//                pt.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt())
-//                if (mBaiduMap != null) {
-//                    val ll = mBaiduMap?.projection?.fromScreenLocation(pt)
-//                    lati_lt_screen = ll?.latitude
-//                    longi_lt_screen = ll?.longitude
-//
-//                    val pt3 = Point()
-//                    pt3.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt() + 250
-//                    pt3.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt()) + 250
-//                    val ll3 = mBaiduMap?.projection?.fromScreenLocation(pt3)
-//                    lati_rb_screen = ll3?.latitude
-//                    longi_rb_screen = ll3?.longitude
-//
-//                    geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
-//                    EmallLogger.d(geoString)
-//                    scopeGeo = geoFormat(geoString)
-//                    if (longi_lt_screen != null && longi_rb_screen != null && lati_lt_screen != null && lati_rb_screen != null) {
-//                        center = String.format("%s,%s", (longi_lt_screen!! + longi_rb_screen!!) / 2, (lati_lt_screen!! + lati_rb_screen!!) / 2)
-//                        val leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
-//                        val rightBottom = LatLng(lati_rb_screen!!, longi_rb_screen!!)
-//                        EmallLogger.d(DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000)
-//                        area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
-//                        val areaString = area.toString()
-//                        EmallLogger.d(areaString)
-//                        val temp = areaString.substring(0, areaString.indexOf(".") + 3)
-//                        if (areaString.contains("E")) {
-//                            areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
-//                        } else {
-//                            areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
-//                        }
-//                        program_index_root_rl.visibility = View.VISIBLE
-//                    }
-//                }
-
-
                 val temp = DimenUtil().dip2px(context, ((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 76 - 92 - 250) * 0.4 + 76).toFloat())
 
                 val ltp = Point()
@@ -329,8 +283,6 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
                     } else {
                         areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
                     }
-                    program_index_root_rl.visibility = View.VISIBLE
-
                 }
             }
         }
@@ -346,10 +298,10 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         topRl!!.id = 1
         val topRlHeight = (DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 76 - 92 - 250) * 0.4
         val topRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DimenUtil().dip2px(context, topRlHeight.toFloat()))
-        topRlParams.addRule(RelativeLayout.BELOW, R.id.program_index_toolbar)
+        topRlParams.addRule(RelativeLayout.BELOW, R.id.program_toolbar)
         topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
         topRl!!.layoutParams = topRlParams
-        program_index_root_rl.addView(topRl, topRlParams)
+        program_root_rl.addView(topRl, topRlParams)
 
         leftRl = RelativeLayout(activity)
         leftRl!!.id = 2
@@ -359,7 +311,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         leftRlParams.setMargins(DimenUtil().dip2px(context, 0F), DimenUtil().dip2px(context, 0F), 0, 0)
         leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
         leftRl!!.layoutParams = leftRlParams
-        program_index_root_rl.addView(leftRl, leftRlParams)
+        program_root_rl.addView(leftRl, leftRlParams)
 
         rightRl = RelativeLayout(activity)
         rightRl!!.id = 3
@@ -369,7 +321,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         rightRlParams.setMargins(0, DimenUtil().dip2px(context, 0F), 0, DimenUtil().dip2px(context, 0F))
         rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
         rightRl!!.layoutParams = rightRlParams
-        program_index_root_rl.addView(rightRl, rightRlParams)
+        program_root_rl.addView(rightRl, rightRlParams)
 
         zoomImageView = ImageView(activity)
         zoomImageView!!.id = 10
@@ -412,10 +364,10 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         bottomRl!!.id = 4
         val bottomRlParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
         bottomRlParams.addRule(RelativeLayout.BELOW, leftRl!!.id)
-        bottomRlParams.addRule(RelativeLayout.ABOVE, R.id.program_index_bottom_rl)
+        bottomRlParams.addRule(RelativeLayout.ABOVE, R.id.program_bottom_rl)
         bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
         bottomRl!!.layoutParams = bottomRlParams
-        program_index_root_rl.addView(bottomRl, bottomRlParams)
+        program_root_rl.addView(bottomRl, bottomRlParams)
 
         satelliteImageView = ImageView(activity)
         val satelliteImageViewParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 23F), DimenUtil().dip2px(context, 23F))
@@ -424,7 +376,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         satelliteImageViewParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         satelliteImageView!!.setImageResource(R.drawable.program_satellite)
         satelliteImageView!!.layoutParams = satelliteImageViewParams
-        program_index_root_rl.addView(satelliteImageView, satelliteImageViewParams)
+        program_root_rl.addView(satelliteImageView, satelliteImageViewParams)
 
         scrollTextView = TextSwitcherView(activity)
         val scrollTextViewParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, DimenUtil().dip2px(context, 17F))
@@ -434,7 +386,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         scrollTextView!!.layoutParams = scrollTextViewParams
         val textArray: MutableList<String> = mutableListOf(getString(R.string.fake_satellite1), getString(R.string.fake_satellite2), getString(R.string.fake_satellite3))
         scrollTextView!!.getResource(textArray as ArrayList<String>?)
-        program_index_root_rl.addView(scrollTextView, scrollTextViewParams)
+        program_root_rl.addView(scrollTextView, scrollTextViewParams)
 
         areaTv = TextView(activity)
         val areaTvParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
@@ -442,11 +394,10 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         areaTvParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
         areaTvParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         areaTvParams.setMargins(0, 0, 0, DimenUtil().dip2px(context, 16F))
-
         areaTv!!.setTextColor(Color.parseColor("#FFFFFF"))
         areaTv!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
-
         topRl!!.addView(areaTv, areaTvParams)
+//        areaTv!!.visibility = View.INVISIBLE
 
 
         val tl = ImageView(activity)
@@ -459,7 +410,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         tl.pivotY = (tl.height / 2).toFloat()
         tl.rotation = 180F
         tl.layoutParams = tlParams
-        program_index_root_rl.addView(tl, tlParams)
+        program_root_rl.addView(tl, tlParams)
 
         val tr = ImageView(activity)
         val trParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 16F), DimenUtil().dip2px(context, 16F))
@@ -471,7 +422,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         tr.pivotY = (tl.height / 2).toFloat()
         tr.rotation = 270F
         tr.layoutParams = trParams
-        program_index_root_rl.addView(tr, trParams)
+        program_root_rl.addView(tr, trParams)
 
         val bl = ImageView(activity)
         val blParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 16F), DimenUtil().dip2px(context, 16F))
@@ -483,7 +434,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         bl.pivotY = (tl.height / 2).toFloat()
         bl.rotation = 90F
         bl.layoutParams = tlParams
-        program_index_root_rl.addView(bl, blParams)
+        program_root_rl.addView(bl, blParams)
 
         val br = ImageView(activity)
         val brParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 16F), DimenUtil().dip2px(context, 16F))
@@ -492,7 +443,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         brParams.setMargins(DimenUtil().dip2px(context, 0F), DimenUtil().dip2px(context, 0F), 0, 0)
         br.setImageResource(R.drawable.purple_border)
         br.layoutParams = tlParams
-        program_index_root_rl.addView(br, brParams)
+        program_root_rl.addView(br, brParams)
 
         move = ImageView(activity)
         val moveParams = RelativeLayout.LayoutParams(DimenUtil().dip2px(context, 230F), DimenUtil().dip2px(context, 2F))
@@ -501,14 +452,14 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         moveParams.setMargins(DimenUtil().dip2px(context, 2F), DimenUtil().dip2px(context, 0F), 0, 0)
         move!!.setImageResource(R.drawable.move)
         move!!.layoutParams = moveParams
-        program_index_root_rl.addView(move, moveParams)
+        program_root_rl.addView(move, moveParams)
 
         val fakeToolbarRl = RelativeLayout(activity)
         fakeToolbarRl.id = 5
         val fakeToolbarParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, DimenUtil().dip2px(context, 54F))
-        fakeToolbarParams.addRule(RelativeLayout.BELOW, R.id.program_index_ll_bar)
+        fakeToolbarParams.addRule(RelativeLayout.BELOW, R.id.program_ll_bar)
         fakeToolbarRl.layoutParams = fakeToolbarParams
-        program_index_root_rl.addView(fakeToolbarRl, fakeToolbarParams)
+        program_root_rl.addView(fakeToolbarRl, fakeToolbarParams)
 
         title = TextView(activity)
         val titleParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
@@ -541,7 +492,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         rulerRlParams.setMargins(0, DimenUtil().dip2px(context, 300F), 0, 0)
         rulerRl!!.layoutParams = rulerRlParams
         rulerRl!!.visibility = View.INVISIBLE
-        program_index_root_rl.addView(rulerRl, rulerRlParams)
+        program_root_rl.addView(rulerRl, rulerRlParams)
 
 
         rular = RulerView(activity)
@@ -647,59 +598,64 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
 
         })
 
-        program_index_camera.setOnClickListener {
-            level = 2
-            program_index_toolbar.setBackgroundColor(Color.parseColor("#333333"))
-            topRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            leftRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            rightRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            bottomRl!!.setBackgroundColor(Color.parseColor("#333333"))
-            program_index_bottom_rl.setBackgroundColor(Color.parseColor("#333333"))
-            program_index_ll_bar.setBackgroundColor(Color.parseColor("#333333"))
-            program_index_camera.visibility = View.GONE
-            satelliteImageView!!.visibility = View.GONE
-            scrollTextView!!.visibility = View.GONE
-            title!!.visibility = View.VISIBLE
-            program_index_toolbar_searchbar.visibility = View.INVISIBLE
-            nextStep!!.visibility = View.VISIBLE
-            rulerRl!!.visibility = View.VISIBLE
-            rular!!.visibility = View.VISIBLE
-            rular2!!.visibility = View.VISIBLE
-            r1Tv!!.visibility = View.VISIBLE
-            r2Tv!!.visibility = View.VISIBLE
-            val mUiSettings = mBaiduMap!!.uiSettings
-            mUiSettings.isScrollGesturesEnabled = false
-            mUiSettings.isOverlookingGesturesEnabled = false
-            mUiSettings.isZoomGesturesEnabled = false
-            move!!.visibility = View.INVISIBLE
-            zoomImageView!!.visibility = View.INVISIBLE
-            zoomIn!!.visibility = View.INVISIBLE
-            zoomOut!!.visibility = View.INVISIBLE
-            val bmp = BitmapFactory.decodeResource(resources, R.drawable.trans_locate)
-            val mCurrentMarker = BitmapDescriptorFactory.fromBitmap(bmp)
-            mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker))
-//            Handler().postDelayed({
-//                mBaiduMap!!.snapshot { p0 ->
-//                    var baos = ByteArrayOutputStream()
-//                    p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
-//                    saveBitmapToLocal("temp_map.jpg", p0)
-//
-//                }
-//            }, 1000)   //5秒
+        program_camera.setOnClickListener {
+            if (scopeGeo.isEmpty()) {
+                Toast.makeText(activity, "您尚未框选准确的地图区域，请正确框选后再操作", Toast.LENGTH_SHORT).show()
+            } else {
+                level = 2
+                program_toolbar.setBackgroundColor(Color.parseColor("#333333"))
+                topRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                leftRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                rightRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                bottomRl!!.setBackgroundColor(Color.parseColor("#333333"))
+                program_bottom_rl.setBackgroundColor(Color.parseColor("#333333"))
+                program_ll_bar.setBackgroundColor(Color.parseColor("#333333"))
+                program_camera.visibility = View.GONE
+                satelliteImageView!!.visibility = View.GONE
+                scrollTextView!!.visibility = View.GONE
+                title!!.visibility = View.VISIBLE
+                program_toolbar_searchbar.visibility = View.INVISIBLE
+                nextStep!!.visibility = View.VISIBLE
+                rulerRl!!.visibility = View.VISIBLE
+                rular!!.visibility = View.VISIBLE
+                rular2!!.visibility = View.VISIBLE
+                r1Tv!!.visibility = View.VISIBLE
+                r2Tv!!.visibility = View.VISIBLE
+                val mUiSettings = mBaiduMap!!.uiSettings
+                mUiSettings.isScrollGesturesEnabled = false
+                mUiSettings.isOverlookingGesturesEnabled = false
+                mUiSettings.isZoomGesturesEnabled = false
+                move!!.visibility = View.INVISIBLE
+                zoomImageView!!.visibility = View.INVISIBLE
+                zoomIn!!.visibility = View.INVISIBLE
+                zoomOut!!.visibility = View.INVISIBLE
+                val bmp = BitmapFactory.decodeResource(resources, R.drawable.trans_locate)
+                val mCurrentMarker = BitmapDescriptorFactory.fromBitmap(bmp)
+                mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker))
+//                Handler().postDelayed({
+//                    mBaiduMap!!.snapshot { p0 ->
+//                        var baos = ByteArrayOutputStream()
+//                        p0!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
+//                        EmallLogger.d(AppUtils.getAppPath())
+//                        saveBitmapToLocal("temp_map.jpg", p0)
+//                    }
+//                }, 1000)   //5秒
+            }
+
         }
 
         nextStep!!.setOnClickListener {
             val delegate: ProgramParamsDelegate = ProgramParamsDelegate().create()!!
 
+            EmallLogger.d(angle)
+            EmallLogger.d(cloud)
             bundle!!.putString("scopeGeo", scopeGeo)
             bundle.putString("angle", angle)
             bundle.putString("cloud", cloud)
             bundle.putString("center", center)
             bundle.putString("geoString", geoString)
             bundle.putString("zoomLevel", mBaiduMap!!.getMapStatus().zoom.toString())
-
-            bundle.putString("PAGE_FROM","PROGRAM_INDEX")
-
+            bundle.putString("PAGE_FROM", "PROGRAM")
             if (area.toString().contains("E")) {
                 Toast.makeText(activity, "区域面积过大", Toast.LENGTH_SHORT).show()
             } else {
@@ -708,6 +664,10 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
             delegate.arguments = bundle
             start(delegate)
         }
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
     }
 
     fun geoFormat(geo: String): String {
@@ -726,39 +686,34 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     override fun onSupportVisible() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-
-        val sp = activity.getSharedPreferences("FROM_ORDER_LIST", Context.MODE_PRIVATE)
-        if (sp.getString("from_order_list", "")== "1"){
-            level = 1
-            program_index_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
-            topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
-            leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
-            rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
-            bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
-            program_index_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
-            program_index_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
-            program_index_camera.visibility = View.VISIBLE
-            satelliteImageView!!.visibility = View.VISIBLE
-            scrollTextView!!.visibility = View.VISIBLE
-            title!!.visibility = View.GONE
-            program_index_toolbar_searchbar.visibility = View.VISIBLE
-            nextStep!!.visibility = View.GONE
-            rulerRl!!.visibility = View.INVISIBLE
-            rular!!.visibility = View.INVISIBLE
-            rular2!!.visibility = View.INVISIBLE
-            r1Tv!!.visibility = View.INVISIBLE
-            r2Tv!!.visibility = View.INVISIBLE
-            val mUiSettings = mBaiduMap!!.uiSettings
-            mUiSettings.isScrollGesturesEnabled = true
-            mUiSettings.isOverlookingGesturesEnabled = true
-            mUiSettings.isZoomGesturesEnabled = true
-            move!!.visibility = View.VISIBLE
-            zoomImageView!!.visibility = View.VISIBLE
-            zoomIn!!.visibility = View.VISIBLE
-            zoomOut!!.visibility = View.VISIBLE
-            mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null))
-        }
-        sp.edit().clear().commit()
+        level = 1
+        program_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
+        topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+        program_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
+        program_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
+        program_camera.visibility = View.VISIBLE
+        satelliteImageView!!.visibility = View.VISIBLE
+        scrollTextView!!.visibility = View.VISIBLE
+        title!!.visibility = View.GONE
+        program_toolbar_searchbar.visibility = View.VISIBLE
+        nextStep!!.visibility = View.GONE
+        rulerRl!!.visibility = View.INVISIBLE
+        rular!!.visibility = View.INVISIBLE
+        rular2!!.visibility = View.INVISIBLE
+        r1Tv!!.visibility = View.INVISIBLE
+        r2Tv!!.visibility = View.INVISIBLE
+        val mUiSettings = mBaiduMap!!.uiSettings
+        mUiSettings.isScrollGesturesEnabled = true
+        mUiSettings.isOverlookingGesturesEnabled = true
+        mUiSettings.isZoomGesturesEnabled = true
+        move!!.visibility = View.VISIBLE
+        zoomImageView!!.visibility = View.VISIBLE
+        zoomIn!!.visibility = View.VISIBLE
+        zoomOut!!.visibility = View.VISIBLE
+        mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null))
     }
 
     inner class MyLocationListenner : BDLocationListener {
@@ -828,12 +783,6 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         }
     }
 
-    override fun onStart() {
-        initMap()
-
-        super.onStart()
-    }
-
     override fun onResume() {
         mMapView!!.onResume()
         super.onResume()
@@ -858,7 +807,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {
-        return DefaultVerticalAnimator()
+        return DefaultHorizontalAnimator()
     }
 
     fun saveBitmapToLocal(fileName: String, bitmap: Bitmap) {
@@ -880,4 +829,6 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         }
 
     }
+
+
 }

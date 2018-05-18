@@ -21,6 +21,7 @@ import com.example.emall_ec.main.detail.example.optics.MultispectralDelegate
 import com.example.emall_ec.main.detail.example.optics.PanchromaticDelegate
 import com.flyco.tablayout.CommonTabLayout
 import com.flyco.tablayout.listener.OnTabSelectListener
+import kotlinx.android.synthetic.main.delegate_noctilucence_example.*
 
 
 class Optics1ExampleDelegate : EmallDelegate() {
@@ -36,9 +37,13 @@ class Optics1ExampleDelegate : EmallDelegate() {
     }
 
     override fun initial() {
-        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
         optics1_example_toolbar.title = ""
         (activity as AppCompatActivity).setSupportActionBar(optics1_example_toolbar)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         optics1_example_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
         initTabLayout()
 
