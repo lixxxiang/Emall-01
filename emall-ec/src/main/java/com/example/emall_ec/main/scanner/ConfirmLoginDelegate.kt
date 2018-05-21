@@ -67,12 +67,22 @@ class ConfirmLoginDelegate : EmallDelegate() {
                                     toast = Toast.makeText(activity, getString(R.string.login_success), Toast.LENGTH_SHORT)
                                     toast!!.show()
                                 }
-                                EmallLogger.d(arguments.getString("PAGE_FROM"))
-                                if (arguments.getString("PAGE_FROM") == "ORDER_LIST")
-                                    popTo(findFragment(OrderListDelegate().javaClass).javaClass, false)
-                                else
-                                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+
+                            }else{
+                                if (toast != null) {
+                                    toast!!.setText("登录失败")
+                                    toast!!.duration = Toast.LENGTH_SHORT
+                                    toast!!.show()
+                                } else {
+                                    toast = Toast.makeText(activity, "登录失败", Toast.LENGTH_SHORT)
+                                    toast!!.show()
+                                }
                             }
+                            EmallLogger.d(arguments.getString("PAGE_FROM"))
+                            if (arguments.getString("PAGE_FROM") == "ORDER_LIST")
+                                popTo(findFragment(OrderListDelegate().javaClass).javaClass, false)
+                            else
+                                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
                         }
                     })
                     .error(object : IError {

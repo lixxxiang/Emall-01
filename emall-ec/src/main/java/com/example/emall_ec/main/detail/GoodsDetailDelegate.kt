@@ -264,6 +264,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         video_detail_get_ticket_rl.setOnClickListener {
             val delegate: GoodsDetailCouponDelegate = GoodsDetailCouponDelegate().create()!!
             val bundle: Bundle? = Bundle()
+            bundle!!.putString("productId", arguments.getString("productId"))
             delegate.arguments = bundle
             start(delegate)
         }
@@ -283,7 +284,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_goods_detail_mask_iv.setOnClickListener {
-//            val delegate: VideoExampleDelegate = VideoExampleDelegate().create()!!
+            //            val delegate: VideoExampleDelegate = VideoExampleDelegate().create()!!
 //            val bundle: Bundle? = Bundle()
 //            delegate.arguments = bundle
 //            start(delegate)

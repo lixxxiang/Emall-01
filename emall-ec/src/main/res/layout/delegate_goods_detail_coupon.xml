@@ -10,7 +10,6 @@
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
         android:elevation="2dp"/>
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/goods_detail_coupon_toolbar"
         android:layout_width="match_parent"
@@ -22,4 +21,9 @@
         app:contentInsetStartWithNavigation="0dp"
         android:elevation="2dp">
     </android.support.v7.widget.Toolbar>
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/goods_detail_coupon_webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.github.lzyzsd.jsbridge.BridgeWebView>
 </LinearLayout>

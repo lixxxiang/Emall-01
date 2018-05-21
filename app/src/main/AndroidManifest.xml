@@ -62,6 +62,9 @@
         <activity
             android:name="com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name="com.example.emall_ec.main.detail.example.VideoExampleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
     </application>
 
     <!-- home fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx-->
