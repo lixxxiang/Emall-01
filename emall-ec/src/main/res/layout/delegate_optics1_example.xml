@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:ignore="NamespaceTypo">
     <View
         android:id="@+id/ll_bar"
         android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             tl:tl_indicator_width="50dp"
             tl:tl_tab_space_equal="true"
             tl:tl_textSelectColor="#B4A078"
-            tl:tl_textUnselectColor="#4A4A4A"
+            tl:tl_textUnselectColor="#FFFFFF"
             tl:tl_textsize="16sp" />
     </android.support.v7.widget.Toolbar>
     <android.support.v4.view.ViewPager

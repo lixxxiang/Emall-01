@@ -142,7 +142,10 @@ class InProduction2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListe
                                     delegate!!.getParentDelegate<EmallDelegate>().start(payMethodDelegate)
 
                                 } else if (orderDetail.data[position].getState() == 4) {
-                                    val productDeliveryDelegate = ProductDeliveryDelegate().create()
+                                    val productDeliveryDelegate: ProductDeliveryDelegate = ProductDeliveryDelegate().create()!!
+                                    val bundle: Bundle? = Bundle()
+                                    bundle!!.putString("PAGE_FROM","ORDER_LIST")
+                                    productDeliveryDelegate.arguments = bundle
                                     delegate!!.getParentDelegate<EmallDelegate>().start(productDeliveryDelegate)
                                 }
                             }

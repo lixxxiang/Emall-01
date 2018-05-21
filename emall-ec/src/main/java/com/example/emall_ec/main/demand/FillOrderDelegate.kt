@@ -1,8 +1,10 @@
 package com.example.emall_ec.main.demand
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -55,6 +57,7 @@ class FillOrderDelegate : BottomItemDelegate() {
     internal var retrofit: Retrofit? = null
     internal var apiService: ApiService? = null
     var userId = String()
+    var couponId = "-1"
     private var queryInvoiceParams: WeakHashMap<String, Any>? = WeakHashMap()
     val couponList: MutableList<String> = mutableListOf()
 
@@ -76,34 +79,37 @@ class FillOrderDelegate : BottomItemDelegate() {
             pop()
         }
 
+        fill_order_loading_rl.visibility = View.VISIBLE
 
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
         viewDemandParams!!["type"] = arguments.getString("type")// 1 3 5
         userId = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
-        RestClient().builder()
-                .url("http://59.110.164.214:8024/global/viewDemand")
-                .params(viewDemandParams!!)
-                .success(object : ISuccess {
-                    override fun onSuccess(response: String) {
-                        viewDemandBean = Gson().fromJson(response, ViewDemandBean::class.java)
-                        productId = viewDemandBean.data.demands[0].productId
-                        getCoupon()
-                        initViews(viewDemandBean)
-                    }
-                })
-                .failure(object : IFailure {
-                    override fun onFailure() {
 
-                    }
-                })
-                .error(object : IError {
-                    override fun onError(code: Int, msg: String) {
+        Handler().postDelayed({
+            RestClient().builder()
+                    .url("http://59.110.164.214:8024/global/viewDemand")
+                    .params(viewDemandParams!!)
+                    .success(object : ISuccess {
+                        override fun onSuccess(response: String) {
+                            viewDemandBean = Gson().fromJson(response, ViewDemandBean::class.java)
+                            productId = viewDemandBean.data.demands[0].productId
+                            getCoupon()
+                            initViews(viewDemandBean)
+                        }
+                    })
+                    .failure(object : IFailure {
+                        override fun onFailure() {
 
-                    }
-                })
-                .build()
-                .post()
+                        }
+                    })
+                    .error(object : IError {
+                        override fun onError(code: Int, msg: String) {
 
+                        }
+                    })
+                    .build()
+                    .post()
+        },500)
         fill_order_to_pay.setOnClickListener {
             if (!ButtonUtils.isFastDoubleClick(R.id.fill_order_to_pay)) {
                 EmallProgressBar.showProgressbar(context)
@@ -129,13 +135,18 @@ class FillOrderDelegate : BottomItemDelegate() {
         }
 
         fill_order_coupon_rl.setOnClickListener {
-            val delegate: FillOrderCouponDelegate = FillOrderCouponDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("demandId", arguments.getString("demandId"))
-            bundle!!.putString("salePrice", viewDemandBean.data.demands[0].salePrice)
-            bundle!!.putString("type", arguments.getString("type"))
-            delegate.arguments = bundle
-            startForResult(delegate, 2)
+            if(coupon_title.toString() == "优惠券：  暂无可用"){
+
+            }else{
+                val delegate: FillOrderCouponDelegate = FillOrderCouponDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("demandId", arguments.getString("demandId"))
+                bundle.putString("salePrice", viewDemandBean.data.demands[0].salePrice)
+                bundle.putString("type", arguments.getString("type"))
+                bundle.putString("couponId",couponId)
+                delegate.arguments = bundle
+                startForResult(delegate, 2)
+            }
         }
     }
 
@@ -151,10 +162,11 @@ class FillOrderDelegate : BottomItemDelegate() {
                 val getCouponTypeByProductIdBean: GetCouponTypeByUserAndDemandBean
                 if (response.body() != null) {
                     getCouponTypeByProductIdBean = response.body()!!
-                    val size = getCouponTypeByProductIdBean.data.coupon.size
+                    if(getCouponTypeByProductIdBean.message != "方法返回为空"){
+                        val size = getCouponTypeByProductIdBean.data.coupon.size
 
-                    if (size in 1..3) {
-                        coupon_title.text = "优惠券：  请选择"
+                        if (size in 1..3) {
+                            coupon_title.text = "优惠券：  请选择"
 //                        coupon_title.visibility = View.GONE
 //                        for (i in 0 until size) {
 //                            couponList.add(getCouponTypeByProductIdBean.data.coupon[i].toString())
@@ -179,9 +191,13 @@ class FillOrderDelegate : BottomItemDelegate() {
 //                                coupon3.visibility = View.VISIBLE
 //                            }
 //                        }
-                    } else {
+                        } else {
 
+                        }
+                    }else {
+                        coupon_title.text = "优惠券：  暂无可用"
                     }
+
                 } else {
                     coupon_title.text = "优惠券：  暂无可用"
                 }
@@ -206,8 +222,11 @@ class FillOrderDelegate : BottomItemDelegate() {
                 invoiceState = "1"
             }
         } else if (requestCode == 2 && resultCode == ISupportFragment.RESULT_OK) {
+            val sp = activity.getSharedPreferences("COUPON_ID", Context.MODE_PRIVATE)
+            couponId = sp.getString("couponId", "")
             val index = data.getString("COUPON")
             EmallLogger.d(index)
+            EmallLogger.d(couponId)
             if (index != ""){
                 val size = index.split(",").size
                 if (size > 2) {
@@ -217,8 +236,10 @@ class FillOrderDelegate : BottomItemDelegate() {
                     coupon1.visibility = View.VISIBLE
                     coupon1.text = index.split(",")[0]
                 }
+            }else{
+                coupon_title.visibility = View.VISIBLE
+                coupon1.visibility = View.GONE
             }
-
         }
     }
 
@@ -286,6 +307,7 @@ class FillOrderDelegate : BottomItemDelegate() {
         fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble()))
         fill_order_out_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
         fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
+        fill_order_loading_rl.visibility = View.GONE
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

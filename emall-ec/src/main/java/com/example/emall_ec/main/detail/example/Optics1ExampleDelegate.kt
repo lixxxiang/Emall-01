@@ -44,7 +44,10 @@ class Optics1ExampleDelegate : EmallDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(optics1_example_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        optics1_example_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
+        optics1_example_toolbar.setNavigationIcon(R.drawable.ic_back_small)
+        optics1_example_toolbar.setNavigationOnClickListener {
+            pop()
+        }
         initTabLayout()
 
     }

@@ -51,6 +51,7 @@ import com.example.emall_ec.main.detail.data.GetCollectionMarkBean
 import com.example.emall_ec.main.detail.data.SceneDetailBean
 import com.example.emall_ec.main.detail.example.NoctilucenceExampleDelegate
 import com.example.emall_ec.main.detail.example.Optics1ExampleDelegate
+import com.example.emall_ec.main.detail.example.VideoExampleActivity
 import com.example.emall_ec.main.detail.example.VideoExampleDelegate
 import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity
@@ -111,6 +112,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     override fun initial() {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         mSharedPreferences = activity.getSharedPreferences("COLLECTION", Context.MODE_PRIVATE)
+        goods_detail_loading_rl.visibility = View.VISIBLE
         mMapView = activity.findViewById(R.id.goods_detail_map) as TextureMapView
         mBaiduMap = mMapView!!.map
         val child = mMapView!!.getChildAt(1)
@@ -121,28 +123,33 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         mMapView!!.showZoomControls(false)
         initViews()
         resolveConflict()
-        type = arguments.getString("type")
-        EmallLogger.d(type)
-        if (type == "1" || type == "5") {
-            detail_videoview.visibility = View.GONE
-            sceneDetailParams!!["productId"] = arguments.getString("productId")
-            productId = arguments.getString("productId")
-            if (type == "1") {
-                sceneDetailParams!!["type"] = OPTICS
-                type135 = OPTICS
-            } else {
-                sceneDetailParams!!["type"] = "2"
-                type135 = NOCTILUCENCE
+
+        Handler().postDelayed({
+
+            type = arguments.getString("type")
+            EmallLogger.d(type)
+            if (type == "1" || type == "5") {
+                detail_videoview.visibility = View.GONE
+                sceneDetailParams!!["productId"] = arguments.getString("productId")
+                productId = arguments.getString("productId")
+                if (type == "1") {
+                    sceneDetailParams!!["type"] = OPTICS
+                    type135 = OPTICS
+                } else {
+                    sceneDetailParams!!["type"] = "2"
+                    type135 = NOCTILUCENCE
+                }
+                getData(sceneDetailParams!!)
+            } else if (type == "3") {
+                detail_videoview.visibility = View.VISIBLE
+                videoDetailParams!!["productId"] = arguments.getString("productId")
+                productId = arguments.getString("productId")
+                videoDetailParams!!["type"] = VIDEO
+                type135 = VIDEO
+                getVideoData(videoDetailParams!!)
             }
-            getData(sceneDetailParams!!)
-        } else if (type == "3") {
-            detail_videoview.visibility = View.VISIBLE
-            videoDetailParams!!["productId"] = arguments.getString("productId")
-            productId = arguments.getString("productId")
-            videoDetailParams!!["type"] = VIDEO
-            type135 = VIDEO
-            getVideoData(videoDetailParams!!)
-        }
+        }, 500)
+
 
         goods_buy_now_btn.setOnClickListener {
             if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
@@ -262,12 +269,12 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         scene_goods_detail_mask_iv.setOnClickListener {
-            if(type == "1"){
+            if (type == "1") {
                 val delegate: Optics1ExampleDelegate = Optics1ExampleDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 delegate.arguments = bundle
                 start(delegate)
-            }else if (type == "5"){
+            } else if (type == "5") {
                 val delegate: NoctilucenceExampleDelegate = NoctilucenceExampleDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 delegate.arguments = bundle
@@ -275,11 +282,13 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             }
         }
 
-        video_goods_detail_mask_iv.setOnClickListener{
-            val delegate: VideoExampleDelegate = VideoExampleDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            delegate.arguments = bundle
-            start(delegate)
+        video_goods_detail_mask_iv.setOnClickListener {
+//            val delegate: VideoExampleDelegate = VideoExampleDelegate().create()!!
+//            val bundle: Bundle? = Bundle()
+//            delegate.arguments = bundle
+//            start(delegate)
+            var intent = Intent(activity, VideoExampleActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -297,7 +306,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 val getCouponTypeByProductIdBean: GetCouponTypeByProductIdBean
                 if (response.body() != null) {
                     getCouponTypeByProductIdBean = response.body()!!
-                    if(getCouponTypeByProductIdBean.message == "success"){
+                    if (getCouponTypeByProductIdBean.message == "success") {
                         val size = getCouponTypeByProductIdBean.data.productCoupon.size
                         if (size in 1..3) {
                             for (i in 0 until size) {
@@ -323,10 +332,10 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                                     coupon3.visibility = View.VISIBLE
                                 }
                             }
-                        }else{
+                        } else {
 
                         }
-                    }else{
+                    } else {
                         line.visibility = View.GONE
                         video_detail_get_ticket_rl.visibility = View.GONE
                     }
@@ -568,6 +577,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         judgeLati_longi(sceneData.latitude, sceneData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), sceneData.longitude, longi, sceneData.latitude, lati)
         detail_coordinate_tv.text = "WGS-84"
+        goods_detail_loading_rl.visibility = View.GONE
+
     }
 
     private fun setVideoData(videoDetail: VideoDetailBean) {
@@ -607,6 +618,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 //                detail_videoview.startButton.performClick()
 //            }
 //        }, 1000)
+        goods_detail_loading_rl.visibility = View.GONE
+
 
     }
 
@@ -773,17 +786,20 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     override fun onResume() {
         super.onResume()
-        mMapView!!.onResume()
+        if (mMapView != null)
+            mMapView!!.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        mMapView!!.onPause()
+        if (mMapView != null)
+            mMapView!!.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mMapView!!.onDestroy()
+        if (mMapView != null)
+            mMapView!!.onDestroy()
 
 
     }

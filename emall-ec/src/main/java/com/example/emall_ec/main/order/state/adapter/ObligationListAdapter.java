@@ -111,6 +111,9 @@ public class ObligationListAdapter extends BaseAdapter {
 
                     } else if (dataList.get(0).getData().get(i).getState() == 4) {
                         ProductDeliveryDelegate productDeliveryDelegate = new ProductDeliveryDelegate().create();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("PAGE_FROM", "ORDER_LIST");
+                        productDeliveryDelegate.setArguments(bundle);
                         delegate.getParentDelegate().start(productDeliveryDelegate);
                     }
                 }

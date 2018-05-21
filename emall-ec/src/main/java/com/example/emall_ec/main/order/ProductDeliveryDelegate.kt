@@ -11,6 +11,7 @@ import android.widget.RelativeLayout
 import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.demand.FillOrderDelegate
@@ -53,6 +54,7 @@ class ProductDeliveryDelegate : EmallDelegate() {
         delivery.setOnClickListener{
             val delegate: ScannerDelegate = ScannerDelegate().create()!!
             val bundle: Bundle? = Bundle()
+            EmallLogger.d( arguments.getString("PAGE_FROM"))
             bundle!!.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
             delegate.arguments = bundle
             start(delegate)

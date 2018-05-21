@@ -316,4 +316,17 @@
                 />
         </RelativeLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/fill_order_loading_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <ProgressBar
+            android:id="@+id/fill_order_progressBar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_scanner.*
@@ -50,7 +51,6 @@ class ScannerDelegate : BottomItemDelegate() {
         scan_toolbar.setNavigationOnClickListener {
             pop()
         }
-
     }
 
     private val mResultHandler = object : ZXingScannerView.ResultHandler {
@@ -62,6 +62,8 @@ class ScannerDelegate : BottomItemDelegate() {
                 val delegate: ConfirmLoginDelegate = ConfirmLoginDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("UUID", uuid)
+                EmallLogger.d( arguments.getString("PAGE_FROM"))
+
                 bundle!!.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
                 delegate.arguments = bundle
                 start(delegate)

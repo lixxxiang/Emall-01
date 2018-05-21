@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.Toast
 import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.delegates.EmallDelegate
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
@@ -60,6 +61,28 @@ class IndexDelegate : BottomItemDelegate() {
             index_no_network_rl.visibility = View.VISIBLE
         }else{
             index_no_network_rl.visibility = View.GONE
+        }
+
+        index_no_network_rl.setOnClickListener {
+            if(NetworkUtils.isConnected()){
+                EmallLogger.d("youwang")
+                index_no_network_rl.visibility = View.GONE
+            }else{
+                EmallLogger.d("meiwang")
+            }
+            swipe_refresh_layout_index.isRefreshing = true
+            Handler().postDelayed({
+                refreshHandler = RefreshHandler.create(swipe_refresh_layout_index,
+                        recycler_view_index,
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter(),
+                        IndexDataConverter())
+                refreshHandler!!.getData(delegate!!)
+                swipe_refresh_layout_index.isRefreshing = false
+            }, 1200)
         }
         refreshHandler = RefreshHandler.create(swipe_refresh_layout_index,
                 recycler_view_index,
@@ -117,6 +140,12 @@ class IndexDelegate : BottomItemDelegate() {
         }
 
         swipe_refresh_layout_index.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            if(NetworkUtils.isConnected()){
+                EmallLogger.d("youwang")
+                index_no_network_rl.visibility = View.GONE
+            }else{
+                EmallLogger.d("meiwang")
+            }
             swipe_refresh_layout_index.isRefreshing = true
             Handler().postDelayed({
                 refreshHandler = RefreshHandler.create(swipe_refresh_layout_index,

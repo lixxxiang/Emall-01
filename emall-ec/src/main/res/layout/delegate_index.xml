@@ -8,12 +8,14 @@
         android:id="@+id/index_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <View
-            android:elevation="2dp"
             android:id="@+id/fake_status_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/statusbar_view_height"
-            android:background="#FFFFFF"/>
+            android:background="#FFFFFF"
+            android:elevation="2dp" />
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout_index"
             android:layout_width="match_parent"
@@ -24,31 +26,42 @@
                 android:id="@+id/recycler_view_index"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
 
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/index_no_network_rl"
-            android:background="#FFFFFF"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/no_internet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/no_internet"/>
+                android:text="@string/no_internet" />
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/no_internet"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/click_to_reload" />
         </RelativeLayout>
 
 
-
         <android.support.v7.widget.Toolbar
-            android:layout_below="@+id/fake_status_bar"
             android:id="@+id/toolbar_index"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:elevation="2dp"
-            android:background="#FFFFFF">
+            android:layout_below="@+id/fake_status_bar"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,13 +86,13 @@
 
                 <RelativeLayout
                     android:id="@+id/index_search_rl"
-                    android:focusable="true"
-                    android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_weight="6"
                     android:background="@drawable/style_home_pager_toolbar_search_view"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical">
 
                     <RelativeLayout
@@ -106,7 +119,7 @@
                             android:text="@string/index_searchbar_hint"
                             android:textColor="#9B9B9B"
                             android:textColorHint="#9B9B9B"
-                            android:textSize="12dp"/>
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -123,7 +136,7 @@
                         android:layout_width="20dp"
                         android:layout_height="22dp"
                         android:layout_centerHorizontal="true"
-                        android:background="#00000000"/>
+                        android:background="#00000000" />
                 </RelativeLayout>
 
             </LinearLayout>

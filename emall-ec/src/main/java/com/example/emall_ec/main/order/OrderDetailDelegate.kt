@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.example.emall_ec.main.index.dailypic.data.CommonBean
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter
 import com.example.emall_ec.main.order.state.adapter.AllListAdapter.programArray
 import com.example.emall_ec.main.order.state.data.OrderDetail
+import com.example.emall_ec.main.scanner.ScannerDelegate
 import kotlinx.android.synthetic.main.delegate_order_detail.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -115,7 +117,11 @@ class OrderDetailDelegate : BottomItemDelegate() {
         }
 
         order_detail_download_btn.setOnClickListener {
-            start(ProductDeliveryDelegate().create())
+            val delegate: ProductDeliveryDelegate = ProductDeliveryDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putString("PAGE_FROM", "ORDER_LIST")
+            delegate.arguments = bundle
+            start(delegate)
         }
 
         order_detail_tel_rl.setOnClickListener {

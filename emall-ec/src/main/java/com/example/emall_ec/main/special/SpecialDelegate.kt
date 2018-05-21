@@ -4,6 +4,8 @@ import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
@@ -28,11 +30,30 @@ class SpecialDelegate : BottomItemDelegate() {
         initRecyclerView()
         getData()
 
+        if(!NetworkUtils.isConnected()){
+            special_no_network_rl.visibility = View.VISIBLE
+        }
+
+        special_no_network_rl.setOnClickListener {
+            if (NetworkUtils.isConnected()){
+                special_no_network_rl.visibility = View.GONE
+            }
+            special_srl.isRefreshing = true
+            Handler().postDelayed({
+                //                getData()
+                special_srl.isRefreshing = false
+                getData()
+
+            }, 1200)
+        }
+
         special_srl.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             special_srl.isRefreshing = true
             Handler().postDelayed({
 //                getData()
                 special_srl.isRefreshing = false
+                getData()
+
             }, 1200)
         })
     }

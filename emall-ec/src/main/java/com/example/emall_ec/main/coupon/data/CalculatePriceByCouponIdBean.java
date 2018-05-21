@@ -238,6 +238,27 @@ public class CalculatePriceByCouponIdBean {
             public void setCoupon_type(String coupon_type) {
                 this.coupon_type = coupon_type;
             }
+
+            @Override
+            public String toString() {
+                return "ProductPriceBean{" +
+                        "user_couponId='" + user_couponId + '\'' +
+                        ", price='" + price + '\'' +
+                        ", id='" + id + '\'' +
+                        ", coupon_type='" + coupon_type + '\'' +
+                        '}';
+            }
+
+
         }
+    }
+
+    @Override
+    public String toString() {
+        return "CalculatePriceByCouponIdBean{" +
+                "data=" + data +
+                ", message='" + message + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

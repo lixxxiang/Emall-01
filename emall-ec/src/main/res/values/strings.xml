@@ -236,5 +236,6 @@
     <string name="answer5_1">您好，请您在首页底部【我的】选项里选择【我的收藏】，【我的收藏】包括【宝贝】和【内容】两部分，其中【宝贝】包括不同类别的卫星产品，【内容】包括【每日一图】和【脉动地球】等卫星图片和视频资讯。</string>
     <string name="answer6_1">您好，商务合作请拨打电话：0431-81785188或发送邮件至：market@charmingglobe.com。产品体验相关问题及建议请在【我的】选项里选择【意见反馈】描述您遇到的问题，或者在【我的】选项里选择【联系客服】，工作人员会尽快与您沟通。</string>
     <string name="my_opinion_hint">请输入反馈信息</string>
+    <string name="click_to_reload">点击页面重新加载</string>
 
 </resources>

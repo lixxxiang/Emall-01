@@ -33,6 +33,7 @@ import com.baidu.location.*
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.util.view.RulerView
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.search.SearchPoiDelegate
@@ -141,6 +142,18 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun initial() {
+
+//        if(!NetworkUtils.isConnected()){
+//            program_no_network_rl.visibility = View.VISIBLE
+//        }
+//
+//        program_no_network_rl.setOnClickListener {
+//            if(NetworkUtils.isConnected()){
+//                program_no_network_rl.visibility = View.GONE
+//                initMap()
+//            }
+//        }
+
         program_index_root_rl.visibility = View.INVISIBLE
 
         program_index_back_btn_rl.setOnClickListener {
@@ -261,43 +274,6 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
             override fun onMapStatusChangeStart(p0: MapStatus?, p1: Int) {}
             override fun onMapStatusChange(p0: MapStatus?) {}
             override fun onMapStatusChangeFinish(p0: MapStatus?) {
-//                val pt = Point()
-//                pt.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt()
-//                pt.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt())
-//                if (mBaiduMap != null) {
-//                    val ll = mBaiduMap?.projection?.fromScreenLocation(pt)
-//                    lati_lt_screen = ll?.latitude
-//                    longi_lt_screen = ll?.longitude
-//
-//                    val pt3 = Point()
-//                    pt3.x = ((DimenUtil().px2dip(context, DimenUtil().getScreenWidth().toFloat()) - 250) * 0.5 + 200).toInt() + 250
-//                    pt3.y = (((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 72 - 92 - 250) * 0.4 + 72 + 600).toInt()) + 250
-//                    val ll3 = mBaiduMap?.projection?.fromScreenLocation(pt3)
-//                    lati_rb_screen = ll3?.latitude
-//                    longi_rb_screen = ll3?.longitude
-//
-//                    geoString = String.format("%s,%s,%s,%s", longi_lt_screen, lati_lt_screen, longi_rb_screen, lati_rb_screen)
-//                    EmallLogger.d(geoString)
-//                    scopeGeo = geoFormat(geoString)
-//                    if (longi_lt_screen != null && longi_rb_screen != null && lati_lt_screen != null && lati_rb_screen != null) {
-//                        center = String.format("%s,%s", (longi_lt_screen!! + longi_rb_screen!!) / 2, (lati_lt_screen!! + lati_rb_screen!!) / 2)
-//                        val leftTop = LatLng(lati_lt_screen!!, longi_lt_screen!!)
-//                        val rightBottom = LatLng(lati_rb_screen!!, longi_rb_screen!!)
-//                        EmallLogger.d(DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000)
-//                        area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
-//                        val areaString = area.toString()
-//                        EmallLogger.d(areaString)
-//                        val temp = areaString.substring(0, areaString.indexOf(".") + 3)
-//                        if (areaString.contains("E")) {
-//                            areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
-//                        } else {
-//                            areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
-//                        }
-//                        program_index_root_rl.visibility = View.VISIBLE
-//                    }
-//                }
-
-
                 val temp = DimenUtil().dip2px(context, ((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 76 - 92 - 250) * 0.4 + 76).toFloat())
 
                 val ltp = Point()

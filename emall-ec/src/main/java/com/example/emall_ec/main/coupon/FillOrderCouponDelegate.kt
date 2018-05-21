@@ -1,5 +1,7 @@
 package com.example.emall_ec.main.coupon
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.location.Location
 import android.net.Uri
 import android.support.design.widget.TabLayout
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.delegate_fill_order_coupon.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import android.os.Bundle
+import android.util.Log
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.widget.Toast
@@ -41,6 +44,8 @@ class FillOrderCouponDelegate : EmallDelegate() {
     private var salePrice = String()
     private var calculatePriceByCouponIdBean = CalculatePriceByCouponIdBean()
     private var coupons = String()
+    private var couponId = String()
+    var mSharedPreferences: SharedPreferences? = null
     fun create(): FillOrderCouponDelegate? {
         return FillOrderCouponDelegate()
     }
@@ -51,6 +56,7 @@ class FillOrderCouponDelegate : EmallDelegate() {
 
     override fun initial() {
         setSwipeBackEnable(false)
+        mSharedPreferences = activity.getSharedPreferences("COUPON_ID", Context.MODE_PRIVATE)
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         demandId = arguments.getString("demandId")
         type = arguments.getString("type")
@@ -68,7 +74,8 @@ class FillOrderCouponDelegate : EmallDelegate() {
 
         initWebView()
     }
-    private fun initWebView(){
+
+    private fun initWebView() {
         fill_order_coupon_webView.setDefaultHandler(DefaultHandler())
         fill_order_coupon_webView.webChromeClient = object : WebChromeClient() {
 
@@ -85,21 +92,38 @@ class FillOrderCouponDelegate : EmallDelegate() {
             }
         }
         //加载服务器网页
-        var url = String.format("http://10.10.90.3:8092/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s", demandId, salePrice, type, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+        var url: String
+        EmallLogger.d(arguments.getString("couponId"))
+        if (arguments.getString("couponId") == "-1" || arguments.getString("couponId") == null) {
+            url = String.format("http://10.10.90.3:8092/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=",
+                    demandId, salePrice, type, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
+        } else
+            url = String.format("http://10.10.90.3:8092/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=%s",
+                    demandId, salePrice, type, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, arguments.getString("couponId"))
         EmallLogger.d(url)
         fill_order_coupon_webView.loadUrl(url)
         //必须和js同名函数，注册具体执行函数，类似java实现类。
         fill_order_coupon_webView.registerHandler("submitFromWeb", BridgeHandler { data, function ->
-            // 例如你可以对原始数据进行处理
-            Toast.makeText(activity, data, Toast.LENGTH_SHORT).show()
-            calculatePriceByCouponIdBean = Gson().fromJson(data, CalculatePriceByCouponIdBean::class.java)
             EmallLogger.d(data)
-            EmallLogger.d(calculatePriceByCouponIdBean.data.productPrice[0].coupon_type)
-            var size = calculatePriceByCouponIdBean.data.productPrice.size
-
-            for (i in 0 until size){
-                coupons += calculatePriceByCouponIdBean.data.productPrice[i].coupon_type
-                coupons += ","
+            if (data != "kong") {
+                /**
+                 * 选择了优惠券
+                 */
+                calculatePriceByCouponIdBean = Gson().fromJson(data, CalculatePriceByCouponIdBean::class.java)
+                EmallLogger.d(calculatePriceByCouponIdBean.toString())
+                EmallLogger.d(calculatePriceByCouponIdBean.data.productPrice[0].coupon_type)
+                val size = calculatePriceByCouponIdBean.data.productPrice.size
+                for (i in 0 until size) {
+                    coupons += calculatePriceByCouponIdBean.data.productPrice[i].coupon_type
+                    coupons += ","
+                }
+            } else {
+                /**
+                 * 未选择优惠券
+                 */
+                val editor = mSharedPreferences!!.edit()
+                editor.putString("couponId", "")
+                editor.commit()
             }
 
 
@@ -108,6 +132,15 @@ class FillOrderCouponDelegate : EmallDelegate() {
             setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             pop()
         })
+
+        fill_order_coupon_webView.registerHandler("submitCheck", BridgeHandler { data, function ->
+            // 例如你可以对原始数据进行处理
+            couponId = data
+            val editor = mSharedPreferences!!.edit()
+            editor.putString("couponId", couponId)
+            editor.commit()
+        })
+        fill_order_coupon_webView.callHandler("functionInJs", "", CallBackFunction { data -> Log.e("AAAAA", "来自web的回传数据：$data") })
     }
 
 

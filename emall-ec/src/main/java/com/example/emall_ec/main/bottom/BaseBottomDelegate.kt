@@ -10,6 +10,8 @@ import android.widget.RelativeLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.Toast
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import com.example.emall_ec.main.EcBottomDelegate
@@ -72,7 +74,7 @@ abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
         }
     }
 
-    fun setIcons(){
+    fun setIcons() {
         ICONS_H.add(R.drawable.home_h)
         ICONS_H.add(R.drawable.classify_h)
         ICONS_H.add(R.drawable.classify_h)
@@ -84,6 +86,7 @@ abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
         ICONS_N.add(R.drawable.special_n)
         ICONS_N.add(R.drawable.me_n)
     }
+
     override fun initial() {
         setSwipeBackEnable(false)
 
@@ -113,15 +116,10 @@ abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
                 //设置每个item的点击事件
                 item.tag = i
                 item.setOnClickListener {
-//                    val tag = item.tag as Int
-//                    bottom_bar_ll.visibility = View.GONE
-////                    supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
-////                    supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
-//
-//                    //注意先后顺序
-//                    mCurrentDelegate = tag
-//                    supportDelegate.start(ITEM_DELEGATES[mCurrentDelegate])
-                    start(ProgramIndexDelegate().create())
+                    if (NetworkUtils.isConnected())
+                        start(ProgramIndexDelegate().create())
+                    else
+                        Toast.makeText(activity, "您的设备暂时未连接到网络 无法使用编程摄影功能",Toast.LENGTH_SHORT).show()
                 }
                 val itemIcon: AppCompatImageView = item.getChildAt(0) as AppCompatImageView
                 val bean: BottomTabBean = TAB_BEANS[i]
@@ -156,20 +154,20 @@ abstract class BaseBottomDelegate : BottomItemDelegate(), View.OnClickListener {
         val tag = v.tag as Int
         EmallLogger.d(tag)
 
-            if(tag != 4){
-                activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }else{
-                activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            }
+        if (tag != 4) {
+            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        } else {
+            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        }
 
-            resetColor()
-            val item = v as RelativeLayout
-            val itemIcon = item.getChildAt(0) as AppCompatImageView
-            itemIcon.setImageResource(ICONS_H[tag])
-            val itemTitle = item.getChildAt(1) as AppCompatTextView
-            itemTitle.setTextColor(mClickedColor)
-            supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
-            mCurrentDelegate = tag
+        resetColor()
+        val item = v as RelativeLayout
+        val itemIcon = item.getChildAt(0) as AppCompatImageView
+        itemIcon.setImageResource(ICONS_H[tag])
+        val itemTitle = item.getChildAt(1) as AppCompatTextView
+        itemTitle.setTextColor(mClickedColor)
+        supportDelegate.showHideFragment(ITEM_DELEGATES[tag], ITEM_DELEGATES[mCurrentDelegate])
+        mCurrentDelegate = tag
 
     }
 
