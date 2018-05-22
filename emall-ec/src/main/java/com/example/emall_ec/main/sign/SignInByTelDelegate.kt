@@ -199,6 +199,8 @@ class SignInByTelDelegate : BottomItemDelegate() {
 
     private fun findTelephone(tel: String) {
         findTelephoneParams!!["telephone"] = tel
+        findTelephoneParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/findTelephone.do")
                 .params(findTelephoneParams!!)
@@ -289,6 +291,8 @@ class SignInByTelDelegate : BottomItemDelegate() {
     private fun checkMessage(t: String, c: String) {
         checkMessageParams!!["telephone"] = t
         checkMessageParams!!["code"] = c
+        checkMessageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
                 .params(checkMessageParams!!)
@@ -335,6 +339,8 @@ class SignInByTelDelegate : BottomItemDelegate() {
 
     private fun getVCode(t: String) {
         sendMessageParams!!["telephone"] = t
+        sendMessageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/sendMessage.do")
                 .params(sendMessageParams!!)

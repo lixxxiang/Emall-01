@@ -12,6 +12,7 @@ import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_special.*
+import java.util.*
 
 /**
  * Created by lixiang on 2018/3/12.
@@ -20,6 +21,8 @@ class SpecialDelegate : BottomItemDelegate() {
 
     private var mAdapter: SpecialAdapter? = null
     private var delegate : SpecialDelegate ?= null
+    var params: WeakHashMap<String, Any>? = WeakHashMap()
+
     override fun setLayout(): Any? {
         return R.layout.delegate_special
     }
@@ -60,9 +63,11 @@ class SpecialDelegate : BottomItemDelegate() {
 
     private fun getData() {
         val data: MutableList<SpecialItemEntity>? = mutableListOf()
+        params!!["client"] = "android"
 
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/topic")
+                .params(params!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)

@@ -44,6 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class DailyPicDelegate : EmallDelegate(), OnBannerListener {
     var bannerBean = BannerBean()
     var homePageBean = HomePageBean()
+    var bannerParams: WeakHashMap<String, Any>? = WeakHashMap()
     var homePageParams: WeakHashMap<String, Any>? = WeakHashMap()
     var adapter = HomePageListViewAdapter()
     var homePageData: MutableList<HomePageBean.DataBean.MixedContentListBean>? = mutableListOf()
@@ -124,8 +125,11 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
     }
 
     private fun getBanner() {
+        bannerParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/homePageSlide")
+                .params(bannerParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
                         EmallLogger.d(response)
@@ -153,6 +157,8 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
         EmallLogger.d(String.format("%s %s", size, num))
         homePageParams!!["pageSize"] = size.toString()
         homePageParams!!["pageNum"] = num.toString()
+        homePageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/homePage")
                 .params(homePageParams!!)
@@ -188,6 +194,8 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
     private fun getData(size: Int, num: Int) {
         homePageParams!!["pageSize"] = size.toString()
         homePageParams!!["pageNum"] = num.toString()
+        homePageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/homePage")
                 .params(homePageParams!!)

@@ -45,6 +45,9 @@ class FillOrderCouponDelegate : EmallDelegate() {
     private var calculatePriceByCouponIdBean = CalculatePriceByCouponIdBean()
     private var coupons = String()
     private var couponId = String()
+    private var price = String()
+    private var userCouponId = String()
+
     var mSharedPreferences: SharedPreferences? = null
     fun create(): FillOrderCouponDelegate? {
         return FillOrderCouponDelegate()
@@ -115,7 +118,11 @@ class FillOrderCouponDelegate : EmallDelegate() {
                 val size = calculatePriceByCouponIdBean.data.productPrice.size
                 for (i in 0 until size) {
                     coupons += calculatePriceByCouponIdBean.data.productPrice[i].coupon_type
+                    price += calculatePriceByCouponIdBean.data.productPrice[i].price
+                    userCouponId += calculatePriceByCouponIdBean.data.productPrice[i].user_couponId
                     coupons += ","
+                    price += ","
+                    userCouponId += ","
                 }
             } else {
                 /**
@@ -129,6 +136,9 @@ class FillOrderCouponDelegate : EmallDelegate() {
 
             val bundle = Bundle()
             bundle.putString("COUPON", coupons)
+            bundle.putString("PRICE", price)
+            bundle.putString("USER_COUPON_ID", userCouponId)
+
             setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             pop()
         })

@@ -136,6 +136,8 @@ class ModifyTelDelegate : BottomItemDelegate() {
 
     private fun checkAccount(tel: String) {
         findTelephoneParams!!["telephone"] = tel
+        findTelephoneParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/findTelephone.do")
                 .params(findTelephoneParams!!)
@@ -185,6 +187,8 @@ class ModifyTelDelegate : BottomItemDelegate() {
 
     private fun checkNewTel(newTel : String){
         findNewTelephoneParams!!["telephone"] = newTel
+        findNewTelephoneParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/findTelephone.do")
                 .params(findNewTelephoneParams!!)

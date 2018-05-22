@@ -119,6 +119,8 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
 
     private fun getVCode() {
         sendMessageParams!!["telephone"] = newTel
+        sendMessageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/sendMessage.do")
                 .params(sendMessageParams!!)
@@ -184,6 +186,8 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     private fun checkMessage(v: String) {
         checkMessageParams!!["telephone"] = arguments.getString("NEW_TELEPHONE")
         checkMessageParams!!["code"] = v
+        checkMessageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
                 .params(checkMessageParams!!)
@@ -234,6 +238,8 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     private fun changeTelephone(oldTel: String, newTel: String) {
         changeTelephoneParams!!["oldTelephone"] = oldTel
         changeTelephoneParams!!["newTelephone"] = newTel
+        changeTelephoneParams!!["client"] = "android"
+
         EmallLogger.d(oldTel + newTel)
         RestClient().builder()
                 .url("http://59.110.161.48:8023/changeTelephone.do")

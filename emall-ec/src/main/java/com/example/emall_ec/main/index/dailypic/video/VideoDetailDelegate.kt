@@ -278,6 +278,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         submitCommentParams!!["articleId"] = aId
         submitCommentParams!!["articleType"] = type
         submitCommentParams!!["content"] = s
+        submitCommentParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/submitComment")
                 .params(submitCommentParams!!)
@@ -305,6 +307,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         addCollectionParams!!["articleId"] = articleId
         addCollectionParams!!["userId"] = userId
         addCollectionParams!!["type"] = type
+        submitCommentParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/addCollection")
                 .params(addCollectionParams!!)
@@ -330,6 +334,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         cancelCollectionParams!!["articleId"] = articleId
         cancelCollectionParams!!["userId"] = userId
         cancelCollectionParams!!["type"] = type
+        cancelCollectionParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/cancelCollection")
                 .params(cancelCollectionParams!!)
@@ -356,6 +362,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         upvoteParams!!["articleId"] = aid
         upvoteParams!!["userId"] = uid
         upvoteParams!!["type"] = type
+        upvoteParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/upvote")
                 .params(upvoteParams!!)
@@ -382,6 +390,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         downvoteParams!!["articleId"] = aid
         downvoteParams!!["userId"] = uid
         downvoteParams!!["type"] = type
+        downvoteParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/downvote")
                 .params(downvoteParams!!)
@@ -405,6 +415,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
 
     private fun getdata(id: String?) {
         getPlanetEarthDetailParams!!["videoId"] = id
+        getPlanetEarthDetailParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getPlanetEarthDetail")
                 .params(getPlanetEarthDetailParams!!)
@@ -476,6 +488,8 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         getArticleAttachParams!!["articleId"] = articleId
         getArticleAttachParams!!["userId"] = userId
         getArticleAttachParams!!["type"] = type
+        getArticleAttachParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getArticleAttach")
                 .params(getArticleAttachParams!!)

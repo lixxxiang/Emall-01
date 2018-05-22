@@ -190,6 +190,8 @@ class ProgramDetailDelegate : EmallDelegate() {
 
         detailParams!!["area"] = sp.getString("area", "")
         detailParams!!["productType"] = sp.getString("productType", "")
+        detailParams!!["client"] = "android"
+
         EmallLogger.d(String.format("%s %s", detailParams!!["area"], detailParams!!["productType"]))
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/programming/detail")
@@ -262,6 +264,8 @@ class ProgramDetailDelegate : EmallDelegate() {
         demandParams!!["originalPrice"] = originalPrice
         demandParams!!["salePrice"] = salePrice
         demandParams!!["finalPrice"] = salePrice
+        demandParams!!["client"] = "android"
+
 
         RestClient().builder()
                 .url("http://59.110.164.214:8025/global/order/create/demand")

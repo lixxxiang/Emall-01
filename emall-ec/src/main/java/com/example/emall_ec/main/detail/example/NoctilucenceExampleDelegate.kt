@@ -36,6 +36,8 @@ class NoctilucenceExampleDelegate : EmallDelegate() {
     }
 
     override fun initial() {
+        setSwipeBackEnable(false)
+
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         n_example_toolbar.title = getString(R.string.noctilucence)

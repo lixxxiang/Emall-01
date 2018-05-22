@@ -84,6 +84,8 @@ class ContentDelegate : EmallDelegate() {
         myCollectionParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         myCollectionParams!!["pageSize"] = "5"
         myCollectionParams!!["pageNum"] = "1"
+        myCollectionParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/myCollection")
                 .params(myCollectionParams!!)

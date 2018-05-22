@@ -81,7 +81,7 @@ class Obligation2Delegate : BottomItemDelegate(), AdapterView.OnItemClickListene
     fun data() {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "2", "")
+        val call = apiService!!.findOrderListByUserId(DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, "2", "", "android")
         call.enqueue(object : retrofit2.Callback<OrderDetail> {
             override fun onResponse(call: retrofit2.Call<OrderDetail>, response: retrofit2.Response<OrderDetail>) {
                 if (response.body() != null) {

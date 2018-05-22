@@ -171,6 +171,8 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
 
     private fun findTelephone(tel: String) {
         findTelephoneParams!!["telephone"] = tel
+        findTelephoneParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/findTelephone.do")
                 .params(findTelephoneParams!!)
@@ -223,6 +225,8 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
     private fun checkMessage(tel: String, vCode: String) {
         checkMessageParams!!["telephone"] = tel
         checkMessageParams!!["code"] = vCode
+        checkMessageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
                 .params(checkMessageParams!!)
@@ -287,6 +291,8 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
 
     private fun getVCode(tel: String) {
         sendMessageParams!!["telephone"] = tel
+        sendMessageParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/sendMessage.do")
                 .params(sendMessageParams!!)

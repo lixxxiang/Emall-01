@@ -90,6 +90,7 @@ class FeedbackDelegate : EmallDelegate() {
             supportParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
         } else
             supportParams!!["userId"] = "-1"
+        supportParams!!["client"] = "android"
 
         RestClient().builder()
                 .url("http://59.110.161.48:8023/support.do")

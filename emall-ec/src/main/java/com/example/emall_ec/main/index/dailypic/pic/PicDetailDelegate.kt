@@ -294,6 +294,7 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         submitCommentParams!!["articleId"] = aId
         submitCommentParams!!["articleType"] = type
         submitCommentParams!!["content"] = s
+        submitCommentParams!!["client"] = "android"
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/submitComment")
                 .params(submitCommentParams!!)
@@ -320,6 +321,8 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun getdata(id: String?) {
         getDailyPicDetailParams!!["imageId"] = id
+        getDailyPicDetailParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getDailyPicDetail")
                 .params(getDailyPicDetailParams!!)
@@ -447,6 +450,8 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         getArticleAttachParams!!["articleId"] = articleId
         getArticleAttachParams!!["userId"] = userId
         getArticleAttachParams!!["type"] = type
+        getArticleAttachParams!!["client"] = "android"
+
         EmallLogger.d(getArticleAttachParams!!)
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/getArticleAttach")
@@ -501,6 +506,8 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         addCollectionParams!!["articleId"] = articleId
         addCollectionParams!!["userId"] = userId
         addCollectionParams!!["type"] = type
+        addCollectionParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/addCollection")
                 .params(addCollectionParams!!)
@@ -526,6 +533,8 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         cancelCollectionParams!!["articleId"] = articleId
         cancelCollectionParams!!["userId"] = userId
         cancelCollectionParams!!["type"] = type
+        cancelCollectionParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/cancelCollection")
                 .params(cancelCollectionParams!!)
@@ -552,6 +561,8 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         upvoteParams!!["articleId"] = aid
         upvoteParams!!["userId"] = uid
         upvoteParams!!["type"] = type
+        upvoteParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/upvote")
                 .params(upvoteParams!!)
@@ -578,6 +589,8 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         downvoteParams!!["articleId"] = aid
         downvoteParams!!["userId"] = uid
         downvoteParams!!["type"] = type
+        downvoteParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://202.111.178.10:28085/mobile/downvote")
                 .params(downvoteParams!!)

@@ -535,6 +535,8 @@ class NoctilucenceDelegate : EmallDelegate() {
 
     private fun getData(ssp: WeakHashMap<String, Any>, p: Int) {
         ssp["pageNum"] = p
+        ssp["client"] = "android"
+
         println(ssp)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/sceneSearch")

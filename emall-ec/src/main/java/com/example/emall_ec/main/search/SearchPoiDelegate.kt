@@ -72,7 +72,7 @@ class SearchPoiDelegate : EmallDelegate() {
 
         search_poi_cities_listview.setOnItemClickListener { adapterView, view, index, l ->
             RestClient().builder()
-                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s&cityName=%s", search_poi_et.text, citiesList!![index - 1]))
+                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s&cityName=%s&client=android", search_poi_et.text, citiesList!![index - 1]))
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
                             clearPois()
@@ -119,7 +119,7 @@ class SearchPoiDelegate : EmallDelegate() {
             search_progressBar.visibility = View.VISIBLE
 
             RestClient().builder()
-                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s", search_poi_et.text))
+                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s&client=android", search_poi_et.text))
                     .success(object : ISuccess {
                         override fun onSuccess(response: String) {
 //                            hideText()

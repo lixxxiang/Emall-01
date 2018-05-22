@@ -172,7 +172,7 @@ class ProgramDelegate : BottomItemDelegate(), SensorEventListener {
                 // TODO Auto-generated method stub
                 handler.postDelayed(this, 3 * 1000)
                 val curTranslationY = move!!.translationY
-                val animator: ObjectAnimator = ObjectAnimator.ofFloat(move!!, "translationY", curTranslationY, DimenUtil().dip2px(context, 236F).toFloat(), curTranslationY)
+                val animator: ObjectAnimator = ObjectAnimator.ofFloat(move!!, "translationY", curTranslationY, DimenUtil().dip2px(context, 248F).toFloat(), curTranslationY)
                 animator.duration = 3000
                 animator.start()
             }

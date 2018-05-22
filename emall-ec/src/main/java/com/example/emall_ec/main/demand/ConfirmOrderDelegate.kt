@@ -54,6 +54,7 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
 
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
         viewDemandParams!!["type"] = arguments.getString("type")// 1 3 5
+        viewDemandParams!!["client"] = "android"// 1 3 5
 
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/viewDemand")
@@ -126,6 +127,7 @@ class ConfirmOrderDelegate : BottomItemDelegate() {
         orderParams!!["parentOrderId"] = arguments.getString("demandId")
         orderParams!!["userName"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
         orderParams!!["userTelephone"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone
+        orderParams!!["client"] = "android"
 
         EmallLogger.d(orderParams!!)
         RestClient().builder()

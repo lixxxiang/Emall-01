@@ -74,7 +74,7 @@ class PayMethodDelegate : BottomItemDelegate() {
                 apiService = retrofit!!.create(ApiService::class.java)
                 EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
                 EmallLogger.d(arguments.getString("TYPE"))
-                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "2")
+                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "2", "android")
                 call.enqueue(object : retrofit2.Callback<AppPayBean> {
                     override fun onResponse(call: retrofit2.Call<AppPayBean>, response: retrofit2.Response<AppPayBean>) {
                         if (response.body() != null) {
@@ -97,7 +97,7 @@ class PayMethodDelegate : BottomItemDelegate() {
                 apiService = retrofit!!.create(ApiService::class.java)
                 EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
                 EmallLogger.d(arguments.getString("TYPE"))
-                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "3")
+                val call = apiService!!.appPay(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "3","android")
                 call.enqueue(object : retrofit2.Callback<AppPayBean> {
                     override fun onResponse(call: retrofit2.Call<AppPayBean>, response: retrofit2.Response<AppPayBean>) {
                         if (response.body() != null) {
@@ -211,7 +211,7 @@ class PayMethodDelegate : BottomItemDelegate() {
         val apiService = retrofit!!.create(ApiService::class.java)
         EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
         EmallLogger.d(arguments.getString("TYPE"))
-        val call = apiService!!.queryOrder(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"))
+        val call = apiService!!.queryOrder(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "android")
         call.enqueue(object : retrofit2.Callback<QueryOrderBean> {
             override fun onResponse(call: retrofit2.Call<QueryOrderBean>, response: retrofit2.Response<QueryOrderBean>) {
                 if (response.body() != null) {
@@ -250,7 +250,7 @@ class PayMethodDelegate : BottomItemDelegate() {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
         EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
-        val call = apiService!!.queryOrderFailure(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"))
+        val call = apiService!!.queryOrderFailure(arguments.getString("PARENT_ORDER_ID"), arguments.getString("TYPE"), "android")
         call.enqueue(object : retrofit2.Callback<QueryOrderFailureBean> {
             override fun onResponse(call: retrofit2.Call<QueryOrderFailureBean>, response: retrofit2.Response<QueryOrderFailureBean>) {
                 if (response.body() != null) {

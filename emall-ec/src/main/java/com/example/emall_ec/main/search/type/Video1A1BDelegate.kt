@@ -134,7 +134,7 @@ class Video1A1BDelegate : EmallDelegate() {
     private fun getData(order: String, pages: Int) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), order)
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), order, "android")
         println("~~~~~~~~" + videoSearchParams!!["geo"].toString())
         call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
             override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
@@ -161,7 +161,7 @@ class Video1A1BDelegate : EmallDelegate() {
                             model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
                             model.title = videoSearchBean.data.searchReturnDtoList[i].title
                             model.productId = videoSearchBean.data.searchReturnDtoList[i].productId
-                            model.duration= videoSearchBean.data.searchReturnDtoList[i].duration
+                            model.duration = videoSearchBean.data.searchReturnDtoList[i].duration
                             model.productType = "3"
                             data!!.add(model)
                         }
@@ -187,7 +187,7 @@ class Video1A1BDelegate : EmallDelegate() {
             EmallLogger.d(itemSize)
             EmallLogger.d(size)
             if (size > itemSize) {
-                loadMoreData(pages,data)
+                loadMoreData(pages, data)
             } else {
             }
         }
@@ -209,7 +209,7 @@ class Video1A1BDelegate : EmallDelegate() {
     private fun loadMoreData(p: Int, data: MutableList<Model>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", p.toString(), orderBy)
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", p.toString(), orderBy, "android")
         println("~~~~~~~~" + p.toString())
         call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
             override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
@@ -234,7 +234,7 @@ class Video1A1BDelegate : EmallDelegate() {
                             model.time = videoSearchBean.data.searchReturnDtoList[i].startTime
                             model.title = videoSearchBean.data.searchReturnDtoList[i].title
                             model.productId = videoSearchBean.data.searchReturnDtoList[i].productId
-                            model.duration= videoSearchBean.data.searchReturnDtoList[i].duration
+                            model.duration = videoSearchBean.data.searchReturnDtoList[i].duration
 
                             model.productType = "3"
                             data!!.add(model)

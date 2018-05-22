@@ -18,6 +18,9 @@ import com.github.lzyzsd.jsbridge.BridgeHandler
 import com.github.lzyzsd.jsbridge.DefaultHandler
 
 import kotlinx.android.synthetic.main.delegate_video_example.*
+import android.webkit.WebSettings.PluginState
+
+
 
 class VideoExampleActivity : AppCompatActivity() {
 
@@ -31,14 +34,13 @@ class VideoExampleActivity : AppCompatActivity() {
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         setContentView(R.layout.activity_video_example)
-        BarUtils.setStatusBarColor(this, Color.parseColor("#1B1A20"))
+        BarUtils.setStatusBarAlpha(this,0)
         EmallLogger.d("create")
         video_example_toolbar.title = getString(R.string.video1A_1B)
         setSupportActionBar(video_example_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         video_example_toolbar.setNavigationIcon(R.drawable.ic_back_small)
-
 
         video_example_toolbar.setNavigationOnClickListener {
             finish()
@@ -50,10 +52,6 @@ class VideoExampleActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         EmallLogger.d("resume")
-    }
-
-    override fun onContentChanged() {
-        super.onContentChanged()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -68,6 +66,7 @@ class VideoExampleActivity : AppCompatActivity() {
     }
     private fun initWebView(){
         video_example_webView.setDefaultHandler(DefaultHandler())
+        video_example_webView.settings.pluginState = PluginState.ON
         video_example_webView.webChromeClient = object : WebChromeClient() {
 
             fun openFileChooser(uploadMsg: ValueCallback<Uri>, AcceptType: String, capture: String) {

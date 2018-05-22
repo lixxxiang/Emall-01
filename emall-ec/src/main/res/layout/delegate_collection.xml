@@ -31,6 +31,7 @@
             <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>-->
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
+        android:id="@+id/collection_tl_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="2dp"
@@ -56,6 +57,7 @@
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager
+        android:layout_below="@+id/collection_tl_rl"
         android:id="@+id/collection_vp"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />

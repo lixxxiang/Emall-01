@@ -53,6 +53,7 @@ class ImagePage1Delegate : BottomItemDelegate() {
 //            pic_brief.text = sp.getString("imageName", "")
 //            pic_date.text = String.format("每日一图 · %s", sp.getString("imageDate", ""))
 //        }, 1000)
+        setSwipeBackEnable(false)
         timer.schedule(object : TimerTask() {
             override fun run() {
                 var msg = Message()

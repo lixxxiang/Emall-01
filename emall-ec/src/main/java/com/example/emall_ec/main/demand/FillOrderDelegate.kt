@@ -58,6 +58,7 @@ class FillOrderDelegate : BottomItemDelegate() {
     internal var apiService: ApiService? = null
     var userId = String()
     var couponId = "-1"
+    var hasCoupon = false
     private var queryInvoiceParams: WeakHashMap<String, Any>? = WeakHashMap()
     val couponList: MutableList<String> = mutableListOf()
 
@@ -83,6 +84,8 @@ class FillOrderDelegate : BottomItemDelegate() {
 
         viewDemandParams!!["demandId"] = arguments.getString("demandId")
         viewDemandParams!!["type"] = arguments.getString("type")// 1 3 5
+        viewDemandParams!!["client"] = "android"
+
         userId = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
 
         Handler().postDelayed({
@@ -109,7 +112,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                     })
                     .build()
                     .post()
-        },500)
+        }, 500)
         fill_order_to_pay.setOnClickListener {
             if (!ButtonUtils.isFastDoubleClick(R.id.fill_order_to_pay)) {
                 EmallProgressBar.showProgressbar(context)
@@ -135,15 +138,15 @@ class FillOrderDelegate : BottomItemDelegate() {
         }
 
         fill_order_coupon_rl.setOnClickListener {
-            if(coupon_title.toString() == "优惠券：  暂无可用"){
+            if (!hasCoupon) {
 
-            }else{
+            } else {
                 val delegate: FillOrderCouponDelegate = FillOrderCouponDelegate().create()!!
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("demandId", arguments.getString("demandId"))
                 bundle.putString("salePrice", viewDemandBean.data.demands[0].salePrice)
                 bundle.putString("type", arguments.getString("type"))
-                bundle.putString("couponId",couponId)
+                bundle.putString("couponId", couponId)
                 delegate.arguments = bundle
                 startForResult(delegate, 2)
             }
@@ -152,17 +155,18 @@ class FillOrderDelegate : BottomItemDelegate() {
 
     private fun getCoupon() {
         retrofit = Retrofit.Builder()
-                .baseUrl("http://10.10.90.11:8086")
+                .baseUrl("http://59.110.164.214:8024")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.getCouponTypeByUserAndDemand(arguments.getString("demandId"), userId)
+        val call = apiService!!.getCouponTypeByUserAndDemand(arguments.getString("demandId"), userId, "android")
         call.enqueue(object : retrofit2.Callback<GetCouponTypeByUserAndDemandBean> {
             override fun onResponse(call: retrofit2.Call<GetCouponTypeByUserAndDemandBean>, response: retrofit2.Response<GetCouponTypeByUserAndDemandBean>) {
                 val getCouponTypeByProductIdBean: GetCouponTypeByUserAndDemandBean
                 if (response.body() != null) {
                     getCouponTypeByProductIdBean = response.body()!!
-                    if(getCouponTypeByProductIdBean.message != "方法返回为空"){
+                    if (getCouponTypeByProductIdBean.message != "方法返回为空") {
+                        hasCoupon = true
                         val size = getCouponTypeByProductIdBean.data.coupon.size
 
                         if (size in 1..3) {
@@ -194,11 +198,13 @@ class FillOrderDelegate : BottomItemDelegate() {
                         } else {
 
                         }
-                    }else {
+                    } else {
+                        hasCoupon = false
                         coupon_title.text = "优惠券：  暂无可用"
                     }
 
                 } else {
+                    hasCoupon = false
                     coupon_title.text = "优惠券：  暂无可用"
                 }
             }
@@ -225,9 +231,10 @@ class FillOrderDelegate : BottomItemDelegate() {
             val sp = activity.getSharedPreferences("COUPON_ID", Context.MODE_PRIVATE)
             couponId = sp.getString("couponId", "")
             val index = data.getString("COUPON")
+            var price = data.getString("PRICE")
             EmallLogger.d(index)
             EmallLogger.d(couponId)
-            if (index != ""){
+            if (index != "") {
                 val size = index.split(",").size
                 if (size > 2) {
                     Toast.makeText(context, "coupon error", Toast.LENGTH_SHORT).show()
@@ -235,15 +242,25 @@ class FillOrderDelegate : BottomItemDelegate() {
                     coupon_title.visibility = View.GONE
                     coupon1.visibility = View.VISIBLE
                     coupon1.text = index.split(",")[0]
+                    fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - price.split(",")[0].toDouble()))
+                    fill_order_sale_price_tv.text = String.format("应付：¥%s",  price.split(",")[0])
+                    fill_order_out_tv.text = String.format("¥%s", price.split(",")[0])
+
                 }
-            }else{
+            } else {
                 coupon_title.visibility = View.VISIBLE
                 coupon1.visibility = View.GONE
+                fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble()))
+                fill_order_out_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
+                fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
             }
         }
     }
 
     private fun insertOrderData() {
+        if (couponId != "-1"){
+            orderParams!!["userCouponId"] = couponId
+        }
         orderParams!!["type"] = arguments.getString("type")
         orderParams!!["invoiceState"] = invoiceState
         orderParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
@@ -251,7 +268,7 @@ class FillOrderDelegate : BottomItemDelegate() {
         orderParams!!["parentOrderId"] = arguments.getString("demandId")
         orderParams!!["userName"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].username
         orderParams!!["userTelephone"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone
-
+        orderParams!!["client"] = "android"
         EmallLogger.d(orderParams!!)
         RestClient().builder()
                 .url("http://59.110.164.214:8025/global/order/app/create/order")
@@ -289,6 +306,7 @@ class FillOrderDelegate : BottomItemDelegate() {
 
     @SuppressLint("SetTextI18n")
     fun initViews(viewDemandBean: ViewDemandBean) {
+        println("INITVIEWS")
         if (arguments.getString("imageUrl") == "program") {
             fill_order_iv.setBackgroundResource(R.drawable.program)
         } else

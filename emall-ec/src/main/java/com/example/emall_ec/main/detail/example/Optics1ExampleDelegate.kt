@@ -16,6 +16,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.ArrayList
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.detail.example.Optics1ExampleDelegate.MyPagerAdapter
 import com.example.emall_ec.main.detail.example.optics.MultispectralDelegate
 import com.example.emall_ec.main.detail.example.optics.PanchromaticDelegate
@@ -37,6 +38,8 @@ class Optics1ExampleDelegate : EmallDelegate() {
     }
 
     override fun initial() {
+        EmallLogger.d("INIT")
+        setSwipeBackEnable(false)
 
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
@@ -52,7 +55,13 @@ class Optics1ExampleDelegate : EmallDelegate() {
 
     }
 
+//    override fun onSupportVisible() {
+//        super.onSupportVisible()
+//        initTabLayout()
+//    }
+
     private fun initTabLayout() {
+        EmallLogger.d("ddfsdfsdfsdfsdsfs")
         val mTitles = arrayOf("全色", "多光谱")
         val mIconUnselectIds = intArrayOf(R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect)
         val mIconSelectIds = intArrayOf(R.mipmap.tab_home_select, R.mipmap.tab_speech_select)
@@ -66,8 +75,10 @@ class Optics1ExampleDelegate : EmallDelegate() {
         mFragments.add(MultispectralDelegate())
         mFragments.add(PanchromaticDelegate())
 
-        mAdapter = MyPagerAdapter(activity.supportFragmentManager)
+        mAdapter = MyPagerAdapter(childFragmentManager)
         vp.adapter = mAdapter
+        vp.offscreenPageLimit = 0
+
         mTabLayout_2!!.setTabData(mTabEntities)
         mTabLayout_2!!.setOnTabSelectListener(object : OnTabSelectListener {
             override fun onTabSelect(position: Int) {
@@ -82,7 +93,7 @@ class Optics1ExampleDelegate : EmallDelegate() {
 
         vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
+                println("1")
             }
 
             override fun onPageSelected(position: Int) {
@@ -90,11 +101,11 @@ class Optics1ExampleDelegate : EmallDelegate() {
             }
 
             override fun onPageScrollStateChanged(state: Int) {
-
+                println("3")
             }
         })
 
-        vp.currentItem = 1
+        vp.currentItem = 0
     }
 
     override fun onCreateFragmentAnimator(): FragmentAnimator {

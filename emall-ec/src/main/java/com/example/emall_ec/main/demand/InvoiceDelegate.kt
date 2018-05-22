@@ -193,6 +193,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
 
     private fun getInvoice() {
         queryInvoiceParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        queryInvoiceParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/query/invoice")
                 .params(queryInvoiceParams!!)
@@ -241,6 +243,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
         updateInvoiceParams!!["invoiceAmount"] = arguments.getString("INVOICE_PRICE")
         updateInvoiceParams!!["invoiceType"] = "1"
         updateInvoiceParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        updateInvoiceParams!!["client"] = "android"
 
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/update/invoice")
@@ -282,6 +285,7 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
         updateInvoiceParams!!["invoiceAmount"] = arguments.getString("INVOICE_PRICE")
         updateInvoiceParams!!["invoiceType"] = "1"
         updateInvoiceParams!!["userId"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId
+        updateInvoiceParams!!["client"] = "android"
 
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/update/invoice")

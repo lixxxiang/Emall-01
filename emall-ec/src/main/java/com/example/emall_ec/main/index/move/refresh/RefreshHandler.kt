@@ -5,8 +5,8 @@ import com.example.emall_core.app.Emall
 import com.example.emall_core.util.log.EmallLogger
 import android.support.v7.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.example.emall_core.app.ApiService
 import com.example.emall_core.ui.NetUtils
+import com.example.emall_ec.api.ApiService
 import com.example.emall_ec.main.index.IndexDelegate
 import com.example.emall_ec.main.index.move.recycler.DataConverter
 import com.example.emall_ec.main.index.move.recycler.MultipleItemEntity
@@ -56,7 +56,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.homePageSlide()
+        val call = apiService!!.homePageSlide("android")
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>?, t: Throwable?) {
 
@@ -96,7 +96,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.homePage(homePageParams!!["pageSize"].toString(), homePageParams!!["pageNum"].toString())
+        val call = apiService!!.homePage(homePageParams!!["pageSize"].toString(), homePageParams!!["pageNum"].toString(),"android")
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>?, t: Throwable?) {
             }
@@ -119,7 +119,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.homePageUnits()
+        val call = apiService!!.homePageUnits("android")
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>?, t: Throwable?) {
 

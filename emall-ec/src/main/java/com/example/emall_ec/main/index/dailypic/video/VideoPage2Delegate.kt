@@ -42,6 +42,7 @@ class VideoPage2Delegate : BottomItemDelegate() {
 
     @SuppressLint("ApplySharedPref")
     override fun initial() {
+        setSwipeBackEnable(false)
 //        val sp = activity.getSharedPreferences("VIDEO_DETAIL", Context.MODE_PRIVATE) //取得user_id和手机号
 //        EmallLogger.d(sp.getString("videoName",""))
 //        video_brief.text = sp.getString("videoName", "")

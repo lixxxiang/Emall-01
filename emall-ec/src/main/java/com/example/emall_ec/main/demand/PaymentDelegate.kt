@@ -106,6 +106,8 @@ class PaymentDelegate : EmallDelegate() {
 
     private fun findDetailByParentOrderId() {
         findDetailByParentOrderIdParams!!["parentOrderId"] = arguments.getString("PARENT_ORDER_ID")
+        findDetailByParentOrderIdParams!!["client"] = "android"
+
         EmallLogger.d(arguments.getString("PARENT_ORDER_ID"))
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/order/findDetailByParentOrderId")
@@ -136,6 +138,8 @@ class PaymentDelegate : EmallDelegate() {
 
     private fun findOrderDetailByOrderId() {
         findOrderDetailByOrderIdParams!!["orderId"] = arguments.getString("PARENT_ORDER_ID")
+        findOrderDetailByOrderIdParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/order/findOrderDetailByOrderId")
                 .params(findOrderDetailByOrderIdParams!!)

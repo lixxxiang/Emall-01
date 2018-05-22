@@ -44,6 +44,7 @@ class ImagePage2Delegate : BottomItemDelegate() {
 
     @SuppressLint("ApplySharedPref")
     override fun initial() {
+        setSwipeBackEnable(false)
 //        val sp = activity.getSharedPreferences("IMAGE_DETAIL", Context.MODE_PRIVATE) //取得user_id和手机号
 //        pic_brief.text = sp.getString("imageName", "")
 //        pic_date.text = String.format("每日一图 · %s", sp.getString("imageDate", ""))

@@ -110,6 +110,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initial() {
+        setSwipeBackEnable(false)
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         mSharedPreferences = activity.getSharedPreferences("COLLECTION", Context.MODE_PRIVATE)
         goods_detail_loading_rl.visibility = View.VISIBLE
@@ -123,15 +124,15 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         mMapView!!.showZoomControls(false)
         initViews()
         resolveConflict()
+        type = arguments.getString("type")
+        productId = arguments.getString("productId")
+        EmallLogger.d(arguments.getString("productId"))
 
         Handler().postDelayed({
 
-            type = arguments.getString("type")
-            EmallLogger.d(type)
             if (type == "1" || type == "5") {
                 detail_videoview.visibility = View.GONE
-                sceneDetailParams!!["productId"] = arguments.getString("productId")
-                productId = arguments.getString("productId")
+                sceneDetailParams!!["productId"] = productId
                 if (type == "1") {
                     sceneDetailParams!!["type"] = OPTICS
                     type135 = OPTICS
@@ -142,8 +143,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 getData(sceneDetailParams!!)
             } else if (type == "3") {
                 detail_videoview.visibility = View.VISIBLE
-                videoDetailParams!!["productId"] = arguments.getString("productId")
-                productId = arguments.getString("productId")
+                videoDetailParams!!["productId"] = productId
                 videoDetailParams!!["type"] = VIDEO
                 type135 = VIDEO
                 getVideoData(videoDetailParams!!)
@@ -262,11 +262,19 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_detail_get_ticket_rl.setOnClickListener {
-            val delegate: GoodsDetailCouponDelegate = GoodsDetailCouponDelegate().create()!!
-            val bundle: Bundle? = Bundle()
-            bundle!!.putString("productId", arguments.getString("productId"))
-            delegate.arguments = bundle
-            start(delegate)
+            if (!DatabaseManager().getInstance()!!.getDao()!!.loadAll().isEmpty()) {
+                val delegate: GoodsDetailCouponDelegate = GoodsDetailCouponDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putString("productId", arguments.getString("productId"))
+                delegate.arguments = bundle
+                start(delegate)
+            } else {
+                val delegate: SignInByTelDelegate = SignInByTelDelegate().create()!!
+                val bundle = Bundle()
+                bundle.putString("PAGE_FROM", "GOODS_DETAIL")
+                delegate.arguments = bundle
+                start(delegate)
+            }
         }
 
         scene_goods_detail_mask_iv.setOnClickListener {
@@ -295,20 +303,22 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
     private fun getCoupon() {
         retrofit = Retrofit.Builder()
-                .baseUrl("http://10.10.90.11:8086")
+                .baseUrl("http://59.110.164.214:8024")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         apiService = retrofit!!.create(ApiService::class.java)
-//        val call = apiService!!.getCouponTypeByProductId("JL103B_MSS_20170320213446_100001008_101_0161_002_L1A_MSS")
-        val call = apiService!!.getCouponTypeByProductId(arguments.getString("productId"))
+        val call = apiService!!.getCouponTypeByProductId(arguments.getString("productId"), "android")
 
         call.enqueue(object : retrofit2.Callback<GetCouponTypeByProductIdBean> {
             override fun onResponse(call: retrofit2.Call<GetCouponTypeByProductIdBean>, response: retrofit2.Response<GetCouponTypeByProductIdBean>) {
                 val getCouponTypeByProductIdBean: GetCouponTypeByProductIdBean
                 if (response.body() != null) {
                     getCouponTypeByProductIdBean = response.body()!!
+                    EmallLogger.d(getCouponTypeByProductIdBean.toString())
+
                     if (getCouponTypeByProductIdBean.message == "success") {
                         val size = getCouponTypeByProductIdBean.data.productCoupon.size
+                        EmallLogger.d(size)
                         if (size in 1..3) {
                             for (i in 0 until size) {
                                 couponList.add(getCouponTypeByProductIdBean.data.productCoupon[i].toString())
@@ -333,16 +343,27 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                                     coupon3.visibility = View.VISIBLE
                                 }
                             }
+                            goods_detail_loading_rl.visibility = View.GONE
+
                         } else {
 
                         }
+
                     } else {
-                        line.visibility = View.GONE
-                        video_detail_get_ticket_rl.visibility = View.GONE
+                        if (line != null)
+                            line.visibility = View.GONE
+                        if (video_detail_get_ticket_rl != null)
+                            video_detail_get_ticket_rl.visibility = View.GONE
+                        goods_detail_loading_rl.visibility = View.GONE
+
                     }
                 } else {
-                    line.visibility = View.GONE
-                    video_detail_get_ticket_rl.visibility = View.GONE
+                    if (line != null)
+                        line.visibility = View.GONE
+                    if (video_detail_get_ticket_rl != null)
+                        video_detail_get_ticket_rl.visibility = View.GONE
+                    goods_detail_loading_rl.visibility = View.GONE
+
                 }
             }
 
@@ -353,7 +374,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     private fun getData(sceneDetailParams: WeakHashMap<String, Any>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString())
+        val call = apiService!!.sceneDetail(arguments.getString("productId"), sceneDetailParams["type"]!!.toString(), "android")
         call.enqueue(object : retrofit2.Callback<SceneDetailBean> {
             override fun onResponse(call: retrofit2.Call<SceneDetailBean>, response: retrofit2.Response<SceneDetailBean>) {
                 var sceneDetail = SceneDetailBean()
@@ -388,7 +409,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     private fun getVideoData(videoDetailParams: WeakHashMap<String, Any>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoDetail(arguments.getString("productId"))
+        val call = apiService!!.videoDetail(arguments.getString("productId"), "android")
         call.enqueue(object : retrofit2.Callback<VideoDetailBean> {
             override fun onResponse(call: retrofit2.Call<VideoDetailBean>, response: retrofit2.Response<VideoDetailBean>) {
                 if (response.body() != null) {
@@ -424,6 +445,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     private fun cancelCollection(pid: String?, uid: String?) {
         cancelCollectionParams!!["productId"] = pid
         cancelCollectionParams!!["userId"] = uid
+        cancelCollectionParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/cancelCollection")
                 .params(cancelCollectionParams!!)
@@ -455,6 +478,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         addCollectionParams!!["productId"] = pId
         addCollectionParams!!["userId"] = uId
         addCollectionParams!!["productType"] = t
+        addCollectionParams!!["client"] = "android"
 
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/addCollection")
@@ -487,6 +511,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         commoditySubmitDemandParams!!["geo"] = ""
         commoditySubmitDemandParams!!["status"] = "0"
         commoditySubmitDemandParams!!["type"] = type135//1 3 5
+        commoditySubmitDemandParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/commoditySubmitDemand")
                 .params(commoditySubmitDemandParams!!)
@@ -578,7 +604,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         judgeLati_longi(sceneData.latitude, sceneData.longitude)
         detail_location_tv.text = String.format(resources.getString(R.string.video_detail_location), sceneData.longitude, longi, sceneData.latitude, lati)
         detail_coordinate_tv.text = "WGS-84"
-        goods_detail_loading_rl.visibility = View.GONE
 
     }
 
@@ -752,6 +777,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     private fun getCollectionMark(pid: String, uid: String?) {
         getCollectionMarkParams!!["productId"] = pid
         getCollectionMarkParams!!["userId"] = uid
+        getCollectionMarkParams!!["client"] = "android"
+
+        EmallLogger.d(getCollectionMarkParams!!)
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/getCollectionMark")
                 .params(getCollectionMarkParams!!)

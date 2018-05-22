@@ -194,6 +194,8 @@ class ResetPasswordDelegate : BottomItemDelegate() {
     private fun changePassword() {
         changePasswordParams!!["userTelephone"] = tel
         changePasswordParams!!["userPassword"] = EncryptUtils.encryptMD5ToString(confirmPassword).toLowerCase()
+        changePasswordParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/changePassword.do")
                 .params(changePasswordParams!!)

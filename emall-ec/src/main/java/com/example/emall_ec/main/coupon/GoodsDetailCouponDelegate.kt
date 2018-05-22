@@ -10,14 +10,19 @@ import android.util.Log
 import android.view.View
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Toast
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.R.string.goods
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.coupon.data.CalculatePriceByCouponIdBean
 import com.example.emall_ec.main.coupon.type.EnableCouponDelegate
 import com.example.emall_ec.main.coupon.type.InvalidCouponDelegate
 import com.example.emall_ec.main.coupon.type.UsedCouponDelegate
+import com.example.emall_ec.main.index.dailypic.pic.ShowImageNewActivity.PlaceholderFragment.Companion.url
 import com.example.emall_ec.main.order.Find_tab_Adapter
 import com.github.lzyzsd.jsbridge.BridgeHandler
 import com.github.lzyzsd.jsbridge.CallBackFunction
@@ -75,23 +80,19 @@ class GoodsDetailCouponDelegate : EmallDelegate() {
                 mUploadMessage = uploadMsg
             }
         }
+
         //加载服务器网页
         var url: String
-        EmallLogger.d(arguments.getString("couponId"))
 //        if (arguments.getString("couponId") == "-1" || arguments.getString("couponId") == null) {
-            url = String.format("http://10.10.90.3:8092/productTicket.html?productId=%s&userId=%s",
-                    arguments.getString("productId"), DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
-//        } else
-//            url = String.format("http://10.10.90.3:8092/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=%s",
-//                    demandId, salePrice, type, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, arguments.getString("couponId"))
+        url = String.format("http://10.10.90.3:8092/productTicket.html?productId=%s&userId=%s",
+                arguments.getString("productId"), DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
         EmallLogger.d(url)
         goods_detail_coupon_webView.loadUrl(url)
         //必须和js同名函数，注册具体执行函数，类似java实现类。
-        goods_detail_coupon_webView.registerHandler("submitFromWeb", BridgeHandler { data, function ->
+        goods_detail_coupon_webView.registerHandler("submitMessage", BridgeHandler { data, function ->
             EmallLogger.d(data)
-            if (data != "kong") {
-            }
-
+            Toast.makeText(activity, data, Toast.LENGTH_SHORT).show()
+            pop()
         })
 
         goods_detail_coupon_webView.registerHandler("submitCheck", BridgeHandler { data, function ->

@@ -166,6 +166,8 @@ class SetUserNameDelegate : BottomItemDelegate() {
 
     private fun userNameAvailable(string: String) {
         findUserNameParam!!["userName"] = string
+        findUserNameParam!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.161.48:8023/findUserName.do")
                 .params(findUserNameParam!!)
@@ -205,7 +207,9 @@ class SetUserNameDelegate : BottomItemDelegate() {
         registerParam!!["telephone"] = t
         registerParam!!["userPassword"] = p.toLowerCase()
         registerParam!!["userName"] = n
-            RestClient().builder()
+        registerParam!!["client"] = "android"
+
+        RestClient().builder()
                 .url("http://59.110.161.48:8023/global/mall/register.do")
                 .params(registerParam!!)
                 .success(object : ISuccess {
@@ -233,6 +237,8 @@ class SetUserNameDelegate : BottomItemDelegate() {
     private fun login(tel: String, pwd: String) {
         userNameLoginParams!!["userTelephone"] = tel
         userNameLoginParams!!["password"] = pwd.toLowerCase()
+        userNameLoginParams!!["client"] = "android"
+
         EmallLogger.d(String.format("%s %s",tel, pwd))
 
         RestClient().builder()

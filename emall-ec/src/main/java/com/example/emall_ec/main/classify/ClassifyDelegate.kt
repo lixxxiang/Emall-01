@@ -331,7 +331,7 @@ class ClassifyDelegate : EmallDelegate() {
                 param_productType, param_resolution,
                 param_satelliteId, param_startTime,
                 param_endTime, param_cloud,
-                param_type, param_pageSize, param_pageNum)
+                param_type, param_pageSize, param_pageNum,"android")
         EmallLogger.d(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",param_productType, param_resolution,
                 param_satelliteId, param_startTime,
                 param_endTime, param_cloud,
@@ -358,7 +358,7 @@ class ClassifyDelegate : EmallDelegate() {
     private fun getVData(param_type: String) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoHome(param_type)
+        val call = apiService!!.videoHome(param_type, "android")
         call.enqueue(object : retrofit2.Callback<VideoHomeBean> {
             override fun onResponse(call: retrofit2.Call<VideoHomeBean>, response: retrofit2.Response<VideoHomeBean>) {
                 if (response.body() != null) {
@@ -378,7 +378,7 @@ class ClassifyDelegate : EmallDelegate() {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
 
-        val call = apiService!!.getRecommandCities()
+        val call = apiService!!.getRecommandCities("android")
         call.enqueue(object : retrofit2.Callback<GetRecommendCitiesBean> {
             override fun onResponse(call: retrofit2.Call<GetRecommendCitiesBean>, response: retrofit2.Response<GetRecommendCitiesBean>) {
                 if (response.body() != null) {

@@ -36,4 +36,14 @@ public class ScanCodeLoginBean {
     public void setUserTelephone(String userTelephone) {
         this.userTelephone = userTelephone;
     }
+
+
+    @Override
+    public String toString() {
+        return "ScanCodeLoginBean{" +
+                "userPassword='" + userPassword + '\'' +
+                ", meta='" + meta + '\'' +
+                ", userTelephone='" + userTelephone + '\'' +
+                '}';
+    }
 }

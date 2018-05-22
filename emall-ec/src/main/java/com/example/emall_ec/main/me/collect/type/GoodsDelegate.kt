@@ -145,6 +145,8 @@ class GoodsDelegate : EmallDelegate() {
     private fun getDataByType(s: String) {
         goods_srl.isRefreshing = true
         myAllCollectionParams!!["productType"] = s
+        myAllCollectionParams!!["client"] = "android"
+
         RestClient().builder()
                 .url("http://59.110.164.214:8024/global/mobile/myCollectionByType")
                 .params(myAllCollectionParams!!)

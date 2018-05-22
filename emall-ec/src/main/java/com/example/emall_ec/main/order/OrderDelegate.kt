@@ -27,16 +27,13 @@ class OrderDelegate : BottomItemDelegate() {
     }
 
     override fun initial() {
-        val url: String = if (FileUtil.checkEmulator()) {
-            "http://10.0.2.2:3033/data"
-        } else {
-            "http://10.10.90.38:3033/data"
-        }
 
         commoditySubmitDemandParams!!["productId"] = "JL101A_PMS_20170725103441_000020182_102_0025_002_L1_PAN;JL101A_PMS_20170725103441_000020182_102_0029_002_L1_PAN"
         commoditySubmitDemandParams!!["status"] = "1"
         commoditySubmitDemandParams!!["type"] = "1"
         commoditySubmitDemandParams!!["geo"] = "0"
+        commoditySubmitDemandParams!!["client"] = "android"
+
 
         EmallLogger.d(commoditySubmitDemandParams!!)
         RestClient().builder()

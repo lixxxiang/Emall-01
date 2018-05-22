@@ -13,8 +13,10 @@ import com.example.emall_core.net.callback.IFailure
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.api.ApiService
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.EcBottomDelegate
+import com.example.emall_ec.main.demand.data.AppPayBean
 import com.example.emall_ec.main.order.OrderListDelegate
 import com.example.emall_ec.main.scanner.data.ScanCodeLoginBean
 import com.example.emall_ec.main.sign.SetPasswordDelegate
@@ -22,6 +24,8 @@ import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_confirm_login.*
 import kotlinx.android.synthetic.main.delegate_scanner.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class ConfirmLoginDelegate : EmallDelegate() {
@@ -29,6 +33,9 @@ class ConfirmLoginDelegate : EmallDelegate() {
     private var scanCodeLoginParams: WeakHashMap<String, Any>? = WeakHashMap()
     private var scanCodeLoginBean = ScanCodeLoginBean()
     var toast: Toast? = null
+    internal var retrofit: Retrofit? = null
+    internal var apiService: ApiService? = null
+
     fun create(): ConfirmLoginDelegate? {
         return ConfirmLoginDelegate()
     }
@@ -45,54 +52,56 @@ class ConfirmLoginDelegate : EmallDelegate() {
         confirm_login_toolbar.setNavigationOnClickListener {
             pop()
         }
+        retrofit = Retrofit.Builder()
+                .baseUrl("http://59.110.161.48:8023/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        apiService = retrofit!!.create(ApiService::class.java)
+
 
         confirm_confirm_btn.setOnClickListener {
             scanCodeLoginParams!!["uuid"] = arguments.getString("UUID")
             scanCodeLoginParams!!["userTelephone"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone
             EmallLogger.d(scanCodeLoginParams!!)
 
-            RestClient().builder()
-                    .url("http://59.110.161.48:8023/scanCodeLogin.do")
-                    .params(scanCodeLoginParams!!)
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-                            EmallLogger.d(response)
-                            scanCodeLoginBean = Gson().fromJson(response, ScanCodeLoginBean::class.java)
-                            if (scanCodeLoginBean.meta == "success") {
-                                if (toast != null) {
-                                    toast!!.setText(getString(R.string.login_success))
-                                    toast!!.duration = Toast.LENGTH_SHORT
-                                    toast!!.show()
-                                } else {
-                                    toast = Toast.makeText(activity, getString(R.string.login_success), Toast.LENGTH_SHORT)
-                                    toast!!.show()
-                                }
-
-                            }else{
-                                if (toast != null) {
-                                    toast!!.setText("登录失败")
-                                    toast!!.duration = Toast.LENGTH_SHORT
-                                    toast!!.show()
-                                } else {
-                                    toast = Toast.makeText(activity, "登录失败", Toast.LENGTH_SHORT)
-                                    toast!!.show()
-                                }
+            val call = apiService!!.scanCodeLogin(arguments.getString("UUID"), DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone, "android")
+            call.enqueue(object : retrofit2.Callback<ScanCodeLoginBean> {
+                override fun onResponse(call: retrofit2.Call<ScanCodeLoginBean>, response: retrofit2.Response<ScanCodeLoginBean>) {
+                    if (response.body() != null) {
+                        scanCodeLoginBean = response.body()!!
+                        EmallLogger.d(scanCodeLoginBean.toString())
+                        if (scanCodeLoginBean.meta == "success") {
+                            if (toast != null) {
+                                toast!!.setText(getString(R.string.login_success))
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, getString(R.string.login_success), Toast.LENGTH_SHORT)
+                                toast!!.show()
                             }
-                            EmallLogger.d(arguments.getString("PAGE_FROM"))
-                            if (arguments.getString("PAGE_FROM") == "ORDER_LIST")
-                                popTo(findFragment(OrderListDelegate().javaClass).javaClass, false)
-                            else
-                                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                        }else{
+                            if (toast != null) {
+                                toast!!.setText("登录失败")
+                                toast!!.duration = Toast.LENGTH_SHORT
+                                toast!!.show()
+                            } else {
+                                toast = Toast.makeText(activity, "登录失败", Toast.LENGTH_SHORT)
+                                toast!!.show()
+                            }
                         }
-                    })
-                    .error(object : IError {
-                        override fun onError(code: Int, msg: String) {}
-                    })
-                    .failure(object : IFailure {
-                        override fun onFailure() {}
-                    })
-                    .build()
-                    .post()
+                        EmallLogger.d(arguments.getString("PAGE_FROM"))
+                        if (arguments.getString("PAGE_FROM") == "ORDER_LIST")
+                            popTo(findFragment(OrderListDelegate().javaClass).javaClass, false)
+                        else
+                            popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                    } else {
+                        EmallLogger.d("error")
+                    }
+                }
+
+                override fun onFailure(call: retrofit2.Call<ScanCodeLoginBean>, throwable: Throwable) {}
+            })
         }
 
         confirm_cancel_btn.setOnClickListener {
