@@ -162,7 +162,8 @@
         android:id="@+id/search_progressBar"
         android:layout_width="36dp"
         android:visibility="invisible"
-        android:layout_centerHorizontal="true"
+        android:layout_centerHorizontal="true" android:indeterminateTint="#B4A078"
+        android:indeterminateTintMode="src_atop"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/search_poi_toolbar"
         android:layout_height="36dp" />

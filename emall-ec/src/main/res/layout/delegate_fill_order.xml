@@ -310,7 +310,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:text="@string/go_pay"
+                android:text="@string/go_pay" android:indeterminateTint="#B4A078"
+                android:indeterminateTintMode="src_atop"
                 android:textColor="#FFFFFF"
                 android:textSize="12dp"
                 />
@@ -327,6 +328,8 @@
             android:id="@+id/fill_order_progressBar"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:indeterminateTint="#B4A078"
+            android:indeterminateTintMode="src_atop"
             android:layout_centerInParent="true" />
     </RelativeLayout>
 </RelativeLayout>

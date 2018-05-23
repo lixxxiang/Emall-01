@@ -2,7 +2,9 @@ package com.example.emall_core.ui.progressbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatDialog;
@@ -33,6 +35,8 @@ public class EmallProgressBar {
         ProgressBar progressBar = new ProgressbarCreator().creator(context);
 //        progressBar.setIndeterminateDrawable(context.getDrawable(R.drawable.progressbar));
         dialog = new AppCompatDialog(context, R.style.dialog);
+        progressBar.setIndeterminateTintMode(PorterDuff.Mode.SRC_ATOP);
+        progressBar.setIndeterminateTintList(ColorStateList.valueOf(Color.parseColor("#B4A078")));
         dialog.setContentView(progressBar);
 
         int deviceWidth = new DimenUtil().getScreenWidth();

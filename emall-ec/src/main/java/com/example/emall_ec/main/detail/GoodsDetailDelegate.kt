@@ -131,7 +131,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         Handler().postDelayed({
 
             if (type == "1" || type == "5") {
-                detail_videoview.visibility = View.GONE
+                if (detail_videoview != null)
+                    detail_videoview.visibility = View.GONE
                 sceneDetailParams!!["productId"] = productId
                 if (type == "1") {
                     sceneDetailParams!!["type"] = OPTICS
@@ -142,7 +143,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 }
                 getData(sceneDetailParams!!)
             } else if (type == "3") {
-                detail_videoview.visibility = View.VISIBLE
+                if (detail_videoview != null)
+
+                    detail_videoview.visibility = View.VISIBLE
                 videoDetailParams!!["productId"] = productId
                 videoDetailParams!!["type"] = VIDEO
                 type135 = VIDEO

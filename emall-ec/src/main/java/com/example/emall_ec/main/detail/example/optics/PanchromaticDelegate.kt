@@ -41,7 +41,7 @@ class PanchromaticDelegate : EmallDelegate() {
                 mUploadMessage = uploadMsg
             }
         }
-        p_example_webView.loadUrl("http://10.10.90.3:8092/allColor.html")
+        p_example_webView.loadUrl("http://59.110.164.214:8082/allColor.html")
         p_example_webView.registerHandler("submitFromWeb", BridgeHandler { data, function ->
             Toast.makeText(activity, data, Toast.LENGTH_SHORT).show()
         })
@@ -66,7 +66,7 @@ class PanchromaticDelegate : EmallDelegate() {
                 mUploadMessage = uploadMsg
             }
         }
-        p_example_webView.loadUrl("http://10.10.90.3:8092/allColor.html")
+        p_example_webView.loadUrl("http://59.110.164.214:8082/allColor.html")
         p_example_webView.registerHandler("submitFromWeb", BridgeHandler { data, function ->
             Toast.makeText(activity, data, Toast.LENGTH_SHORT).show()
         })

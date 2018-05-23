@@ -59,6 +59,7 @@ class FillOrderCouponDelegate : EmallDelegate() {
 
     override fun initial() {
         setSwipeBackEnable(false)
+        EmallLogger.d(arguments.getString("couponId"))
         mSharedPreferences = activity.getSharedPreferences("COUPON_ID", Context.MODE_PRIVATE)
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         demandId = arguments.getString("demandId")
@@ -69,8 +70,8 @@ class FillOrderCouponDelegate : EmallDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(fill_order_coupon_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         fill_order_coupon_toolbar.setNavigationOnClickListener {
+
             val bundle = Bundle()
-            bundle.putString("COUPON", "")
             setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             pop()
         }
@@ -96,25 +97,20 @@ class FillOrderCouponDelegate : EmallDelegate() {
         }
         //加载服务器网页
         var url: String
-        EmallLogger.d(arguments.getString("couponId"))
         if (arguments.getString("couponId") == "-1" || arguments.getString("couponId") == null) {
-            url = String.format("http://10.10.90.3:8092/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=",
+            url = String.format("http://59.110.164.214:8082/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=",
                     demandId, salePrice, type, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
         } else
-            url = String.format("http://10.10.90.3:8092/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=%s",
+            url = String.format("http://59.110.164.214:8082/use-quan.html?demandId=%s&salePrice=%s&type=%s&userId=%s&checkList=%s",
                     demandId, salePrice, type, DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, arguments.getString("couponId"))
-        EmallLogger.d(url)
         fill_order_coupon_webView.loadUrl(url)
         //必须和js同名函数，注册具体执行函数，类似java实现类。
         fill_order_coupon_webView.registerHandler("submitFromWeb", BridgeHandler { data, function ->
-            EmallLogger.d(data)
             if (data != "kong") {
                 /**
                  * 选择了优惠券
                  */
                 calculatePriceByCouponIdBean = Gson().fromJson(data, CalculatePriceByCouponIdBean::class.java)
-                EmallLogger.d(calculatePriceByCouponIdBean.toString())
-                EmallLogger.d(calculatePriceByCouponIdBean.data.productPrice[0].coupon_type)
                 val size = calculatePriceByCouponIdBean.data.productPrice.size
                 for (i in 0 until size) {
                     coupons += calculatePriceByCouponIdBean.data.productPrice[i].coupon_type
@@ -137,8 +133,10 @@ class FillOrderCouponDelegate : EmallDelegate() {
             val bundle = Bundle()
             bundle.putString("COUPON", coupons)
             bundle.putString("PRICE", price)
-            bundle.putString("USER_COUPON_ID", userCouponId)
-
+            val editor = mSharedPreferences!!.edit()
+            editor.putString("price", price)
+            editor.putString("coupons", coupons)
+            editor.commit()
             setFragmentResult(ISupportFragment.RESULT_OK, bundle)
             pop()
         })

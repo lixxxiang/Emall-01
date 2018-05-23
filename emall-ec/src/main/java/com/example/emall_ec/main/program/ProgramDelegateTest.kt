@@ -254,36 +254,38 @@ class ProgramDelegateTest : BottomItemDelegate(), SensorEventListener {
             override fun onMapStatusChangeFinish(p0: MapStatus?) {
                 val temp = DimenUtil().dip2px(context, ((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 76 - 92 - 250) * 0.4 + 76).toFloat())
 
-                val ltp = Point()
-                ltp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt()
-                ltp.y = temp
-                val lt = mBaiduMap!!.projection.fromScreenLocation(ltp)
+                Handler().postDelayed({
+                    val ltp = Point()
+                    ltp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt()
+                    ltp.y = temp
+                    val lt = mBaiduMap!!.projection.fromScreenLocation(ltp)
 
+                    val rbp = Point()
+                    rbp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt() + DimenUtil().dip2px(context, 250.0F)
+                    rbp.y = temp + DimenUtil().dip2px(context, 250.0F)
+                    val rb = mBaiduMap!!.projection.fromScreenLocation(rbp)
 
-                val rbp = Point()
-                rbp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt() + DimenUtil().dip2px(context, 250.0F)
-                rbp.y = temp + DimenUtil().dip2px(context, 250.0F)
-                val rb = mBaiduMap!!.projection.fromScreenLocation(rbp)
-
-                if (mBaiduMap!!.projection != null) {
-                    geoString = String.format("%s,%s,%s,%s", lt.longitude, lt.latitude, rb.longitude, rb.latitude)
-                    EmallLogger.d(geoString)
-                    scopeGeo = geoFormat(geoString)
-                    center = String.format("%s,%s", (lt.longitude + rb.longitude) / 2, (lt.latitude + rb.latitude) / 2)
-                    val leftTop = LatLng(lt.latitude,  lt.longitude)
-                    val rightBottom = LatLng(rb.latitude, rb.longitude)
-                    area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
-                    val areaString = area.toString()
-                    val temp = areaString.substring(0, areaString.indexOf(".") + 3)
-                    if (areaString.contains("E")) {
-                        if (areaString.contains("-")) {
-                            areaTv!!.text = String.format("当前面积：小于 0.01平方公里", temp)
-                        } else
-                            areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
-                    } else {
-                        areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
+                    if (mBaiduMap!!.projection != null) {
+                        geoString = String.format("%s,%s,%s,%s", lt.longitude, lt.latitude, rb.longitude, rb.latitude)
+                        EmallLogger.d(geoString)
+                        scopeGeo = geoFormat(geoString)
+                        center = String.format("%s,%s", (lt.longitude + rb.longitude) / 2, (lt.latitude + rb.latitude) / 2)
+                        val leftTop = LatLng(lt.latitude,  lt.longitude)
+                        val rightBottom = LatLng(rb.latitude, rb.longitude)
+                        area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
+                        val areaString = area.toString()
+                        val temp = areaString.substring(0, areaString.indexOf(".") + 3)
+                        if (areaString.contains("E")) {
+                            if (areaString.contains("-")) {
+                                areaTv!!.text = String.format("当前面积：小于 0.01平方公里", temp)
+                            } else
+                                areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
+                        } else {
+                            areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
+                        }
                     }
-                }
+                },1000)
+
             }
         }
         mMapView!!.map.setOnMapStatusChangeListener(listener)

@@ -201,7 +201,7 @@ class PaymentDelegate : EmallDelegate() {
         }
 
 
-        payment_price_tv.text = String.format("¥%s", data.details.salePrice)
+        payment_price_tv.text = String.format("¥%s", data.payment)
         payment_detail_id_tv.text = data.orderId
         payment_detail_order_time_tv.text = data.commitTime
         payment_detail_origional_price_tv.text = String.format("¥%s", data.details.originalPrice)
@@ -240,7 +240,7 @@ class PaymentDelegate : EmallDelegate() {
         } else
             payment_time_tv.text = timeFormat(data[0].details.centerTime)
 
-        payment_price_tv.text = String.format("¥%s", data[0].details.salePrice)
+        payment_price_tv.text = String.format("¥%s", data[0].payment)
         payment_detail_id_tv.text = data[0].orderId
         payment_detail_order_time_tv.text = data[0].commitTime
         payment_detail_origional_price_tv.text = String.format("¥%s", data[0].details.originalPrice)

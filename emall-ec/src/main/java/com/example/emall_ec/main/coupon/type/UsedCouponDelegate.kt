@@ -45,7 +45,7 @@ class UsedCouponDelegate  : EmallDelegate() {
             }
         }
         //加载服务器网页
-        var url = String.format("http://10.10.90.3:8092/userTicket.html?userId=%s&status=%s",  DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, 1)
+        var url = String.format("http://59.110.164.214:8082/userTicket.html?userId=%s&status=%s",  DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId, 1)
         EmallLogger.d(url)
         me_used_coupon_webView.loadUrl(url)
         //必须和js同名函数，注册具体执行函数，类似java实现类。

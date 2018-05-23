@@ -72,9 +72,8 @@ class Optics1ExampleDelegate : EmallDelegate() {
         }
         mTabLayout_2 = ViewFindUtils.find(activity.window.decorView, R.id.optics1_example_ctl)
 
-        mFragments.add(MultispectralDelegate())
         mFragments.add(PanchromaticDelegate())
-
+        mFragments.add(MultispectralDelegate())
         mAdapter = MyPagerAdapter(childFragmentManager)
         vp.adapter = mAdapter
         vp.offscreenPageLimit = 0

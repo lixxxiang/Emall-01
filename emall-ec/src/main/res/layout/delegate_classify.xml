@@ -185,6 +185,11 @@
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
                     android:background="#DADADA" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:id="@+id/recommand_mask" />
             </RelativeLayout>
 
 
@@ -201,6 +206,8 @@
                 android:layout_width="36dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:indeterminateTint="#B4A078"
+                android:indeterminateTintMode="src_atop"
                 android:layout_below="@+id/classify_horizontal_scrollview_ll"
                 android:layout_height="36dp" />
             <RelativeLayout
@@ -224,7 +231,8 @@
                         android:id="@+id/pull_to_refresh_load_progress"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_centerVertical="true"
+                        android:layout_centerVertical="true" android:indeterminateTint="#B4A078"
+                        android:indeterminateTintMode="src_atop"
                         android:layout_marginLeft="0dp"
                         android:indeterminate="true" />
                     <TextView

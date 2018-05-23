@@ -2,6 +2,7 @@ package com.example.emall_ec.main.demand
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -61,7 +62,7 @@ class FillOrderDelegate : BottomItemDelegate() {
     var hasCoupon = false
     private var queryInvoiceParams: WeakHashMap<String, Any>? = WeakHashMap()
     val couponList: MutableList<String> = mutableListOf()
-
+    var mSharedPreferences: SharedPreferences? = null
     fun create(): FillOrderDelegate? {
         return FillOrderDelegate()
     }
@@ -75,8 +76,10 @@ class FillOrderDelegate : BottomItemDelegate() {
         fill_order_toolbar.title = getString(R.string.fill_order)
         (activity as AppCompatActivity).setSupportActionBar(fill_order_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mSharedPreferences = activity.getSharedPreferences("STATE", Context.MODE_PRIVATE)
 
         fill_order_toolbar.setNavigationOnClickListener {
+            mSharedPreferences!!.edit().clear().commit()
             pop()
         }
 
@@ -146,7 +149,7 @@ class FillOrderDelegate : BottomItemDelegate() {
                 bundle!!.putString("demandId", arguments.getString("demandId"))
                 bundle.putString("salePrice", viewDemandBean.data.demands[0].salePrice)
                 bundle.putString("type", arguments.getString("type"))
-                bundle.putString("couponId", couponId)
+                bundle.putString("couponId", mSharedPreferences!!.getString("state", ""))
                 delegate.arguments = bundle
                 startForResult(delegate, 2)
             }
@@ -230,35 +233,46 @@ class FillOrderDelegate : BottomItemDelegate() {
         } else if (requestCode == 2 && resultCode == ISupportFragment.RESULT_OK) {
             val sp = activity.getSharedPreferences("COUPON_ID", Context.MODE_PRIVATE)
             couponId = sp.getString("couponId", "")
-            val index = data.getString("COUPON")
-            var price = data.getString("PRICE")
-            EmallLogger.d(index)
             EmallLogger.d(couponId)
-            if (index != "") {
-                val size = index.split(",").size
-                if (size > 2) {
-                    Toast.makeText(context, "coupon error", Toast.LENGTH_SHORT).show()
-                } else {
-                    coupon_title.visibility = View.GONE
-                    coupon1.visibility = View.VISIBLE
-                    coupon1.text = index.split(",")[0]
-                    fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - price.split(",")[0].toDouble()))
-                    fill_order_sale_price_tv.text = String.format("应付：¥%s",  price.split(",")[0])
-                    fill_order_out_tv.text = String.format("¥%s", price.split(",")[0])
+            if (!sp.getString("couponId", "").isEmpty()) {
+                val editor = mSharedPreferences!!.edit()
+                editor.putString("state", couponId)
+                editor.commit()
+            }
 
+            if (data.getString("COUPON") != null) {
+                val index = data.getString("COUPON")
+                val price = data.getString("PRICE")
+                EmallLogger.d(index)
+                EmallLogger.d(couponId)
+                if (index != "") {
+                    val size = index.split(",").size
+                    if (size > 2) {
+                        Toast.makeText(context, "coupon error", Toast.LENGTH_SHORT).show()
+                    } else {
+                        coupon_title.visibility = View.GONE
+                        coupon1.visibility = View.VISIBLE
+                        coupon1.text = index.split(",")[0]
+                        fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - price.split(",")[0].toDouble()))
+                        fill_order_sale_price_tv.text = String.format("应付：¥%s", price.split(",")[0])
+                        fill_order_out_tv.text = String.format("¥%s", price.split(",")[0])
+
+                    }
+                } else {
+                    mSharedPreferences!!.edit().clear().commit()
+                    coupon_title.visibility = View.VISIBLE
+                    coupon1.visibility = View.GONE
+                    fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble()))
+                    fill_order_out_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
+                    fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
                 }
-            } else {
-                coupon_title.visibility = View.VISIBLE
-                coupon1.visibility = View.GONE
-                fill_order_dp_tv.text = String.format("-¥%s", DecimalFormat("######0.00").format(viewDemandBean.data.demands[0].originalPrice.toDouble() - viewDemandBean.data.demands[0].salePrice.toDouble()))
-                fill_order_out_tv.text = String.format("¥%s", viewDemandBean.data.demands[0].salePrice)
-                fill_order_sale_price_tv.text = String.format("应付：¥%s", viewDemandBean.data.demands[0].salePrice)
+                sp.edit().clear().commit()
             }
         }
     }
 
     private fun insertOrderData() {
-        if (couponId != "-1"){
+        if (couponId != "-1") {
             orderParams!!["userCouponId"] = couponId
         }
         orderParams!!["type"] = arguments.getString("type")

@@ -69,7 +69,7 @@ class NoctilucenceExampleDelegate : EmallDelegate() {
             }
         }
         //加载服务器网页
-        n_example_webView.loadUrl("http://10.10.90.3:8092/nightDemo.html")
+        n_example_webView.loadUrl("http://59.110.164.214:8082/nightDemo.html")
         //必须和js同名函数，注册具体执行函数，类似java实现类。
         n_example_webView.registerHandler("submitFromWeb", BridgeHandler { data, function ->
             // 例如你可以对原始数据进行处理

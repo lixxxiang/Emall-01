@@ -1,6 +1,10 @@
 package com.example.lixiang.emall_01
 
+import android.annotation.SuppressLint
+import android.os.Build
+import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.widget.Toast
 import com.example.emall_core.activities.ProxyActivity
@@ -15,6 +19,8 @@ import com.example.emall_ec.main.EcBottomDelegate
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import com.blankj.utilcode.util.AppUtils
+import com.example.emall_core.util.log.EmallLogger
 import com.facebook.drawee.backends.pipeline.Fresco
 
 
@@ -50,6 +56,7 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
         Toast.makeText(this, "注册成功", Toast.LENGTH_LONG).show()
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val actionBar: android.support.v7.app.ActionBar? = supportActionBar
@@ -57,7 +64,14 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
             actionBar.hide()
         }
         Fresco.initialize(this)
-        Log.e("TAG", "android.R.id.content.getChildAt(0) = " + (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0))
+        if(Build.VERSION.SDK_INT < KITKAT){
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("当前系统版本过低，无法使用本软件，请升级系统后使用。")
+            builder.setPositiveButton("确定") { dialog, _ ->
+                AppUtils.exitApp()
+            }
+            builder.create().show()
+        }
     }
 
     override fun setRootDelegate(): EmallDelegate {

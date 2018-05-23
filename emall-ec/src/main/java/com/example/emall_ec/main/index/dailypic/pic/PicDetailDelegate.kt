@@ -706,7 +706,7 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
         val mTargetScene = scene
 
         val webpage = WXWebpageObject()
-        webpage.webpageUrl = "http://10.10.90.3:8092?id=$articleId"
+        webpage.webpageUrl = "http://59.110.164.214:8082/imageIndex.html?id=$articleId"
         val msg = WXMediaMessage(webpage)
         msg.title = title
         msg.description = description

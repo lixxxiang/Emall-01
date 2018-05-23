@@ -19,6 +19,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Handler
 import android.support.annotation.RequiresApi
+import android.support.v7.app.AlertDialog
 import android.view.View
 import com.example.emall_core.ui.progressbar.EmallProgressBar
 import com.example.emall_ec.database.DatabaseManager
@@ -27,6 +28,7 @@ import com.example.emall_ec.api.NetUtils
 import com.example.emall_ec.main.demand.data.QueryOrderBean
 import com.example.emall_ec.main.demand.data.QueryOrderFailureBean
 import com.example.emall_ec.main.order.OrderListDelegate
+import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -65,7 +67,23 @@ class PayMethodDelegate : BottomItemDelegate() {
             val editor = mSharedPreferences!!.edit()
             editor.putString("BACK_FROM", "PAY_METHOD")
             editor.commit()
-            pop()
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("确认要离开收银台？")
+            builder.setPositiveButton("确认离开") { dialog, _ ->
+                dialog.dismiss()
+                val delegate: OrderListDelegate = OrderListDelegate().create()!!
+                val bundle: Bundle? = Bundle()
+                bundle!!.putInt("INDEX", 0)
+                bundle!!.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+                delegate.arguments = bundle
+                start(delegate)
+            }
+
+            builder.setNegativeButton("继续支付") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.create().show()
         }
 
         pay_method_pay_rl.setOnClickListener {
@@ -187,7 +205,7 @@ class PayMethodDelegate : BottomItemDelegate() {
             pay_method_sv.visibility = View.GONE
             back_rv.visibility = View.VISIBLE
             pay_method_toolbar.visibility = View.GONE
-            ll_bar.visibility = View.GONE
+            lll_bar.visibility = View.GONE
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
@@ -197,6 +215,7 @@ class PayMethodDelegate : BottomItemDelegate() {
             delegate.arguments = bundle
             Handler().postDelayed({
                 start(delegate)
+                EmallProgressBar.hideProgressbar()
             }, 1000)
 //            EmallProgressBar.hideProgressbar()
         }

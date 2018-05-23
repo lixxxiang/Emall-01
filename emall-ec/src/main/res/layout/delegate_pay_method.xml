@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <View
-        android:id="@+id/ll_bar"
+        android:id="@+id/lll_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusbar_view_height"
         android:background="#FFFFFF"
@@ -15,7 +15,7 @@
         android:id="@+id/pay_method_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_below="@+id/ll_bar"
+        android:layout_below="@+id/lll_bar"
         android:background="#FFFFFF"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"

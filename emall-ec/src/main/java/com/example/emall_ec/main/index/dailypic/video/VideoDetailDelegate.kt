@@ -640,7 +640,7 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         val mTargetScene = scene
 
         val webpage = WXWebpageObject()
-        webpage.webpageUrl = "http://10.10.90.3:8092?id=$articleId"
+        webpage.webpageUrl = "http://59.110.164.214:8082/videoIndex.html?id=$articleId"
         val msg = WXMediaMessage(webpage)
         msg.title = title
         msg.description = ""
@@ -648,7 +648,6 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
         val thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true)
         bmp.recycle()
         msg.thumbData = ShareUtil.bmpToByteArray(thumbBmp, true)
-
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("webpage")
         req.message = msg

@@ -84,7 +84,7 @@ class GoodsDetailCouponDelegate : EmallDelegate() {
         //加载服务器网页
         var url: String
 //        if (arguments.getString("couponId") == "-1" || arguments.getString("couponId") == null) {
-        url = String.format("http://10.10.90.3:8092/productTicket.html?productId=%s&userId=%s",
+        url = String.format("http://59.110.164.214:8082/productTicket.html?productId=%s&userId=%s",
                 arguments.getString("productId"), DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
         EmallLogger.d(url)
         goods_detail_coupon_webView.loadUrl(url)

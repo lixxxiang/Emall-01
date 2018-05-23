@@ -288,7 +288,10 @@ class ClassifyDelegate : EmallDelegate() {
     private fun closeScreen() {
         classify_down_btn.setBackgroundResource(R.drawable.down)
         classify_mask_rl.visibility = View.INVISIBLE
-        classify_recommand_tv.text = cityNameToShow
+        if (cityNameToShow != "")
+            classify_recommand_tv.text = cityNameToShow
+        else
+            classify_recommand_tv.text = getString(R.string.recommand)
         classify_hsv.visibility = View.VISIBLE
         isScroll(true)
         isExpanded = false
@@ -331,8 +334,8 @@ class ClassifyDelegate : EmallDelegate() {
                 param_productType, param_resolution,
                 param_satelliteId, param_startTime,
                 param_endTime, param_cloud,
-                param_type, param_pageSize, param_pageNum,"android")
-        EmallLogger.d(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",param_productType, param_resolution,
+                param_type, param_pageSize, param_pageNum, "android")
+        EmallLogger.d(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", param_productType, param_resolution,
                 param_satelliteId, param_startTime,
                 param_endTime, param_cloud,
                 param_type, param_pageSize, param_pageNum))
@@ -482,7 +485,8 @@ class ClassifyDelegate : EmallDelegate() {
                 classify_rv.adapter = videoAdapter
             if (classify_progressBar != null)
                 classify_progressBar.visibility = View.GONE
-
+            if (recommand_mask != null)
+                recommand_mask.visibility = View.GONE
             videoAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 val delegate = GoodsDetailDelegate().create()
                 val bundle: Bundle? = Bundle()
@@ -500,7 +504,8 @@ class ClassifyDelegate : EmallDelegate() {
                 pages += 1
             if (classify_progressBar != null)
                 classify_progressBar.visibility = View.GONE
-
+            if (recommand_mask != null)
+                recommand_mask.visibility = View.GONE
             sceneAdapter!!.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 EmallLogger.d(position)
                 val delegate = GoodsDetailDelegate().create()
