@@ -69,7 +69,7 @@ class PaymentDelegate : EmallDelegate() {
         if (arguments.getString("PAGE_FROM") == "GOODS_DETAIL") {
             findDetailByParentOrderId()
         } else {
-            findOrderDetailByOrderId()
+            findDetailByParentOrderId()
         }
         mSharedPreferences = activity.getSharedPreferences("PAGE_BACK", Context.MODE_PRIVATE)
         payment_success_check_order_list_btn.setOnClickListener {
@@ -77,8 +77,8 @@ class PaymentDelegate : EmallDelegate() {
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
             bundle.putInt("INDEX", 0)
-            bundle.putString("FROM", "PAYMENT")
-            bundle.putString("PAGE_FROM", "PAYMENT")
+//            bundle.putString("PAGE_FROM", "PAYMENT")
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
             delegate.arguments = bundle
             start(delegate)
         }
@@ -87,8 +87,9 @@ class PaymentDelegate : EmallDelegate() {
             val bundle: Bundle? = Bundle()
             bundle!!.putString("USER_ID", DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userId)
             bundle.putInt("INDEX", 0)
-            bundle.putString("FROM", "PAYMENT")
-            bundle.putString("PAGE_FROM", "PAYMENT")
+//            bundle.putString("PAGE_FROM", "PAYMENT")
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+
             delegate.arguments = bundle
             start(delegate)
         }
@@ -98,7 +99,9 @@ class PaymentDelegate : EmallDelegate() {
             val bundle: Bundle? = Bundle()
             bundle!!.putString("PARENT_ORDER_ID", arguments.getString("PARENT_ORDER_ID"))
             bundle.putString("TYPE", arguments.getString("TYPE"))
-            bundle.putString("PAGE_FROM", "PAYMENT")
+//            bundle.putString("PAGE_FROM", "PAYMENT")
+            bundle.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+
             delegate.arguments = bundle
             startWithPop(delegate)
         }
