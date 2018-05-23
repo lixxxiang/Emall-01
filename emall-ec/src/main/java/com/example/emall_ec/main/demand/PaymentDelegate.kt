@@ -70,6 +70,7 @@ class PaymentDelegate : EmallDelegate() {
             findDetailByParentOrderId()
         } else {
             findOrderDetailByOrderId()
+
         }
         mSharedPreferences = activity.getSharedPreferences("PAGE_BACK", Context.MODE_PRIVATE)
         payment_success_check_order_list_btn.setOnClickListener {
