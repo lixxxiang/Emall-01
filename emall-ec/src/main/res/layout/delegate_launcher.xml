@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/launcher_00">
+    android:layout_height="match_parent">
 
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_launcher_timer"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/border_circle_timer"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginEnd="15dp" />
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:id="@+id/launcher_iv"
+        android:layout_above="@+id/launcher_bar"
+        />
+    <RelativeLayout
+        android:id="@+id/launcher_bar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:background="#B4A078"
+        android:layout_alignParentBottom="true">
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="44dp"
+            android:id="@+id/launcher_icon"
+            android:layout_height="36dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/icon"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="长光卫星 遥感易购"
+            android:textSize="14dp"
+            android:textColor="#E6E6E6"
+            android:layout_below="@+id/launcher_icon"
+            android:layout_marginTop="8dp" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/launcher_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="28dp"
+            android:text="跳过"
+            android:background="@drawable/border_circle_timer"
+            android:textColor="#E6E6E6"
+            android:gravity="center"
+            android:textSize="14dp"/>
+    </RelativeLayout>
 </RelativeLayout>

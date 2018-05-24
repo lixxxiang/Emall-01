@@ -255,33 +255,36 @@ class ProgramDelegateTest : BottomItemDelegate(), SensorEventListener {
                 val temp = DimenUtil().dip2px(context, ((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 76 - 92 - 250) * 0.4 + 76).toFloat())
 
                 Handler().postDelayed({
-                    val ltp = Point()
-                    ltp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt()
-                    ltp.y = temp
-                    val lt = mBaiduMap!!.projection.fromScreenLocation(ltp)
+                    if(context != null) {
 
-                    val rbp = Point()
-                    rbp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt() + DimenUtil().dip2px(context, 250.0F)
-                    rbp.y = temp + DimenUtil().dip2px(context, 250.0F)
-                    val rb = mBaiduMap!!.projection.fromScreenLocation(rbp)
+                        val ltp = Point()
+                        ltp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt()
+                        ltp.y = temp
+                        val lt = mBaiduMap!!.projection.fromScreenLocation(ltp)
 
-                    if (mBaiduMap!!.projection != null) {
-                        geoString = String.format("%s,%s,%s,%s", lt.longitude, lt.latitude, rb.longitude, rb.latitude)
-                        EmallLogger.d(geoString)
-                        scopeGeo = geoFormat(geoString)
-                        center = String.format("%s,%s", (lt.longitude + rb.longitude) / 2, (lt.latitude + rb.latitude) / 2)
-                        val leftTop = LatLng(lt.latitude,  lt.longitude)
-                        val rightBottom = LatLng(rb.latitude, rb.longitude)
-                        area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
-                        val areaString = area.toString()
-                        val temp = areaString.substring(0, areaString.indexOf(".") + 3)
-                        if (areaString.contains("E")) {
-                            if (areaString.contains("-")) {
-                                areaTv!!.text = String.format("当前面积：小于 0.01平方公里", temp)
-                            } else
-                                areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
-                        } else {
-                            areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
+                        val rbp = Point()
+                        rbp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt() + DimenUtil().dip2px(context, 250.0F)
+                        rbp.y = temp + DimenUtil().dip2px(context, 250.0F)
+                        val rb = mBaiduMap!!.projection.fromScreenLocation(rbp)
+
+                        if (mBaiduMap!!.projection != null) {
+                            geoString = String.format("%s,%s,%s,%s", lt.longitude, lt.latitude, rb.longitude, rb.latitude)
+                            EmallLogger.d(geoString)
+                            scopeGeo = geoFormat(geoString)
+                            center = String.format("%s,%s", (lt.longitude + rb.longitude) / 2, (lt.latitude + rb.latitude) / 2)
+                            val leftTop = LatLng(lt.latitude, lt.longitude)
+                            val rightBottom = LatLng(rb.latitude, rb.longitude)
+                            area = DistanceUtil.getDistance(leftTop, rightBottom) * DistanceUtil.getDistance(leftTop, rightBottom) / 1000000
+                            val areaString = area.toString()
+                            val temp = areaString.substring(0, areaString.indexOf(".") + 3)
+                            if (areaString.contains("E")) {
+                                if (areaString.contains("-")) {
+                                    areaTv!!.text = String.format("当前面积：小于 0.01平方公里", temp)
+                                } else
+                                    areaTv!!.text = String.format("当前面积：%s 亿平方公里", temp)
+                            } else {
+                                areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
+                            }
                         }
                     }
                 },1000)
@@ -830,6 +833,46 @@ class ProgramDelegateTest : BottomItemDelegate(), SensorEventListener {
             e.printStackTrace()
         }
 
+    }
+
+    override fun onBackPressedSupport(): Boolean {
+        super.onBackPressedSupport()
+        if (level == 1) {
+//                pop()
+            handler.removeCallbacks(task)
+            return false
+        } else if (level == 2) {
+            level = 1
+            program_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
+            topRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            leftRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            rightRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            bottomRl!!.setBackgroundColor(Color.parseColor("#99000000"))
+            program_bottom_rl.setBackgroundColor(Color.parseColor("#BF000000"))
+            program_ll_bar.setBackgroundColor(Color.parseColor("#BF000000"))
+            program_camera.visibility = View.VISIBLE
+            satelliteImageView!!.visibility = View.VISIBLE
+            scrollTextView!!.visibility = View.VISIBLE
+            title!!.visibility = View.GONE
+            program_toolbar_searchbar.visibility = View.VISIBLE
+            nextStep!!.visibility = View.GONE
+            rulerRl!!.visibility = View.INVISIBLE
+            rular!!.visibility = View.INVISIBLE
+            rular2!!.visibility = View.INVISIBLE
+            r1Tv!!.visibility = View.INVISIBLE
+            r2Tv!!.visibility = View.INVISIBLE
+            val mUiSettings = mBaiduMap!!.uiSettings
+            mUiSettings.isScrollGesturesEnabled = true
+            mUiSettings.isOverlookingGesturesEnabled = true
+            mUiSettings.isZoomGesturesEnabled = true
+            move!!.visibility = View.VISIBLE
+            zoomImageView!!.visibility = View.VISIBLE
+            zoomIn!!.visibility = View.VISIBLE
+            zoomOut!!.visibility = View.VISIBLE
+            mBaiduMap!!.setMyLocationConfigeration(MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null))
+            return true
+        }
+        return true
     }
 
 

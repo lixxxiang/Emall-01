@@ -336,4 +336,12 @@ class OrderDetailDelegate : BottomItemDelegate() {
         val activities = packageManager.queryIntentActivities(intent, 0)
         return !activities.isEmpty()
     }
+
+    override fun onBackPressedSupport(): Boolean {
+        val editor = mSharedPreferences!!.edit()
+        editor.putString("BACK_FROM", "ORDER_DETAIL")
+        editor.commit()
+        pop()
+        return true
+    }
 }

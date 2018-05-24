@@ -58,4 +58,10 @@ class ProgramParamsTypeDelegate : BottomItemDelegate() {
         return DefaultHorizontalAnimator()
     }
 
+    override fun onBackPressedSupport(): Boolean {
+        val bundle = Bundle()
+        bundle.putString("index", "-1")
+        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+        return super.onBackPressedSupport()
+    }
 }

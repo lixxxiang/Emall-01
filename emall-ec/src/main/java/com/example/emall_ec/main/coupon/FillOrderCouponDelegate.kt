@@ -160,4 +160,11 @@ class FillOrderCouponDelegate : EmallDelegate() {
         super.onSupportVisible()
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
+
+
+    override fun onBackPressedSupport(): Boolean {
+        val bundle = Bundle()
+        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+        return super.onBackPressedSupport()
+    }
 }

@@ -840,4 +840,15 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         super.onSupportInvisible()
         JZVideoPlayer.releaseAllVideos()
     }
+
+    override fun onBackPressedSupport(): Boolean {
+        if (arguments.getString("PAGE_FROM") == "COLLECTION") {
+            val editor = mSharedPreferences!!.edit()
+            editor.putString("collection", "true")
+            editor.putString("collection_type", arguments.getString("COLLECTION_TYPE"))
+            editor.commit()
+        }
+        supportDelegate.pop()
+        return true
+    }
 }

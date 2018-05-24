@@ -1,5 +1,6 @@
 package com.example.emall_core.activities
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.ContentFrameLayout
 import android.view.KeyEvent
@@ -30,7 +31,9 @@ abstract class ProxyActivity : SupportActivity() {
 
     fun initContainer(savedInstanceState: Bundle?) {
         val container = ContentFrameLayout(this)
+
         container.id = R.id.delegate_container
+        container.setBackgroundColor( Color.parseColor("#B4A078"))
         setContentView(container)
 //        StatusBarUtil.setLightMode(this)
 //        StatusBarUtil.setTransparent(this)

@@ -298,6 +298,30 @@ class PayMethodDelegate : BottomItemDelegate() {
         })
     }
 
+    override fun onBackPressedSupport(): Boolean {
+        super.onBackPressedSupport()
+        val editor = mSharedPreferences!!.edit()
+        editor.putString("BACK_FROM", "PAY_METHOD")
+        editor.commit()
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("确认要离开收银台？")
+        builder.setPositiveButton("确认离开") { dialog, _ ->
+            dialog.dismiss()
+            val delegate: OrderListDelegate = OrderListDelegate().create()!!
+            val bundle: Bundle? = Bundle()
+            bundle!!.putInt("INDEX", 0)
+            bundle!!.putString("PAGE_FROM", arguments.getString("PAGE_FROM"))
+            delegate.arguments = bundle
+            start(delegate)
+        }
+
+        builder.setNegativeButton("继续支付") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.create().show()
+        return true
+    }
 
 }
 

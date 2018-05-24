@@ -6,10 +6,11 @@
 
 
     <RelativeLayout
-        android:layout_below="@+id/base_classify_searchbar_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/base_classify_searchbar_rl"
         android:background="#FFFFFF">
+
         <RelativeLayout
             android:id="@+id/classify_line"
             android:layout_width="match_parent"
@@ -23,95 +24,140 @@
             android:id="@+id/classify_tv"
             android:layout_width="47dp"
             android:layout_height="22dp"
-            android:background="#FFFFFF"
-            android:text="@string/classify"
-            android:textSize="12dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="#FFFFFF"
             android:gravity="center"
+            android:text="@string/classify"
             android:textColor="#D8D8D8"
-            android:layout_marginTop="25dp"/>
+            android:textSize="12dp" />
 
-        <LinearLayout
-            android:id="@+id/base_classify_images_on_top_ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginTop="67dp"
-            android:layout_marginRight="42dp"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.example.emall_core.util.view.SquareImageView
-                    android:id="@+id/base_classify_optics_siv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/classify_1" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.example.emall_core.util.view.SquareImageView
-                    android:id="@+id/base_classify_noctilucence_siv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/classify_2" />
-            </RelativeLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/base_classify_images_on_bottom_ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/base_classify_images_on_top_ll"
-            android:layout_marginRight="42dp"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.example.emall_core.util.view.SquareImageView
-                    android:id="@+id/base_classify_video_siv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:layout_centerInParent="true"
+        <!--<LinearLayout-->
+        <!--android:id="@+id/base_classify_images_on_top_ll"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="42dp"-->
+        <!--android:layout_marginTop="67dp"-->
+        <!--android:layout_marginRight="42dp"-->
+        <!--android:orientation="horizontal">-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
+        <!--<com.example.emall_core.util.view.SquareImageView-->
+        <!--android:id="@+id/base_classify_optics_siv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:background="@drawable/classify_1" />-->
+        <!--</RelativeLayout>-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
+        <!--<com.example.emall_core.util.view.SquareImageView-->
+        <!--android:id="@+id/base_classify_noctilucence_siv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:background="@drawable/classify_2" />-->
+        <!--</RelativeLayout>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+        <!--android:id="@+id/base_classify_images_on_bottom_ll"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="42dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_below="@+id/base_classify_images_on_top_ll"-->
+        <!--android:layout_marginRight="42dp"-->
+        <!--android:orientation="horizontal">-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
+        <!--<com.example.emall_core.util.view.SquareImageView-->
+        <!--android:id="@+id/base_classify_video_siv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_centerInParent="true"-->
 
-                    android:background="@drawable/classify_3" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.example.emall_core.util.view.SquareImageView
-                    android:id="@+id/base_classify_program_siv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:layout_centerInParent="true"
+        <!--android:background="@drawable/classify_3" />-->
+        <!--</RelativeLayout>-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
+        <!--<com.example.emall_core.util.view.SquareImageView-->
+        <!--android:id="@+id/base_classify_program_siv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_centerInParent="true"-->
 
-                    android:background="@drawable/classify_4" />
-            </RelativeLayout>
-        </LinearLayout>
+        <!--android:background="@drawable/classify_4" />-->
+        <!--</RelativeLayout>-->
+        <!--</LinearLayout>-->
+
+        <RelativeLayout
+            android:layout_width="292dp"
+            android:layout_height="292dp"
+            android:layout_below="@+id/classify_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp">
+
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/base_classify_optics_siv"
+                android:layout_width="138dp"
+                android:layout_height="138dp"
+                android:background="@drawable/classify_1"
+                android:scaleType="centerCrop" />
+
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/base_classify_noctilucence_siv"
+                android:layout_width="138dp"
+                android:layout_height="138dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/classify_2"
+                android:scaleType="centerCrop" />
+
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/base_classify_video_siv"
+                android:layout_width="138dp"
+                android:layout_height="138dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/classify_3"
+                android:scaleType="centerCrop" />
+
+            <com.example.emall_core.util.view.SquareImageView
+                android:id="@+id/base_classify_program_siv"
+                android:layout_width="138dp"
+                android:layout_height="138dp"
+                android:background="@drawable/classify_4"
+                android:scaleType="centerCrop"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/classify_no_network_rl"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/no_internet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/no_internet"/>
+            android:text="@string/no_internet" />
+
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,24 +168,23 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_alignParentTop="true"
         android:id="@+id/ll_bar"
         android:layout_width="fill_parent"
-        android:elevation="2dp"
         android:layout_height="20dp"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
-    </LinearLayout>
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        android:orientation="vertical"></LinearLayout>
+
     <RelativeLayout
         android:id="@+id/base_classify_searchbar_rl"
-        android:layout_below="@+id/ll_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/ll_bar"
         android:background="#FFFFFF"
         android:elevation="2dp">
+
         <RelativeLayout
-            android:clickable="true"
-            android:focusable="true"
             android:id="@+id/base_classify_search_rl"
             android:layout_width="match_parent"
             android:layout_height="31dp"
@@ -148,6 +193,8 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/style_home_pager_toolbar_search_view"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center_vertical">
 
             <RelativeLayout

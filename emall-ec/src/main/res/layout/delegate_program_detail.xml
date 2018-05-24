@@ -169,10 +169,11 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="143dp"
+                android:layout_height="103dp"
                 android:background="#FFFFFF">
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/program_detail_get_ticket_rl"
                     android:layout_width="match_parent"
                     android:layout_height="40dp">
@@ -196,6 +197,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/line"
                     android:layout_width="match_parent"
                     android:layout_height="2px"

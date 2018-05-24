@@ -61,6 +61,7 @@ class SearchPoiDelegate : EmallDelegate() {
                 search_poi_cities_listview.visibility = View.VISIBLE
                 pages = 1
             } else {
+
                 bundle.putString("LOCATION", "")
                 this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
                 KeyboardUtils.hideSoftInput(activity)
@@ -71,27 +72,30 @@ class SearchPoiDelegate : EmallDelegate() {
         addHeadView()
 
         search_poi_cities_listview.setOnItemClickListener { adapterView, view, index, l ->
-            RestClient().builder()
-                    .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s&cityName=%s&client=android", search_poi_et.text, citiesList!![index - 1]))
-                    .success(object : ISuccess {
-                        override fun onSuccess(response: String) {
-                            clearPois()
-                            pages = 2
-                            showPois(response)
-                        }
-                    })
-                    .failure(object : IFailure {
-                        override fun onFailure() {
+            if (index != 0){
+                RestClient().builder()
+                        .url(String.format("http://59.110.161.48:8023/GetPoiByGaode.do?poiName=%s&cityName=%s&client=android", search_poi_et.text, citiesList!![index - 1]))
+                        .success(object : ISuccess {
+                            override fun onSuccess(response: String) {
+                                clearPois()
+                                pages = 2
+                                showPois(response)
+                            }
+                        })
+                        .failure(object : IFailure {
+                            override fun onFailure() {
 
-                        }
-                    })
-                    .error(object : IError {
-                        override fun onError(code: Int, msg: String) {
+                            }
+                        })
+                        .error(object : IError {
+                            override fun onError(code: Int, msg: String) {
 
-                        }
-                    })
-                    .build()
-                    .post()
+                            }
+                        })
+                        .build()
+                        .post()
+            }
+
         }
 
         search_poi_poi_listview.setOnItemClickListener { adapterView, view, i, l ->
@@ -258,7 +262,6 @@ class SearchPoiDelegate : EmallDelegate() {
             showNoResult()
         }else{
             for (i in 0 until poiInfo.gdPois.poiList.size) {
-                println(i)
                 poiList!!.add(poiInfo.gdPois.poiList[i].name)
 
                 if (poiInfo.gdPois.poiList[i].cityname == null) {
@@ -296,5 +299,22 @@ class SearchPoiDelegate : EmallDelegate() {
 
     override fun onSupportInvisible() {
         super.onSupportInvisible()
+    }
+
+    override fun onBackPressedSupport(): Boolean {
+        super.onBackPressedSupport()
+        EmallLogger.d(pages)
+        if (pages == 2) {
+            search_poi_poi_listview.visibility = View.INVISIBLE
+            search_poi_cities_listview.visibility = View.VISIBLE
+            pages = 1
+            return true
+        } else {
+            bundle.putString("LOCATION", "")
+            this.setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+            KeyboardUtils.hideSoftInput(activity)
+//            pop()
+            return false
+        }
     }
 }

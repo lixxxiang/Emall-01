@@ -136,4 +136,10 @@ class SettingDelegate : BottomItemDelegate() {
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
     }
+
+    override fun onBackPressedSupport(): Boolean {
+        pop()
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        return true
+    }
 }

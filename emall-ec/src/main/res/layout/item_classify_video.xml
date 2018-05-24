@@ -17,14 +17,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="195dp"
-            android:background="#33000000" />
+            android:background="#33000000" >
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/play_btn_gray" />
+        </RelativeLayout>
 
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="90dp"
-            android:background="@drawable/play_btn_gray" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"

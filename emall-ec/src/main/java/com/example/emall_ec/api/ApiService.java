@@ -2,6 +2,7 @@ package com.example.emall_ec.api;
 
 
 import com.example.emall_core.ui.HomePageUnitsBean;
+import com.example.emall_ec.launcher.EntryPageBean;
 import com.example.emall_ec.main.classify.data.GetRecommendCitiesBean;
 import com.example.emall_ec.main.classify.data.SceneSearch;
 import com.example.emall_ec.main.classify.data.VideoHomeBean;
@@ -38,8 +39,8 @@ public interface ApiService {
 
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
-    @GET("global/sceneDetail")
-    Call<HomePageUnitsBean> homePageUnits();
+    @GET("global/mobile/EntryPage")
+    Call<EntryPageBean> entryPage(@Query("client") String client);
 
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})

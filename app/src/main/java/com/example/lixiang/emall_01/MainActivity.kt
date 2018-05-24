@@ -63,6 +63,7 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
         if (actionBar != null) {
             actionBar.hide()
         }
+
         Fresco.initialize(this)
         if(Build.VERSION.SDK_INT < KITKAT){
             val builder = AlertDialog.Builder(this)

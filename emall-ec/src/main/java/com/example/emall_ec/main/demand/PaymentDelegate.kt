@@ -278,5 +278,4 @@ class PaymentDelegate : EmallDelegate() {
         pop()
         return true
     }
-
 }

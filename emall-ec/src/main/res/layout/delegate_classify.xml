@@ -106,7 +106,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
-                    android:text="introduction"
                     android:textColor="#9B9B9B"
                     android:textSize="12dp" />
                 <RelativeLayout

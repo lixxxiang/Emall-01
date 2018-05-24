@@ -39,7 +39,7 @@ class ProgramExampleDelegate : EmallDelegate() {
         (activity as AppCompatActivity).setSupportActionBar(program_example_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        program_example_toolbar.setNavigationIcon(R.drawable.ic_back_small_dark)
+        program_example_toolbar.setNavigationIcon(R.drawable.ic_back_small)
 
         program_example_toolbar.setNavigationOnClickListener {
             pop()

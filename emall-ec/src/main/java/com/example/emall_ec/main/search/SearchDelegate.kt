@@ -135,8 +135,6 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
             bundle.putInt("PRODUCT_TYPE", arguments.getInt("PRODUCT_TYPE"))
             delegate!!.arguments = bundle
             start(delegate)
-
-
         }
 
         search_back_iv_rl.setOnClickListener {

@@ -50,6 +50,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
     private var queryInvoiceBean = QueryInvoiceBean()
     private var updateInvoiceBean = UpdateInvoiceBean()
     private var flag = "false"
+    var snackBar : Snackbar ?= null
+    var snackBar2 : Snackbar ?= null
     override fun onClick(p0: View?) {
 
     }
@@ -98,8 +100,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
         invoice_toolbar.title = getString(R.string.invoice_title)
         (activity as AppCompatActivity).setSupportActionBar(invoice_toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        val snackBar2 = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
-        val snackBar = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
+        snackBar2 = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
+        snackBar = Snackbar.make(view!!, getString(R.string.entire_invoice_hint), Snackbar.LENGTH_INDEFINITE)
 
         invoice_toolbar.setNavigationOnClickListener {
             KeyboardUtils.hideSoftInput(activity)
@@ -121,8 +123,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
 
                 } else {
 
-                    snackBar.setAction(getString(R.string.confirm_2), { snackBar.dismiss() })
-                    snackBar.show()
+                    snackBar!!.setAction(getString(R.string.confirm_2), { snackBar!!.dismiss() })
+                    snackBar!!.show()
                 }
                 dialog.dismiss()
             }
@@ -134,8 +136,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                 bundle.putString("flag", flag)
                 EmallLogger.d(flag)
                 setFragmentResult(ISupportFragment.RESULT_OK, bundle)
-                snackBar.dismiss()
-                snackBar2.dismiss()
+                snackBar!!.dismiss()
+                snackBar2!!.dismiss()
                 pop()
             }
 
@@ -184,8 +186,8 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
                 updateInvoice()
 
             } else {
-                snackBar2.setAction(getString(R.string.confirm_2), { snackBar2.dismiss() })
-                snackBar2.show()
+                snackBar2!!.setAction(getString(R.string.confirm_2), { snackBar2!!.dismiss() })
+                snackBar2!!.show()
             }
         }
 
@@ -339,5 +341,47 @@ class InvoiceDelegate : BottomItemDelegate(), View.OnClickListener, OnAddressSel
 //        val bundle = Bundle()
 //        bundle.putString("flag", flag)
 //        setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+    }
+
+    override fun onBackPressedSupport(): Boolean {
+        KeyboardUtils.hideSoftInput(activity)
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("是否要保存当前发票信息")
+        builder.setPositiveButton("保存") { dialog, _ ->
+            if (!title.text.toString().isEmpty()
+                    && !invoice_id.text.toString().isEmpty()
+                    && !address.text.toString().isEmpty()
+                    && !tel.text.toString().isEmpty()
+                    && !bank.text.toString().isEmpty()
+                    && !account.text.toString().isEmpty()
+                    && !name.text.toString().isEmpty()
+                    && !phone.text.toString().isEmpty()
+                    && !address_detail.text.toString().isEmpty()
+                    && !invoice_cities_picker_tv.text.isEmpty()) {
+                flag = "true"
+                updateInvoiceBack()
+
+            } else {
+
+                snackBar!!.setAction(getString(R.string.confirm_2), { snackBar!!.dismiss() })
+                snackBar!!.show()
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("取消") { dialog, _ ->
+            dialog.dismiss()
+            flag = "false"
+            val bundle = Bundle()
+            bundle.putString("flag", flag)
+            EmallLogger.d(flag)
+            setFragmentResult(ISupportFragment.RESULT_OK, bundle)
+            snackBar!!.dismiss()
+            snackBar2!!.dismiss()
+            pop()
+        }
+
+        builder.create().show()
+        return true
     }
 }

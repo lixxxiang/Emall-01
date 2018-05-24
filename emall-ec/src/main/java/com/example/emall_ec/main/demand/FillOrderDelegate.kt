@@ -345,4 +345,9 @@ class FillOrderDelegate : BottomItemDelegate() {
     override fun onCreateFragmentAnimator(): FragmentAnimator {
         return DefaultHorizontalAnimator()
     }
+
+    override fun onBackPressedSupport(): Boolean {
+        mSharedPreferences!!.edit().clear().commit()
+        return super.onBackPressedSupport()
+    }
 }

@@ -78,14 +78,10 @@ class BaseClassifyDelegate : BottomItemDelegate() {
 
         if(!NetworkUtils.isConnected()){
             classify_no_network_rl.visibility = View.VISIBLE
-            base_classify_images_on_top_ll.visibility = View.GONE
-            base_classify_images_on_bottom_ll.visibility = View.GONE
             classify_line.visibility = View.GONE
             classify_tv.visibility = View.GONE
         }else{
             classify_no_network_rl.visibility = View.GONE
-            base_classify_images_on_top_ll.visibility = View.VISIBLE
-            base_classify_images_on_bottom_ll.visibility = View.VISIBLE
             classify_line.visibility = View.VISIBLE
             classify_tv.visibility = View.VISIBLE
         }
@@ -93,14 +89,10 @@ class BaseClassifyDelegate : BottomItemDelegate() {
         classify_no_network_rl.setOnClickListener {
             if(!NetworkUtils.isConnected()){
                 classify_no_network_rl.visibility = View.VISIBLE
-                base_classify_images_on_top_ll.visibility = View.GONE
-                base_classify_images_on_bottom_ll.visibility = View.GONE
                 classify_line.visibility = View.GONE
                 classify_tv.visibility = View.GONE
             }else{
                 classify_no_network_rl.visibility = View.GONE
-                base_classify_images_on_top_ll.visibility = View.VISIBLE
-                base_classify_images_on_bottom_ll.visibility = View.VISIBLE
                 classify_line.visibility = View.VISIBLE
                 classify_tv.visibility = View.VISIBLE
             }

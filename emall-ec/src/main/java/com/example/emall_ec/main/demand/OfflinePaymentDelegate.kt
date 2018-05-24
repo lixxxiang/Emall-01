@@ -147,4 +147,26 @@ class OfflinePaymentDelegate : BottomItemDelegate() {
         }
     }
 
+    override fun onBackPressedSupport(): Boolean {
+        EmallLogger.d(arguments.getString("PAGE_FROM"))
+        when {
+            arguments.getString("PAGE_FROM") == "CLASSIFY" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "ORDER_LIST" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "ME" -> popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "GOODS_DETAIL" -> popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "PAYMENT" -> {
+                if (findFragment(GoodsDetailDelegate().javaClass) == null) {
+                    popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+                } else
+                    popTo(findFragment(GoodsDetailDelegate().javaClass).javaClass, false)
+            }
+            arguments.getString("PAGE_FROM") == "PROGRAM_INDEX" ->
+                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            arguments.getString("PAGE_FROM") == "PROGRAM" ->
+                popTo(findFragment(EcBottomDelegate().javaClass).javaClass, false)
+            else -> pop()
+        }
+        return true
+    }
+
 }
