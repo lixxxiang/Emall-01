@@ -2,7 +2,9 @@ package com.example.lixiang.emall_01
 
 import android.app.Application
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.support.multidex.MultiDex
+import android.support.multidex.MultiDexApplication
 import android.webkit.WebIconDatabase
 import com.baidu.mapapi.SDKInitializer
 import com.blankj.utilcode.util.Utils
@@ -13,13 +15,14 @@ import com.example.emall_ec.database.DatabaseManager
 import com.example.lixiang.emall_01.event.TestEvent
 import com.facebook.stetho.Stetho
 import com.joanzapata.iconify.fonts.FontAwesomeModule
+import com.tencent.bugly.Bugly.applicationContext
 import com.tencent.bugly.crashreport.CrashReport
 import io.vov.vitamio.Vitamio
 
 /**
  * Created by lixiang on 2018/1/22.
  */
-class EmallApplication : Application() {
+class EmallApplication : MultiDexApplication() {
 
     private var mMyApplication: EmallApplication? = null
     override fun onCreate() {
@@ -56,15 +59,4 @@ class EmallApplication : Application() {
         MultiDex.install(this)
     }
 
-    private fun initData() {
-        mMyApplication = this
-
-        //监视应用异常
-        val crashHandler = CrashHandler.getInstance()
-        crashHandler.init(applicationContext)
-    }
-
-    fun getInstance(): EmallApplication? {
-        return mMyApplication
-    }
 }

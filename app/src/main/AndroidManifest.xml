@@ -71,6 +71,8 @@
             android:screenOrientation="landscape" />
         <activity android:name="com.example.emall_ec.main.detail.JiaoZiActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name="com.example.emall_ec.main.detail.JiaoZiActivity2"
+            android:screenOrientation="landscape"/>
         <activity android:name="com.example.emall_ec.main.detail.example.VideoExampleActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"/>
 

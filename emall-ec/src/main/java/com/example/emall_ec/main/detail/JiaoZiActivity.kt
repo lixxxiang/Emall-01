@@ -27,7 +27,7 @@ class JiaoZiActivity : AppCompatActivity() {
             finish()
         }
         videoplayer.setUp(intent.getStringExtra("url"), JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "")
-        videoplayer.startButton.performClick()
+//        videoplayer.startButton.performClick()
     }
 
     override fun onBackPressed() {
