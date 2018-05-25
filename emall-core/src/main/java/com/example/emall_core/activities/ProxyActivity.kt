@@ -26,23 +26,9 @@ abstract class ProxyActivity : SupportActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initContainer(savedInstanceState)
     }
 
-    fun initContainer(savedInstanceState: Bundle?) {
-        val container = ContentFrameLayout(this)
 
-        container.id = R.id.delegate_container
-        container.setBackgroundColor( Color.parseColor("#B4A078"))
-        setContentView(container)
-//        StatusBarUtil.setLightMode(this)
-//        StatusBarUtil.setTransparent(this)
-        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0,null)
-
-        if (savedInstanceState == null) {
-            loadRootFragment(R.id.delegate_container, setRootDelegate())
-        }
-    }
 
 //
 }

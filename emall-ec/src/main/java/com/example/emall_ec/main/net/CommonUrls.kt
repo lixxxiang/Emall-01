@@ -32,7 +32,7 @@ class CommonUrls() {
     fun sceneSearch(context: Context, sceneSearchParams: WeakHashMap<String, Any>?, recyclerView: RecyclerView, t: String): MutableList<Model>? {
         type = t
         RestClient().builder()
-                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
+                .url("http://59.110.164.214:8024/global/mobile/sceneSearch?client=android")
                 .params(sceneSearchParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

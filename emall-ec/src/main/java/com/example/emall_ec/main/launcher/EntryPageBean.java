@@ -1,4 +1,4 @@
-package com.example.emall_ec.launcher;
+package com.example.emall_ec.main.launcher;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

@@ -186,10 +186,10 @@ class ModifyTelVcodeDelegate : BottomItemDelegate() {
     private fun checkMessage(v: String) {
         checkMessageParams!!["telephone"] = arguments.getString("NEW_TELEPHONE")
         checkMessageParams!!["code"] = v
-        checkMessageParams!!["client"] = "android"
+//        checkMessageParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
+                .url("http://59.110.161.48:8023/global/mall/checkMessage.do?client=android")
                 .params(checkMessageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

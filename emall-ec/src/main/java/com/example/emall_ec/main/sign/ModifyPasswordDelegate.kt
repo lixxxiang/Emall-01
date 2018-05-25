@@ -225,10 +225,10 @@ class ModifyPasswordDelegate : BottomItemDelegate() {
     private fun checkMessage(tel: String, vCode: String) {
         checkMessageParams!!["telephone"] = tel
         checkMessageParams!!["code"] = vCode
-        checkMessageParams!!["client"] = "android"
+//        checkMessageParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
+                .url("http://59.110.161.48:8023/global/mall/checkMessage.do?client=android")
                 .params(checkMessageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

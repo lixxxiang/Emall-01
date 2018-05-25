@@ -134,7 +134,7 @@ class Video1A1BDelegate : EmallDelegate() {
     private fun getData(order: String, pages: Int) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), order, "android")
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", pages.toString(), order)
         println("~~~~~~~~" + videoSearchParams!!["geo"].toString())
         call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
             override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {
@@ -209,7 +209,7 @@ class Video1A1BDelegate : EmallDelegate() {
     private fun loadMoreData(p: Int, data: MutableList<Model>) {
         retrofit = NetUtils.getRetrofit()
         apiService = retrofit!!.create(ApiService::class.java)
-        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", p.toString(), orderBy, "android")
+        val call = apiService!!.videoSearch(videoSearchParams!!["geo"].toString(), videoSearchParams!!["type"].toString(), "10", p.toString(), orderBy)
         println("~~~~~~~~" + p.toString())
         call.enqueue(object : retrofit2.Callback<VideoSearchBean> {
             override fun onResponse(call: retrofit2.Call<VideoSearchBean>, response: retrofit2.Response<VideoSearchBean>) {

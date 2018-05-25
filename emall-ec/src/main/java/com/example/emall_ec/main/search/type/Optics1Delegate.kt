@@ -554,10 +554,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
 
     private fun getData(ssp2: WeakHashMap<String, Any>, p: Int) {
         ssp2["pageNum"] = p
-        ssp2["client"] = "android"
+//        ssp2["client"] = "android"
         EmallLogger.d(ssp2)
         RestClient().builder()
-                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
+                .url("http://59.110.164.214:8024/global/mobile/sceneSearch?client=android")
                 .params(ssp2)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
@@ -610,10 +610,10 @@ class Optics1Delegate : EmallDelegate(), AdapterView.OnItemClickListener {
     private fun loadMoreData(ssp2: WeakHashMap<String, Any>, p: Int, data: MutableList<Model>) {
         EmallLogger.d(p)
         ssp2["pageNum"] = p
-        ssp2["client"] = "android"
+//        ssp2["client"] = "android"
 
         RestClient().builder()
-                .url("http://59.110.164.214:8024/global/mobile/sceneSearch")
+                .url("http://59.110.164.214:8024/global/mobile/sceneSearch?client=android")
                 .params(ssp2)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

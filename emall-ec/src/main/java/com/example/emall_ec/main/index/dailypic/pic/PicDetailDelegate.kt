@@ -321,10 +321,10 @@ class PicDetailDelegate : EmallDelegate(), CordovaInterface {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun getdata(id: String?) {
         getDailyPicDetailParams!!["imageId"] = id
-        getDailyPicDetailParams!!["client"] = "android"
+//        getDailyPicDetailParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://202.111.178.10:28085/mobile/getDailyPicDetail")
+                .url("http://202.111.178.10:28085/mobile/getDailyPicDetail?client=android")
                 .params(getDailyPicDetailParams!!)
                 .success(object : ISuccess {
                     @SuppressLint("ApplySharedPref")

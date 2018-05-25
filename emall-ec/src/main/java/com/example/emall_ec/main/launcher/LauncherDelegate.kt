@@ -1,28 +1,23 @@
-package com.example.emall_ec.launcher
+package com.example.emall_ec.main.launcher
 
-import android.accounts.AccountManager
 import android.app.Activity
+import android.graphics.Color
 import android.view.View
 import com.bumptech.glide.Glide
+import com.example.emall_core.activities.ProxyActivity
 import com.example.emall_core.app.IUserChecker
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.util.timer.BaseTimerTask
 import com.example.emall_core.util.timer.ITimerListener
 import com.example.emall_ec.R
 import java.util.*
-import com.example.emall_core.net.ui.ScrollLauncherTag
 import com.example.emall_core.ui.launcher.ILauncherListener
 import com.example.emall_core.ui.launcher.OnLauncherFinishTag
 import com.example.emall_core.util.log.EmallLogger
-import com.example.emall_core.util.storage.EmallPreference
-import com.example.emall_ec.R.id.*
 import com.example.emall_ec.api.ApiService
 import com.example.emall_ec.api.NetUtils
-import kotlinx.android.synthetic.main.delegate_goods_detail.*
 import kotlinx.android.synthetic.main.delegate_launcher.*
-import me.yokeyword.fragmentation.ISupportFragment
 import retrofit2.Retrofit
-import java.util.logging.Handler
 
 
 /**
@@ -122,6 +117,8 @@ class LauncherDelegate : EmallDelegate(), ITimerListener {
                 if (mTimer != null) {
                     mTimer!!.cancel()
                     mTimer = null
+//                    MainActivity().container!!.setBackgroundColor( Color.parseColor("#B4A078"))
+
                     checkIsShowScroll()
                 }
             }

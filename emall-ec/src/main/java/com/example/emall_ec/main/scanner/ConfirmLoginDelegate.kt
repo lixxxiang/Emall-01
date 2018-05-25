@@ -65,7 +65,7 @@ class ConfirmLoginDelegate : EmallDelegate() {
             scanCodeLoginParams!!["userTelephone"] = DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone
             EmallLogger.d(scanCodeLoginParams!!)
 
-            val call = apiService!!.scanCodeLogin(arguments.getString("UUID"), DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone, "android")
+            val call = apiService!!.scanCodeLogin(arguments.getString("UUID"), DatabaseManager().getInstance()!!.getDao()!!.loadAll()[0].userTelephone)
             call.enqueue(object : retrofit2.Callback<ScanCodeLoginBean> {
                 override fun onResponse(call: retrofit2.Call<ScanCodeLoginBean>, response: retrofit2.Response<ScanCodeLoginBean>) {
                     if (response.body() != null) {

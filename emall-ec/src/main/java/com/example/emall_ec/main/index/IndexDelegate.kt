@@ -23,6 +23,7 @@ import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.scanner.ScannerDelegate
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.sign.SignInByTelDelegate
+import com.tencent.bugly.crashreport.CrashReport
 import pub.devrel.easypermissions.EasyPermissions
 
 

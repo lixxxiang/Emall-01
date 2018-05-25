@@ -207,10 +207,10 @@ class SetUserNameDelegate : BottomItemDelegate() {
         registerParam!!["telephone"] = t
         registerParam!!["userPassword"] = p.toLowerCase()
         registerParam!!["userName"] = n
-        registerParam!!["client"] = "android"
+//        registerParam!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://59.110.161.48:8023/global/mall/register.do")
+                .url("http://59.110.161.48:8023/global/mall/register.do?client=android")
                 .params(registerParam!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
@@ -237,12 +237,12 @@ class SetUserNameDelegate : BottomItemDelegate() {
     private fun login(tel: String, pwd: String) {
         userNameLoginParams!!["userTelephone"] = tel
         userNameLoginParams!!["password"] = pwd.toLowerCase()
-        userNameLoginParams!!["client"] = "android"
+//        userNameLoginParams!!["client"] = "android"
 
         EmallLogger.d(String.format("%s %s",tel, pwd))
 
         RestClient().builder()
-                .url("http://59.110.161.48:8023/global/mall/UserNameLogin.do")
+                .url("http://59.110.161.48:8023/global/mall/UserNameLogin.do?client=android")
                 .params(userNameLoginParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

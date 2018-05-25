@@ -144,7 +144,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 getData(sceneDetailParams!!)
             } else if (type == "3") {
                 if (detail_videoview != null)
-
                     detail_videoview.visibility = View.VISIBLE
                 videoDetailParams!!["productId"] = productId
                 videoDetailParams!!["type"] = VIDEO
@@ -431,17 +430,22 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
             override fun onFailure(call: retrofit2.Call<VideoDetailBean>, throwable: Throwable) {}
         })
-        if (video_mark.visibility == View.INVISIBLE)
-            video_mark.visibility = View.VISIBLE
-        if (video_goods_detail_mask_iv.visibility == View.INVISIBLE)
-            video_goods_detail_mask_iv.visibility = View.VISIBLE
-//        if (play_btn.visibility == View.INVISIBLE)
-//            play_btn.visibility = View.VISIBLE
-        if (video_rl.visibility == View.GONE)
-            video_rl.visibility = View.VISIBLE
-        scene_mark_rl.visibility = View.INVISIBLE
-        scene_goods_detail_mask_iv.visibility = View.INVISIBLE
-        scene_rl.visibility = View.GONE
+//        if(video_mark != null){
+            if (video_mark?.visibility == View.INVISIBLE)
+                video_mark?.visibility = View.VISIBLE
+//        }
+        if(video_goods_detail_mask_iv != null){
+            if (video_goods_detail_mask_iv.visibility == View.INVISIBLE)
+                video_goods_detail_mask_iv.visibility = View.VISIBLE
+        }
+        if (video_rl != null){
+            if (video_rl.visibility == View.GONE)
+                video_rl.visibility = View.VISIBLE
+        }
+
+        scene_mark_rl?.visibility = View.INVISIBLE
+        scene_goods_detail_mask_iv?.visibility = View.INVISIBLE
+        scene_rl?.visibility = View.GONE
 
     }
 

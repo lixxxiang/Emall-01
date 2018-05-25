@@ -160,7 +160,7 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
         homePageParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://202.111.178.10:28085/mobile/homePage")
+                .url("http://202.111.178.10:28085/mobile/homePage?client=android")
                 .params(homePageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
@@ -197,7 +197,7 @@ class DailyPicDelegate : EmallDelegate(), OnBannerListener {
         homePageParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://202.111.178.10:28085/mobile/homePage")
+                .url("http://202.111.178.10:28085/mobile/homePage?client=android")
                 .params(homePageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

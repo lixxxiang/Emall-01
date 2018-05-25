@@ -235,11 +235,11 @@ class SignInByAccountDelegate : EmallDelegate() {
         passwordMD5 = EncryptUtils.encryptMD5ToString(password).toLowerCase()
         EmallLogger.d(passwordMD5)
         userNameLoginParams!!["password"] = passwordMD5
-        userNameLoginParams!!["client"] = "android"
+//        userNameLoginParams!!["client"] = "android"
 
 
         RestClient().builder()
-                .url("http://59.110.161.48:8023/global/mall/UserNameLogin.do")
+                .url("http://59.110.161.48:8023/global/mall/UserNameLogin.do?client=android")
                 .params(userNameLoginParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

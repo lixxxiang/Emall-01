@@ -1,18 +1,15 @@
-package com.example.emall_ec.launcher
+package com.example.emall_ec.main.launcher
 
 import android.view.View
 import android.widget.AdapterView
 import com.bigkoo.convenientbanner.ConvenientBanner
 import com.bigkoo.convenientbanner.listener.OnItemClickListener
-import com.example.emall_core.delegates.BaseDelegate
 import com.example.emall_core.delegates.EmallDelegate
 import com.example.emall_core.net.ui.LauncherHolderCreator
 import com.example.emall_ec.R
-import android.accounts.AccountManager
 import com.example.emall_core.net.ui.ScrollLauncherTag
 import com.example.emall_core.util.storage.EmallPreference
 import com.example.emall_ec.main.EcBottomDelegate
-import com.example.emall_ec.main.index.IndexDelegate
 
 
 /**

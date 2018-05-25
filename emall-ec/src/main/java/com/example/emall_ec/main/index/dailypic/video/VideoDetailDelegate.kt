@@ -415,10 +415,10 @@ class VideoDetailDelegate : EmallDelegate(), CordovaInterface {
 
     private fun getdata(id: String?) {
         getPlanetEarthDetailParams!!["videoId"] = id
-        getPlanetEarthDetailParams!!["client"] = "android"
+//        getPlanetEarthDetailParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://202.111.178.10:28085/mobile/getPlanetEarthDetail")
+                .url("http://202.111.178.10:28085/mobile/getPlanetEarthDetail?client=android")
                 .params(getPlanetEarthDetailParams!!)
                 .success(object : ISuccess {
                     @SuppressLint("ApplySharedPref")

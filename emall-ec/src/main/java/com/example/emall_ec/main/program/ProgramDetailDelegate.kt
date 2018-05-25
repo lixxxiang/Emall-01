@@ -190,11 +190,10 @@ class ProgramDetailDelegate : EmallDelegate() {
 
         detailParams!!["area"] = sp.getString("area", "")
         detailParams!!["productType"] = sp.getString("productType", "")
-        detailParams!!["client"] = "android"
 
-        EmallLogger.d(String.format("%s %s", detailParams!!["area"], detailParams!!["productType"]))
+        EmallLogger.d(detailParams!!)
         RestClient().builder()
-                .url("http://59.110.164.214:8024/global/programming/detail")
+                .url("http://59.110.164.214:8024/global/programming/detail?client=android")
                 .params(detailParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {

@@ -1,8 +1,7 @@
 package com.example.emall_ec.api;
 
 
-import com.example.emall_core.ui.HomePageUnitsBean;
-import com.example.emall_ec.launcher.EntryPageBean;
+import com.example.emall_ec.main.launcher.EntryPageBean;
 import com.example.emall_ec.main.classify.data.GetRecommendCitiesBean;
 import com.example.emall_ec.main.classify.data.SceneSearch;
 import com.example.emall_ec.main.classify.data.VideoHomeBean;
@@ -52,7 +51,7 @@ public interface ApiService {
     @GET("global/videoDetail")
     Call<VideoDetailBean> videoDetail(@Query("productId") String targetSentence, @Query("client") String client);
 
-    @POST("/global/mobile/sceneSearch")
+    @POST("/global/mobile/sceneSearch?client=android")
     @FormUrlEncoded
     Call<SceneSearch> sceneSearch(@Field("scopeGeo") String targetSentence,
                                   @Field("productType") String targetSentence2,
@@ -65,14 +64,13 @@ public interface ApiService {
                                   @Field("pageSize") String targetSentence9,
                                   @Field("pageNum") String targetSentence10, @Field("client") String targetSentence11);
 
-    @POST("/global/videoSearch")
+    @POST("/global/videoSearch?client=android")
     @FormUrlEncoded
     Call<VideoSearchBean> videoSearch(@Field("geo") String targetSentence,
                                       @Field("type") String targetSentence2,
                                       @Field("pageSize") String targetSentence3,
                                       @Field("pageNum") String targetSentence4,
-                                      @Field("orderBy") String targetSentence5,
-                                      @Field("client") String targetSentence6);
+                                      @Field("orderBy") String targetSentence5);
 
     @Headers({"Content-Type:text/html;charset=utf-8", "Accept:application/json;"})
     @GET("global/videoHome")
@@ -150,12 +148,11 @@ public interface ApiService {
     /**
      * SCAN
      */
-    @POST("scanCodeLogin.do")
+    @POST("scanCodeLogin.do?client=android")
     @FormUrlEncoded
     Call<ScanCodeLoginBean> scanCodeLogin(
             @Field("uuid") String targetSentence2,
-            @Field("userTelephone") String targetSentence3,
-            @Field("client") String targetSentence4);
+            @Field("userTelephone") String targetSentence3);
 
     /**
      * SEARCH

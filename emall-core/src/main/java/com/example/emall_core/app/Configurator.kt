@@ -13,6 +13,10 @@ import android.app.Activity
 import com.example.emall_core.delegates.web.event.Event
 import com.example.emall_core.delegates.web.event.EventManager
 import com.example.emall_core.util.log.EmallLogger
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger.addLogAdapter
+
+
 
 
 /**
@@ -37,7 +41,7 @@ class Configurator {
 
     fun configure() {
 //        Logger.addLogAdapter(AndroidLogAdapter())
-        Logger.init()
+        Logger.addLogAdapter(AndroidLogAdapter())
         initIcons()
         EMALL_CONFIGS.put(ConfigKeys.CONFIG_READY.toString(), true)
     }

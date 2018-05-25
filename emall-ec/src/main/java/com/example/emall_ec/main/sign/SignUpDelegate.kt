@@ -193,10 +193,10 @@ class SignUpDelegate : BottomItemDelegate() {
     private fun checkMessage(t: String, v: String) {
         checkMessageParams!!["telephone"] = t
         checkMessageParams!!["code"] = v
-        checkMessageParams!!["client"] = "android"
+//        checkMessageParams!!["client"] = "android"
 
         RestClient().builder()
-                .url("http://59.110.161.48:8023/global/mall/checkMessage.do")
+                .url("http://59.110.161.48:8023/global/mall/checkMessage.do?client=android")
                 .params(checkMessageParams!!)
                 .success(object : ISuccess {
                     override fun onSuccess(response: String) {
