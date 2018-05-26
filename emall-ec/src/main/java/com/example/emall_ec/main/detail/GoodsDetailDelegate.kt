@@ -417,6 +417,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 if (response.body() != null) {
                     EmallLogger.d(response.body()!!.data.imageDetailUrl)
                     videoDetail = response.body()!!
+                    getCoupon()
                     setVideoData(videoDetail)
 //                        videoSearch = response.body()!!
 //                        bundle!!.putString("type","0")

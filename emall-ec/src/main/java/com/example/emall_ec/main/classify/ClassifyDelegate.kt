@@ -389,7 +389,8 @@ class ClassifyDelegate : EmallDelegate() {
                     if (getRecommendCitiesBean.message == "success") {
                         EmallLogger.d(response)
                         val size = getRecommendCitiesBean.data.size
-                        classify_progressBar.visibility = View.VISIBLE
+                        if (classify_progressBar != null)
+                            classify_progressBar.visibility = View.VISIBLE
                         getData("",
                                 "", "",
                                 "", "",

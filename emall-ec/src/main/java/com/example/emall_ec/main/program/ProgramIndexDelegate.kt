@@ -38,6 +38,7 @@ import com.example.emall_core.util.view.RulerView
 import com.example.emall_ec.main.search.SearchDelegate
 import com.example.emall_ec.main.search.SearchPoiDelegate
 import kotlinx.android.synthetic.main.delegate_program_index.*
+import kotlinx.android.synthetic.main.me_function_item.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -142,27 +143,11 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun initial() {
-
-//        if(!NetworkUtils.isConnected()){
-//            program_no_network_rl.visibility = View.VISIBLE
-//        }
-//
-//        program_no_network_rl.setOnClickListener {
-//            if(NetworkUtils.isConnected()){
-//                program_no_network_rl.visibility = View.GONE
-//                initMap()
-//            }
-//        }
-
         program_index_root_rl.visibility = View.INVISIBLE
-
         program_index_back_btn_rl.setOnClickListener {
             if (level == 1) {
                 program_index_root_rl.visibility = View.INVISIBLE
                 pop()
-//                _mActivity.onBackPressed()
-//                bottom_bar_ll.visibility = View.VISIBLE
-
                 handler.removeCallbacks(task)
             } else if (level == 2) {
                 level = 1
@@ -207,9 +192,9 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         EmallLogger.d(data.getString("LOCATION"))
         mBaiduMap!!.clear()
         var location = data.getString("LOCATION")
-        if(location == ""){
+        if (location == "") {
 
-        }else{
+        } else {
             var latitude = location.split(",")[1]
             var longitude = location.split(",")[0]
             var gps = SearchDelegate().gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
@@ -277,7 +262,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
                 val temp = DimenUtil().dip2px(context, ((DimenUtil().px2dip(context, DimenUtil().getScreenHeight().toFloat()) - 76 - 92 - 250) * 0.4 + 76).toFloat())
                 Handler().postDelayed({
 
-                    if (context != null){
+                    if (context != null) {
                         val ltp = Point()
                         ltp.x = ((DimenUtil().getScreenWidth().toFloat() - DimenUtil().dip2px(context, 250.0F)) / 2).toInt()
                         ltp.y = temp
@@ -306,12 +291,15 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
                             } else {
                                 areaTv!!.text = String.format("当前面积：%s 平方公里", temp)
                             }
-                            program_index_root_rl.visibility = View.VISIBLE
+                            if (program_index_root_rl != null)
+                                program_index_root_rl.visibility = View.VISIBLE
+                            if (program_index_progressBar != null)
+                                program_index_progressBar.visibility = View.GONE
 
                         }
                     }
 
-                },1000)
+                }, 1000)
             }
         }
         mMapView!!.map.setOnMapStatusChangeListener(listener)
@@ -678,7 +666,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
             bundle.putString("geoString", geoString)
             bundle.putString("zoomLevel", mBaiduMap!!.getMapStatus().zoom.toString())
 
-            bundle.putString("PAGE_FROM","PROGRAM_INDEX")
+            bundle.putString("PAGE_FROM", "PROGRAM_INDEX")
 
             if (area.toString().contains("E")) {
                 Toast.makeText(activity, "区域面积过大", Toast.LENGTH_SHORT).show()
@@ -708,7 +696,7 @@ class ProgramIndexDelegate : BottomItemDelegate(), SensorEventListener {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         val sp = activity.getSharedPreferences("FROM_ORDER_LIST", Context.MODE_PRIVATE)
-        if (sp.getString("from_order_list", "")== "1"){
+        if (sp.getString("from_order_list", "") == "1") {
             level = 1
             program_index_toolbar.setBackgroundColor(Color.parseColor("#BF000000"))
             topRl!!.setBackgroundColor(Color.parseColor("#99000000"))

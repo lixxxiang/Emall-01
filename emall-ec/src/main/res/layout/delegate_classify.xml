@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="60dp"
+            app:layout_collapseParallaxMultiplier="1.0"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 

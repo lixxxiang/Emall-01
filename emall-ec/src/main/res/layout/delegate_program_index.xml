@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     android:background="#BF000000"
     >
+    <ProgressBar
+        android:id="@+id/program_index_progressBar"
+        android:layout_width="36dp"
+        android:indeterminateTint="#FFFFFF"
+        android:indeterminateTintMode="src_atop"
+        android:layout_height="36dp"
+        android:layout_centerInParent="true" />
     <RelativeLayout
         android:id="@+id/program_index_root_rl"
         android:layout_width="match_parent"

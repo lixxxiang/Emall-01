@@ -13,6 +13,7 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.widget.ImageView
@@ -24,6 +25,7 @@ import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.R
 import kotlinx.android.synthetic.main.delegate_search.*
 import android.util.DisplayMetrics
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.main.index.dailypic.video.data.Gps
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -69,6 +71,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
     private var longi_rb = 0.0
     var mSharedPreferences: SharedPreferences? = null
     var pi = 3.141592653589793 * 3000.0 / 180.0
+    var located = false
     fun create(): SearchDelegate? {
         return SearchDelegate()
     }
@@ -83,6 +86,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         mSharedPreferences = activity.getSharedPreferences("GEO_INFO", Context.MODE_PRIVATE)
         handlePermisson()
         initMap()
+
         val listener: BaiduMap.OnMapStatusChangeListener = object : BaiduMap.OnMapStatusChangeListener {
             override fun onMapStatusChangeStart(p0: MapStatus?) {
 
@@ -104,7 +108,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                     lati_lt = ll?.latitude
                     longi_lt = ll?.longitude
 
-                    if (lati_lt!= null && longi_lt != null){
+                    if (lati_lt != null && longi_lt != null) {
                         val dm = DisplayMetrics()
                         activity.windowManager.defaultDisplay.getMetrics(dm)
                         val pty = Point()
@@ -125,16 +129,24 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         }
 
         search_btn.setOnClickListener {
-            val geo = String.format("%s %s %s %s", longi_lt!!.toString(), lati_lt!!.toString(), longi_rb.toString(), lati_rb.toString())
-            val editor = mSharedPreferences!!.edit()
-            editor.putString("GEO", geo)
-            editor.commit()
-            val delegate = SearchResultDelegate().create()
-            val bundle = Bundle()
-            bundle.putString("GEO", geo)
-            bundle.putInt("PRODUCT_TYPE", arguments.getInt("PRODUCT_TYPE"))
-            delegate!!.arguments = bundle
-            start(delegate)
+            if (!located) {
+                val snackBar = Snackbar.make(view!!, "暂未获取到您的位置，请打开手机定位功能，使用无线网络或更好的网络环境继续操作", Snackbar.LENGTH_INDEFINITE)
+                snackBar.setAction(getString(R.string.confirm_2), { snackBar.dismiss() })
+                snackBar.show()
+            } else {
+
+                val geo = String.format("%s %s %s %s", longi_lt!!.toString(), lati_lt!!.toString(), longi_rb.toString(), lati_rb.toString())
+                val editor = mSharedPreferences!!.edit()
+                editor.putString("GEO", geo)
+                editor.commit()
+                val delegate = SearchResultDelegate().create()
+                val bundle = Bundle()
+                bundle.putString("GEO", geo)
+                bundle.putInt("PRODUCT_TYPE", arguments.getInt("PRODUCT_TYPE"))
+                delegate!!.arguments = bundle
+                start(delegate)
+            }
+
         }
 
         search_back_iv_rl.setOnClickListener {
@@ -152,21 +164,28 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
         }
 
         search_locate.setOnClickListener {
-            var mMapStatus = MapStatus.Builder()
-                    .target(LatLng(mCurrentLat, mCurrentLon))
-                    .zoom(14F)
-                    .build()
-            var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
-            mBaiduMap!!.animateMapStatus(mMapStatusUpdate);
+            if (located) {
+                var mMapStatus = MapStatus.Builder()
+                        .target(LatLng(mCurrentLat, mCurrentLon))
+                        .zoom(14F)
+                        .build()
+                var mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus)
+                mBaiduMap!!.animateMapStatus(mMapStatusUpdate)
+            } else {
+                val snackBar = Snackbar.make(view!!, "暂未获取到您的位置，请打开手机定位功能，使用无线网络或更好的网络环境继续操作", Snackbar.LENGTH_INDEFINITE)
+                snackBar.setAction(getString(R.string.confirm_2), { snackBar.dismiss() })
+                snackBar.show()
+            }
+
         }
     }
 
     override fun onFragmentResult(requestCode: Int, resultCode: Int, data: Bundle) {
         super.onFragmentResult(requestCode, resultCode, data)
-        if (!data.isEmpty){
+        if (!data.isEmpty) {
             mBaiduMap!!.clear()
             var location = data.getString("LOCATION")
-            if(!location.isEmpty()){
+            if (!location.isEmpty()) {
                 var latitude = location.split(",")[1]
                 var longitude = location.split(",")[0]
                 var gps = gcj02_To_Bd09(longitude.toDouble(), latitude.toDouble())
@@ -258,6 +277,7 @@ class SearchDelegate : BottomItemDelegate(), SensorEventListener {
                 isFirstLoc = false
                 val ll = LatLng(location.latitude,
                         location.longitude)
+                located = true
                 val builder = MapStatus.Builder()
                 builder.target(ll).zoom(8.0f)
                 mBaiduMap!!.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()))

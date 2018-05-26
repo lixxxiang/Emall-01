@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         app:tabIndicatorColor="#B80017"
+        android:layout_marginTop="-12dp"
         android:elevation="2dp"
         app:tabSelectedTextColor="#B80017"
         app:tabTextColor="#5C5C5C"
