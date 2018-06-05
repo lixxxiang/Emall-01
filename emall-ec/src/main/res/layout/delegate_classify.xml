@@ -23,6 +23,7 @@
             app:expandedTitleMarginEnd="60dp"
             app:layout_collapseParallaxMultiplier="1.0"
             app:expandedTitleMarginStart="48dp"
+            app:scrimAnimationDuration="200"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -59,7 +60,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
+    <com.example.emall_core.util.view.MyNestedScrollView
         android:id="@+id/classify_sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -274,6 +275,6 @@
 
         </RelativeLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </com.example.emall_core.util.view.MyNestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
