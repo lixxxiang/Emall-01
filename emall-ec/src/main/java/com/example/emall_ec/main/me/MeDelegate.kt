@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.example.emall_core.util.dimen.DimenUtil
+import com.example.emall_ec.R.id.*
 import com.example.emall_ec.database.DatabaseManager
 import com.example.emall_ec.main.demand.InvoiceDelegate
 import com.example.emall_ec.main.me.adapter.MeFunctionAdapter
