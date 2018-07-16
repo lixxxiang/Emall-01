@@ -6,9 +6,13 @@ import com.example.emall_core.util.log.EmallLogger
 import java.util.*
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.RegexUtils
@@ -22,6 +26,7 @@ import com.example.emall_ec.main.sign.data.CheckMessageBean
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.example.emall_ec.main.sign.data.SendMessageBean
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -72,13 +77,31 @@ class SignUpDelegate : BottomItemDelegate() {
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                if (sign_up_title_rl != null)
-                    sign_up_title_rl.visibility = View.GONE
+                if (sign_up_title_rl != null){
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(1f, 0f, 1f, 0f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    sign_up_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                    Handler().postDelayed({
+                        sign_up_title_rl.visibility = View.GONE
+                    }, 200)
+                }
             }
 
             override fun keyBoardHide(height: Int) {
-                if (sign_up_title_rl != null)
+                if (sign_up_title_rl != null){
                     sign_up_title_rl.visibility = View.VISIBLE
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    sign_up_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                }
             }
         })
         /**

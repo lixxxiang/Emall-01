@@ -1,5 +1,6 @@
 package com.example.emall_ec.main.classify
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -189,6 +190,15 @@ class ClassifyDelegate : EmallDelegate() {
         }
 
         classify_toolbar.setNavigationOnClickListener {
+            val sp = activity.getSharedPreferences("TO_VIDEO", Context.MODE_PRIVATE)
+            EmallLogger.d(sp.getString("to_video", ""))
+            if (sp.getString("to_video", "") == "true") {
+                val intent = activity!!.intent
+                activity!!.overridePendingTransition(0, 0)
+                activity!!.finish()
+                activity!!.overridePendingTransition(0, 0)
+                startActivity(intent)
+            }
             _mActivity.onBackPressed()
         }
 
@@ -493,6 +503,7 @@ class ClassifyDelegate : EmallDelegate() {
                 val bundle: Bundle? = Bundle()
                 bundle!!.putString("productId", productId!![position])
                 bundle.putString("type", VIDEO)
+                bundle.putString("PAGE_FROM_TEST", "videoClassify")
 //                bundle.putString("PAGE_FROM","CLASSIFY")
                 delegate!!.arguments = bundle
                 start(delegate)

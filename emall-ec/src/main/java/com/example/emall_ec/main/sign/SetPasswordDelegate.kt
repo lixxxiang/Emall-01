@@ -2,6 +2,7 @@ package com.example.emall_ec.main.sign
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
@@ -9,6 +10,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import com.blankj.utilcode.util.EncryptUtils
 import com.blankj.utilcode.util.KeyboardUtils
@@ -24,6 +28,7 @@ import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.sign.data.CommonBean
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_set_password.*
+import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
@@ -74,14 +79,31 @@ class SetPasswordDelegate : BottomItemDelegate() {
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                if (set_password_title_rl != null)
-                    set_password_title_rl.visibility = View.GONE
+                if (set_password_title_rl != null){
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(1f, 0f, 1f, 0f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    set_password_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                    Handler().postDelayed({
+                        set_password_title_rl.visibility = View.GONE
+                    }, 200)
+                }
             }
 
             override fun keyBoardHide(height: Int) {
-                if (set_password_title_rl != null)
-
+                if (set_password_title_rl != null){
                     set_password_title_rl.visibility = View.VISIBLE
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    set_password_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                }
             }
         })
 

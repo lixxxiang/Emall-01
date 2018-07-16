@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/ll_bar"
@@ -16,56 +16,58 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/ll_bar"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        android:background="#FFFFFF"
-        android:elevation="2dp">
+        app:contentInsetStartWithNavigation="0dp">
 
         <!--<TextView-->
-            <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="@string/setting"-->
-            <!--android:textColor="#686868"-->
-            <!--android:textSize="14dp" />-->
+        <!--style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="@string/setting"-->
+        <!--android:textColor="#686868"-->
+        <!--android:textSize="14dp" />-->
     </android.support.v7.widget.Toolbar>
 
     <com.example.emall_core.util.view.BounceScrollView
-        android:layout_below="@+id/setting_toolbar"
         android:layout_width="match_parent"
-        android:background="#F0F0F0"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/setting_toolbar"
+        android:background="#F0F0F0">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="#FFFFFF">
+
             <com.example.emall_core.util.view.CommentListView
                 android:id="@+id/setting_lv"
-                android:divider="@drawable/list_item_divider"
-                android:dividerHeight="2px"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.example.emall_core.util.view.CommentListView>
+                android:layout_height="wrap_content"
+                android:divider="@drawable/list_item_divider"
+                android:dividerHeight="2px"/>
         </RelativeLayout>
 
     </com.example.emall_core.util.view.BounceScrollView>
 
     <RelativeLayout
         android:id="@+id/setting_log_out"
-        android:clickable="true"
-        android:focusable="true"
         android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="#B4A078"
-        android:layout_height="50dp">
+        android:clickable="true"
+        android:focusable="true">
+
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exit"
             android:layout_centerInParent="true"
+            android:text="@string/exit"
             android:textColor="#FFFFFF"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -37,10 +37,9 @@
             android:process=":remote" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Y2Kb3AvhdaBYgkMID223GCj60GNvPGyz" />
+            android:value="fVxIOLmY3eD0MPsGK2LsH5qYM54wGbsx" />
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -70,9 +69,8 @@
             android:name="com.example.emall_ec.main.index.dailypic.video.VitamioPlayerActivity"
             android:screenOrientation="landscape" />
         <activity android:name="com.example.emall_ec.main.detail.JiaoZiActivity"
-            android:screenOrientation="landscape"/>
-        <activity android:name="com.example.emall_ec.main.detail.JiaoZiActivity2"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            />
         <activity android:name="com.example.emall_ec.main.detail.example.VideoExampleActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"/>
 

@@ -22,6 +22,10 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.delegate_sign_up.*
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.ScaleAnimation
 import com.example.emall_ec.main.EcBottomDelegate
 import com.example.emall_ec.main.bottom.BottomItemDelegate
 import com.example.emall_ec.main.sign.data.CommonBean
@@ -79,13 +83,33 @@ class SignInByTelDelegate : BottomItemDelegate() {
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                if (sign_in_by_tel_title_rl != null)
-                    sign_in_by_tel_title_rl.visibility = View.GONE
+                if (sign_in_by_tel_title_rl != null){
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(1f, 0f, 1f, 0f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    sign_in_by_tel_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                    Handler().postDelayed({
+                        sign_in_by_tel_title_rl.visibility = View.GONE
+                    }, 200)
+                }
             }
 
+
+
             override fun keyBoardHide(height: Int) {
-                if (sign_in_by_tel_title_rl != null)
+                if (sign_in_by_tel_title_rl != null){
                     sign_in_by_tel_title_rl.visibility = View.VISIBLE
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    sign_in_by_tel_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                }
             }
         })
 

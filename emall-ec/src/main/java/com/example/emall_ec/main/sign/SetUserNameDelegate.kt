@@ -2,6 +2,7 @@ package com.example.emall_ec.main.sign
 
 import android.app.Activity
 import android.graphics.Typeface
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.example.emall_core.net.RestClient
@@ -20,6 +21,9 @@ import java.util.regex.Pattern
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.ScaleAnimation
 import com.example.emall_core.util.view.SoftKeyboardListener
 import com.blankj.utilcode.util.KeyboardUtils
 import com.example.emall_ec.main.bottom.BottomItemDelegate
@@ -31,6 +35,7 @@ import com.example.emall_ec.main.me.setting.AccountPrivacySettingsDelegate
 import com.example.emall_ec.main.me.setting.SettingDelegate
 import com.example.emall_ec.main.program.ProgramDetailDelegate
 import com.example.emall_ec.main.sign.data.UserNameLoginBean
+import kotlinx.android.synthetic.main.delegate_sign_in_by_tel.*
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 
@@ -84,13 +89,32 @@ class SetUserNameDelegate : BottomItemDelegate() {
 
         SoftKeyboardListener.setListener(activity, object : SoftKeyboardListener.OnSoftKeyBoardChangeListener {
             override fun keyBoardShow(height: Int) {
-                if (set_nickname_title_rl != null)
-                    set_nickname_title_rl.visibility = View.GONE
+                if (set_nickname_title_rl != null){
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(1f, 0f, 1f, 0f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    set_nickname_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                    Handler().postDelayed({
+                        set_nickname_title_rl.visibility = View.GONE
+                    }, 200)
+                }
+
             }
 
             override fun keyBoardHide(height: Int) {
-                if (set_nickname_title_rl != null)
+                if (set_nickname_title_rl != null){
                     set_nickname_title_rl.visibility = View.VISIBLE
+                    val animationSet = AnimationSet(true)
+                    val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0f)
+                    scaleAnimation.duration = 200
+                    animationSet.addAnimation(scaleAnimation)
+                    set_nickname_title_rl.startAnimation(animationSet)
+                    animationSet.fillAfter = true
+                }
             }
         })
 

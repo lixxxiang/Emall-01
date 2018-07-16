@@ -10,7 +10,7 @@ import com.example.emall_ec.main.classify.BaseClassifyDelegate
 import com.example.emall_ec.main.index.IndexDelegate
 import com.example.emall_ec.main.me.MeDelegate
 import com.example.emall_ec.main.program.TransparentDelegate
-import com.example.emall_ec.main.special.SpecialDelegate
+import com.example.emall_ec.main.special.view.SpecialDelegate
 
 
 /**

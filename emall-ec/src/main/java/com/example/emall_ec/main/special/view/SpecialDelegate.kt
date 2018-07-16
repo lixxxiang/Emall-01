@@ -1,4 +1,4 @@
-package com.example.emall_ec.main.special
+package com.example.emall_ec.main.special.view
 
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
@@ -11,6 +11,9 @@ import com.example.emall_core.net.RestClient
 import com.example.emall_core.net.callback.ISuccess
 import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_ec.R
+import com.example.emall_ec.main.special.SpecialDataConverter
+import com.example.emall_ec.main.special.SpecialItemEntity
+import com.example.emall_ec.main.special.adapter.SpecialAdapter
 import kotlinx.android.synthetic.main.delegate_special.*
 import java.util.*
 
@@ -20,7 +23,7 @@ import java.util.*
 class SpecialDelegate : BottomItemDelegate() {
 
     private var mAdapter: SpecialAdapter? = null
-    private var delegate : SpecialDelegate ?= null
+    private var delegate : SpecialDelegate?= null
     var params: WeakHashMap<String, Any>? = WeakHashMap()
 
     override fun setLayout(): Any? {

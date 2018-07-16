@@ -97,6 +97,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
     var mSharedPreferences: SharedPreferences? = null
     var type135 = String()
     var pageNum = 0
+    var TAG = false
     val couponList: MutableList<String> = mutableListOf()
     fun create(): GoodsDetailDelegate? {
         return GoodsDetailDelegate()
@@ -209,12 +210,26 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
 
         video_detail_tablayout_ctl.setOnTabSelectListener(this)
         video_goods_detail_toolbar.setNavigationOnClickListener {
+
             if (arguments.getString("PAGE_FROM") == "COLLECTION") {
                 val editor = mSharedPreferences!!.edit()
                 editor.putString("collection", "true")
                 editor.putString("collection_type", arguments.getString("COLLECTION_TYPE"))
                 editor.commit()
             }
+            val sp = activity.getSharedPreferences("TO_VIDEO", Context.MODE_PRIVATE)
+            EmallLogger.d(sp.getString("to_video", ""))
+            if (arguments.getString("PAGE_FROM_TEST") != "videoClassify"){
+                if(sp.getString("to_video", "") == "true"){
+                    val intent = activity!!.intent
+                    activity!!.overridePendingTransition(0, 0)
+                    activity!!.finish()
+                    activity!!.overridePendingTransition(0, 0)
+                    startActivity(intent)
+                }
+            }
+
+
             supportDelegate.pop()
         }
 
@@ -256,11 +271,18 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_enlarge.setOnClickListener {
-            EmallLogger.d("ddddd")
             var intent = Intent(activity, JiaoZiActivity::class.java)
             intent.putExtra("title", videoDetail.data.title)
             intent.putExtra("url", videoDetail.data.videoPath)
+            TAG = true
             startActivity(intent)
+
+//            val delegate: JiaoZiDelegate = JiaoZiDelegate().create()!!
+//            val bundle: Bundle? = Bundle()
+//            bundle!!.putString("title", videoDetail.data.title)
+//            bundle!!.putString("url", videoDetail.data.videoPath)
+//            delegate.arguments = bundle
+//            start(delegate)
         }
 
         video_detail_get_ticket_rl.setOnClickListener {
@@ -294,10 +316,6 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         }
 
         video_goods_detail_mask_iv.setOnClickListener {
-            //            val delegate: VideoExampleDelegate = VideoExampleDelegate().create()!!
-//            val bundle: Bundle? = Bundle()
-//            delegate.arguments = bundle
-//            start(delegate)
             var intent = Intent(activity, VideoExampleActivity::class.java)
             startActivity(intent)
         }
@@ -853,6 +871,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             editor.putString("collection_type", arguments.getString("COLLECTION_TYPE"))
             editor.commit()
         }
+        EmallLogger.d(arguments.getString("PAGE_FROM"))
         supportDelegate.pop()
         return true
     }

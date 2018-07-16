@@ -9,12 +9,12 @@ import com.example.emall_ec.main.special.beans.SpecialVerticalBean
  */
 class SpecialDataConverter {
     val ENTITIES: ArrayList<SpecialItemEntity> = ArrayList()
-    var horizontalData : MutableList<SpecialHorizontalBean>? = mutableListOf()
-    var verticalData : MutableList<SpecialVerticalBean>? = mutableListOf()
+    var horizontalData: MutableList<SpecialHorizontalBean>? = mutableListOf()
+    var verticalData: MutableList<SpecialVerticalBean>? = mutableListOf()
 
     private var mJsonData: String? = null
 
-    fun horizontalConvert(): ArrayList<SpecialItemEntity>{
+    fun horizontalConvert(): ArrayList<SpecialItemEntity> {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(0).getJSONArray("pieces")
         var size = jsonObject.size
         var title: String?
@@ -40,10 +40,11 @@ class SpecialDataConverter {
                 .build()
 
         ENTITIES.add(entity)
-        var list:MutableList<SpecialHorizontalBean> = ENTITIES[0].getField(SpecialMultipleFields.HORIZONTAL)
+        var list: MutableList<SpecialHorizontalBean> = ENTITIES[0].getField(SpecialMultipleFields.HORIZONTAL)
         return ENTITIES
     }
-    fun verticalConvert(): ArrayList<SpecialItemEntity>{
+
+    fun verticalConvert(): ArrayList<SpecialItemEntity> {
         var jsonObject = JSON.parseObject(getJsonData()).getJSONArray("data").getJSONObject(1).getJSONArray("pieces")
         var size = jsonObject.size
         var dataType: String?

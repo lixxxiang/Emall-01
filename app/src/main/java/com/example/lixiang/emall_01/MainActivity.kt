@@ -1,6 +1,7 @@
 package com.example.lixiang.emall_01
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Build.VERSION_CODES.KITKAT
@@ -18,6 +19,7 @@ import com.example.emall_ec.main.launcher.LauncherDelegate
 import com.example.emall_ec.main.sign.ISignListener
 import com.example.emall_ec.main.EcBottomDelegate
 import com.blankj.utilcode.util.AppUtils
+import com.example.emall_core.util.log.EmallLogger
 import com.example.emall_core.util.view.StatusBarUtil
 import com.facebook.drawee.backends.pipeline.Fresco
 
@@ -28,22 +30,23 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
     fun getIId(): String {
         return iid
     }
-    fun setIId(){
+
+    fun setIId() {
         this.iid = iid
     }
 
-    var container : ContentFrameLayout ?= null
+    var container: ContentFrameLayout? = null
 
 
     fun initContainer(savedInstanceState: Bundle?) {
         container = ContentFrameLayout(this)
 
         container!!.id = com.example.emall_core.R.id.delegate_container
-        container!!.setBackgroundColor( Color.parseColor("#B4A078"))
+        container!!.setBackgroundColor(Color.parseColor("#FFFFFF"))
         setContentView(container)
 //        StatusBarUtil.setLightMode(this)
 //        StatusBarUtil.setTransparent(this)
-        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0,null)
+        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null)
 
         if (savedInstanceState == null) {
             loadRootFragment(com.example.emall_core.R.id.delegate_container, setRootDelegate())
@@ -53,15 +56,18 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
     override fun onLauncherFinish(tag: OnLauncherFinishTag) {
         when (tag) {
             OnLauncherFinishTag.SIGNED -> {
-                container!!.setBackgroundColor( Color.parseColor("#FFFFFF"))
+                container!!.setBackgroundColor(Color.parseColor("#FFFFFF"))
                 startWithPop(EcBottomDelegate())
+//                startWithPop(HomeDelegate())
 
             }
 
             OnLauncherFinishTag.NOT_SIGNED -> {
-                container!!.setBackgroundColor( Color.parseColor("#FFFFFF"))
+                container!!.setBackgroundColor(Color.parseColor("#FFFFFF"))
 
                 startWithPop(EcBottomDelegate())
+//                startWithPop(HomeDelegate())
+
             }
 
             else -> {
@@ -87,7 +93,7 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
         }
 
         Fresco.initialize(this)
-        if(Build.VERSION.SDK_INT < KITKAT){
+        if (Build.VERSION.SDK_INT < KITKAT) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("当前系统版本过低，无法使用本软件，请升级系统后使用。")
             builder.setPositiveButton("确定") { dialog, _ ->
@@ -98,7 +104,14 @@ class MainActivity : ProxyActivity(), ISignListener, ILauncherListener {
     }
 
     override fun setRootDelegate(): EmallDelegate {
-        return LauncherDelegate()
+        val sp = getSharedPreferences("TO_VIDEO", Context.MODE_PRIVATE)
+        if (sp.getString("to_video", "") == "true") {
+            sp.edit().clear().commit()
+            return EcBottomDelegate()
+        } else{
+            sp.edit().clear().commit()
+            return LauncherDelegate()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

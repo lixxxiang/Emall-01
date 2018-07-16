@@ -118,7 +118,6 @@ public class MultipleRecyclerAdapter extends
                     bannerDataType = (List<String>) entity.getField(MultipleFields.BANNERS_DATA_TYPE);
                     bannerProductId = (List<String>) entity.getField(MultipleFields.BANNERS_PRODUCT_ID);
                     bannerLink = (List<String>) entity.getField(MultipleFields.BANNERS_LINK);
-
                     banner.start();
                     mIsInitBanner = true;
                     holder.addOnClickListener(R.id.banner);
