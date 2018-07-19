@@ -45,7 +45,8 @@ class IndexDelegate : BottomItemDelegate() {
     private fun initRecyclerView() {
         val manager = GridLayoutManager(context, 2)
         recycler_view_index.layoutManager = manager as RecyclerView.LayoutManager?
-        val ecBottomDelegate: EcBottomDelegate = getParentDelegate()
+//        val ecBottomDelegate: EcBottomDelegate = getParentDelegate()
+        val ecBottomDelegate: EmallDelegate = getParentDelegate()
         recycler_view_index.addOnItemTouchListener(IndexItemClickListener(ecBottomDelegate))
     }
 

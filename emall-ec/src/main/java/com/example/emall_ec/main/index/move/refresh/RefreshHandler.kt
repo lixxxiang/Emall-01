@@ -111,6 +111,7 @@ class RefreshHandler private constructor(private val REFRESH_LAYOUT: SwipeRefres
                 }
             }
         })
+        getUnit2(data)
     }
 
     fun getUnit2(data: MutableList<MultipleItemEntity>?) {

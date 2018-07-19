@@ -340,7 +340,9 @@ class MeDelegate : BottomItemDelegate() {
             val bundle = Bundle()
             bundle.putString("PAGE_FROM", "ME")
             delegate.arguments = bundle
-            (DELEGATE as EcBottomDelegate).start(delegate)
+//            (DELEGATE as EcBottomDelegate).start(delegate)
+            (DELEGATE as EmallDelegate).start(delegate)
+
         } else {
             val delegate: OrderListDelegate = OrderListDelegate().create()!!
             val bundle: Bundle? = Bundle()

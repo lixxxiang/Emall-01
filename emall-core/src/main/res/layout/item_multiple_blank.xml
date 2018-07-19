@@ -5,5 +5,4 @@
     android:layout_height="50dp"
     android:minHeight="50dp"
     android:background="#FFFFFF">
-
 </RelativeLayout>
