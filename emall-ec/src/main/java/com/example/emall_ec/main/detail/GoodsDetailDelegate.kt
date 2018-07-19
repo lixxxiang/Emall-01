@@ -129,7 +129,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
         productId = arguments.getString("productId")
         EmallLogger.d(arguments.getString("productId"))
 
-        Handler().postDelayed({
+//        Handler().postDelayed({
 
             if (type == "1" || type == "5") {
                 if (detail_videoview != null)
@@ -151,7 +151,7 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                 type135 = VIDEO
                 getVideoData(videoDetailParams!!)
             }
-        }, 500)
+//        }, 100)
 
 
         goods_buy_now_btn.setOnClickListener {
@@ -219,8 +219,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             }
             val sp = activity.getSharedPreferences("TO_VIDEO", Context.MODE_PRIVATE)
             EmallLogger.d(sp.getString("to_video", ""))
-            if (arguments.getString("PAGE_FROM_TEST") != "videoClassify"){
-                if(sp.getString("to_video", "") == "true"){
+            if (arguments.getString("PAGE_FROM_TEST") != "videoClassify") {
+                if (sp.getString("to_video", "") == "true") {
                     val intent = activity!!.intent
                     activity!!.overridePendingTransition(0, 0)
                     activity!!.finish()
@@ -363,7 +363,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                                     coupon3.visibility = View.VISIBLE
                                 }
                             }
-                            goods_detail_loading_rl.visibility = View.GONE
+                            if (goods_detail_loading_rl != null)
+
+                                goods_detail_loading_rl.visibility = View.GONE
 
                         } else {
 
@@ -374,7 +376,8 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                             line.visibility = View.GONE
                         if (video_detail_get_ticket_rl != null)
                             video_detail_get_ticket_rl.visibility = View.GONE
-                        goods_detail_loading_rl.visibility = View.GONE
+                        if (goods_detail_loading_rl != null)
+                            goods_detail_loading_rl.visibility = View.GONE
 
                     }
                 } else {
@@ -382,7 +385,9 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
                         line.visibility = View.GONE
                     if (video_detail_get_ticket_rl != null)
                         video_detail_get_ticket_rl.visibility = View.GONE
-                    goods_detail_loading_rl.visibility = View.GONE
+                    if (goods_detail_loading_rl != null)
+
+                        goods_detail_loading_rl.visibility = View.GONE
 
                 }
             }
@@ -450,14 +455,14 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             override fun onFailure(call: retrofit2.Call<VideoDetailBean>, throwable: Throwable) {}
         })
 //        if(video_mark != null){
-            if (video_mark?.visibility == View.INVISIBLE)
-                video_mark?.visibility = View.VISIBLE
+        if (video_mark?.visibility == View.INVISIBLE)
+            video_mark?.visibility = View.VISIBLE
 //        }
-        if(video_goods_detail_mask_iv != null){
+        if (video_goods_detail_mask_iv != null) {
             if (video_goods_detail_mask_iv.visibility == View.INVISIBLE)
                 video_goods_detail_mask_iv.visibility = View.VISIBLE
         }
-        if (video_rl != null){
+        if (video_rl != null) {
             if (video_rl.visibility == View.GONE)
                 video_rl.visibility = View.VISIBLE
         }
@@ -871,7 +876,19 @@ class GoodsDetailDelegate : EmallDelegate(), OnTabSelectListener {
             editor.putString("collection_type", arguments.getString("COLLECTION_TYPE"))
             editor.commit()
         }
-        EmallLogger.d(arguments.getString("PAGE_FROM"))
+        val sp = activity.getSharedPreferences("TO_VIDEO", Context.MODE_PRIVATE)
+        EmallLogger.d(sp.getString("to_video", ""))
+        if (arguments.getString("PAGE_FROM_TEST") != "videoClassify") {
+            if (sp.getString("to_video", "") == "true") {
+                val intent = activity!!.intent
+                activity!!.overridePendingTransition(0, 0)
+                activity!!.finish()
+                activity!!.overridePendingTransition(0, 0)
+                startActivity(intent)
+            }
+        }
+
+
         supportDelegate.pop()
         return true
     }
